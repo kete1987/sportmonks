@@ -17,8 +17,8 @@ import pro.soccerama.library.model.MatchsResponse;
 import pro.soccerama.library.model.OddType;
 import pro.soccerama.library.model.OddsResponse;
 import pro.soccerama.library.model.PlayerData;
-import pro.soccerama.library.model.SeasonResults;
-import pro.soccerama.library.model.SeasonResultsData;
+import pro.soccerama.library.model.SeasonData;
+import pro.soccerama.library.model.SeasonDataResponse;
 import pro.soccerama.library.model.StandingTeam;
 import pro.soccerama.library.model.StandingsData;
 import pro.soccerama.library.model.TopScoresPlayer;
@@ -118,20 +118,20 @@ public class SocceramaAPI
 		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());		
 	}
 	/**
-	 * Get season results
+	 * Get season data
 	 * 
 	 * @param seasonId Season ID
-	 * @return Season Results
+	 * @return Season Data (Results, stages, league)
 	 * @throws IOException
 	 */
-	public SeasonResults getSeasonResults(String seasonID) throws IOException, SportMonksException
+	public SeasonData getSeasonData(String seasonID) throws IOException, SportMonksException
 	{
-		String url = baseURL + "seasons/" + seasonID + "?api_token=" + apiKey + "&include=results";
+		String url = baseURL + "seasons/" + seasonID + "?api_token=" + apiKey + "&include=stages.fixtures.localTeam,stages.fixtures.visitorTeam,league,results";
 		GetResponse response = HttpFunctions.get(url);
 		if (response.getResponseCode() == Constants.RESPONSE_OK)
 		{
 			Gson gson = new Gson();
-			SeasonResultsData seasonResults = gson.fromJson(response.getResponse(), SeasonResultsData.class);
+			SeasonDataResponse seasonResults = gson.fromJson(response.getResponse(), SeasonDataResponse.class);
 		    return seasonResults.getData();
 		}
 		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());			

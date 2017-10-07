@@ -2,7 +2,7 @@ package pro.soccerama.library.model;
 
 import java.util.List;
 
-public class SeasonResults 
+public class SeasonData 
 {
 	private int id = -1;
 	private String name = null;
@@ -11,8 +11,10 @@ public class SeasonResults
 	private int current_round_id = -1;
 	private int current_stage_id = -1;
 	private MatchsResponse results = null;
+	private LeagueData league = null;
+	private StagesData stages = null;
 	
-	public SeasonResults(){}
+	public SeasonData(){}
 
 	public int getId() {
 		return id;
@@ -39,8 +41,20 @@ public class SeasonResults
 	}
 
 	public List<Match> getListOfMatches() {
-		return results.getListOfMatches();
+		if (results != null)
+			return results.getListOfMatches();
+		else return null;
 	}
 	
+	public League getLeague() {
+		if (league != null)
+			return league.getData();
+		else return null;
+	}
 	
+	public List<Stage> getListOfStages() {
+		if (stages != null)
+			return stages.getListOfStages();
+		else return null;
+	}
 }
