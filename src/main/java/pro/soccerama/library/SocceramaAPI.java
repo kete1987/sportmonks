@@ -126,7 +126,7 @@ public class SocceramaAPI
 	 */
 	public SeasonData getSeasonData(String seasonID) throws IOException, SportMonksException
 	{
-		String url = baseURL + "seasons/" + seasonID + "?api_token=" + apiKey + "&include=stages.fixtures.localTeam,stages.fixtures.visitorTeam,league,results";
+		String url = baseURL + "seasons/" + seasonID + "?api_token=" + apiKey + "&include=stages.fixtures.localTeam,stages.fixtures.visitorTeam,league,results,groups.fixtures,groups.standings,groups.fixtures.localTeam,groups.fixtures.visitorTeam";
 		GetResponse response = HttpFunctions.get(url);
 		if (response.getResponseCode() == Constants.RESPONSE_OK)
 		{

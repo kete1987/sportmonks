@@ -13,6 +13,7 @@ public class SeasonData
 	private MatchsResponse results = null;
 	private LeagueData league = null;
 	private StagesData stages = null;
+	private GroupsData groups = null;
 	
 	public SeasonData(){}
 
@@ -55,6 +56,12 @@ public class SeasonData
 	public List<Stage> getListOfStages() {
 		if (stages != null)
 			return stages.getListOfStages();
+		else return null;
+	}
+	
+	public List<Group> getListOfGroups() {
+		if (groups != null)
+			return groups.getListOfGroups();
 		else return null;
 	}
 }
