@@ -6,7 +6,7 @@ public class Event
 	private int fixture_id = -1;
 	private int team_id = -1;
 	private int minute = -1;
-	private String extra_minute = null;
+	private int extra_minute = -1;
 	private String type = null;	
 	private int player_id = -1;
 	private int related_player_id = -1;
@@ -34,7 +34,7 @@ public class Event
 		return minute;
 	}
 
-	public String getExtraMin() {
+	public int getExtraMin() {
 		return extra_minute;
 	}
 
