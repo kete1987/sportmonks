@@ -2,7 +2,7 @@ package com.kete.sportmonks.library.model;
 
 public class Event 
 {
-	private int id = -1;
+	private long id = -1;
 	private int fixture_id = -1;
 	private int team_id = -1;
 	private int minute = -1;
@@ -18,7 +18,7 @@ public class Event
 	
 	public Event() {}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
