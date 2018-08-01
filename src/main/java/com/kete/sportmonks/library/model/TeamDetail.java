@@ -1,20 +1,66 @@
 package com.kete.sportmonks.library.model;
 
-public class TeamDetail 
-{
-	private int id = -1;
+import com.google.gson.annotations.SerializedName;
+
+public class TeamDetail {
+	private Long id;
 	private String name = null;
 	private String logo_path = null;
-	
-	public TeamDetail() {}
-	
-	public int getId() {
+	@SerializedName("legacy_id")
+	private int legacyId = -1;
+	@SerializedName("short_code")
+	String shortCode;
+	String twitter;
+	@SerializedName("country_id")
+	int countryId = -1;
+	@SerializedName("national_team")
+	boolean nationalTeam;
+	int founded = -1;
+	@SerializedName("venue_id")
+	int venueId = -1;
+
+	public TeamDetail() {
+	}
+
+	public Long getId() {
 		return id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public String getLogo() {
 		return logo_path;
 	}
+
+	public int getLegacyId() {
+		return legacyId;
+	}
+
+	public String getShortCode() {
+		return shortCode;
+	}
+
+	public String getTwitter() {
+		return twitter;
+	}
+
+	public int getCountryId() {
+		return countryId;
+	}
+
+	public boolean isNationalTeam() {
+		return nationalTeam;
+	}
+
+	public int getFounded() {
+		return founded;
+	}
+
+	public int getVenueId() {
+		return venueId;
+	}
+	
+
 }
