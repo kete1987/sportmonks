@@ -2,21 +2,24 @@ package com.kete.sportmonks.library.model;
 
 public class Match 
 {
-	protected int id = -1; //ID del partido
+	protected Long id; //ID del partido
 	//Equipos
 	protected int localteam_id = -1;
 	protected int visitorteam_id = -1;
 	//Resultado
 	protected MatchScore scores = null;
 	protected MatchTime time = null;
+	protected TeamFormation formations = null;
 	//Otros datos
 	protected int league_id = -1;
 	protected int season_id = -1;
 	protected boolean deleted = false;
+	protected int venue_id = -1;
+	
 	
 	public Match() {}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -47,4 +50,15 @@ public class Match
 	public boolean isDeleted() {
 		return deleted;
 	}
+
+	public TeamFormation getFormations() {
+		return formations;
+	}
+
+	public int getVenueId() {
+		return venue_id;
+	}
+	
+	
+	
 }

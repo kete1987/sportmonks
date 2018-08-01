@@ -4,11 +4,11 @@ import java.util.List;
 
 public class MatchEvents 
 {
-	private List<Event> data;
+	private List<MatchEvent> data;
 	
 	public MatchEvents() {}
 	
-	public List<Event> getListOfEvents()
+	public List<MatchEvent> getListOfEvents()
 	{
 		return data;
 	}

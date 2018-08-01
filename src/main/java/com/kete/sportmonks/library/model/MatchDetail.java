@@ -38,7 +38,7 @@ public class MatchDetail extends Match
 		return events;
 	}
 	
-	public List<Event> getListOfEvents() {
+	public List<MatchEvent> getListOfEvents() {
 		return events.getListOfEvents();
 	}
 

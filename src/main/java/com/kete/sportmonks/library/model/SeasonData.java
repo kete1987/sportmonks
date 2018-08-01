@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SeasonData 
 {
-	private int id = -1;
+	private long id = -1;
 	private String name = null;
 	private int league_id = -1;
 	private boolean is_current_season = false;
@@ -17,7 +17,7 @@ public class SeasonData
 	
 	public SeasonData(){}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
