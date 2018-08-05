@@ -5,8 +5,8 @@ import java.util.List;
 
 public class MatchDetail extends Match
 {
-	private Team localTeam = null;
-	private Team visitorTeam = null;
+	private TeamDetail localTeam = null;
+	private TeamDetail visitorTeam = null;
 	private StatsData stats = null;
 	private MatchEvents events = null;
 	private LineUp lineup = null;
@@ -15,11 +15,11 @@ public class MatchDetail extends Match
 	public MatchDetail() {}
 
 	public TeamDetail getHomeTeam() {
-		return localTeam.getTeamDetail();
+		return localTeam;
 	}
 
 	public TeamDetail getAwayTeam() {
-		return visitorTeam.getTeamDetail();
+		return visitorTeam;
 	}
 
 	public List<Stats> getStats() {

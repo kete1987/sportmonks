@@ -1,12 +1,14 @@
 package com.kete.sportmonks.library.model;
 
+import java.util.List;
+
 public class Team 
 {
-	private TeamDetail data;
+	private  List<TeamDetail> data;
 	
 	public Team() {}
 	
-	public TeamDetail getTeamDetail()
+	public List<TeamDetail> getTeamDetail()
 	{
 		return data;
 	}

@@ -19,8 +19,12 @@ import com.kete.sportmonks.library.model.SeasonData;
 import com.kete.sportmonks.library.model.SeasonDataResponse;
 import com.kete.sportmonks.library.model.StandingTeam;
 import com.kete.sportmonks.library.model.StandingsData;
+import com.kete.sportmonks.library.model.Team;
+import com.kete.sportmonks.library.model.TeamDetail;
 import com.kete.sportmonks.library.model.TopScores;
 import com.kete.sportmonks.library.model.TopScoresPlayer;
+import com.kete.sportmonks.library.model.Venue;
+import com.kete.sportmonks.library.model.VenueDetail;
 import com.kete.sportmonks.library.net.GetResponse;
 import com.kete.sportmonks.library.net.HttpFunctions;
 import com.kete.sportmonks.library.util.Constants;
@@ -195,7 +199,7 @@ public class SportMonksAPI {
 	 * @return Season Data (Results, stages, league)
 	 * @throws IOException
 	 */
-	public SeasonData getSeasonData(String seasonID) throws IOException, SportMonksException {
+	public List<SeasonData> getSeasonData(String seasonID) throws IOException, SportMonksException {
 		String url = baseURL + "seasons/" + seasonID + "?api_token=" + apiKey
 				+ "&include=stages.fixtures.localTeam,stages.fixtures.visitorTeam,league,results,groups.fixtures,groups.standings,groups.fixtures.localTeam,groups.fixtures.visitorTeam";
 		GetResponse response = HttpFunctions.get(url);
@@ -264,6 +268,51 @@ public class SportMonksAPI {
 				return standingsResponse.getStandings().getStandingsList();
 			else
 				return new ArrayList<StandingTeam>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	public List<VenueDetail> getVenues(String seasonId) throws IOException, SportMonksException{
+		String url = baseURL + "venues/season/" + seasonId + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			Venue venue = gson.fromJson(response.getResponse(), Venue.class);
+			if (venue != null && venue.getData() != null)
+				return venue.getData();
+			else
+				return new ArrayList<VenueDetail>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+	
+	public List<TeamDetail> getTeams(String seasonId)throws IOException, SportMonksException {
+		String url = baseURL + "/teams/season/" + seasonId + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			Team teams = gson.fromJson(response.getResponse(), Team.class);
+			if (teams != null && teams.getTeamDetail() != null)
+				return teams.getTeamDetail();
+			else
+				return new ArrayList<TeamDetail>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+
+	public List<SeasonData> getSeasons() throws IOException, SportMonksException {
+		String url = baseURL + "seasons"  + "?api_token=" + apiKey;
+		
+		GetResponse response = HttpFunctions.get(url);
+		
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			SeasonDataResponse seasonData = gson.fromJson(response.getResponse(), SeasonDataResponse.class);
+			if (seasonData != null &&  seasonData.getData() != null)
+				return seasonData.getData();
+			else
+				return new ArrayList<SeasonData>();
 		} else
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}

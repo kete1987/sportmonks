@@ -1,12 +1,14 @@
 package com.kete.sportmonks.library.model;
 
+import java.util.List;
+
 public class SeasonDataResponse 
 {
-	private SeasonData data = null;
+	private List<SeasonData> data = null;
 	
 	public SeasonDataResponse(){}
 	
-	public SeasonData getData()
+	public List<SeasonData> getData()
 	{
 		return data;
 	}
