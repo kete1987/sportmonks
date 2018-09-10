@@ -8,7 +8,7 @@ public class Team
 	
 	public Team() {}
 	
-	public List<TeamDetail> getTeamDetail()
+	public List<TeamDetail> getTeamDetails()
 	{
 		return data;
 	}

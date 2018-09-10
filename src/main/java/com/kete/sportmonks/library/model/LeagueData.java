@@ -1,13 +1,14 @@
 package com.kete.sportmonks.library.model;
 
-public class LeagueData 
-{
-	private League data = null;
-	
-	public LeagueData(){}
-	
-	public League getData()
-	{
+import java.util.List;
+
+public class LeagueData {
+	private List<League> data = null;
+
+	public LeagueData() {
+	}
+
+	public List<League> getData() {
 		return data;
 	}
 }

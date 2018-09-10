@@ -8,6 +8,8 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.kete.sportmonks.library.model.League;
+import com.kete.sportmonks.library.model.LeagueData;
 import com.kete.sportmonks.library.model.Match;
 import com.kete.sportmonks.library.model.MatchData;
 import com.kete.sportmonks.library.model.MatchDetail;
@@ -292,8 +294,8 @@ public class SportMonksAPI {
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
 			Team teams = gson.fromJson(response.getResponse(), Team.class);
-			if (teams != null && teams.getTeamDetail() != null)
-				return teams.getTeamDetail();
+			if (teams != null && teams.getTeamDetails() != null)
+				return teams.getTeamDetails();
 			else
 				return new ArrayList<TeamDetail>();
 		} else
@@ -313,6 +315,22 @@ public class SportMonksAPI {
 				return seasonData.getData();
 			else
 				return new ArrayList<SeasonData>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+	
+	public List<League> getLeagues() throws IOException, SportMonksException {
+		String url = baseURL + "leagues"  + "?api_token=" + apiKey;
+		
+		GetResponse response = HttpFunctions.get(url);
+		
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			LeagueData leagueData = gson.fromJson(response.getResponse(), LeagueData.class);
+			if (leagueData != null &&  leagueData.getData() != null)
+				return leagueData.getData();
+			else
+				return new ArrayList<League>();
 		} else
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}

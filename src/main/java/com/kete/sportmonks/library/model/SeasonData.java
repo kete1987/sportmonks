@@ -47,9 +47,9 @@ public class SeasonData
 		else return null;
 	}
 	
-	public League getLeague() {
+	public LeagueData getLeague() {
 		if (league != null)
-			return league.getData();
+			return league;
 		else return null;
 	}
 	

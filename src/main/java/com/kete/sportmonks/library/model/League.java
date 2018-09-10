@@ -4,6 +4,7 @@ public class League
 {
 	private int id = -1;
 	private String name = null;
+	private int country_id = -1;
 	private boolean is_cup = false;
 	private int current_season_id = -1;
 	private int current_round_id = -1;
@@ -33,6 +34,10 @@ public class League
 
 	public int getCurrentStageId() {
 		return current_stage_id;
+	}
+	
+	public int getCountryId() {
+		return country_id;
 	}
 	
 }
