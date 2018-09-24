@@ -231,6 +231,49 @@ public class SportMonksAPI {
 		} else
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
+	
+	/**
+	 * Get a list with different odds (pre-match)
+	 * 
+	 * @param matchID
+	 *            Match ID
+	 * @param BookMarkerID
+	 *            BookMaker ID
+	 * @return List with pre-match odds
+	 * @throws IOException
+	 */
+	public List<OddType> getMatchOdds(String matchID, String bookMarkerId) throws IOException, SportMonksException {
+		String url = baseURL + "odds/fixture/" + matchID +"/bookmarker/" +bookMarkerId + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
+			return oddsResponse.getOddTypes();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+	
+	/**
+	 * Get a list with different odds (pre-match)
+	 * 
+	 * @param matchID
+	 *            Match ID
+	 * @param market
+	 *            BookMaker ID
+	 * @return List with pre-match odds
+	 * @throws IOException
+	 */
+	public List<OddType> getMatchOddsByMarket(String matchID, String market) throws IOException, SportMonksException {
+		String url = baseURL + "odds/fixture/" + matchID +"/market/" +market + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
+			return oddsResponse.getOddTypes();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 
 	/**
 	 * Get Topscores list

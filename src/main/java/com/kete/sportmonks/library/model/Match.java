@@ -20,6 +20,7 @@ public class Match
 	protected boolean deleted = false;
 	protected int venue_id = -1;
 	
+	
 	public Match() {}
 
 	public Long getId() {
