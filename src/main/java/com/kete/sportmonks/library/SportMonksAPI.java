@@ -144,7 +144,7 @@ public class SportMonksAPI {
 	}
 
 	/**
-	 * Get list of today's matches
+	 * Get list of today's live matches
 	 * 
 	 * @param includes
 	 *            include parameters
@@ -243,7 +243,7 @@ public class SportMonksAPI {
 	 * @throws IOException
 	 */
 	public List<OddType> getMatchOdds(String matchID, String bookMarkerId) throws IOException, SportMonksException {
-		String url = baseURL + "odds/fixture/" + matchID +"/bookmarker/" +bookMarkerId + "?api_token=" + apiKey;
+		String url = baseURL + "odds/fixture/" + matchID +"/bookmaker/" +bookMarkerId + "?api_token=" + apiKey;
 		GetResponse response = HttpFunctions.get(url);
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
