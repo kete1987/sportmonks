@@ -8,25 +8,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.kete.sportmonks.library.model.League;
-import com.kete.sportmonks.library.model.LeagueData;
-import com.kete.sportmonks.library.model.Match;
-import com.kete.sportmonks.library.model.MatchData;
-import com.kete.sportmonks.library.model.MatchDetail;
-import com.kete.sportmonks.library.model.MatchsResponse;
-import com.kete.sportmonks.library.model.OddType;
-import com.kete.sportmonks.library.model.OddsResponse;
-import com.kete.sportmonks.library.model.PlayerData;
-import com.kete.sportmonks.library.model.SeasonData;
-import com.kete.sportmonks.library.model.SeasonDataResponse;
-import com.kete.sportmonks.library.model.StandingTeam;
-import com.kete.sportmonks.library.model.StandingsData;
-import com.kete.sportmonks.library.model.Team;
-import com.kete.sportmonks.library.model.TeamDetail;
-import com.kete.sportmonks.library.model.TopScores;
-import com.kete.sportmonks.library.model.TopScoresPlayer;
-import com.kete.sportmonks.library.model.Venue;
-import com.kete.sportmonks.library.model.VenueDetail;
+import com.kete.sportmonks.library.model.*;
 import com.kete.sportmonks.library.net.GetResponse;
 import com.kete.sportmonks.library.net.HttpFunctions;
 import com.kete.sportmonks.library.util.Constants;
@@ -144,7 +126,7 @@ public class SportMonksAPI {
 	}
 	
 	/**
-	 * Get list of today's matches
+	 * Get list of  matches for a particular date
 	 * 
 	 * @param includes
 	 *            include parameters
@@ -355,7 +337,29 @@ public class SportMonksAPI {
 			if (standingsResponse.getStandings() != null)
 				return standingsResponse.getStandings().getStandingsList();
 			else
-				return new ArrayList<StandingTeam>();
+				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get standings list
+	 *
+	 * @param seasonId
+	 *            Season ID
+	 * @return List of standing teams
+	 * @throws IOException
+	 */
+	public List<StandingsDataInfo> getCupStandings(String seasonId) throws IOException, SportMonksException {
+		String url = baseURL + "standings/season/" + seasonId + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			StandingsData standingsResponse = gson.fromJson(response.getResponse(), StandingsData.class);
+			if (standingsResponse.getStandings() != null)
+				return standingsResponse.getStandingsDataInfo();
+			else
+				return new ArrayList<StandingsDataInfo>();
 		} else
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
