@@ -14,7 +14,7 @@ public class Match
 	protected TeamFormation formations = null;
 	//Otros datos
 	protected int league_id = -1;
-	protected int season_id = -1;
+	protected long season_id = -1;
 	protected int round_id =  -1;
 	protected int stage_id =  -1;
 	protected boolean deleted = false;
@@ -46,7 +46,7 @@ public class Match
 		return league_id;
 	}
 
-	public int getSeasonId() {
+	public long getSeasonId() {
 		return season_id;
 	}
 

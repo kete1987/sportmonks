@@ -6,7 +6,7 @@ public class League
 	private String name = null;
 	private int country_id = -1;
 	private boolean is_cup = false;
-	private int current_season_id = -1;
+	private long current_season_id = -1;
 	private int current_round_id = -1;
 	private int current_stage_id = -1;
 	
@@ -24,7 +24,7 @@ public class League
 		return is_cup;
 	}
 
-	public int getCurrentSeasonId() {
+	public long getCurrentSeasonId() {
 		return current_season_id;
 	}
 
