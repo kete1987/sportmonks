@@ -7,10 +7,10 @@ import java.util.List;
 public class TeamStats {
 
     @SerializedName("data")
-    private List<TeamStat> teamStat = null;
+    private TeamStat teamStat = null;
 
 
-    public List<TeamStat> getTeamStat() {
+    public TeamStat getTeamStat() {
         return teamStat;
     }
 }

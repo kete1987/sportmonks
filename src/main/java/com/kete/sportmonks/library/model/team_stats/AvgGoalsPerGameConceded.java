@@ -7,35 +7,35 @@ public class AvgGoalsPerGameConceded {
 
     @SerializedName("total")
     @Expose
-    private Double total;
+    private float total;
     @SerializedName("home")
     @Expose
-    private Double home;
+    private float home;
     @SerializedName("away")
     @Expose
-    private Double away;
+    private float away;
 
-    public Double getTotal() {
+    public float getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(float total) {
         this.total = total;
     }
 
-    public Double getHome() {
+    public float getHome() {
         return home;
     }
 
-    public void setHome(Double home) {
+    public void setHome(float home) {
         this.home = home;
     }
 
-    public Double getAway() {
+    public float getAway() {
         return away;
     }
 
-    public void setAway(Double away) {
+    public void setAway(float away) {
         this.away = away;
     }
 

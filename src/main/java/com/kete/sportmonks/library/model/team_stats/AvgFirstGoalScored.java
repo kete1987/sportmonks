@@ -7,35 +7,35 @@ public class AvgFirstGoalScored {
 
     @SerializedName("total")
     @Expose
-    private String total;
+    private float total;
     @SerializedName("home")
     @Expose
-    private String home;
+    private float home;
     @SerializedName("away")
     @Expose
-    private String away;
+    private float away;
 
-    public String getTotal() {
+    public float getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(float total) {
         this.total = total;
     }
 
-    public String getHome() {
+    public float getHome() {
         return home;
     }
 
-    public void setHome(String home) {
+    public void setHome(float home) {
         this.home = home;
     }
 
-    public String getAway() {
+    public float getAway() {
         return away;
     }
 
-    public void setAway(String away) {
+    public void setAway(float away) {
         this.away = away;
     }
 

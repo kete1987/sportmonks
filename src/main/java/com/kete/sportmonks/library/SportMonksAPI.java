@@ -362,7 +362,7 @@ public class SportMonksAPI {
             throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
     }
 
-    public List<TeamDetail> getTeams(String seasonId, String... includes) throws IOException, SportMonksException {
+    public Team getTeams(String seasonId, String... includes) throws IOException, SportMonksException {
         String url = baseURL + "/teams/season/" + seasonId + "?api_token=" + apiKey;
         if (includes != null && includes.length > 0) {
             url += "&include=" + String.join(",", includes);
@@ -372,9 +372,9 @@ public class SportMonksAPI {
             Gson gson = new Gson();
             Team teams = gson.fromJson(response.getResponse(), Team.class);
             if (teams != null && teams.getTeamDetails() != null)
-                return teams.getTeamDetails();
+                return teams;
             else
-                return new ArrayList<>();
+                return new Team();
         } else
             throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
     }
