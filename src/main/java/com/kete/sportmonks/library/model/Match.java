@@ -12,6 +12,8 @@ public class Match
 	protected MatchScore scores = null;
 	protected MatchTime time = null;
 	protected TeamFormation formations = null;
+	//Group
+	Group group;
 	//Otros datos
 	protected int league_id = -1;
 	protected long season_id = -1;
@@ -77,5 +79,8 @@ public class Match
 	public MatchTeam getVisitorTeam() {
 		return visitorTeam;
 	}
-	
+
+	public Group getGroup() {
+		return group;
+	}
 }
