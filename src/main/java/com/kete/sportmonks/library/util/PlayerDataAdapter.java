@@ -7,7 +7,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.kete.sportmonks.library.model.PlayerData;
+import com.kete.sportmonks.library.model.player.PlayerData;
 
 public class PlayerDataAdapter implements JsonDeserializer<PlayerData> {
     public PlayerData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
