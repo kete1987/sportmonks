@@ -1,6 +1,6 @@
 package com.kete.sportmonks.library.model;
 
-public class Event 
+public class MatchEvent
 {
 	private long id = -1;
 	private int fixture_id = -1;
@@ -16,7 +16,7 @@ public class Event
 	private boolean injuried = false;
 	private PlayerData player = null;
 	
-	public Event() {}
+	public MatchEvent() {}
 
 	public long getId() {
 		return id;

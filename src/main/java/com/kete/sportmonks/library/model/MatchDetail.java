@@ -10,6 +10,8 @@ public class MatchDetail extends Match
 	private StatsData stats = null;
 	private MatchEvents events = null;
 	private LineUp lineup = null;
+	private Group group = null;
+	private TeamFormation formations = null;
 	//TODO Odds
 	
 	public MatchDetail() {}
@@ -27,18 +29,18 @@ public class MatchDetail extends Match
 	}
 	
 	public Stats getHomeStats() {
-		return stats.getStats(localteam_id);
+		return stats.getStats(getLocalTeamId());
 	}
 
 	public Stats getAwayStats() {
-		return stats.getStats(visitorteam_id);
+		return stats.getStats(getVisitorTeamId());
 	}
 
 	public MatchEvents getEvents() {
 		return events;
 	}
 	
-	public List<Event> getListOfEvents() {
+	public List<MatchEvent> getListOfEvents() {
 		return events.getListOfEvents();
 	}
 
@@ -51,5 +53,13 @@ public class MatchDetail extends Match
 		for (int i=0; i<getLineUp().getListOfPlayers().size(); i++)
 			playersMap.put(getLineUp().getListOfPlayers().get(i).getPlayerId(), getLineUp().getListOfPlayers().get(i).getPlayerName());
 		return playersMap;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public TeamFormation getFormations() {
+		return formations;
 	}
 }

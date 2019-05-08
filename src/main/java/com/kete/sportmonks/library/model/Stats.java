@@ -6,6 +6,7 @@ public class Stats
 	private int fixture_id = 0;
 	private Shots shots = null;
 	private Passes passes = null;
+	//TODO attacks
 	private int fouls = 0;
 	private int corners = 0;
 	private int offsides = 0;
@@ -13,6 +14,12 @@ public class Stats
 	private int yellowcards = 0;
 	private int redcards = 0;
 	private int saves = 0;
+	private int substitutions = 0;
+	private int goal_kick;
+	private int goal_attempts = 0;
+	private int free_kick;
+	private int throw_in;
+	private int ball_safe = 0;
 	
 	public Stats() {}
 
@@ -58,5 +65,29 @@ public class Stats
 
 	public int getSaves() {
 		return saves;
+	}
+
+	public int getSubstitutions() {
+		return substitutions;
+	}
+
+	public int getGoal_kick() {
+		return goal_kick;
+	}
+
+	public int getGoal_attempts() {
+		return goal_attempts;
+	}
+
+	public int getFree_kick() {
+		return free_kick;
+	}
+
+	public int getThrow_in() {
+		return throw_in;
+	}
+
+	public int getBall_safe() {
+		return ball_safe;
 	}
 }

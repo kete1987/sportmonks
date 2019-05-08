@@ -13,6 +13,7 @@ public class LineUp
 	{
 		return data;
 	}
+
 	public String getLineUpString(int teamId)
 	{
 		String lineUp = "";
@@ -24,7 +25,8 @@ public class LineUp
 			}
 		}
 		return lineUp;		
-	}	
+	}
+
 	public ArrayList<String> getLineUp(int teamId)
 	{
 		ArrayList<String> lineUp = new ArrayList<String>();
