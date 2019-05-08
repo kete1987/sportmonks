@@ -6,7 +6,7 @@ public class Stats
 	private int fixture_id = 0;
 	private Shots shots = null;
 	private Passes passes = null;
-	//TODO attacks
+	private Attacks attacks = null;
 	private int fouls = 0;
 	private int corners = 0;
 	private int offsides = 0;
@@ -37,6 +37,10 @@ public class Stats
 
 	public Passes getPasses() {
 		return passes;
+	}
+
+	public Attacks getAttacks() {
+		return attacks;
 	}
 
 	public int getFouls() {

@@ -12,7 +12,7 @@ public class MatchDetail extends Match
 	private LineUp lineup = null;
 	private Group group = null;
 	private TeamFormation formations = null;
-	//TODO Odds
+	private OddData odds = null;
 	
 	public MatchDetail() {}
 
@@ -61,5 +61,9 @@ public class MatchDetail extends Match
 
 	public TeamFormation getFormations() {
 		return formations;
+	}
+
+	public OddData getOdds() {
+		return odds;
 	}
 }
