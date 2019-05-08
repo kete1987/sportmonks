@@ -34,6 +34,8 @@ The available methods are:
 * getLeagues
 * getStages
 
+See [sportmonks documentacion](https://sportmonks.com/docs/football/2.0/prologue/a/introduction/94) for details
+
 ## Add library in your project
 ### Add jcenter repository
 You should add jcenter repository in your project like:
