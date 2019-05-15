@@ -18,5 +18,8 @@ public class MatchStatus
 	public static String SUSPENDED = "SUSP";
 	public static String AWARDED = "AWARDED";
 	public static String DELAYED = "DELAYED";
-	public static String DELETED = "DELETED";
+	public static String DELETED = "Deleted";
+	public static String TBA = "TBA";
+	public static String WO = "WO";
+	public static String AU = "AU";
 }
