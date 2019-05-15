@@ -2,21 +2,21 @@ package com.kete.sportmonks.library.model.stats;
 
 public class Passes 
 {
-	private int total = 0;
-	private int accurate = 0;
-	private int percentage = 0;
+	private Integer total = 0;
+	private Integer accurate = 0;
+	private Integer percentage = 0;
 	
 	public Passes() {}
 
-	public int getTotal() {
+	public Integer getTotal() {
 		return total;
 	}
 
-	public int getAccurate() {
+	public Integer getAccurate() {
 		return accurate;
 	}
 
-	public int getPercentage() {
+	public Integer getPercentage() {
 		return percentage;
 	}
 }

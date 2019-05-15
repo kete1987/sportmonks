@@ -2,36 +2,36 @@ package com.kete.sportmonks.library.model.stats;
 
 public class Shots 
 {
-	private int total = 0;
-	private int ongoal = 0;
-	private int offgoal = 0;
-	private int blocked = 0;
-	private int insidebox = 0;
-	private int outsidebox = 0;
+	private Integer total = 0;
+	private Integer ongoal = 0;
+	private Integer offgoal = 0;
+	private Integer blocked = 0;
+	private Integer insidebox = 0;
+	private Integer outsidebox = 0;
 	
 	public Shots() {}
 
-	public int getTotal() {
+	public Integer getTotal() {
 		return total;
 	}
 
-	public int getOngoal() {
+	public Integer getOngoal() {
 		return ongoal;
 	}
 
-	public int getOffgoal() {
+	public Integer getOffgoal() {
 		return offgoal;
 	}
 
-	public int getBlocked() {
+	public Integer getBlocked() {
 		return blocked;
 	}
 
-	public int getInsidebox() {
+	public Integer getInsidebox() {
 		return insidebox;
 	}
 
-	public int getOutsidebox() {
+	public Integer getOutsidebox() {
 		return outsidebox;
 	}
 }
