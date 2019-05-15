@@ -4,7 +4,7 @@ import com.kete.sportmonks.library.model.group.Group;
 import com.kete.sportmonks.library.model.group.GroupsData;
 import com.kete.sportmonks.library.model.league.League;
 import com.kete.sportmonks.library.model.league.LeagueData;
-import com.kete.sportmonks.library.model.match.Match;
+import com.kete.sportmonks.library.model.match.MatchDetail;
 import com.kete.sportmonks.library.model.match.MatchsResponse;
 import com.kete.sportmonks.library.model.stage.Stage;
 import com.kete.sportmonks.library.model.stage.StagesData;
@@ -50,7 +50,7 @@ public class SeasonData
 		return current_stage_id;
 	}
 
-	public List<Match> getListOfMatches() {
+	public List<MatchDetail> getListOfMatches() {
 		if (results != null)
 			return results.getListOfMatches();
 		else return null;

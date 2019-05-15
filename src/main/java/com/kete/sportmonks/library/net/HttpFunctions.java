@@ -1,8 +1,8 @@
 package com.kete.sportmonks.library.net;
 
 import com.kete.sportmonks.library.util.Constants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class HttpFunctions 
 {
-	private static final Logger logger = LogManager.getLogger(HttpFunctions.class);
+	private static final Logger logger = LoggerFactory.getLogger(HttpFunctions.class);
 	public static GetResponse get(String url) throws IOException
     {
         URL obj = new URL(url);

@@ -38,8 +38,6 @@ import com.kete.sportmonks.library.net.HttpFunctions;
 import com.kete.sportmonks.library.util.Constants;
 import com.kete.sportmonks.library.util.PlayerDataAdapter;
 import com.kete.sportmonks.library.util.SportMonksException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static com.kete.sportmonks.library.util.Constants.baseURL;
 
@@ -52,7 +50,6 @@ import static com.kete.sportmonks.library.util.Constants.baseURL;
 public class SportMonksAPI 
 {
 	private static SportMonksAPI instance;
-	private static final Logger logger = LogManager.getLogger(SportMonksAPI.class);
 	private String apiKey = null;
 	private String headerPending = null;
 	private String headerTotal = null;
@@ -113,14 +110,14 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException
 	 */
-	public List<Match> getTodayMatches(String... includes) throws IOException, SportMonksException {
+	public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
 		String url = baseURL + "livescores" + "?api_token=" + apiKey + getIncludes(includes);
 		GetResponse response = HttpFunctions.get(url);
 		updateHeaders(response);
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
 			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-			List<Match> matchsList = matchsResponse.getListOfMatches();
+			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
 			int page = 1;
 			int totalPages = matchsResponse.getMetadata().getPagination().getTotalPages();
 			while (page < totalPages) {
@@ -131,7 +128,7 @@ public class SportMonksAPI
 				if (response.getResponseCode() == Constants.RESPONSE_OK) {
 					gson = new Gson();
 					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-					List<Match> matchsListAux = matchsResponse.getListOfMatches();
+					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
 					for (int i = 0; i < matchsListAux.size(); i++)
 						matchsList.add(matchsListAux.get(i));
 				} else
@@ -150,7 +147,7 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException
 	 */
-	public List<Match> getLiveMatches(String... includes) throws IOException, SportMonksException {
+	public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException {
 		String url = baseURL + "livescores/now" + "?api_token=" + apiKey + getIncludes(includes);
 		GetResponse response = HttpFunctions.get(url);
 		updateHeaders(response);
@@ -171,14 +168,14 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException
 	 */
-	public List<Match> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException {
+	public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException {
 		String url = baseURL + "fixtures/date/" + date + "?api_token=" + apiKey + getIncludes(includes);
 		GetResponse response = HttpFunctions.get(url);
 		updateHeaders(response);
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
 			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-			List<Match> matchsList = matchsResponse.getListOfMatches();
+			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
 			int page = 1;
 			int totalPages = matchsResponse.getMetadata().getPagination().getTotalPages();
 			while (page < totalPages) {
@@ -189,7 +186,7 @@ public class SportMonksAPI
 				if (response.getResponseCode() == Constants.RESPONSE_OK) {
 					gson = new Gson();
 					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-					List<Match> matchsListAux = matchsResponse.getListOfMatches();
+					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
 					for (int i = 0; i < matchsListAux.size(); i++)
 						matchsList.add(matchsListAux.get(i));
 				} else
@@ -209,7 +206,7 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException 
 	 */
-	public List<Match> getMatchesByDateRange(String beginDate, String endDate) throws IOException, SportMonksException
+	public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate) throws IOException, SportMonksException
 	{
 		String[] includes = {};
 		return getMatchesByDateRange(beginDate, endDate, includes);
@@ -225,7 +222,7 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException
 	 */
-	public List<Match> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException
+	public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException
 	{
 		String url = baseURL + "fixtures/between/" + beginDate + "/" + endDate + "?api_token=" + apiKey + getIncludes(includes);
 		GetResponse response = HttpFunctions.get(url);
@@ -233,7 +230,7 @@ public class SportMonksAPI
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
 			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-			List<Match> matchsList = matchsResponse.getListOfMatches();
+			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
 			int page = 1; int totalPages = matchsResponse.getMetadata().getPagination().getTotalPages();
 			while (page < totalPages) {
 				page++;
@@ -243,7 +240,7 @@ public class SportMonksAPI
 				if (response.getResponseCode() == Constants.RESPONSE_OK) {
 					gson = new Gson();
 					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-					List<Match> matchsListAux = matchsResponse.getListOfMatches();
+					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
 					for (int i=0; i<matchsListAux.size(); i++)
 						matchsList.add(matchsListAux.get(i));
 				}
@@ -265,7 +262,7 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException
 	 */
-	public List<Match> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException
+	public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException
 	{
 		String url = baseURL + "fixtures/between/" + beginDate + "/" + endDate + "/" + teamId + "?api_token=" + apiKey + getIncludes(includes);
 		GetResponse response = HttpFunctions.get(url);
@@ -273,7 +270,7 @@ public class SportMonksAPI
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
 			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-			List<Match> matchsList = matchsResponse.getListOfMatches();
+			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
 			int page = 1; int totalPages = matchsResponse.getMetadata().getPagination().getTotalPages();
 			while (page < totalPages) {
 				page++;
@@ -283,7 +280,7 @@ public class SportMonksAPI
 				if (response.getResponseCode() == Constants.RESPONSE_OK) {
 					gson = new Gson();
 					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-					List<Match> matchsListAux = matchsResponse.getListOfMatches();
+					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
 					for (int i=0; i<matchsListAux.size(); i++)
 						matchsList.add(matchsListAux.get(i));
 				}
@@ -303,7 +300,7 @@ public class SportMonksAPI
 	 * @throws IOException
 	 * @throws SportMonksException
 	 */
-	public List<Match> getMatchesByMultipleIDs(String[] teamIds, String... includes) throws IOException, SportMonksException
+	public List<MatchDetail> getMatchesByMultipleIDs(String[] teamIds, String... includes) throws IOException, SportMonksException
 	{
 		String url = baseURL + "fixtures/multi/" + String.join(",", teamIds) + "?api_token=" + apiKey + getIncludes(includes);
 		GetResponse response = HttpFunctions.get(url);
@@ -311,7 +308,7 @@ public class SportMonksAPI
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
 			Gson gson = new Gson();
 			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-			List<Match> matchsList = matchsResponse.getListOfMatches();
+			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
 			int page = 1; int totalPages = matchsResponse.getMetadata().getPagination().getTotalPages();
 			while (page < totalPages) {
 				page++;
@@ -321,7 +318,7 @@ public class SportMonksAPI
 				if (response.getResponseCode() == Constants.RESPONSE_OK) {
 					gson = new Gson();
 					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-					List<Match> matchsListAux = matchsResponse.getListOfMatches();
+					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
 					for (int i=0; i<matchsListAux.size(); i++)
 						matchsList.add(matchsListAux.get(i));
 				}

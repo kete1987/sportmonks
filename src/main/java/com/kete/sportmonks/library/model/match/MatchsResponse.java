@@ -6,12 +6,12 @@ import java.util.List;
 
 public class MatchsResponse 
 {
-	private List<Match> data;
+	private List<MatchDetail> data;
 	private Metadata meta;
 	
 	public MatchsResponse() {}
 	
-	public List<Match> getListOfMatches()
+	public List<MatchDetail> getListOfMatches()
 	{
 		return data;
 	}
