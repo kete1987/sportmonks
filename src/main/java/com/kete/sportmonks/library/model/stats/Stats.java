@@ -15,10 +15,10 @@ public class Stats
 	private int redcards = 0;
 	private int saves = 0;
 	private int substitutions = 0;
-	private int goal_kick;
+	private int goal_kick = 0;
 	private int goal_attempts = 0;
-	private int free_kick;
-	private int throw_in;
+	private int free_kick = 0;
+	private int throw_in = 0;
 	private int ball_safe = 0;
 	
 	public Stats() {}

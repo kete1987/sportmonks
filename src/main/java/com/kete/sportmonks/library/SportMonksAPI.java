@@ -35,6 +35,7 @@ import com.kete.sportmonks.library.model.venue.VenueDetail;
 import com.kete.sportmonks.library.net.GetResponse;
 import com.kete.sportmonks.library.net.HttpFunctions;
 import com.kete.sportmonks.library.util.Constants;
+import com.kete.sportmonks.library.util.EmptyStringToNumberTypeAdapter;
 import com.kete.sportmonks.library.util.PlayerDataAdapter;
 import com.kete.sportmonks.library.util.SportMonksException;
 
@@ -113,7 +114,10 @@ public class SportMonksAPI
 		GetResponse response = HttpFunctions.get(url);
 		updateHeaders(response);
 		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-			Gson gson = new Gson();
+			Gson gson = new GsonBuilder()
+							.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+							.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+							.create();
 			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
 			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
 			int page = 1;
@@ -124,7 +128,10 @@ public class SportMonksAPI
 				response = HttpFunctions.get(urlAux);
 				updateHeaders(response);
 				if (response.getResponseCode() == Constants.RESPONSE_OK) {
-					gson = new Gson();
+					gson = new GsonBuilder()
+							.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+							.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+							.create();
 					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
 					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
 					for (int i = 0; i < matchsListAux.size(); i++)
@@ -291,6 +298,8 @@ public class SportMonksAPI
             Type myOtherClassListType = new TypeToken<PlayerData>() {}.getType();
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(myOtherClassListType, new PlayerDataAdapter())
+					.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+					.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
                     .create();
             MatchData matchData = gson.fromJson(response.getResponse(), MatchData.class);
             return matchData.getMatchDetail();
