@@ -1,6 +1,8 @@
 package com.kete.sportmonks.library.model.match;
 
-public class Match 
+import com.kete.sportmonks.library.util.MatchStatus;
+
+public class Match implements Comparable<Object>
 {
 	protected Long id; //ID del partido
 	//Equipos
@@ -76,5 +78,43 @@ public class Match
 
 	public String getLeg() {
 		return leg;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Match aux = (Match)o;
+		if (getMatchTime() != null && aux.getMatchTime() != null) {
+			String status1 = getMatchTime().getStatus();
+			String status2 = aux.getMatchTime().getStatus();
+			if (status1.equals(MatchStatus.NOT_STARTED)) {
+				if (status2.equals(MatchStatus.NOT_STARTED))
+					return (int)(aux.getMatchTime().getMatchDate().getTimestamp() - getMatchTime().getMatchDate().getTimestamp());
+				else if (MatchStatus.isLiveMatch(status2))
+					return 1;
+				else
+					return -1;
+			}
+			else if (MatchStatus.isLiveMatch(status1)) {
+				if (MatchStatus.isLiveMatch(status2))
+					return 0;
+				else
+					return -1;
+			}
+			else if (MatchStatus.isMatchFinished(status1)) {
+				if (status2.equals(MatchStatus.NOT_STARTED) || MatchStatus.isLiveMatch(status2))
+					return 1;
+				else if (MatchStatus.isMatchFinished(status2))
+					return 0;
+				else
+					return -1;
+			}
+			else {
+				if (status2.equals(MatchStatus.NOT_STARTED) || MatchStatus.isLiveMatch(status2) || MatchStatus.isMatchFinished(status2))
+					return 1;
+				else
+					return 0;
+			}
+		}
+		return 0;
 	}
 }

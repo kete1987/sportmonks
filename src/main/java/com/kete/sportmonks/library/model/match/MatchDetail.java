@@ -1,5 +1,7 @@
 package com.kete.sportmonks.library.model.match;
 
+import com.kete.sportmonks.library.model.comments.Comment;
+import com.kete.sportmonks.library.model.comments.CommentData;
 import com.kete.sportmonks.library.model.group.Group;
 import com.kete.sportmonks.library.model.odds.OddData;
 import com.kete.sportmonks.library.model.stats.Stats;
@@ -18,9 +20,11 @@ public class MatchDetail extends Match
 	private StatsData stats = null;
 	private MatchEvents events = null;
 	private LineUp lineup = null;
+	private LineUp bench = null;
 	private Group group = null;
 	private TeamFormation formations = null;
 	private OddData odds = null;
+	private CommentData comments = null;
 	
 	public MatchDetail() {}
 
@@ -55,6 +59,10 @@ public class MatchDetail extends Match
 	public LineUp getLineUp() {
 		return lineup;
 	}
+
+	public LineUp getBench() {
+		return bench;
+	}
 	
 	public HashMap<Integer, String> getPlayers() {
 		HashMap<Integer, String> playersMap = new HashMap<Integer, String>();
@@ -73,5 +81,9 @@ public class MatchDetail extends Match
 
 	public OddData getOdds() {
 		return odds;
+	}
+
+	public List<Comment> getListOfComments() {
+		return comments != null ? comments.getListOfComments() : null;
 	}
 }

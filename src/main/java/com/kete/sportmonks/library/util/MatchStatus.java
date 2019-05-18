@@ -22,4 +22,12 @@ public class MatchStatus
 	public static String TBA = "TBA";
 	public static String WO = "WO";
 	public static String AU = "AU";
+
+	public static boolean isLiveMatch(String status) {
+		return status.equals(LIVE) || status.equals(HALF_TIME) || status.equals(EXTRA_TIME) || status.equals(PENALTIES) || status.equals(WAITING_EXTRA_TIME);
+	}
+
+	public static boolean isMatchFinished(String status) {
+		return status.equals(FULL_TIME) || status.equals(FINISHED_AFTER_EXTRA_TIME) || status.equals(FULL_TIME_AFTER_PENALTIES);
+	}
 }
