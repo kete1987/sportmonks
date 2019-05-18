@@ -9,10 +9,18 @@ public class Player
 	private String player_name = null;
 	private int number = -1;
 	private String position = null;
+	private String additional_position = null;
+	private String formation_position = null;
+	private Integer posx;
+	private Integer posy;
+	private boolean captain;
 	//Player Attributes
 	private String common_name = null;
 	private String image_path = null;
 	private String logo_path = null;
+	private int country_id = -1;
+	private String fullname = null;
+	private String nationality = null;
 	
 	private PlayerData player = null; 
 	
@@ -38,6 +46,26 @@ public class Player
 		return position;
 	}
 
+	public String getAdditionalPosition() {
+		return additional_position;
+	}
+
+	public String getFormationPosition() {
+		return formation_position;
+	}
+
+	public Integer getPosx() {
+		return posx;
+	}
+
+	public Integer getPosy() {
+		return posy;
+	}
+
+	public boolean isCaptain() {
+		return captain;
+	}
+
 	public int getShirtNumber() {
 		return number;
 	}
@@ -53,7 +81,19 @@ public class Player
 			return logo_path;
 		else return null;
 	}
-	
+
+	public int getCountryId() {
+		return country_id;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
 	public Player getPlayer() {
 		return player.getData();
 	}
