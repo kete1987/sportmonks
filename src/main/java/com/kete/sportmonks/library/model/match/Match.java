@@ -88,7 +88,7 @@ public class Match implements Comparable<Object>
 			String status2 = aux.getMatchTime().getStatus();
 			if (status1.equals(MatchStatus.NOT_STARTED)) {
 				if (status2.equals(MatchStatus.NOT_STARTED))
-					return (int)(aux.getMatchTime().getMatchDate().getTimestamp() - getMatchTime().getMatchDate().getTimestamp());
+					return (int)(getMatchTime().getMatchDate().getTimestamp() - aux.getMatchTime().getMatchDate().getTimestamp());
 				else if (MatchStatus.isLiveMatch(status2))
 					return 1;
 				else
