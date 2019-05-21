@@ -95,7 +95,7 @@ public class Player
 	}
 
 	public Player getPlayer() {
-		return player.getData();
+		return player != null ? player.getData() : null;
 	}
 	
 }
