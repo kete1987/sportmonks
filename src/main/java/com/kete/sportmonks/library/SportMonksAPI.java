@@ -17,6 +17,9 @@ import com.kete.sportmonks.library.model.match.MatchsResponse;
 import com.kete.sportmonks.library.model.odds.OddType;
 import com.kete.sportmonks.library.model.odds.OddsResponse;
 import com.kete.sportmonks.library.model.player.PlayerData;
+import com.kete.sportmonks.library.model.rounds.Round;
+import com.kete.sportmonks.library.model.rounds.RoundData;
+import com.kete.sportmonks.library.model.rounds.RoundDataList;
 import com.kete.sportmonks.library.model.season.SeasonData;
 import com.kete.sportmonks.library.model.season.SeasonDataList;
 import com.kete.sportmonks.library.model.season.SeasonDataResponse;
@@ -659,6 +662,52 @@ public class SportMonksAPI
 				return stagesData.getListOfStages();
 			else
 				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Return rounds list
+	 * @param seasonId Season ID
+	 * @param includes Includes
+	 * @return Rounds list
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<Round> getRounds(String seasonId, String... includes) throws IOException, SportMonksException {
+		String url = baseURL + "rounds/season/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			RoundDataList roundsList = gson.fromJson(response.getResponse(), RoundDataList.class);
+			if (roundsList != null && roundsList.getData() != null)
+				return roundsList.getData();
+			else
+				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Return round selected
+	 * @param roundId Season ID
+	 * @param includes Includes
+	 * @return Round selected
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public Round getRound(String roundId, String... includes) throws IOException, SportMonksException {
+		String url = baseURL + "rounds/" + roundId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			RoundData roundData = gson.fromJson(response.getResponse(), RoundData.class);
+			if (roundData != null && roundData.getData() != null)
+				return roundData.getData();
+			else
+				return null;
 		} else
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
