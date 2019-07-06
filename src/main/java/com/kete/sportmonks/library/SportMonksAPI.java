@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.kete.sportmonks.library.model.league.League;
+import com.kete.sportmonks.library.model.league.LeagueData;
 import com.kete.sportmonks.library.model.league.LeagueResponse;
 import com.kete.sportmonks.library.model.match.MatchData;
 import com.kete.sportmonks.library.model.match.MatchDetail;
@@ -639,6 +640,28 @@ public class SportMonksAPI
 				return leagueResponse.getListOfLeagues();
 			else
 				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get league by ID
+	 * @param leagueId League ID
+	 * @return League
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public League getLeague(String leagueId, String... includes) throws IOException, SportMonksException {
+		String url = baseURL + "leagues/" + leagueId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			LeagueData leagueData = gson.fromJson(response.getResponse(), LeagueData.class);
+			if (leagueData != null && leagueData.getData() != null)
+				return leagueData.getData();
+			else
+				return null;
 		} else
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
