@@ -10,4 +10,6 @@ public class EventType
 	public static String YELLOW_CARD_X2_RED_CARD = "yellowred";
 	public static String RED_CARD = "redcard";
 	public static String SUBSTITUTION = "substitution";
+	public static String PENALTY_SHOOTOUT_GOAL = "pen_shootout_goal";
+	public static String MISSED_PENALTY_SHOOTOUT = "pen_shootout_miss";
 }
