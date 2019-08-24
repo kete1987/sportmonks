@@ -67,7 +67,9 @@ public class MatchDetail extends Match
 	public HashMap<Integer, String> getPlayers() {
 		HashMap<Integer, String> playersMap = new HashMap<Integer, String>();
 		for (int i=0; i<getLineUp().getListOfPlayers().size(); i++)
-			playersMap.put(getLineUp().getListOfPlayers().get(i).getPlayerId(), getLineUp().getListOfPlayers().get(i).getPlayerName());
+			playersMap.put(getLineUp().getListOfPlayers().get(i).getPlayerId(),
+							getLineUp().getListOfPlayers().get(i).getPlayer() != null && getLineUp().getListOfPlayers().get(i).getPlayer().getPlayerCommonName() != null ?
+							getLineUp().getListOfPlayers().get(i).getPlayer().getPlayerCommonName() : getLineUp().getListOfPlayers().get(i).getPlayerName());
 		return playersMap;
 	}
 
