@@ -54,7 +54,7 @@ You should add jcenter repository in your project like:
 <dependency>
   <groupId>com.kete</groupId>
   <artifactId>sportmonks.library</artifactId>
-  <version>1.0.15</version>
+  <version>1.0.16</version>
   <type>pom</type>
 </dependency>
 ```
