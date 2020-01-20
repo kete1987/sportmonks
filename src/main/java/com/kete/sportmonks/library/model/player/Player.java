@@ -16,6 +16,7 @@ public class Player
 	private boolean captain;
 	//Player Attributes
 	private String common_name = null;
+	private String display_name = null;
 	private String image_path = null;
 	private String logo_path = null;
 	private int country_id = -1;
@@ -97,5 +98,8 @@ public class Player
 	public Player getPlayer() {
 		return player != null ? player.getData() : null;
 	}
-	
+
+	public String getDisplayName() {
+		return display_name;
+	}
 }
