@@ -4,8 +4,7 @@ public class Passes
 {
 	private Integer total = 0;
 	private Integer accurate = 0;
-	private Integer percentage = 0;
-	
+
 	public Passes() {}
 
 	public Integer getTotal() {
@@ -16,7 +15,7 @@ public class Passes
 		return accurate;
 	}
 
-	public Integer getPercentage() {
-		return percentage;
+	public Double getPercentage() {
+		return (Double.valueOf(accurate) / Double.valueOf(total)) * 100;
 	}
 }
