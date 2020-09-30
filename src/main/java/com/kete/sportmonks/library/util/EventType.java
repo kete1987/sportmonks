@@ -12,4 +12,5 @@ public class EventType
 	public static String SUBSTITUTION = "substitution";
 	public static String PENALTY_SHOOTOUT_GOAL = "pen_shootout_goal";
 	public static String MISSED_PENALTY_SHOOTOUT = "pen_shootout_miss";
+	public static String VAR = "var";
 }
