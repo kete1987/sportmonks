@@ -19,6 +19,7 @@ public class MatchEvent
 	private boolean injuried = false;
 	private String result = null;
 	private PlayerData player = null;
+	private String var_result = null;
 	
 	public MatchEvent() {}
 
@@ -78,5 +79,9 @@ public class MatchEvent
 		if (player != null)
 			return player.getData();
 		else return null;
+	}
+
+	public String getVarResult() {
+		return var_result;
 	}
 }
