@@ -52,9 +52,9 @@ You should add jcenter repository in your project like:
 ### Add dependency
 ```xml
 <dependency>
-  <groupId>com.kete</groupId>
+  <groupId>es.com.kete1987</groupId>
   <artifactId>sportmonks.library</artifactId>
-  <version>1.0.19</version>
+  <version>1.1.0</version>
   <type>pom</type>
 </dependency>
 ```
