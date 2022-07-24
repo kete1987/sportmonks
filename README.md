@@ -37,25 +37,13 @@ The available methods are:
 See [sportmonks documentacion](https://sportmonks.com/docs/football/2.0/prologue/a/introduction/94) for details
 
 ## Add library in your project
-### Add jcenter repository
-You should add jcenter repository in your project like:
-```xml
-<repositories>
-  <repository>
-    <id>central</id>
-    <name>bintray</name>
-    <url>http://jcenter.bintray.com</url>
-  </repository>
-</repositories>
-```
 
 ### Add dependency
 ```xml
 <dependency>
-  <groupId>com.kete</groupId>
-  <artifactId>sportmonks.library</artifactId>
-  <version>1.0.19</version>
-  <type>pom</type>
+    <groupId>es.com.kete1987</groupId>
+    <artifactId>sportmonks.library</artifactId>
+    <version>1.1.0</version>
 </dependency>
 ```
 
