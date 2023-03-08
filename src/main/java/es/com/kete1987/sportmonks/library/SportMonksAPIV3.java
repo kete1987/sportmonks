@@ -12,9 +12,11 @@ import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.v2.util.EmptyStringToNumberTypeAdapter;
 import es.com.kete1987.sportmonks.library.v2.util.PlayerDataAdapter;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
+import es.com.kete1987.sportmonks.library.v3.model.match.MatchsResponse;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * SocceramaAPI Main Class
@@ -77,48 +79,48 @@ public class SportMonksAPIV3
 
 	// REQUESTS
 
-//	/**
-//	 * Returns list of matches from URL
-//	 *
-//	 * @param url URL to obtain matches
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	private List<MatchDetail> getMatchesByURL(String url) throws IOException, SportMonksException{
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new GsonBuilder()
-//							.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
-//							.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
-//							.create();
-//			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-//			List<MatchDetail> matchsList = matchsResponse.getListOfMatches();
-//			int page = 1;
-//			int totalPages = matchsResponse.getMetadata().getPagination().getTotalPages();
-//			while (page < totalPages) {
-//				page++;
-//				String urlAux = url + "&page=" + page;
-//				response = HttpFunctions.get(urlAux);
-//				updateHeaders(response);
-//				if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//					gson = new GsonBuilder()
-//							.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
-//							.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
-//							.create();
-//					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
-//					List<MatchDetail> matchsListAux = matchsResponse.getListOfMatches();
-//					for (int i = 0; i < matchsListAux.size(); i++)
-//						matchsList.add(matchsListAux.get(i));
-//				} else
-//					throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//			}
-//			return matchsList;
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+	/**
+	 * Returns list of matches from URL
+	 *
+	 * @param url URL to obtain matches
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	private List<MatchDetail> getMatchesByURL(String url) throws IOException, SportMonksException{
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new GsonBuilder()
+							.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+							.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+							.create();
+			MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
+			List<MatchDetail> matchsList = matchsResponse.getData();
+			int page = 1;
+			boolean hasMorePages = matchsResponse.getPagination() != null && matchsResponse.getPagination().hasMore();
+			while (hasMorePages) {
+				page++;
+				String urlAux = url + "&page=" + page;
+				response = HttpFunctions.get(urlAux);
+				updateHeaders(response);
+				if (response.getResponseCode() == Constants.RESPONSE_OK) {
+					gson = new GsonBuilder()
+							.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+							.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+							.create();
+					matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
+					List<MatchDetail> matchsListAux = matchsResponse.getData();
+					matchsList.addAll(matchsListAux);
+					hasMorePages = matchsResponse.getPagination() != null && matchsResponse.getPagination().hasMore();
+				} else
+					throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+			}
+			return matchsList;
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Get list of today's matches
 //	 *
@@ -183,35 +185,35 @@ public class SportMonksAPIV3
 //		String url = Constants.baseURLV2 + "fixtures/date/" + date + "?api_token=" + apiKey + getIncludes(includes);
 //		return getMatchesByURL(url);
 //	}
-//
-//	/**
-//	 * Get list of matches by date range
-//	 *
-//	 * @param beginDate Begin date
-//	 * @param endDate End date
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate) throws IOException, SportMonksException {
-//		String[] includes = {};
-//		return getMatchesByDateRange(beginDate, endDate, includes);
-//	}
-//
-//	/**
-//	 * Get list of matches by date range
-//	 *
-//	 * @param beginDate Begin date
-//	 * @param endDate End date
-//	 * @param includes Includes
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV2 + "fixtures/between/" + beginDate + "/" + endDate + "?api_token=" + apiKey + getIncludes(includes);
-//		return getMatchesByURL(url);
-//	}
+
+	/**
+	 * Get list of matches by date range
+	 *
+	 * @param beginDate Begin date
+	 * @param endDate End date
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate) throws IOException, SportMonksException {
+		String[] includes = {"participants"};
+		return getMatchesByDateRange(beginDate, endDate, includes);
+	}
+
+	/**
+	 * Get list of matches by date range
+	 *
+	 * @param beginDate Begin date
+	 * @param endDate End date
+	 * @param includes Includes
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "fixtures/between/" + beginDate + "/" + endDate + "?api_token=" + apiKey + getIncludes(includes);
+		return getMatchesByURL(url);
+	}
 
 //	/**
 //	 * Get list of matches by date range restricted by team
