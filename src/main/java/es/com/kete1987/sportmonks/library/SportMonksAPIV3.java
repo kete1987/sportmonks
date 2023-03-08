@@ -168,19 +168,18 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-
-//	/**
-//	 * Get list of  matches for a particular date
-//	 *
-//	 * @param includes include parameters
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "fixtures/date/" + date + "?api_token=" + apiKey + getIncludes(includes);
-//		return getMatchesByURL(url);
-//	}
+	/**
+	 * Get list of  matches for a particular date
+	 *
+	 * @param includes include parameters
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "fixtures/date/" + date + "?api_token=" + apiKey + getIncludes(includes);
+		return getMatchesByURL(url);
+	}
 
 	/**
 	 * Get list of matches by date range
