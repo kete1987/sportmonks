@@ -1,16 +1,7 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
-import es.com.kete1987.sportmonks.library.v2.model.comments.Comment;
-import es.com.kete1987.sportmonks.library.v2.model.comments.CommentData;
-import es.com.kete1987.sportmonks.library.v2.model.group.Group;
-import es.com.kete1987.sportmonks.library.v2.model.odds.OddData;
-import es.com.kete1987.sportmonks.library.v2.model.stats.Stats;
-import es.com.kete1987.sportmonks.library.v2.model.stats.StatsData;
-import es.com.kete1987.sportmonks.library.v2.model.team.Team;
-import es.com.kete1987.sportmonks.library.v2.model.team.TeamDetail;
-import es.com.kete1987.sportmonks.library.v2.model.team.TeamFormation;
+import es.com.kete1987.sportmonks.library.v3.model.participant.Participant;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class MatchDetail extends Match

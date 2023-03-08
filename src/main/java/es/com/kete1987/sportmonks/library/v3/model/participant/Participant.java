@@ -1,4 +1,4 @@
-package es.com.kete1987.sportmonks.library.v3.model.match;
+package es.com.kete1987.sportmonks.library.v3.model.participant;
 
 public class Participant {
     private Long id;
