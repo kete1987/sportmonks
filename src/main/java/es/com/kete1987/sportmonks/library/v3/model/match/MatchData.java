@@ -7,18 +7,17 @@ import java.util.List;
 
 public class MatchData
 {
-	//private MatchDetail data;
+	private MatchDetail data;
 	private List<Subscription> subscription;
 	private RateLimit rate_limit;
 	private String timezone;
 
 	public MatchData() {}
 
-//	public MatchDetail getMatchDetail()
-//	{
-//		return data;
-//	}
-
+	public MatchDetail getMatchDetail()
+	{
+		return data;
+	}
 
 	public List<Subscription> getSubscription() {
 		return subscription;

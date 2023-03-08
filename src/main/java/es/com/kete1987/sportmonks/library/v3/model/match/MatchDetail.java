@@ -15,77 +15,45 @@ import java.util.List;
 
 public class MatchDetail extends Match
 {
-	private Team localTeam = null;
-	private Team visitorTeam = null;
-	private StatsData stats = null;
-	private MatchEvents events = null;
-	private LineUp lineup = null;
-	private LineUp bench = null;
-	private Group group = null;
-	private TeamFormation formations = null;
-	private OddData odds = null;
-	private CommentData comments = null;
-	
+	private Venue venue;
+	private State state;
+	private List<LineUpData> lineups;
+	private List<EventData> events;
+	private List<StatisticsData> statistics;
+	private List<Period> periods;
+	private List<Participant> participants;
+	private List<Scores> scores;
 	public MatchDetail() {}
 
-	public TeamDetail getHomeTeam() {
-		return localTeam.getTeamDetail();
+	public Venue getVenue() {
+		return venue;
 	}
 
-	public TeamDetail getAwayTeam() {
-		return visitorTeam.getTeamDetail();
+	public State getState() {
+		return state;
 	}
 
-	public List<Stats> getStats() {
-		return stats.getListOfStats();
-	}
-	
-	public Stats getHomeStats() {
-		return stats.getStats(getLocalTeamId());
+	public List<LineUpData> getLineups() {
+		return lineups;
 	}
 
-	public Stats getAwayStats() {
-		return stats.getStats(getVisitorTeamId());
-	}
-
-	public MatchEvents getEvents() {
+	public List<EventData> getEvents() {
 		return events;
 	}
-	
-	public List<MatchEvent> getListOfEvents() {
-		return events.getListOfEvents();
+
+	public List<StatisticsData> getStatistics() {
+		return statistics;
 	}
 
-	public LineUp getLineUp() {
-		return lineup;
+	public List<Period> getPeriods() {
+		return periods;
 	}
 
-	public LineUp getBench() {
-		return bench;
-	}
-	
-	public HashMap<Integer, String> getPlayers() {
-		HashMap<Integer, String> playersMap = new HashMap<Integer, String>();
-		for (int i=0; i<getLineUp().getListOfPlayers().size(); i++)
-			playersMap.put(getLineUp().getListOfPlayers().get(i).getPlayerId(),
-							getLineUp().getListOfPlayers().get(i).getPlayer() != null && getLineUp().getListOfPlayers().get(i).getPlayer().getDisplayName() != null ?
-							getLineUp().getListOfPlayers().get(i).getPlayer().getDisplayName() : getLineUp().getListOfPlayers().get(i).getPlayerName());
-		return playersMap;
+	public List<Participant> getParticipants() {
+		return participants;
 	}
 
-	public Group getGroup() {
-		return group;
-	}
-
-	public TeamFormation getFormations() {
-		return formations;
-	}
-
-	public OddData getOdds() {
-		return odds;
-	}
-
-	public List<Comment> getListOfComments() {
-		return comments != null ? comments.getListOfComments() : null;
+	public List<Scores> getScores() {
+		return scores;
 	}
 }

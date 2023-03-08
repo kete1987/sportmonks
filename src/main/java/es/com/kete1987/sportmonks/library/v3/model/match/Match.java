@@ -1,88 +1,89 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
-import es.com.kete1987.sportmonks.library.v2.util.MatchStatus;
-
 public class Match implements Comparable<Object>
 {
 	protected Long id; //ID del partido
-	//Equipos
-	protected int localteam_id = -1;
-	protected int visitorteam_id = -1;
-	protected int winner_team_id = -1;
-	//Resultado
-	protected MatchScore scores = null;
-	protected MatchTime time = null;
-	//Otros datos
-	protected int attendance = 0;
-	protected int league_id = -1;
-	protected int season_id = -1;
-	protected int stage_id = -1;
-	protected int round_id = -1;
-	protected long aggregate_id = -1;
-	protected String leg = null;
-	protected boolean deleted = false;
-	
+	protected Long sport_id;
+	protected Long league_id;
+	protected Long season_id;
+	protected Long stage_id;
+	protected Long group_id;
+	protected Long aggregate_id;
+	protected Long round_id;
+	protected Long state_id;
+	protected Long venue_id;
+	protected String name;
+	protected String starting_at;
+	protected String leg;
+	protected Long length;
+	protected Long starting_at_timestamp;
+
 	public Match() {}
 
 	public Long getId() {
 		return id;
 	}
 
-	public int getLocalTeamId() {
-		return localteam_id;
+	public Long getSport_id() {
+		return sport_id;
 	}
 
-	public int getVisitorTeamId() {
-		return visitorteam_id;
-	}
-
-	public MatchScore getMatchScore() {
-		return scores;
-	}
-
-	public MatchTime getMatchTime() {
-		return time;
-	}
-
-	public int getLeagueId() {
+	public Long getLeague_id() {
 		return league_id;
 	}
 
-	public int getSeasonId() {
+	public Long getSeason_id() {
 		return season_id;
 	}
 
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public int getStageId() {
+	public Long getStage_id() {
 		return stage_id;
 	}
 
-	public int getRoundId() {
+	public Long getGroup_id() {
+		return group_id;
+	}
+
+	public Long getAggregate_id() {
+		return aggregate_id;
+	}
+
+	public Long getRound_id() {
 		return round_id;
 	}
 
-	public int getWinnerTeamId() {
-		return winner_team_id;
+	public Long getState_id() {
+		return state_id;
 	}
 
-	public int getAttendance() {
-		return attendance;
+	public Long getVenue_id() {
+		return venue_id;
 	}
 
-	public long getAggregateId() {
-		return aggregate_id;
+	public String getName() {
+		return name;
+	}
+
+	public String getStarting_at() {
+		return starting_at;
 	}
 
 	public String getLeg() {
 		return leg;
 	}
 
+	public Long getLength() {
+		return length;
+	}
+
+	public Long getStarting_at_timestamp() {
+		return starting_at_timestamp;
+	}
+
+	//TODO
 	@Override
 	public int compareTo(Object o) {
-		Match aux = (Match)o;
+	/*	Match aux = (Match)o;
 		if (getMatchTime() != null && aux.getMatchTime() != null) {
 			String status1 = getMatchTime().getStatus();
 			String status2 = aux.getMatchTime().getStatus();
@@ -115,6 +116,7 @@ public class Match implements Comparable<Object>
 					return 0;
 			}
 		}
+		return 0;*/
 		return 0;
 	}
 }
