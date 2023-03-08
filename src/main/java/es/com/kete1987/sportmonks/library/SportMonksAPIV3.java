@@ -10,6 +10,8 @@ import es.com.kete1987.sportmonks.library.common.net.HttpFunctions;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.odds.Odd;
+import es.com.kete1987.sportmonks.library.v3.model.odds.OddsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 
@@ -348,65 +350,65 @@ public class SportMonksAPIV3
 		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Get a list with different odds (pre-match)
-//	 *
-//	 * @param matchID Match ID
-//	 * @return List with pre-match odds
-//	 * @throws IOException
-//	 */
-//	public List<OddType> getMatchOdds(String matchID) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "odds/fixture/" + matchID + "?api_token=" + apiKey;
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
-//		    return oddsResponse.getOddTypes();
-//		}
-//		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
-//	/**
-//	 * Get a list with different odds (pre-match)
-//	 *
-//	 * @param matchID      Match ID
-//	 * @param bookMakerId BookMaker ID
-//	 * @return List with pre-match odds
-//	 * @throws IOException
-//	 */
-//	public List<OddType> getMatchOdds(String matchID, String bookMakerId) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "odds/fixture/" + matchID + "/bookmaker/" + bookMakerId + "?api_token=" + apiKey;
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
-//			return oddsResponse.getOddTypes();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
-//	/**
-//	 * Get a list with different odds (pre-match)
-//	 *
-//	 * @param matchID Match ID
-//	 * @param market  BookMaker ID
-//	 * @return List with pre-match odds
-//	 * @throws IOException
-//	 */
-//	public List<OddType> getMatchOddsByMarket(String matchID, String market) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "odds/fixture/" + matchID + "/market/" + market + "?api_token=" + apiKey;
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
-//			return oddsResponse.getOddTypes();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+	/**
+	 * Get a list with different odds (pre-match)
+	 *
+	 * @param matchID Match ID
+	 * @return List with pre-match odds
+	 * @throws IOException
+	 */
+	public List<Odd> getMatchOdds(String matchID) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "odds/pre-match/fixtures/" + matchID + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
+		    return oddsResponse.getData();
+		}
+		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get a list with different odds (pre-match)
+	 *
+	 * @param matchID      Match ID
+	 * @param bookMakerId BookMaker ID
+	 * @return List with pre-match odds
+	 * @throws IOException
+	 */
+	public List<Odd> getMatchOdds(String matchID, String bookMakerId) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "odds/pre-match/fixtures/" + matchID + "/bookmakers/" + bookMakerId + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
+			return oddsResponse.getData();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get a list with different odds (pre-match)
+	 *
+	 * @param matchID Match ID
+	 * @param market  BookMaker ID
+	 * @return List with pre-match odds
+	 * @throws IOException
+	 */
+	public List<Odd> getMatchOddsByMarket(String matchID, String market) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "odds/pre-match/fixtures/" + matchID + "/markets/" + market + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
+			return oddsResponse.getData();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Get Topscores list
 //	 *
