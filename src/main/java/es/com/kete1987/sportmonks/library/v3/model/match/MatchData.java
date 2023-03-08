@@ -1,12 +1,14 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
 import es.com.kete1987.sportmonks.library.v3.model.ratelimit.RateLimit;
-import es.com.kete1987.sportmonks.library.v3.model.subscription.SubscriptionData;
+import es.com.kete1987.sportmonks.library.v3.model.subscription.Subscription;
+
+import java.util.List;
 
 public class MatchData
 {
 	//private MatchDetail data;
-	private SubscriptionData subscription;
+	private List<Subscription> subscription;
 	private RateLimit rate_limit;
 	private String timezone;
 
@@ -18,7 +20,7 @@ public class MatchData
 //	}
 
 
-	public SubscriptionData getSubscription() {
+	public List<Subscription> getSubscription() {
 		return subscription;
 	}
 
