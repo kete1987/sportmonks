@@ -10,6 +10,8 @@ import es.com.kete1987.sportmonks.library.common.net.HttpFunctions;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
+import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -313,39 +315,39 @@ public class SportMonksAPIV3
 //		} else
 //			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 //	}
-//
-//	/**
-//	 * Get season data
-//	 *
-//	 * @param seasonID Season ID
-//	 * @return Season Data (Results, stages, league)
-//	 * @throws IOException
-//	 */
-//	public SeasonData getSeasonData(String seasonID) throws IOException, SportMonksException {
-//		String[] includes = {"stages.fixtures.localTeam", "stages.fixtures.visitorTeam", "league", "results", "groups.fixtures", "groups.standings", "groups.fixtures.localTeam", "groups.fixtures.visitorTeam"};
-//		return getSeasonData(seasonID, includes);
-//	}
-//
-//	/**
-//	 * Get season data
-//	 *
-//	 * @param seasonID Season ID
-//	 * @param includes Includes
-//	 * @return Season Data (Results, stages, league)
-//	 * @throws IOException
-//	 */
-//	public SeasonData getSeasonData(String seasonID, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "seasons/" + seasonID + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			SeasonDataResponse seasonResults = gson.fromJson(response.getResponse(), SeasonDataResponse.class);
-//			return seasonResults.getData();
-//		}
-//		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+
+	/**
+	 * Get season data
+	 *
+	 * @param seasonID Season ID
+	 * @return Season Data (Results, stages, league)
+	 * @throws IOException
+	 */
+	public SeasonData getSeasonData(String seasonID) throws IOException, SportMonksException {
+		String[] includes = {"stages", "fixtures"};
+		return getSeasonData(seasonID, includes);
+	}
+
+	/**
+	 * Get season data
+	 *
+	 * @param seasonID Season ID
+	 * @param includes Includes
+	 * @return Season Data (Results, stages, league)
+	 * @throws IOException
+	 */
+	public SeasonData getSeasonData(String seasonID, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "seasons/" + seasonID + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			SeasonDataResponse seasonResults = gson.fromJson(response.getResponse(), SeasonDataResponse.class);
+			return seasonResults.getSeasonData();
+		}
+		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Get a list with different odds (pre-match)
 //	 *
