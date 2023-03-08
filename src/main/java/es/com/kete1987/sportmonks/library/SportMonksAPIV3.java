@@ -2,20 +2,16 @@ package es.com.kete1987.sportmonks.library;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import es.com.kete1987.sportmonks.library.v2.model.player.PlayerData;
+import es.com.kete1987.sportmonks.library.common.util.EmptyStringToNumberTypeAdapter;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchData;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.common.net.GetResponse;
 import es.com.kete1987.sportmonks.library.common.net.HttpFunctions;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
-import es.com.kete1987.sportmonks.library.v2.util.EmptyStringToNumberTypeAdapter;
-import es.com.kete1987.sportmonks.library.v2.util.PlayerDataAdapter;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchsResponse;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -121,19 +117,19 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Get list of today's matches
-//	 *
-//	 * @param includes include parameters
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV2 + "livescores" + "?api_token=" + apiKey + getIncludes(includes);
-//		return getMatchesByURL(url);
-//	}
-//
+	/**
+	 * Get list of today's matches
+	 *
+	 * @param includes include parameters
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "livescores" + "?api_token=" + apiKey + getIncludes(includes);
+		return getMatchesByURL(url);
+	}
+
 //	/**
 //	 * Get list of today's matches filtered by a list of match IDs
 //	 *
@@ -272,9 +268,9 @@ public class SportMonksAPIV3
         GetResponse response = HttpFunctions.get(url);
 		updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Type myOtherClassListType = new TypeToken<PlayerData>() {}.getType();
+//            Type myOtherClassListType = new TypeToken<PlayerData>() {}.getType();
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(myOtherClassListType, new PlayerDataAdapter())
+//                    .registerTypeAdapter(myOtherClassListType, new PlayerDataAdapter())
 					.registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
 					.registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
                     .create();

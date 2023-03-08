@@ -1,4 +1,4 @@
-package es.com.kete1987.sportmonks.library.v2.util;
+package es.com.kete1987.sportmonks.library.common.util;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;

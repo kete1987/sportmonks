@@ -39,7 +39,7 @@ import es.com.kete1987.sportmonks.library.v2.model.venue.VenueDetail;
 import es.com.kete1987.sportmonks.library.common.net.GetResponse;
 import es.com.kete1987.sportmonks.library.common.net.HttpFunctions;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
-import es.com.kete1987.sportmonks.library.v2.util.EmptyStringToNumberTypeAdapter;
+import es.com.kete1987.sportmonks.library.common.util.EmptyStringToNumberTypeAdapter;
 import es.com.kete1987.sportmonks.library.v2.util.PlayerDataAdapter;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 
