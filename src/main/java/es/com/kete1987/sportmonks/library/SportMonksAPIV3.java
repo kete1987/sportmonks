@@ -18,6 +18,8 @@ import es.com.kete1987.sportmonks.library.v3.model.odds.OddsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.stage.Stage;
+import es.com.kete1987.sportmonks.library.v3.model.stage.StagesResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
@@ -640,29 +642,29 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Return stages list
-//	 * @param seasonId Season ID
-//	 * @param includes Includes
-//	 * @return Stages list
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<Stage> getStages(String seasonId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "stages/season/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			StagesData stagesData = gson.fromJson(response.getResponse(), StagesData.class);
-//			if (stagesData != null && stagesData.getListOfStages() != null)
-//				return stagesData.getListOfStages();
-//			else
-//				return new ArrayList<>();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+	/**
+	 * Return stages list
+	 * @param seasonId Season ID
+	 * @param includes Includes
+	 * @return Stages list
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<Stage> getStages(String seasonId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "stages/seasons/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			StagesResponse stagesData = gson.fromJson(response.getResponse(), StagesResponse.class);
+			if (stagesData != null && stagesData.getData() != null)
+				return stagesData.getData();
+			else
+				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Return rounds list
 //	 * @param seasonId Season ID
