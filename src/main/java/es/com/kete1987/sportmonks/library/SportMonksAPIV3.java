@@ -16,6 +16,8 @@ import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScorersResponse;
+import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScoresPlayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -412,73 +414,73 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Get Topscores list
-//	 *
-//	 * @param seasonId Season ID
-//	 * @return List of topscores
-//	 * @throws IOException
-//	 */
-//	public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException
-//	{
-//		String[] includes = {"goalscorers.player", "goalscorers.team"};
-//		return getTopScores(seasonId, includes);
-//	}
-//
-//	/**
-//	 * Get Topscores list
-//	 *
-//	 * @param seasonId Season ID
-//	 * @param includes Includes
-//	 * @return List of topscores
-//	 * @throws IOException
-//	 */
-//	public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException
-//	{
-//		String url = Constants.baseURLV3 + "topscorers/season/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//		    TopScores topScoresResponse = gson.fromJson(response.getResponse(), TopScores.class);
-//		    return topScoresResponse.getListOfTopScores();
-//		}
-//		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
-//	/**
-//	 * Get Topscores list
-//	 *
-//	 * @param seasonId Season ID
-//	 * @return List of topscores
-//	 * @throws IOException
-//	 */
-//	public List<TopScoresPlayer> getAggregatedTopScores(String seasonId) throws IOException, SportMonksException
-//	{
-//		String[] includes = {"aggregatedGoalscorers.player", "aggregatedGoalscorers.team"};
-//		return getAggregatedTopScores(seasonId, includes);
-//	}
-//
-//	/**
-//	 * Get Topscores list
-//	 *
-//	 * @param seasonId Season ID
-//	 * @param includes Includes
-//	 * @return List of topscores
-//	 * @throws IOException
-//	 */
-//	public List<TopScoresPlayer> getAggregatedTopScores(String seasonId, String... includes) throws IOException, SportMonksException
-//	{
-//		String url = Constants.baseURLV3 + "topscorers/season/" + seasonId + "/aggregated?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			TopScores topScoresResponse = gson.fromJson(response.getResponse(), TopScores.class);
-//			return topScoresResponse.getListOfTopScores();
-//		}
-//		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
+	/**
+	 * Get Topscores list
+	 *
+	 * @param seasonId Season ID
+	 * @return List of topscores
+	 * @throws IOException
+	 */
+	public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException
+	{
+		String[] includes = {"season", "stage", "player", "type"};
+		return getTopScores(seasonId, includes);
+	}
+
+	/**
+	 * Get Topscores list
+	 *
+	 * @param seasonId Season ID
+	 * @param includes Includes
+	 * @return List of topscores
+	 * @throws IOException
+	 */
+	public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException
+	{
+		String url = Constants.baseURLV3 + "topscorers/seasons/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			TopScorersResponse topScoresResponse = gson.fromJson(response.getResponse(), TopScorersResponse.class);
+		    return topScoresResponse.getData();
+		}
+		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get Topscores list
+	 *
+	 * @param stageId Stage ID
+	 * @return List of topscores
+	 * @throws IOException
+	 */
+	public List<TopScoresPlayer> getTopScoresByStage(String stageId) throws IOException, SportMonksException
+	{
+		String[] includes = {"season", "stage", "player", "type"};
+		return getTopScoresByStage(stageId, includes);
+	}
+
+	/**
+	 * Get Topscores list
+	 *
+	 * @param stageId stageId
+	 * @param includes Includes
+	 * @return List of topscores
+	 * @throws IOException
+	 */
+	public List<TopScoresPlayer> getTopScoresByStage(String stageId, String... includes) throws IOException, SportMonksException
+	{
+		String url = Constants.baseURLV3 + "topscorers/stages/" + stageId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			TopScorersResponse topScoresResponse = gson.fromJson(response.getResponse(), TopScorersResponse.class);
+			return topScoresResponse.getData();
+		}
+		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
 
 	/**
 	 * Get standings list
