@@ -43,7 +43,7 @@ See [sportmonks documentacion](https://sportmonks.com/docs/football/2.0/prologue
 <dependency>
     <groupId>es.com.kete1987</groupId>
     <artifactId>sportmonks.library</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
