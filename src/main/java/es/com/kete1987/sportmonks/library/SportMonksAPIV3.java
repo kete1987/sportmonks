@@ -3,6 +3,9 @@ package es.com.kete1987.sportmonks.library;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import es.com.kete1987.sportmonks.library.common.util.EmptyStringToNumberTypeAdapter;
+import es.com.kete1987.sportmonks.library.v3.model.league.League;
+import es.com.kete1987.sportmonks.library.v3.model.league.LeagueResponse;
+import es.com.kete1987.sportmonks.library.v3.model.league.LeaguesResponse;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchData;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.common.net.GetResponse;
@@ -580,49 +583,63 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Get list of leagues
-//	 * @return List of leagues
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<League> getLeagues(String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "leagues" + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			LeagueResponse leagueResponse = gson.fromJson(response.getResponse(), LeagueResponse.class);
-//			if (leagueResponse != null && leagueResponse.getListOfLeagues() != null)
-//				return leagueResponse.getListOfLeagues();
-//			else
-//				return new ArrayList<>();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
-//	/**
-//	 * Get league by ID
-//	 * @param leagueId League ID
-//	 * @return League
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public League getLeague(String leagueId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "leagues/" + leagueId + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			LeagueData leagueData = gson.fromJson(response.getResponse(), LeagueData.class);
-//			if (leagueData != null && leagueData.getData() != null)
-//				return leagueData.getData();
-//			else
-//				return null;
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+	/**
+	 * Get list of leagues
+	 * @return List of leagues
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<League> getLeagues(String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "leagues" + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			LeaguesResponse leagueResponse = gson.fromJson(response.getResponse(), LeaguesResponse.class);
+			List<League> leaguesList = leagueResponse.getData();
+			int page = 1;
+			boolean hasMorePages = leagueResponse.getPagination() != null && leagueResponse.getPagination().hasMore();
+			while (hasMorePages) {
+				page++;
+				String urlAux = url + "&page=" + page;
+				response = HttpFunctions.get(urlAux);
+				updateHeaders(response);
+				if (response.getResponseCode() == Constants.RESPONSE_OK) {
+					gson = new Gson();
+					leagueResponse = gson.fromJson(response.getResponse(), LeaguesResponse.class);
+					List<League> leagueResponseAux = leagueResponse.getData();
+					leaguesList.addAll(leagueResponseAux);
+				} else
+					throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+				hasMorePages = leagueResponse.getPagination() != null && leagueResponse.getPagination().hasMore();
+			}
+			return leaguesList;
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get league by ID
+	 * @param leagueId League ID
+	 * @return League
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public League getLeague(String leagueId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "leagues/" + leagueId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			LeagueResponse leagueData = gson.fromJson(response.getResponse(), LeagueResponse.class);
+			if (leagueData != null && leagueData.getData() != null)
+				return leagueData.getData();
+			else
+				return null;
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Return stages list
 //	 * @param seasonId Season ID
