@@ -5,13 +5,13 @@ import es.com.kete1987.sportmonks.library.v3.model.subscription.Subscription;
 
 import java.util.List;
 
-public class RoundsResponse {
-    private List<Round> data;
+public class RoundResponse {
+    private Round data;
     private List<Subscription> subscription;
     private RateLimit rate_limit;
     private String timezone;
 
-    public List<Round> getData() {
+    public Round getData() {
         return data;
     }
 

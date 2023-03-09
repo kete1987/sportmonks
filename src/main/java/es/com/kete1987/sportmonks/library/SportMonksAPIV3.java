@@ -15,6 +15,9 @@ import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.odds.Odd;
 import es.com.kete1987.sportmonks.library.v3.model.odds.OddsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.rounds.Round;
+import es.com.kete1987.sportmonks.library.v3.model.rounds.RoundResponse;
+import es.com.kete1987.sportmonks.library.v3.model.rounds.RoundsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonsResponse;
@@ -149,24 +152,6 @@ public class SportMonksAPIV3
 		return getMatchesByURL(url);
 	}
 
-//	/**
-//	 * Get list of today's matches filtered by a list of match IDs
-//	 *
-//	 * @param matches list of matches
-//	 * @param includes include parameters
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getTodayMatchesFiltered(String[] matches, String... includes) throws IOException, SportMonksException {
-//		if (matches != null && matches.length > 0) {
-//			String url = Constants.baseURLV3 + "livescores" + "?api_token=" + apiKey + getIncludes(includes) + "&fixtures=" + String.join(",", matches);
-//			return getMatchesByURL(url);
-//		}
-//		else
-//			return getTodayMatches(includes);
-//	}
-
 	/**
 	 * Get list of today's live matches
 	 *
@@ -229,35 +214,35 @@ public class SportMonksAPIV3
 		return getMatchesByURL(url);
 	}
 
-//	/**
-//	 * Get list of matches by date range restricted by team
-//	 *
-//	 * @param beginDate Begin date
-//	 * @param endDate End date
-//	 * @param teamId Team ID
-//	 * @param includes Includes
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "fixtures/between/" + beginDate + "/" + endDate + "/" + teamId + "?api_token=" + apiKey + getIncludes(includes);
-//		return getMatchesByURL(url);
-//	}
-//
-//	/**
-//	 * Get list of matches by date range restricted by team
-//	 *
-//	 * @param teamIds List of Team ID
-//	 * @param includes Includes
-//	 * @return List of matches
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<MatchDetail> getMatchesByMultipleIDs(String[] teamIds, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "fixtures/multi/" + String.join(",", teamIds) + "?api_token=" + apiKey + getIncludes(includes);
-//		return getMatchesByURL(url);
-//	}
+	/**
+	 * Get list of matches by date range restricted by team
+	 *
+	 * @param beginDate Begin date
+	 * @param endDate End date
+	 * @param teamId Team ID
+	 * @param includes Includes
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "fixtures/between/" + beginDate + "/" + endDate + "/" + teamId + "?api_token=" + apiKey + getIncludes(includes);
+		return getMatchesByURL(url);
+	}
+
+	/**
+	 * Get list of matches by date range restricted by team
+	 *
+	 * @param teamIds List of Team ID
+	 * @param includes Includes
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getMatchesByMultipleIDs(String[] teamIds, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "fixtures/multi/" + String.join(",", teamIds) + "?api_token=" + apiKey + getIncludes(includes);
+		return getMatchesByURL(url);
+	}
 
 	/**
 	 * Get match detail
@@ -665,49 +650,49 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Return rounds list
-//	 * @param seasonId Season ID
-//	 * @param includes Includes
-//	 * @return Rounds list
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<Round> getRounds(String seasonId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "rounds/season/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			RoundDataList roundsList = gson.fromJson(response.getResponse(), RoundDataList.class);
-//			if (roundsList != null && roundsList.getData() != null)
-//				return roundsList.getData();
-//			else
-//				return new ArrayList<>();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
-//	/**
-//	 * Return round selected
-//	 * @param roundId Season ID
-//	 * @param includes Includes
-//	 * @return Round selected
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public Round getRound(String roundId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "rounds/" + roundId + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			RoundData roundData = gson.fromJson(response.getResponse(), RoundData.class);
-//			if (roundData != null && roundData.getData() != null)
-//				return roundData.getData();
-//			else
-//				return null;
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
+	/**
+	 * Return rounds list
+	 * @param seasonId Season ID
+	 * @param includes Includes
+	 * @return Rounds list
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<Round> getRounds(String seasonId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "rounds/seasons/" + seasonId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			RoundsResponse roundsList = gson.fromJson(response.getResponse(), RoundsResponse.class);
+			if (roundsList != null && roundsList.getData() != null)
+				return roundsList.getData();
+			else
+				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Return round selected
+	 * @param roundId Season ID
+	 * @param includes Includes
+	 * @return Round selected
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public Round getRound(String roundId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "rounds/" + roundId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			RoundResponse roundData = gson.fromJson(response.getResponse(), RoundResponse.class);
+			if (roundData != null && roundData.getData() != null)
+				return roundData.getData();
+			else
+				return null;
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
 }
