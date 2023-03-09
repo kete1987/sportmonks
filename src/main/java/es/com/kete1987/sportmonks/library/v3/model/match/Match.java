@@ -17,6 +17,7 @@ public class Match implements Comparable<Object>
 	protected String leg;
 	protected Long length;
 	protected Long starting_at_timestamp;
+	protected MatchMeta meta;
 
 	public Match() {}
 
@@ -78,6 +79,10 @@ public class Match implements Comparable<Object>
 
 	public Long getStarting_at_timestamp() {
 		return starting_at_timestamp;
+	}
+
+	public MatchMeta getMeta() {
+		return meta;
 	}
 
 	//TODO

@@ -1,5 +1,12 @@
 package es.com.kete1987.sportmonks.library.v3.model.team;
 
+import es.com.kete1987.sportmonks.library.v3.model.match.Match;
+import es.com.kete1987.sportmonks.library.v3.model.player.Sidelined;
+import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
+import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
+
+import java.util.List;
+
 public class Team {
     private Long id;
     private Long sport_id;
@@ -13,6 +20,14 @@ public class Team {
     private String type;
     private Boolean placeholder;
     private String last_played_at;
+    private Venue venue;
+    private List<TeamPlayer> players;
+    private List<Match> latest;
+    private List<Match> upcoming;
+    private List<SeasonData> seasons;
+    private List<SeasonData> activeseasons;
+    private List<Sidelined> sidelined;
+    private List<Sidelined> sidelinedhistory;
 
     private TeamMeta meta;
 
@@ -68,5 +83,37 @@ public class Team {
 
     public TeamMeta getMeta() {
         return meta;
+    }
+
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public List<TeamPlayer> getPlayers() {
+        return players;
+    }
+
+    public List<Match> getLatest() {
+        return latest;
+    }
+
+    public List<Match> getUpcoming() {
+        return upcoming;
+    }
+
+    public List<SeasonData> getSeasons() {
+        return seasons;
+    }
+
+    public List<SeasonData> getActiveseasons() {
+        return activeseasons;
+    }
+
+    public List<Sidelined> getSidelined() {
+        return sidelined;
+    }
+
+    public List<Sidelined> getSidelinedhistory() {
+        return sidelinedhistory;
     }
 }
