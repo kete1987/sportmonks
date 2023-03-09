@@ -14,6 +14,7 @@ import es.com.kete1987.sportmonks.library.v3.model.odds.Odd;
 import es.com.kete1987.sportmonks.library.v3.model.odds.OddsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
+import es.com.kete1987.sportmonks.library.v3.model.season.SeasonsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
@@ -292,40 +293,40 @@ public class SportMonksAPIV3
         else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
     }
 
-//	/**
-//	 * Get list of seasons
-//	 * @return List of seasons
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<SeasonData> getSeasons() throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "seasons" + "?api_token=" + apiKey;
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			SeasonDataList seasonResponse = gson.fromJson(response.getResponse(), SeasonDataList.class);
-//			List<SeasonData> seasonDataList = seasonResponse.getListOfSeasons();
-//			int page = 1;
-//			int totalPages = seasonResponse.getMetadata().getPagination().getTotalPages();
-//			while (page < totalPages) {
-//				page++;
-//				String urlAux = url + "&page=" + page;
-//				response = HttpFunctions.get(urlAux);
-//				updateHeaders(response);
-//				if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//					gson = new Gson();
-//					seasonResponse = gson.fromJson(response.getResponse(), SeasonDataList.class);
-//					List<SeasonData> seasonsListAux = seasonResponse.getListOfSeasons();
-//					for (int i = 0; i < seasonsListAux.size(); i++)
-//						seasonDataList.add(seasonsListAux.get(i));
-//				} else
-//					throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//			}
-//			return seasonDataList;
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
+	/**
+	 * Get list of seasons
+	 * @return List of seasons
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<SeasonData> getSeasons() throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "seasons" + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			SeasonsResponse seasonResponse = gson.fromJson(response.getResponse(), SeasonsResponse.class);
+			List<SeasonData> seasonDataList = seasonResponse.getData();
+			int page = 1;
+			boolean hasMorePages = seasonResponse.getPagination() != null && seasonResponse.getPagination().hasMore();
+			while (hasMorePages) {
+				page++;
+				String urlAux = url + "&page=" + page;
+				response = HttpFunctions.get(urlAux);
+				updateHeaders(response);
+				if (response.getResponseCode() == Constants.RESPONSE_OK) {
+					gson = new Gson();
+					seasonResponse = gson.fromJson(response.getResponse(), SeasonsResponse.class);
+					List<SeasonData> seasonsListAux = seasonResponse.getData();
+					seasonDataList.addAll(seasonsListAux);
+				} else
+					throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+				hasMorePages = seasonResponse.getPagination() != null && seasonResponse.getPagination().hasMore();
+			}
+			return seasonDataList;
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
 
 	/**
 	 * Get season data
