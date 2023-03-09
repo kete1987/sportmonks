@@ -1,9 +1,9 @@
 package es.com.kete1987.sportmonks.library.v3.model.standings;
 
-import es.com.kete1987.sportmonks.library.v3.model.participant.Participant;
 import es.com.kete1987.sportmonks.library.v3.model.rounds.Round;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.stage.Stage;
+import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Standings {
     private SeasonData season;
     private StandingsRule rule;
     private List<StandingsDetail> details;
-    private Participant participant;
+    private Team participant;
     private List<StandingsForm> form;
     private Stage stage;
 //    private Group group; //TODO
@@ -91,7 +91,7 @@ public class Standings {
         return details;
     }
 
-    public Participant getParticipant() {
+    public Team getParticipant() {
         return participant;
     }
 

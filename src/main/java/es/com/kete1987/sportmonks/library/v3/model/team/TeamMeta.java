@@ -1,11 +1,11 @@
-package es.com.kete1987.sportmonks.library.v3.model.participant;
+package es.com.kete1987.sportmonks.library.v3.model.team;
 
-public class ParticipantMeta {
+public class TeamMeta {
     private String location;
     private String winner;
     private String position;
 
-    public ParticipantMeta() {
+    public TeamMeta() {
 
     }
 

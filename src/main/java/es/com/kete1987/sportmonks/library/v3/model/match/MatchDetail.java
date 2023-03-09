@@ -1,6 +1,6 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
-import es.com.kete1987.sportmonks.library.v3.model.participant.Participant;
+import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class MatchDetail extends Match
 	private List<EventData> events;
 	private List<StatisticsData> statistics;
 	private List<Period> periods;
-	private List<Participant> participants;
+	private List<Team> participants;
 	private List<Scores> scores;
 	public MatchDetail() {}
 
@@ -41,7 +41,7 @@ public class MatchDetail extends Match
 		return periods;
 	}
 
-	public List<Participant> getParticipants() {
+	public List<Team> getParticipants() {
 		return participants;
 	}
 

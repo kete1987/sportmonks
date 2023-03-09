@@ -16,6 +16,8 @@ import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.team.Team;
+import es.com.kete1987.sportmonks.library.v3.model.team.TeamsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScorersResponse;
 import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScoresPlayer;
 import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
@@ -529,57 +531,54 @@ public class SportMonksAPIV3
 			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Get list of teams
-//	 *
-//	 * @param seasonId Season ID
-//	 * @param includes Includes
-//	 * @return List of teams
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<TeamDetail> getTeams(String seasonId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "teams/season/" + seasonId + "?api_token=" + apiKey;
-//		if (includes != null && includes.length > 0) {
-//			url += "&include=" + String.join(",", includes);
-//		}
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			TeamsResponse teamsResponse = gson.fromJson(response.getResponse(), TeamsResponse.class);
-//			if (teamsResponse != null && teamsResponse.getListOfTeams() != null)
-//				return teamsResponse.getListOfTeams();
-//			else
-//				return new ArrayList<>();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
-//	/**
-//	 * Get team
-//	 *
-//	 * @param teamId Team ID
-//	 * @param includes Includes
-//	 * @return Team info
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public TeamDetail getTeam(String teamId, String... includes) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "teams/" + teamId + "?api_token=" + apiKey + getIncludes(includes);
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			Team team = gson.fromJson(response.getResponse(), Team.class);
-//			if (team != null && team.getTeamDetail() != null)
-//				return team.getTeamDetail();
-//			else
-//				return new TeamDetail();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+	/**
+	 * Get list of teams
+	 *
+	 * @param seasonId Season ID
+	 * @param includes Includes
+	 * @return List of teams
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<Team> getTeams(String seasonId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "teams/seasons/" + seasonId + "?api_token=" + apiKey;
+		if (includes != null && includes.length > 0) {
+			url += "&include=" + String.join(",", includes);
+		}
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			TeamsResponse teamsResponse = gson.fromJson(response.getResponse(), TeamsResponse.class);
+			if (teamsResponse != null && teamsResponse.getData() != null)
+				return teamsResponse.getData();
+			else
+				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
+	/**
+	 * Get team
+	 *
+	 * @param teamId Team ID
+	 * @param includes Includes
+	 * @return Team info
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public Team getTeam(String teamId, String... includes) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "teams/" + teamId + "?api_token=" + apiKey + getIncludes(includes);
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			Team team = gson.fromJson(response.getResponse(), Team.class);
+			return team;
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Get list of leagues
 //	 * @return List of leagues
