@@ -18,6 +18,8 @@ import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScorersResponse;
 import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScoresPlayer;
+import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
+import es.com.kete1987.sportmonks.library.v3.model.venue.VenueResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -504,29 +506,29 @@ public class SportMonksAPIV3
 		else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
 	}
 
-//	/**
-//	 * Get venue detail
-//	 *
-//	 * @param seasonId Season ID
-//	 * @return Venue detail
-//	 * @throws IOException
-//	 * @throws SportMonksException
-//	 */
-//	public List<VenueDetail> getVenues(String seasonId) throws IOException, SportMonksException {
-//		String url = Constants.baseURLV3 + "venues/season/" + seasonId + "?api_token=" + apiKey;
-//		GetResponse response = HttpFunctions.get(url);
-//		updateHeaders(response);
-//		if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//			Gson gson = new Gson();
-//			Venue venue = gson.fromJson(response.getResponse(), Venue.class);
-//			if (venue != null && venue.getData() != null)
-//				return venue.getData();
-//			else
-//				return new ArrayList<>();
-//		} else
-//			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
-//	}
-//
+	/**
+	 * Get venue detail
+	 *
+	 * @param seasonId Season ID
+	 * @return Venue detail
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<Venue> getVenues(String seasonId) throws IOException, SportMonksException {
+		String url = Constants.baseURLV3 + "venues/seasons/" + seasonId + "?api_token=" + apiKey;
+		GetResponse response = HttpFunctions.get(url);
+		updateHeaders(response);
+		if (response.getResponseCode() == Constants.RESPONSE_OK) {
+			Gson gson = new Gson();
+			VenueResponse venue = gson.fromJson(response.getResponse(), VenueResponse.class);
+			if (venue != null && venue.getData() != null)
+				return venue.getData();
+			else
+				return new ArrayList<>();
+		} else
+			throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+	}
+
 //	/**
 //	 * Get list of teams
 //	 *

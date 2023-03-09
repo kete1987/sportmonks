@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
 import es.com.kete1987.sportmonks.library.v3.model.participant.Participant;
+import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
 
 import java.util.List;
 
