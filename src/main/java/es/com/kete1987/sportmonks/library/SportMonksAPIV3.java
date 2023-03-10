@@ -418,7 +418,7 @@ public class SportMonksAPIV3
 	 */
 	public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException
 	{
-		String[] includes = {"season", "stage", "player", "type"};
+		String[] includes = {"season", "stage", "player", "type", "participant"};
 		return getTopScores(seasonId, includes);
 	}
 

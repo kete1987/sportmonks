@@ -3,6 +3,7 @@ package es.com.kete1987.sportmonks.library.v3.model.topscorers;
 import es.com.kete1987.sportmonks.library.v3.model.player.Player;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.stage.Stage;
+import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 
 public class TopScoresPlayer {
     private Long id;
@@ -15,6 +16,7 @@ public class TopScoresPlayer {
     private SeasonData season;
     private Stage stage;
     private Player player;
+    private Team participant;
     private TopScoresType type;
 
     public TopScoresPlayer() {}
@@ -61,5 +63,9 @@ public class TopScoresPlayer {
 
     public TopScoresType getType() {
         return type;
+    }
+
+    public Team getParticipant() {
+        return participant;
     }
 }
