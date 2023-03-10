@@ -87,7 +87,6 @@ public class Match implements Comparable<Object>
 		return meta;
 	}
 
-	//TODO
 	@Override
 	public int compareTo(Object o) {
 		Match aux = (Match)o;
