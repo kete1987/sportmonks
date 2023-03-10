@@ -26,7 +26,7 @@ public class Standings {
     private Team participant;
     private List<StandingsForm> form;
     private Stage stage;
-//    private Group group; //TODO
+    private StandingsGroup group;
     private Round round;
 
     public Standings() {}
@@ -107,8 +107,7 @@ public class Standings {
         return round;
     }
 
-    //TODO Descomentar
-//    public Group getGroup() {
-//        return group;
-//    }
+    public StandingsGroup getGroup() {
+        return group;
+    }
 }
