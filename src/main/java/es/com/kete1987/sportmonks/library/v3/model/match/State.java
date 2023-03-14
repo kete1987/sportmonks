@@ -30,47 +30,47 @@ public class State {
         return name;
     }
 
-    public String getShort_name() {
+    public String getShortName() {
         return short_name;
     }
 
-    public Boolean getIs_live() {
+    public Boolean getIsLive() {
         return is_live;
     }
 
-    public Boolean getIs_pending() {
+    public Boolean getIsPending() {
         return is_pending;
     }
 
-    public Boolean getIs_period_end() {
+    public Boolean getIsPeriodEnd() {
         return is_period_end;
     }
 
-    public Boolean getIs_final_state() {
+    public Boolean getIsFinalState() {
         return is_final_state;
     }
 
-    public Boolean getIs_cancelled() {
+    public Boolean getIsCancelled() {
         return is_cancelled;
     }
 
-    public Boolean getIs_final_standing_state() {
+    public Boolean getIsFinalStandingState() {
         return is_final_standing_state;
     }
 
-    public Boolean getIs_completed() {
+    public Boolean getIsCompleted() {
         return is_completed;
     }
 
-    public Boolean getIs_deleted() {
+    public Boolean getIsDeleted() {
         return is_deleted;
     }
 
-    public Boolean getIs_notstarted() {
+    public Boolean getIsNotStarted() {
         return is_notstarted;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 }

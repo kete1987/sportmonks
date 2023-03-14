@@ -21,11 +21,11 @@ public class Period {
         return id;
     }
 
-    public Long getFixture_id() {
+    public Long getFixtureId() {
         return fixture_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
@@ -37,7 +37,7 @@ public class Period {
         return ended;
     }
 
-    public Long getCounts_from() {
+    public Long getCountsFrom() {
         return counts_from;
     }
 
@@ -45,7 +45,7 @@ public class Period {
         return ticking;
     }
 
-    public Long getSort_order() {
+    public Long getSortOrder() {
         return sort_order;
     }
 
@@ -53,11 +53,11 @@ public class Period {
         return description;
     }
 
-    public Long getTime_added() {
+    public Long getTimeAdded() {
         return time_added;
     }
 
-    public Long getPeriod_length() {
+    public Long getPeriodLength() {
         return period_length;
     }
 

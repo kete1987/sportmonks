@@ -2,6 +2,7 @@ package es.com.kete1987.sportmonks.library.v3.model.match;
 
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
+import es.com.kete1987.sportmonks.library.v3.util.MatchStatus;
 
 import java.util.List;
 
@@ -45,7 +46,62 @@ public class MatchDetail extends Match
 		return participants;
 	}
 
+	public Team getHomeTeam() {
+		for (Team team : getParticipants()) {
+			if (team.getMeta() != null && team.getMeta().getLocation().equals("home"))
+				return team;
+		}
+		return null;
+	}
+
+	public Team getAwayTeam() {
+		for (Team team : getParticipants()) {
+			if (team.getMeta() != null && team.getMeta().getLocation().equals("away"))
+				return team;
+		}
+		return null;
+	}
+
 	public List<Scores> getScores() {
 		return scores;
+	}
+
+	public int getCurrentLocalTeamGoals() {
+		if (getScores() != null) {
+			for (Scores score : getScores()) {
+				if (score.getDescription().equalsIgnoreCase("CURRENT") && score.getScore() != null && score.getScore().getParticipant().equalsIgnoreCase("home"))
+					return score.getScore().getGoals().intValue();
+			}
+		}
+		return 0;
+	}
+
+	public int getCurrentVisitorTeamGoals() {
+		if (getScores() != null) {
+			for (Scores score : getScores()) {
+				if (score.getDescription().equalsIgnoreCase("CURRENT") && score.getScore() != null && score.getScore().getParticipant().equalsIgnoreCase("away"))
+					return score.getScore().getGoals().intValue();
+			}
+		}
+		return 0;
+	}
+
+	public boolean isLiveMatch() {
+		return MatchStatus.isLiveMatch(getState().getId().intValue());
+	}
+
+	public boolean isMatchFinished() {
+		return MatchStatus.isMatchFinished(getState().getId().intValue());
+	}
+
+	public Period getCurrentPeriod() {
+		if (getPeriods() != null && getPeriods().size() > 0) {
+			for (Period period : getPeriods()) {
+				if (period.getTypeId().equals(state.getTypeId())) {
+					return period;
+				}
+			}
+		}
+		return null;
 	}
 }

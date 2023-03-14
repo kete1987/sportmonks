@@ -37,15 +37,15 @@ public class Team {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getCountry_id() {
+    public Long getCountryId() {
         return country_id;
     }
 
-    public Long getVenue_id() {
+    public Long getVenueId() {
         return venue_id;
     }
 
@@ -53,7 +53,7 @@ public class Team {
         return name;
     }
 
-    public String getImage_path() {
+    public String getImagePath() {
         return image_path;
     }
 
@@ -61,7 +61,7 @@ public class Team {
         return founded;
     }
 
-    public String getLast_played_at() {
+    public String getLastPlayedAt() {
         return last_played_at;
     }
 
@@ -69,7 +69,7 @@ public class Team {
         return gender;
     }
 
-    public String getShort_code() {
+    public String getShortCode() {
         return short_code;
     }
 
@@ -105,7 +105,7 @@ public class Team {
         return seasons;
     }
 
-    public List<SeasonData> getActiveseasons() {
+    public List<SeasonData> getActiveSeasons() {
         return activeseasons;
     }
 
