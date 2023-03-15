@@ -29,15 +29,15 @@ public class Odd {
         return id;
     }
 
-    public Long getFixture_id() {
+    public Long getFixtureId() {
         return fixture_id;
     }
 
-    public Long getMarket_id() {
+    public Long getMarketId() {
         return market_id;
     }
 
-    public Long getBookmaker_id() {
+    public Long getBookmakerId() {
         return bookmaker_id;
     }
 
@@ -53,7 +53,7 @@ public class Odd {
         return name;
     }
 
-    public String getMarket_description() {
+    public String getMarketDescription() {
         return market_description;
     }
 
@@ -93,19 +93,19 @@ public class Odd {
         return participants;
     }
 
-    public String getCreated_at() {
+    public String getCreatedAt() {
         return created_at;
     }
 
-    public String getUpdated_at() {
+    public String getUpdatedAt() {
         return updated_at;
     }
 
-    public String getOriginal_label() {
+    public String getOriginalLabel() {
         return original_label;
     }
 
-    public String getLatest_bookmaker_update() {
+    public String getLatestBookmakerUpdate() {
         return latest_bookmaker_update;
     }
 }

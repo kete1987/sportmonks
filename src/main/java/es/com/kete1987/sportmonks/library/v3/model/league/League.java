@@ -18,6 +18,7 @@ public class League {
     private Boolean has_jerseys;
     private List<SeasonData> seasons;
     private SeasonData currentseason;
+    private Country country;
 
     public League() {}
 
@@ -25,11 +26,11 @@ public class League {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getCountry_id() {
+    public Long getCountryId() {
         return country_id;
     }
 
@@ -41,11 +42,11 @@ public class League {
         return active;
     }
 
-    public String getShort_code() {
+    public String getShortCode() {
         return short_code;
     }
 
-    public String getImage_path() {
+    public String getImagePath() {
         return image_path;
     }
 
@@ -53,15 +54,15 @@ public class League {
         return type;
     }
 
-    public String getSub_type() {
+    public String getSubType() {
         return sub_type;
     }
 
-    public String getLast_playerd_at() {
+    public String getLastPlayerdAt() {
         return last_playerd_at;
     }
 
-    public Boolean getHas_jerseys() {
+    public Boolean getHasJerseys() {
         return has_jerseys;
     }
 
@@ -71,5 +72,9 @@ public class League {
 
     public SeasonData getCurrentseason() {
         return currentseason;
+    }
+
+    public Country getCountry() {
+        return country;
     }
 }

@@ -14,15 +14,15 @@ public class StatisticsData {
         return id;
     }
 
-    public Long getFixture_id() {
+    public Long getFixtureId() {
         return fixture_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
-    public Long getParticipant_id() {
+    public Long getParticipantId() {
         return participant_id;
     }
 

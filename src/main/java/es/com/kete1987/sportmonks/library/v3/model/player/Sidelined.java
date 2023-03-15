@@ -18,11 +18,11 @@ public class Sidelined {
         return id;
     }
 
-    public Long getPlayer_id() {
+    public Long getPlayerId() {
         return player_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
@@ -30,23 +30,23 @@ public class Sidelined {
         return category;
     }
 
-    public Long getTeam_id() {
+    public Long getTeamId() {
         return team_id;
     }
 
-    public Long getSeason_id() {
+    public Long getSeasonId() {
         return season_id;
     }
 
-    public String getStart_date() {
+    public String getStartDate() {
         return start_date;
     }
 
-    public String getEnd_date() {
+    public String getEndDdate() {
         return end_date;
     }
 
-    public Long getGames_missed() {
+    public Long getGamesMissed() {
         return games_missed;
     }
 

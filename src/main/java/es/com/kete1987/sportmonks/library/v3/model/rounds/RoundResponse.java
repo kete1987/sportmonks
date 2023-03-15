@@ -19,7 +19,7 @@ public class RoundResponse {
         return subscription;
     }
 
-    public RateLimit getRate_limit() {
+    public RateLimit getRateLimit() {
         return rate_limit;
     }
 

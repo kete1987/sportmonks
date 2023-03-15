@@ -13,15 +13,15 @@ public class StandingsRule {
         return id;
     }
 
-    public String getModel_type() {
+    public String getModelType() {
         return model_type;
     }
 
-    public Long getModel_id() {
+    public Long getModelId() {
         return model_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 

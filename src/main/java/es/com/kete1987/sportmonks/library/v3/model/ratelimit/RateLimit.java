@@ -7,11 +7,11 @@ public class RateLimit {
 
     public RateLimit () {}
 
-    public Long getResets_in_seconds() {
+    public Long getResetsInSeconds() {
         return resets_in_seconds;
     }
 
-    public void setResets_in_seconds(Long resets_in_seconds) {
+    public void setResetsInSeconds(Long resets_in_seconds) {
         this.resets_in_seconds = resets_in_seconds;
     }
 
@@ -23,11 +23,11 @@ public class RateLimit {
         this.remaining = remaining;
     }
 
-    public String getRequested_entity() {
+    public String getRequestedEntity() {
         return requested_entity;
     }
 
-    public void setRequested_entity(String requested_entity) {
+    public void setRequestedEntity(String requested_entity) {
         this.requested_entity = requested_entity;
     }
 }

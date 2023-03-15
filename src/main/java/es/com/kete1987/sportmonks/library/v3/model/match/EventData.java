@@ -27,19 +27,19 @@ public class EventData {
         return id;
     }
 
-    public Long getFixture_id() {
+    public Long getFixtureId() {
         return fixture_id;
     }
 
-    public Long getPeriod_id() {
+    public Long getPeriodId() {
         return period_id;
     }
 
-    public Long getParticipant_id() {
+    public Long getParticipantId() {
         return participant_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
@@ -47,11 +47,11 @@ public class EventData {
         return section;
     }
 
-    public Long getPlayer_id() {
+    public Long getPlayerId() {
         return player_id;
     }
 
-    public Long getRelated_player_id() {
+    public Long getRelatedPlayerId() {
         return related_player_id;
     }
 
@@ -59,7 +59,7 @@ public class EventData {
         return player_name;
     }
 
-    public String getRelated_player_name() {
+    public String getRelatedPlayerName() {
         return related_player_name;
     }
 
@@ -79,7 +79,7 @@ public class EventData {
         return minute;
     }
 
-    public Long getExtra_minute() {
+    public Long getExtraMinute() {
         return extra_minute;
     }
 
@@ -87,15 +87,15 @@ public class EventData {
         return injured;
     }
 
-    public Boolean getOn_bench() {
+    public Boolean getOnBench() {
         return on_bench;
     }
 
-    public Long getCoach_id() {
+    public Long getCoachId() {
         return coach_id;
     }
 
-    public Long getSub_type_id() {
+    public Long getSubTypeId() {
         return sub_type_id;
     }
 }

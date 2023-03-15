@@ -20,19 +20,19 @@ public class StandingsGroup {
         return id;
     }
 
-    public static Long getSport_id() {
+    public static Long getSportId() {
         return sport_id;
     }
 
-    public static Long getLeague_id() {
+    public static Long getLeagueId() {
         return league_id;
     }
 
-    public static Long getSeason_id() {
+    public static Long getSeasonId() {
         return season_id;
     }
 
-    public static Long getStage_id() {
+    public static Long getStageId() {
         return stage_id;
     }
 
@@ -40,23 +40,23 @@ public class StandingsGroup {
         return name;
     }
 
-    public static String getStarting_at() {
+    public static String getStartingAt() {
         return starting_at;
     }
 
-    public static String getEnding_at() {
+    public static String getEndingAt() {
         return ending_at;
     }
 
-    public static Boolean getGames_in_current_week() {
+    public static Boolean getGamesInCurrentWeek() {
         return games_in_current_week;
     }
 
-    public static Boolean getIs_current() {
+    public static Boolean getIsCurrent() {
         return is_current;
     }
 
-    public static Boolean getIs_finished() {
+    public static Boolean getIsFinished() {
         return is_finished;
     }
 

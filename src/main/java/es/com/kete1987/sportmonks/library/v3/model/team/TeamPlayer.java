@@ -17,27 +17,27 @@ public class TeamPlayer {
         return id;
     }
 
-    public Long getTransfer_id() {
+    public Long getTransferId() {
         return transfer_id;
     }
 
-    public Long getPlayer_id() {
+    public Long getPlayerId() {
         return player_id;
     }
 
-    public Long getTeam_id() {
+    public Long getTeamId() {
         return team_id;
     }
 
-    public Long getPosition_id() {
+    public Long getPositionId() {
         return position_id;
     }
 
-    public Long getDetailed_position_id() {
+    public Long getDetailedPositionId() {
         return detailed_position_id;
     }
 
-    public Long getYersey_number() {
+    public Long getYerseyNumber() {
         return yersey_number;
     }
 

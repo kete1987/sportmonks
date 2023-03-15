@@ -22,15 +22,15 @@ public class TopScoresType {
         return code;
     }
 
-    public String getDeveloper_name() {
+    public String getDeveloperName() {
         return developer_name;
     }
 
-    public String getModel_type() {
+    public String getModelType() {
         return model_type;
     }
 
-    public String getStat_group() {
+    public String getStatGroup() {
         return stat_group;
     }
 }

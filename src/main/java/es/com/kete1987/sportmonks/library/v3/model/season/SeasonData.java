@@ -27,15 +27,15 @@ public class SeasonData {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getLeague_id() {
+    public Long getLeagueId() {
         return league_id;
     }
 
-    public Long getTie_breaker_rule_id() {
+    public Long getTieBreakerRuleId() {
         return tie_breaker_rule_id;
     }
 
@@ -51,23 +51,23 @@ public class SeasonData {
         return pending;
     }
 
-    public Boolean getIs_current() {
+    public Boolean getIsCurrent() {
         return is_current;
     }
 
-    public String getStarting_at() {
+    public String getStartingAt() {
         return starting_at;
     }
 
-    public String getEnding_at() {
+    public String getEndingAt() {
         return ending_at;
     }
 
-    public String getStandings_recalculated_at() {
+    public String getStandingsRecalculatedAt() {
         return standings_recalculated_at;
     }
 
-    public Boolean getGames_in_current_week() {
+    public Boolean getGamesInCurrentWeek() {
         return games_in_current_week;
     }
 

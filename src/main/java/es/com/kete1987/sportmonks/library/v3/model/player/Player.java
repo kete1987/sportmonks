@@ -26,35 +26,35 @@ public class Player {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getCountry_id() {
+    public Long getCountryId() {
         return country_id;
     }
 
-    public Long getNationality_id() {
+    public Long getNationalityId() {
         return nationality_id;
     }
 
-    public Long getCity_id() {
+    public Long getCityId() {
         return city_id;
     }
 
-    public Long getPosition_id() {
+    public Long getPositionId() {
         return position_id;
     }
 
-    public Long getDetailed_position_id() {
+    public Long getDetailedPositionId() {
         return detailed_position_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
-    public String getCommon_name() {
+    public String getCommonName() {
         return common_name;
     }
 
@@ -70,11 +70,11 @@ public class Player {
         return name;
     }
 
-    public String getDisplay_name() {
+    public String getDisplayName() {
         return display_name;
     }
 
-    public String getImage_path() {
+    public String getImagePath() {
         return image_path;
     }
 
@@ -86,7 +86,7 @@ public class Player {
         return weight;
     }
 
-    public String getDate_of_birth() {
+    public String getDateOfBirth() {
         return date_of_birth;
     }
 

@@ -6,19 +6,19 @@ public class SubscriptionMeta {
 
     public SubscriptionMeta() {}
 
-    public String getTrial_ends_at() {
+    public String getTrialEndsAt() {
         return trial_ends_at;
     }
 
-    public void setTrial_ends_at(String trial_ends_at) {
+    public void setTrialEndsAt(String trial_ends_at) {
         this.trial_ends_at = trial_ends_at;
     }
 
-    public String getEnds_at() {
+    public String getEndsAt() {
         return ends_at;
     }
 
-    public void setEnds_at(String ends_at) {
+    public void setEndsAt(String ends_at) {
         this.ends_at = ends_at;
     }
 }

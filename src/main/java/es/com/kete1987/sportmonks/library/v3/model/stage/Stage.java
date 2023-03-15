@@ -20,19 +20,19 @@ public class Stage {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getLeague_id() {
+    public Long getLeagueId() {
         return league_id;
     }
 
-    public Long getSeason_id() {
+    public Long getSeasonId() {
         return season_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
@@ -40,7 +40,7 @@ public class Stage {
         return name;
     }
 
-    public Long getSort_order() {
+    public Long getSortOrder() {
         return sort_order;
     }
 
@@ -48,19 +48,19 @@ public class Stage {
         return finished;
     }
 
-    public Boolean getIs_current() {
+    public Boolean getIsCurrent() {
         return is_current;
     }
 
-    public String getStarting_at() {
+    public String getStartingAt() {
         return starting_at;
     }
 
-    public String getEnding_at() {
+    public String getEndingAt() {
         return ending_at;
     }
 
-    public String getGames_in_current_week() {
+    public String getGamesInCurrentWeek() {
         return games_in_current_week;
     }
 }

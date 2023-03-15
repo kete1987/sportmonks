@@ -19,19 +19,19 @@ public class Round {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getLeague_id() {
+    public Long getLeagueId() {
         return league_id;
     }
 
-    public Long getSeason_id() {
+    public Long getSeasonId() {
         return season_id;
     }
 
-    public Long getStage_id() {
+    public Long getStageId() {
         return stage_id;
     }
 
@@ -43,19 +43,19 @@ public class Round {
         return finished;
     }
 
-    public Boolean getIs_current() {
+    public Boolean getIsCurrent() {
         return is_current;
     }
 
-    public String getStarting_at() {
+    public String getStartingAt() {
         return starting_at;
     }
 
-    public String getEnding_at() {
+    public String getEndingAt() {
         return ending_at;
     }
 
-    public Boolean getGames_in_current_week() {
+    public Boolean getGamesInCurrentWeek() {
         return games_in_current_week;
     }
 }

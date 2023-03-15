@@ -21,7 +21,7 @@ public class LeagueResponse {
         return subscription;
     }
 
-    public RateLimit getRate_limit() {
+    public RateLimit getRateLimit() {
         return rate_limit;
     }
 

@@ -17,11 +17,11 @@ public class Venue {
         return id;
     }
 
-    public Long getCountry_id() {
+    public Long getCountryId() {
         return country_id;
     }
 
-    public Long getCity_id() {
+    public Long getCityId() {
         return city_id;
     }
 
@@ -41,11 +41,11 @@ public class Venue {
         return capacity;
     }
 
-    public String getImage_path() {
+    public String getImagePath() {
         return image_path;
     }
 
-    public String getCity_name() {
+    public String getCityName() {
         return city_name;
     }
 }

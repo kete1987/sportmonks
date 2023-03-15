@@ -14,15 +14,15 @@ public class StandingsForm {
         return id;
     }
 
-    public String getStanding_type() {
+    public String getStandingType() {
         return standing_type;
     }
 
-    public Long getStanding_id() {
+    public Long getStandingId() {
         return standing_id;
     }
 
-    public Long getFixture_id() {
+    public Long getFixtureId() {
         return fixture_id;
     }
 
@@ -30,7 +30,7 @@ public class StandingsForm {
         return form;
     }
 
-    public Long getSort_order() {
+    public Long getSortOrder() {
         return sort_order;
     }
 }

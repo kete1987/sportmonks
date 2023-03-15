@@ -25,15 +25,15 @@ public class TopScoresPlayer {
         return id;
     }
 
-    public Long getSeason_id() {
+    public Long getSeasonId() {
         return season_id;
     }
 
-    public Long getPlayer_id() {
+    public Long getPlayerId() {
         return player_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
@@ -45,7 +45,7 @@ public class TopScoresPlayer {
         return total;
     }
 
-    public Long getParticipant_id() {
+    public Long getParticipantId() {
         return participant_id;
     }
 

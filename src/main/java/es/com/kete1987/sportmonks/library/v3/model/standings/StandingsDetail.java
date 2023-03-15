@@ -13,15 +13,15 @@ public class StandingsDetail {
         return id;
     }
 
-    public String getStanding_type() {
+    public String getStandingType() {
         return standing_type;
     }
 
-    public Long getStanding_id() {
+    public Long getStandingId() {
         return standing_id;
     }
 
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 

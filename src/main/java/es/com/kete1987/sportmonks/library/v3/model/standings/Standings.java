@@ -35,35 +35,35 @@ public class Standings {
         return id;
     }
 
-    public Long getParticipant_id() {
+    public Long getParticipantId() {
         return participant_id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getLeague_id() {
+    public Long getLeagueId() {
         return league_id;
     }
 
-    public Long getSeason_id() {
+    public Long getSeasonId() {
         return season_id;
     }
 
-    public Long getStage_id() {
+    public Long getStageId() {
         return stage_id;
     }
 
-    public Long getGroup_id() {
+    public Long getGroupId() {
         return group_id;
     }
 
-    public Long getRound_id() {
+    public Long getRoundId() {
         return round_id;
     }
 
-    public Long getStanding_rule_id() {
+    public Long getStandingRuleId() {
         return standing_rule_id;
     }
 
