@@ -7,7 +7,6 @@ public class LineUpData {
     private Long player_id;
     private Long team_id;
     private Long position_id;
-    private Long formation_field;
     private Long type_id;
     private String player_name;
     private Long jersey_number;
@@ -18,39 +17,35 @@ public class LineUpData {
         return id;
     }
 
-    public Long getSport_id() {
+    public Long getSportId() {
         return sport_id;
     }
 
-    public Long getFixture_id() {
+    public Long getFixtureId() {
         return fixture_id;
     }
 
-    public Long getPlayer_id() {
+    public Long getPlayerId() {
         return player_id;
     }
 
-    public Long getTeam_id() {
+    public Long getTeamId() {
         return team_id;
     }
 
-    public Long getPosition_id() {
+    public Long getPositionId() {
         return position_id;
     }
 
-    public Long getFormation_field() {
-        return formation_field;
-    }
-
-    public Long getType_id() {
+    public Long getTypeId() {
         return type_id;
     }
 
-    public String getPlayer_name() {
+    public String getPlayerName() {
         return player_name;
     }
 
-    public Long getJersey_number() {
+    public Long getJerseyNumber() {
         return jersey_number;
     }
 }
