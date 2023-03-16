@@ -1,5 +1,6 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
+import es.com.kete1987.sportmonks.library.v3.model.comments.Comment;
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
 import es.com.kete1987.sportmonks.library.v3.util.MatchStatus;
@@ -16,6 +17,8 @@ public class MatchDetail extends Match
 	private List<Period> periods;
 	private List<Team> participants;
 	private List<Scores> scores;
+
+	private List<Comment> comments;
 	public MatchDetail() {}
 
 	public Venue getVenue() {
@@ -65,6 +68,8 @@ public class MatchDetail extends Match
 	public List<Scores> getScores() {
 		return scores;
 	}
+
+	public List<Comment> getComments() { return comments; }
 
 	public int getCurrentLocalTeamGoals() {
 		if (getScores() != null) {
