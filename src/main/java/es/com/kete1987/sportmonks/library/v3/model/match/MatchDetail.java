@@ -3,8 +3,11 @@ package es.com.kete1987.sportmonks.library.v3.model.match;
 import es.com.kete1987.sportmonks.library.v3.model.comments.Comment;
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
+import es.com.kete1987.sportmonks.library.v3.util.LineUpType;
 import es.com.kete1987.sportmonks.library.v3.util.MatchStatus;
+import es.com.kete1987.sportmonks.library.v3.util.StatisticsType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchDetail extends Match
@@ -33,12 +36,64 @@ public class MatchDetail extends Match
 		return lineups;
 	}
 
+	public List<LineUpData> getLineupLocalTeam() {
+		List<LineUpData> list = new ArrayList<>();
+		int homeTeamId = getHomeTeam().getId().intValue();
+		for (LineUpData lud : getLineups()) {
+			if (lud.getTypeId().intValue() == LineUpType.LINEUP && lud.getTeamId().intValue() == homeTeamId) {
+				list.add(lud);
+			}
+		}
+		return list;
+	}
+
+	public List<LineUpData> getLineupVisitorTeam() {
+		List<LineUpData> list = new ArrayList<>();
+		int awayTeamId = getAwayTeam().getId().intValue();
+		for (LineUpData lud : getLineups()) {
+			if (lud.getTypeId().intValue() == LineUpType.LINEUP && lud.getTeamId().intValue() == awayTeamId) {
+				list.add(lud);
+			}
+		}
+		return list;
+	}
+
+	public List<LineUpData> getBenchLocalTeam() {
+		List<LineUpData> list = new ArrayList<>();
+		int homeTeamId = getHomeTeam().getId().intValue();
+		for (LineUpData lud : getLineups()) {
+			if (lud.getTypeId().intValue() == LineUpType.BENCH && lud.getTeamId().intValue() == homeTeamId) {
+				list.add(lud);
+			}
+		}
+		return list;
+	}
+
+	public List<LineUpData> getBenchVisitorTeam() {
+		List<LineUpData> list = new ArrayList<>();
+		int awayTeamId = getAwayTeam().getId().intValue();
+		for (LineUpData lud : getLineups()) {
+			if (lud.getTypeId().intValue() == LineUpType.BENCH && lud.getTeamId().intValue() == awayTeamId) {
+				list.add(lud);
+			}
+		}
+		return list;
+	}
+
 	public List<EventData> getEvents() {
 		return events;
 	}
 
 	public List<StatisticsData> getStatistics() {
 		return statistics;
+	}
+
+	public StatisticsData getStatisticDataByTypeAndTeamId(int teamId, int type) {
+		for (StatisticsData sd : getStatistics()) {
+			if (sd.getParticipantId().intValue() == teamId && sd.getTypeId().intValue() == type)
+				return sd;
+		}
+		return null;
 	}
 
 	public List<Period> getPeriods() {

@@ -55,7 +55,7 @@ public class EventData {
         return related_player_id;
     }
 
-    public String getPlayer_name() {
+    public String getPlayerName() {
         return player_name;
     }
 

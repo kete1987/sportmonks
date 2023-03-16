@@ -1,6 +1,6 @@
 package es.com.kete1987.sportmonks.library.v3.model.comments;
 
-public class Comment {
+public class Comment implements Comparable<Object> {
     private Long id;
     private Long fixture_id;
     private String comment;
@@ -42,5 +42,17 @@ public class Comment {
 
     public Long getOrder() {
         return order;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Comment aux = (Comment)o;
+        if (getOrder() != null && aux.getOrder() != null) {
+            return getOrder().intValue() - aux.getOrder().intValue();
+        }
+        else if (getOrder() == null)
+            return -1;
+        else
+            return 1;
     }
 }
