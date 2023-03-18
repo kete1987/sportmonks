@@ -1,6 +1,8 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
-public class EventData {
+import es.com.kete1987.sportmonks.library.v3.model.player.Player;
+
+public class EventData implements Comparable<Object> {
     private Long id;
     private Long fixture_id;
     private Long period_id;
@@ -20,6 +22,7 @@ public class EventData {
     private Boolean on_bench;
     private Long coach_id;
     private Long sub_type_id;
+    private Player player;
 
     public EventData() {}
 
@@ -97,5 +100,19 @@ public class EventData {
 
     public Long getSubTypeId() {
         return sub_type_id;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public boolean equals(Object o) {
+        EventData ed = (EventData) o;
+        return (ed.getId() != null ? ed.getId().intValue() : 0) == (getId() != null ? getId().intValue() : 0);
+    }
+
+    public int compareTo(Object o) {
+        EventData ed = (EventData) o;
+        return (getId() != null ? getId().intValue() : 0) -(ed.getId() != null ? ed.getId().intValue() : 0);
     }
 }

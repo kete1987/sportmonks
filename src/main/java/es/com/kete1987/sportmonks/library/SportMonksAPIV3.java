@@ -153,6 +153,24 @@ public class SportMonksAPIV3
 	}
 
 	/**
+	 * Get list of today's matches filtered by a list of match IDs
+	 *
+	 * @param matches list of matches
+	 * @param includes include parameters
+	 * @return List of matches
+	 * @throws IOException
+	 * @throws SportMonksException
+	 */
+	public List<MatchDetail> getTodayMatchesFiltered(String[] matches, String... includes) throws IOException, SportMonksException {
+		if (matches != null && matches.length > 0) {
+			String url = Constants.baseURLV3 + "livescores/multi/" + String.join(",", matches) + "?api_token=" + apiKey + getIncludes(includes);
+			return getMatchesByURL(url);
+		}
+		else
+			return getTodayMatches(includes);
+	}
+
+	/**
 	 * Get list of today's live matches
 	 *
 	 * @param includes include parameters
