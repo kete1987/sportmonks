@@ -110,4 +110,12 @@ public class Standings {
     public StandingsGroup getGroup() {
         return group;
     }
+
+    public StandingsDetail getDetails(int type) {
+        for (StandingsDetail sd : getDetails()) {
+            if (sd.getTypeId().intValue() == type)
+                return sd;
+        }
+        return null;
+    }
 }
