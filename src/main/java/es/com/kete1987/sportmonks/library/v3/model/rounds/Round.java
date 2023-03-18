@@ -1,5 +1,9 @@
 package es.com.kete1987.sportmonks.library.v3.model.rounds;
 
+import es.com.kete1987.sportmonks.library.v3.model.match.MatchDetail;
+
+import java.util.List;
+
 public class Round {
     private Long id;
     private Long sport_id;
@@ -12,6 +16,7 @@ public class Round {
     private String starting_at;
     private String ending_at;
     private Boolean games_in_current_week;
+    private List<MatchDetail> fixtures;
 
     public Round() {}
 
@@ -57,5 +62,9 @@ public class Round {
 
     public Boolean getGamesInCurrentWeek() {
         return games_in_current_week;
+    }
+
+    public List<MatchDetail> getFixtures() {
+        return fixtures;
     }
 }
