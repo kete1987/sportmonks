@@ -452,7 +452,7 @@ public class SportMonksAPIV3 {
      * @return List of topscores
      * @throws IOException
      */
-    public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, Long typeId, String... includes) throws IOException, SportMonksException {
+    public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, String... includes) throws IOException, SportMonksException {
         String url = Constants.baseURLV3 + "topscorers/seasons/" + seasonId + "?api_token=" + apiKey + getIncludes(includes) + "&filters=seasontopscorerTypes:" + typeId;
         return getAllTopScoresPages(url);
     }
