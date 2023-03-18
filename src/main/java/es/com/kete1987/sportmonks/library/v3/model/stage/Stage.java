@@ -1,5 +1,9 @@
 package es.com.kete1987.sportmonks.library.v3.model.stage;
 
+import es.com.kete1987.sportmonks.library.v3.model.match.MatchDetail;
+
+import java.util.List;
+
 public class Stage {
     private Long id;
     private Long sport_id;
@@ -13,6 +17,8 @@ public class Stage {
     private String starting_at;
     private String ending_at;
     private String games_in_current_week;
+    private List<MatchDetail> fixtures;
+    private List<StageAggregate> aggregates;
 
     public Stage() {}
 
@@ -62,5 +68,13 @@ public class Stage {
 
     public String getGamesInCurrentWeek() {
         return games_in_current_week;
+    }
+
+    public List<MatchDetail> getFixtures() {
+        return fixtures;
+    }
+
+    public List<StageAggregate> getAggregates() {
+        return aggregates;
     }
 }
