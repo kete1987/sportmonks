@@ -11,7 +11,8 @@ public class StagesResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public StagesResponse() {}
+    public StagesResponse() {
+    }
 
     public List<Stage> getData() {
         return data;

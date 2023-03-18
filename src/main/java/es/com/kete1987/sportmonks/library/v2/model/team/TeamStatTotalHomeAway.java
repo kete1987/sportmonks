@@ -14,7 +14,8 @@ public class TeamStatTotalHomeAway {
     @Expose
     private String away;
 
-    public TeamStatTotalHomeAway() {}
+    public TeamStatTotalHomeAway() {
+    }
 
     public String getTotal() {
         return total;

@@ -5,13 +5,13 @@ import es.com.kete1987.sportmonks.library.v2.model.Metadata;
 import java.util.List;
 
 public class LeagueResponse {
-    private List<League> data = null;
+    private final List<League> data = null;
     private Metadata meta;
 
-    public LeagueResponse(){}
+    public LeagueResponse() {
+    }
 
-    public List<League> getListOfLeagues()
-    {
+    public List<League> getListOfLeagues() {
         return data;
     }
 

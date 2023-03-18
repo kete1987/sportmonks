@@ -11,7 +11,8 @@ public class VenueResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public VenueResponse() {}
+    public VenueResponse() {
+    }
 
     public List<Venue> getData() {
         return data;

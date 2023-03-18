@@ -16,7 +16,8 @@ public class State {
     private Boolean is_notstarted;
     private Long type_id;
 
-    public State() {}
+    public State() {
+    }
 
     public Long getId() {
         return id;

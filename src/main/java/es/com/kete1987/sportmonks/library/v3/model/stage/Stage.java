@@ -4,7 +4,7 @@ import es.com.kete1987.sportmonks.library.v3.model.match.MatchDetail;
 
 import java.util.List;
 
-public class Stage {
+public class Stage implements Comparable<Object> {
     private Long id;
     private Long sport_id;
     private Long league_id;
@@ -20,7 +20,8 @@ public class Stage {
     private List<MatchDetail> fixtures;
     private List<StageAggregate> aggregates;
 
-    public Stage() {}
+    public Stage() {
+    }
 
     public Long getId() {
         return id;
@@ -76,5 +77,10 @@ public class Stage {
 
     public List<StageAggregate> getAggregates() {
         return aggregates;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return getSortOrder().intValue() - ((Stage) o).getSortOrder().intValue();
     }
 }

@@ -3,59 +3,63 @@ package es.com.kete1987.sportmonks.library.v2.model.league;
 import es.com.kete1987.sportmonks.library.v2.model.season.SeasonDataList;
 import es.com.kete1987.sportmonks.library.v2.model.season.SeasonDataResponse;
 
-public class League
-{
-	private int id = -1;
-	private String name = null;
-	private boolean is_cup = false;
-	private long current_season_id = -1;
-	private int current_round_id = -1;
-	private int current_stage_id = -1;
-	private boolean live_standings = false;
-	private String logo_path = null;
-	private SeasonDataResponse season;
-	private SeasonDataList seasons;
-	private Country country = null;
-	
-	public League() {}
+public class League {
+    private final int id = -1;
+    private final String name = null;
+    private final boolean is_cup = false;
+    private final long current_season_id = -1;
+    private final int current_round_id = -1;
+    private final int current_stage_id = -1;
+    private final boolean live_standings = false;
+    private final String logo_path = null;
+    private SeasonDataResponse season;
+    private SeasonDataList seasons;
+    private final Country country = null;
 
-	public int getId() {
-		return id;
-	}
+    public League() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public boolean isCup() {
-		return is_cup;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public long getCurrentSeasonId() {
-		return current_season_id;
-	}
+    public boolean isCup() {
+        return is_cup;
+    }
 
-	public int getCurrentRoundId() {
-		return current_round_id;
-	}
+    public long getCurrentSeasonId() {
+        return current_season_id;
+    }
 
-	public int getCurrentStageId() {
-		return current_stage_id;
-	}
+    public int getCurrentRoundId() {
+        return current_round_id;
+    }
 
-	public SeasonDataResponse getCurrentSeason() { return season; }
+    public int getCurrentStageId() {
+        return current_stage_id;
+    }
 
-	public SeasonDataList getListOfSeasons() { return seasons;}
+    public SeasonDataResponse getCurrentSeason() {
+        return season;
+    }
 
-	public boolean hasLiveStandings() {
-		return live_standings;
-	}
+    public SeasonDataList getListOfSeasons() {
+        return seasons;
+    }
 
-	public Country getCountry() {
-		return country;
-	}
+    public boolean hasLiveStandings() {
+        return live_standings;
+    }
 
-	public String getLogoPath() {
-		return logo_path;
-	}
+    public Country getCountry() {
+        return country;
+    }
+
+    public String getLogoPath() {
+        return logo_path;
+    }
 }

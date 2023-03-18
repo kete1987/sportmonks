@@ -6,7 +6,8 @@ public class RoundDataList {
 
     private List<Round> data;
 
-    public RoundDataList() {}
+    public RoundDataList() {
+    }
 
     public List<Round> getData() {
         return data;

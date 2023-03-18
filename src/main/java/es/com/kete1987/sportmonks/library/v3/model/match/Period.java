@@ -15,7 +15,8 @@ public class Period {
     private Long minutes;
     private Long seconds;
 
-    public Period() {}
+    public Period() {
+    }
 
     public Long getId() {
         return id;

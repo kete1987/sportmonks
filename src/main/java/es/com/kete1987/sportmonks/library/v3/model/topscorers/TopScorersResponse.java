@@ -13,7 +13,8 @@ public class TopScorersResponse {
     private String timezone;
     private Pagination pagination;
 
-    public TopScorersResponse() {}
+    public TopScorersResponse() {
+    }
 
     public List<TopScoresPlayer> getData() {
         return data;

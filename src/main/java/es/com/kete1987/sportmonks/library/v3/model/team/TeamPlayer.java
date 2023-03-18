@@ -11,7 +11,8 @@ public class TeamPlayer {
     private String start;
     private String end;
 
-    public TeamPlayer() {}
+    public TeamPlayer() {
+    }
 
     public Long getId() {
         return id;

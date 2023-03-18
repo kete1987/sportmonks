@@ -6,7 +6,8 @@ public class Subscription {
     private SubscriptionMeta meta;
     private List<SubscriptionPlan> plans;
 
-    public Subscription() {}
+    public Subscription() {
+    }
 
     public SubscriptionMeta getMeta() {
         return meta;

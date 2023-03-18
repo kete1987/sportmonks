@@ -8,11 +8,13 @@ public class TeamFormation {
     @SerializedName("visitorteam_formation")
     private String visitorTeamFormation;
 
-    public TeamFormation() {}
+    public TeamFormation() {
+    }
 
     public String getLocalTeamFormation() {
         return localTeamFormation;
     }
+
     public String getVisitorTeamFormation() {
         return visitorTeamFormation;
     }

@@ -29,7 +29,8 @@ public class Standings {
     private StandingsGroup group;
     private Round round;
 
-    public Standings() {}
+    public Standings() {
+    }
 
     public Long getId() {
         return id;

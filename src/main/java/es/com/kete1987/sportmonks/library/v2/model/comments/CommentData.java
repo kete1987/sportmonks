@@ -5,10 +5,10 @@ import java.util.List;
 public class CommentData {
     private List<Comment> data;
 
-    public CommentData() {}
+    public CommentData() {
+    }
 
-    public List<Comment> getListOfComments()
-    {
+    public List<Comment> getListOfComments() {
         return data;
     }
 

@@ -5,13 +5,13 @@ import es.com.kete1987.sportmonks.library.v2.model.Metadata;
 import java.util.List;
 
 public class SeasonDataList {
-    private List<SeasonData> data = null;
+    private final List<SeasonData> data = null;
     private Metadata meta;
 
-    public SeasonDataList(){}
+    public SeasonDataList() {
+    }
 
-    public List<SeasonData> getListOfSeasons()
-    {
+    public List<SeasonData> getListOfSeasons() {
         return data;
     }
 

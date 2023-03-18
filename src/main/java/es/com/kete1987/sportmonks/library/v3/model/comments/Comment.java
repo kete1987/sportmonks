@@ -10,7 +10,8 @@ public class Comment implements Comparable<Object> {
     private Boolean is_important;
     private Long order;
 
-    public Comment() {}
+    public Comment() {
+    }
 
     public Long getId() {
         return id;
@@ -46,11 +47,10 @@ public class Comment implements Comparable<Object> {
 
     @Override
     public int compareTo(Object o) {
-        Comment aux = (Comment)o;
+        Comment aux = (Comment) o;
         if (getOrder() != null && aux.getOrder() != null) {
             return getOrder().intValue() - aux.getOrder().intValue();
-        }
-        else if (getOrder() == null)
+        } else if (getOrder() == null)
             return -1;
         else
             return 1;

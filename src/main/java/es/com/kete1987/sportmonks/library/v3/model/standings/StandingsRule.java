@@ -7,7 +7,8 @@ public class StandingsRule {
     private Long type_id;
     private Long position;
 
-    public StandingsRule() {}
+    public StandingsRule() {
+    }
 
     public Long getId() {
         return id;

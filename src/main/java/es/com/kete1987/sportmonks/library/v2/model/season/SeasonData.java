@@ -11,66 +11,66 @@ import es.com.kete1987.sportmonks.library.v2.model.stage.StagesData;
 
 import java.util.List;
 
-public class SeasonData 
-{
-	private int id = -1;
-	private String name = null;
-	private int league_id = -1;
-	private boolean is_current_season = false;
-	private int current_round_id = -1;
-	private int current_stage_id = -1;
-	private MatchsResponse results = null;
-	private LeagueData league = null;
-	private StagesData stages = null;
-	private GroupsData groups = null;
-	
-	public SeasonData(){}
+public class SeasonData {
+    private final int id = -1;
+    private final String name = null;
+    private final int league_id = -1;
+    private final boolean is_current_season = false;
+    private final int current_round_id = -1;
+    private final int current_stage_id = -1;
+    private final MatchsResponse results = null;
+    private final LeagueData league = null;
+    private final StagesData stages = null;
+    private final GroupsData groups = null;
 
-	public int getId() {
-		return id;
-	}
+    public SeasonData() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getLeagueId() {
-		return league_id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isCurrentSeason() {
-		return is_current_season;
-	}
+    public int getLeagueId() {
+        return league_id;
+    }
 
-	public int getCurrentRoundId() {
-		return current_round_id;
-	}
+    public boolean isCurrentSeason() {
+        return is_current_season;
+    }
 
-	public int getCurrentStageId() {
-		return current_stage_id;
-	}
+    public int getCurrentRoundId() {
+        return current_round_id;
+    }
 
-	public List<MatchDetail> getListOfMatches() {
-		if (results != null)
-			return results.getListOfMatches();
-		else return null;
-	}
-	
-	public League getLeague() {
-		if (league != null)
-			return league.getData();
-		else return null;
-	}
-	
-	public List<Stage> getListOfStages() {
-		if (stages != null)
-			return stages.getListOfStages();
-		else return null;
-	}
-	
-	public List<Group> getListOfGroups() {
-		if (groups != null)
-			return groups.getListOfGroups();
-		else return null;
-	}
+    public int getCurrentStageId() {
+        return current_stage_id;
+    }
+
+    public List<MatchDetail> getListOfMatches() {
+        if (results != null)
+            return results.getListOfMatches();
+        else return null;
+    }
+
+    public League getLeague() {
+        if (league != null)
+            return league.getData();
+        else return null;
+    }
+
+    public List<Stage> getListOfStages() {
+        if (stages != null)
+            return stages.getListOfStages();
+        else return null;
+    }
+
+    public List<Group> getListOfGroups() {
+        if (groups != null)
+            return groups.getListOfGroups();
+        else return null;
+    }
 }

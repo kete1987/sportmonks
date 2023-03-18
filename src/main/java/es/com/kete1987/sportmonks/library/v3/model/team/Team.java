@@ -31,7 +31,8 @@ public class Team {
 
     private TeamMeta meta;
 
-    public Team() {}
+    public Team() {
+    }
 
     public Long getId() {
         return id;

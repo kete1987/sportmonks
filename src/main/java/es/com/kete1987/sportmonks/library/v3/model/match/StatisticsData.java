@@ -8,7 +8,8 @@ public class StatisticsData {
     private StatisticsDataValue data;
     private String location;
 
-    public StatisticsData() {}
+    public StatisticsData() {
+    }
 
     public Long getId() {
         return id;

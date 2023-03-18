@@ -8,7 +8,8 @@ public class StandingsForm {
     private String form;
     private Long sort_order;
 
-    public StandingsForm() {}
+    public StandingsForm() {
+    }
 
     public Long getId() {
         return id;

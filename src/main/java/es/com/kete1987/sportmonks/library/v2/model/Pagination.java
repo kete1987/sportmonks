@@ -1,32 +1,32 @@
 package es.com.kete1987.sportmonks.library.v2.model;
 
-public class Pagination 
-{
-	private int total = -1;
-	private int count = -1;
-	private int per_page = -1;
-	private int current_page = -1;
-	private int total_pages = -1;
-	
-	public Pagination() {}
+public class Pagination {
+    private final int total = -1;
+    private final int count = -1;
+    private final int per_page = -1;
+    private final int current_page = -1;
+    private final int total_pages = -1;
 
-	public int getTotal() {
-		return total;
-	}
+    public Pagination() {
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public int getTotal() {
+        return total;
+    }
 
-	public int getPerPage() {
-		return per_page;
-	}
+    public int getCount() {
+        return count;
+    }
 
-	public int getCurrentPage() {
-		return current_page;
-	}
+    public int getPerPage() {
+        return per_page;
+    }
 
-	public int getTotalPages() {
-		return total_pages;
-	}
+    public int getCurrentPage() {
+        return current_page;
+    }
+
+    public int getTotalPages() {
+        return total_pages;
+    }
 }

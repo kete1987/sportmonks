@@ -11,7 +11,8 @@ public class StandingsResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public StandingsResponse() {}
+    public StandingsResponse() {
+    }
 
     public List<Standings> getData() {
         return data;

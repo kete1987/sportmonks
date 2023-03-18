@@ -19,7 +19,8 @@ public class TopScoresPlayer {
     private Team participant;
     private TopScoresType type;
 
-    public TopScoresPlayer() {}
+    public TopScoresPlayer() {
+    }
 
     public Long getId() {
         return id;

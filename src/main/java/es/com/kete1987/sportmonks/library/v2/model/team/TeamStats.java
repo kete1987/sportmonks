@@ -6,9 +6,10 @@ import java.util.List;
 
 public class TeamStats {
     @SerializedName("data")
-    private List<TeamStat> teamStatList = null;
+    private final List<TeamStat> teamStatList = null;
 
-    public TeamStats() {}
+    public TeamStats() {
+    }
 
     public List<TeamStat> getTeamStatList() {
         return teamStatList;

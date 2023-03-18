@@ -20,7 +20,8 @@ public class League {
     private SeasonData currentseason;
     private Country country;
 
-    public League() {}
+    public League() {
+    }
 
     public Long getId() {
         return id;

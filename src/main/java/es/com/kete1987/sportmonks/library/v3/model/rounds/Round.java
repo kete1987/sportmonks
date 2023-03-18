@@ -18,7 +18,8 @@ public class Round {
     private Boolean games_in_current_week;
     private List<MatchDetail> fixtures;
 
-    public Round() {}
+    public Round() {
+    }
 
     public Long getId() {
         return id;

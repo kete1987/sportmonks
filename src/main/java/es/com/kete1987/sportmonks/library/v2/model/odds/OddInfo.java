@@ -1,42 +1,42 @@
 package es.com.kete1987.sportmonks.library.v2.model.odds;
 
-public class OddInfo 
-{
-	private String label = null;
-	private String value = null;
-	private String handicap = null;
-	private String total = null;
-	private String winning = null;
-	private String dp3 = null;
-	private OddsLastUpdate last_update = null;
-	
-	public OddInfo() {}
+public class OddInfo {
+    private final String label = null;
+    private final String value = null;
+    private final String handicap = null;
+    private final String total = null;
+    private final String winning = null;
+    private final String dp3 = null;
+    private final OddsLastUpdate last_update = null;
 
-	public String getLabel() {
-		return label;
-	}
+    public OddInfo() {
+    }
 
-	public String getValue() {
-		return value;
-	}
-	
-	public String getHandicap() {
-		return handicap;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public String getTotal() {
-		return total;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public String getWinning() {
-		return winning;
-	}
+    public String getHandicap() {
+        return handicap;
+    }
 
-	public String getDp3() {
-		return dp3;
-	}
+    public String getTotal() {
+        return total;
+    }
 
-	public OddsLastUpdate getLastUpdate() {
-		return last_update;
-	}
+    public String getWinning() {
+        return winning;
+    }
+
+    public String getDp3() {
+        return dp3;
+    }
+
+    public OddsLastUpdate getLastUpdate() {
+        return last_update;
+    }
 }

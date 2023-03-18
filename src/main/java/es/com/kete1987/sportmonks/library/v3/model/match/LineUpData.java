@@ -11,7 +11,8 @@ public class LineUpData {
     private String player_name;
     private Long jersey_number;
 
-    public LineUpData() {}
+    public LineUpData() {
+    }
 
     public Long getId() {
         return id;

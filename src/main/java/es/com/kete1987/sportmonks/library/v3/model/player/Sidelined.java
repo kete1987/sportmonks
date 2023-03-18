@@ -12,7 +12,8 @@ public class Sidelined {
     private Long games_missed;
     private Boolean completed;
 
-    public Sidelined() {}
+    public Sidelined() {
+    }
 
     public Long getId() {
         return id;

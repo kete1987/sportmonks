@@ -14,7 +14,8 @@ public class StandingsGroup {
     private static Boolean is_finished;
     private static Boolean pending;
 
-    public StandingsGroup() {}
+    public StandingsGroup() {
+    }
 
     public static Long getId() {
         return id;

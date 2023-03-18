@@ -11,7 +11,8 @@ public class TeamsResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public TeamsResponse() {}
+    public TeamsResponse() {
+    }
 
     public List<Team> getData() {
         return data;

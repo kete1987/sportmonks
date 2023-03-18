@@ -7,7 +7,8 @@ public class StandingsDetail {
     private Long type_id;
     private Long value;
 
-    public StandingsDetail() {}
+    public StandingsDetail() {
+    }
 
     public Long getId() {
         return id;

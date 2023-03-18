@@ -1,97 +1,97 @@
 package es.com.kete1987.sportmonks.library.v2.model.stats;
 
-public class Stats
-{
-	private int team_id = 0;
-	private int fixture_id = 0;
-	private Shots shots = null;
-	private Passes passes = null;
-	private Attacks attacks = null;
-	private int fouls = 0;
-	private int corners = 0;
-	private int offsides = 0;
-	private int possessiontime = 0;
-	private int yellowcards = 0;
-	private int redcards = 0;
-	private int saves = 0;
-	private int substitutions = 0;
-	private int goal_kick = 0;
-	private int goal_attempts = 0;
-	private int free_kick = 0;
-	private int throw_in = 0;
-	private int ball_safe = 0;
-	
-	public Stats() {}
+public class Stats {
+    private final int team_id = 0;
+    private final int fixture_id = 0;
+    private final Shots shots = null;
+    private final Passes passes = null;
+    private final Attacks attacks = null;
+    private final int fouls = 0;
+    private final int corners = 0;
+    private final int offsides = 0;
+    private final int possessiontime = 0;
+    private final int yellowcards = 0;
+    private final int redcards = 0;
+    private final int saves = 0;
+    private final int substitutions = 0;
+    private final int goal_kick = 0;
+    private final int goal_attempts = 0;
+    private final int free_kick = 0;
+    private final int throw_in = 0;
+    private final int ball_safe = 0;
 
-	public int getTeamId() {
-		return team_id;
-	}
+    public Stats() {
+    }
 
-	public int getFixtureId() {
-		return fixture_id;
-	}
+    public int getTeamId() {
+        return team_id;
+    }
 
-	public Shots getShots() {
-		return shots;
-	}
+    public int getFixtureId() {
+        return fixture_id;
+    }
 
-	public Passes getPasses() {
-		return passes;
-	}
+    public Shots getShots() {
+        return shots;
+    }
 
-	public Attacks getAttacks() {
-		return attacks;
-	}
+    public Passes getPasses() {
+        return passes;
+    }
 
-	public int getFouls() {
-		return fouls;
-	}
+    public Attacks getAttacks() {
+        return attacks;
+    }
 
-	public int getCorners() {
-		return corners;
-	}
+    public int getFouls() {
+        return fouls;
+    }
 
-	public int getOffsides() {
-		return offsides;
-	}
+    public int getCorners() {
+        return corners;
+    }
 
-	public int getPossessiontime() {
-		return possessiontime;
-	}
+    public int getOffsides() {
+        return offsides;
+    }
 
-	public int getYellowcards() {
-		return yellowcards;
-	}
+    public int getPossessiontime() {
+        return possessiontime;
+    }
 
-	public int getRedcards() {
-		return redcards;
-	}
+    public int getYellowcards() {
+        return yellowcards;
+    }
 
-	public int getSaves() {
-		return saves;
-	}
+    public int getRedcards() {
+        return redcards;
+    }
 
-	public int getSubstitutions() {
-		return substitutions;
-	}
+    public int getSaves() {
+        return saves;
+    }
 
-	public int getGoal_kick() {
-		return goal_kick;
-	}
+    public int getSubstitutions() {
+        return substitutions;
+    }
 
-	public int getGoal_attempts() {
-		return goal_attempts;
-	}
+    public int getGoal_kick() {
+        return goal_kick;
+    }
 
-	public int getFree_kick() {
-		return free_kick;
-	}
+    public int getGoal_attempts() {
+        return goal_attempts;
+    }
 
-	public int getThrow_in() {
-		return throw_in;
-	}
+    public int getFree_kick() {
+        return free_kick;
+    }
 
-	public int getBall_safe() {
-		return ball_safe;
-	}
+    public int getThrow_in() {
+        return throw_in;
+    }
+
+    public int getBall_safe() {
+        return ball_safe;
+    }
 }

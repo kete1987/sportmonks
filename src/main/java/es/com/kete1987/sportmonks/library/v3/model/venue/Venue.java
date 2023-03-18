@@ -11,7 +11,8 @@ public class Venue {
     private String image_path;
     private String city_name;
 
-    public Venue() {}
+    public Venue() {
+    }
 
     public Long getId() {
         return id;

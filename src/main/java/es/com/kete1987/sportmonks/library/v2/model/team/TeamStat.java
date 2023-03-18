@@ -53,7 +53,8 @@ public class TeamStat {
     @Expose
     private List<TeamScoringPeriods> scoringPeriodsList;
 
-    public TeamStat() {}
+    public TeamStat() {
+    }
 
     public Integer getTeamId() {
         return teamId;

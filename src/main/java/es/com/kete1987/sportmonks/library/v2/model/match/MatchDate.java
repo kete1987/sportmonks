@@ -1,33 +1,34 @@
 package es.com.kete1987.sportmonks.library.v2.model.match;
 
 public class MatchDate {
-	private String date_time = null;
-	private String date = null;
-	private String time = null;
-	private long timestamp = -1;
-	private String timezone = null;
-	
-	public MatchDate() {}
+    private final String date_time = null;
+    private final String date = null;
+    private final String time = null;
+    private final long timestamp = -1;
+    private final String timezone = null;
 
-	public String getDateTime() {
-		return date_time;
-	}
+    public MatchDate() {
+    }
 
-	public String getDate() {
-		return date;
-	}
+    public String getDateTime() {
+        return date_time;
+    }
 
-	public String getTime() {
-		return time;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+    public String getTime() {
+        return time;
+    }
 
-	public String getTimezone() {
-		return timezone;
-	}
-	
-	
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+
 }

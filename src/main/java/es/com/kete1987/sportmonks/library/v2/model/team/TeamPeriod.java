@@ -1,11 +1,12 @@
 package es.com.kete1987.sportmonks.library.v2.model.team;
 
 public class TeamPeriod {
-    private String minute = null;
-    private String count = null;
-    private String percentage = null;
+    private final String minute = null;
+    private final String count = null;
+    private final String percentage = null;
 
-    public TeamPeriod() {}
+    public TeamPeriod() {
+    }
 
     public String getMinute() {
         return minute;

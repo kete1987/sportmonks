@@ -24,7 +24,8 @@ public class EventData implements Comparable<Object> {
     private Long sub_type_id;
     private Player player;
 
-    public EventData() {}
+    public EventData() {
+    }
 
     public Long getId() {
         return id;
@@ -113,6 +114,6 @@ public class EventData implements Comparable<Object> {
 
     public int compareTo(Object o) {
         EventData ed = (EventData) o;
-        return (getId() != null ? getId().intValue() : 0) -(ed.getId() != null ? ed.getId().intValue() : 0);
+        return (getId() != null ? getId().intValue() : 0) - (ed.getId() != null ? ed.getId().intValue() : 0);
     }
 }

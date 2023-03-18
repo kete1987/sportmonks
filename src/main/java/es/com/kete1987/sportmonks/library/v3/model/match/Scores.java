@@ -8,7 +8,8 @@ public class Scores {
     private Score score;
     private String description;
 
-    public Scores() {}
+    public Scores() {
+    }
 
     public Long getId() {
         return id;

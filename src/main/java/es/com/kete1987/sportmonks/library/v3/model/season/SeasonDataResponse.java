@@ -11,7 +11,8 @@ public class SeasonDataResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public SeasonDataResponse() {}
+    public SeasonDataResponse() {
+    }
 
     public SeasonData getSeasonData() {
         return seasonData;

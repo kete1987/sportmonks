@@ -13,7 +13,8 @@ public class SeasonsResponse {
     private String timezone;
     private Pagination pagination;
 
-    public SeasonsResponse() {}
+    public SeasonsResponse() {
+    }
 
     public List<SeasonData> getData() {
         return data;

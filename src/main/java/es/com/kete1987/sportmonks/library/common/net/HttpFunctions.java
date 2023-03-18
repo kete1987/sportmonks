@@ -11,11 +11,10 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
-public class HttpFunctions 
-{
-	private static final Logger logger = LoggerFactory.getLogger(HttpFunctions.class);
-	public static GetResponse get(String url) throws IOException
-    {
+public class HttpFunctions {
+    private static final Logger logger = LoggerFactory.getLogger(HttpFunctions.class);
+
+    public static GetResponse get(String url) throws IOException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -31,25 +30,28 @@ public class HttpFunctions
 
         String endPoint = url.substring(0, url.indexOf("?")).replaceAll(Constants.baseURLV2, "");
         int responseCode = 0;
-		StringBuffer response = new StringBuffer();
-		String headerTotal = null;
-		String headerPending = null;
-		
-		try {
-			responseCode = con.getResponseCode();
-	        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-	        String inputLine;	      	
-	        while ((inputLine = in.readLine()) != null) {
-	            response.append(inputLine);
-	        }
-			headerTotal = con.getHeaderField("X-RateLimit-Limit");
-	        headerPending = con.getHeaderField("X-RateLimit-Remaining");
-	        logger.info("Endpoint: {} | Pending requests: {}/{}", endPoint, headerPending, headerTotal);
-	        in.close();
-		}
-		catch (SocketTimeoutException e){responseCode = 504; response.append("Timeout en la respuesta: ").append(e.toString());}
-		catch (Exception e){response.append("Error en la respuesta: ").append(e.toString());}
-		logger.debug("URL: {} Response: {}", url, responseCode);
+        StringBuffer response = new StringBuffer();
+        String headerTotal = null;
+        String headerPending = null;
+
+        try {
+            responseCode = con.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            headerTotal = con.getHeaderField("X-RateLimit-Limit");
+            headerPending = con.getHeaderField("X-RateLimit-Remaining");
+            logger.info("Endpoint: {} | Pending requests: {}/{}", endPoint, headerPending, headerTotal);
+            in.close();
+        } catch (SocketTimeoutException e) {
+            responseCode = 504;
+            response.append("Timeout en la respuesta: ").append(e);
+        } catch (Exception e) {
+            response.append("Error en la respuesta: ").append(e);
+        }
+        logger.debug("URL: {} Response: {}", url, responseCode);
         return new GetResponse(response.toString(), responseCode, headerTotal, headerPending);
     }
 }

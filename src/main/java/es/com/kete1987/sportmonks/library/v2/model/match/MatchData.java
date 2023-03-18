@@ -1,13 +1,12 @@
 package es.com.kete1987.sportmonks.library.v2.model.match;
 
-public class MatchData
-{
-	private MatchDetail data;
+public class MatchData {
+    private MatchDetail data;
 
-	public MatchData() {}
+    public MatchData() {
+    }
 
-	public MatchDetail getMatchDetail()
-	{
-		return data;
-	}
+    public MatchDetail getMatchDetail() {
+        return data;
+    }
 }

@@ -4,7 +4,8 @@ public class Score {
     private Long goals;
     private String participant;
 
-    public Score() {}
+    public Score() {
+    }
 
     public Long getGoals() {
         return goals;

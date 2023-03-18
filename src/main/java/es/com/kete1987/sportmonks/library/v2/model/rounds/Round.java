@@ -18,7 +18,8 @@ public class Round {
     private LeagueData league;
     private MatchDataList results;
 
-    public Round() {}
+    public Round() {
+    }
 
     public Long getId() {
         return id;

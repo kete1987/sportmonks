@@ -8,7 +8,8 @@ public class TopScoresType {
     private String model_type;
     private String stat_group;
 
-    public TopScoresType() {}
+    public TopScoresType() {
+    }
 
     public Long getId() {
         return id;

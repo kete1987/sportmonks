@@ -3,45 +3,45 @@ package es.com.kete1987.sportmonks.library.v2.model.group;
 import es.com.kete1987.sportmonks.library.v2.model.match.MatchDataList;
 import es.com.kete1987.sportmonks.library.v2.model.standings.Standings;
 
-public class Group
-{
-	private String name = null;
-	private int league_id = -1;
-	private int season_id = -1;
-	private int stage_id = -1;
-	private String stage_name = null;
-	private MatchDataList fixtures = null;
-	private Standings standings = null;
-	
-	public Group() {}
+public class Group {
+    private final String name = null;
+    private final int league_id = -1;
+    private final int season_id = -1;
+    private final int stage_id = -1;
+    private final String stage_name = null;
+    private final MatchDataList fixtures = null;
+    private final Standings standings = null;
 
-	public String getName() {
-		return name;
-	}
+    public Group() {
+    }
 
-	public int getLeagueId() {
-		return league_id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getSeasonId() {
-		return season_id;
-	}
+    public int getLeagueId() {
+        return league_id;
+    }
 
-	public int getStageId() {
-		return stage_id;
-	}
+    public int getSeasonId() {
+        return season_id;
+    }
 
-	public String getStageName() {
-		return stage_name;
-	}
+    public int getStageId() {
+        return stage_id;
+    }
 
-	public MatchDataList getFixtures() {
-		return fixtures;
-	}
+    public String getStageName() {
+        return stage_name;
+    }
 
-	public Standings getStandings() {
-		return standings;
-	}
-	
-	
+    public MatchDataList getFixtures() {
+        return fixtures;
+    }
+
+    public Standings getStandings() {
+        return standings;
+    }
+
+
 }

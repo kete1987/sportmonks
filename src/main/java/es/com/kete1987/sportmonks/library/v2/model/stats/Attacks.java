@@ -4,7 +4,8 @@ public class Attacks {
     private Integer attacks;
     private Integer dangerous_attacks;
 
-    public Attacks() {}
+    public Attacks() {
+    }
 
     public Integer getAttacks() {
         return attacks;

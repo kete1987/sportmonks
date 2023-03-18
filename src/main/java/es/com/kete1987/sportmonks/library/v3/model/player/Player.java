@@ -20,7 +20,8 @@ public class Player {
     private String date_of_birth;
     private String gender;
 
-    public Player() {}
+    public Player() {
+    }
 
     public Long getId() {
         return id;

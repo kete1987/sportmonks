@@ -13,7 +13,8 @@ public class MatchsResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public MatchsResponse() {}
+    public MatchsResponse() {
+    }
 
     public List<MatchDetail> getData() {
         return data;

@@ -9,7 +9,8 @@ public class Comment implements Comparable<Object> {
     private Integer extra_minute;
     private String comment;
 
-    public Comment() {}
+    public Comment() {
+    }
 
     public Long getFixtureId() {
         return fixture_id;
@@ -41,11 +42,10 @@ public class Comment implements Comparable<Object> {
 
     @Override
     public int compareTo(Object o) {
-        Comment aux = (Comment)o;
+        Comment aux = (Comment) o;
         if (getOrder() != null && aux.getOrder() != null) {
             return getOrder() - aux.getOrder();
-        }
-        else if (getOrder() == null)
+        } else if (getOrder() == null)
             return -1;
         else
             return 1;

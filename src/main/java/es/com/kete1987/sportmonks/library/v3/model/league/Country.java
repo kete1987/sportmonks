@@ -8,7 +8,8 @@ public class Country {
     private String fifa_name;
     private String image_path;
 
-    public Country() {}
+    public Country() {
+    }
 
     public Long getId() {
         return id;

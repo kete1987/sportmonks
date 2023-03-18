@@ -4,7 +4,8 @@ public class SubscriptionMeta {
     private String trial_ends_at;
     private String ends_at;
 
-    public SubscriptionMeta() {}
+    public SubscriptionMeta() {
+    }
 
     public String getTrialEndsAt() {
         return trial_ends_at;

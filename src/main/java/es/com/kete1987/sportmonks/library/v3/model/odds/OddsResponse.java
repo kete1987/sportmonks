@@ -12,7 +12,8 @@ public class OddsResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public OddsResponse() {}
+    public OddsResponse() {
+    }
 
     public List<Odd> getData() {
         return data;

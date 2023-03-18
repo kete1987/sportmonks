@@ -13,7 +13,8 @@ public class LeaguesResponse {
     private RateLimit rate_limit;
     private String timezone;
 
-    public LeaguesResponse() {}
+    public LeaguesResponse() {
+    }
 
     public List<League> getData() {
         return data;

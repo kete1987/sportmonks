@@ -4,7 +4,8 @@ public class RoundData {
 
     private Round data;
 
-    public RoundData() {}
+    public RoundData() {
+    }
 
     public Round getData() {
         return data;

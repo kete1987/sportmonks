@@ -21,7 +21,8 @@ public class SeasonData {
     private List<Stage> stages;
     private List<Match> fixtures;
 
-    public SeasonData() {}
+    public SeasonData() {
+    }
 
     public Long getId() {
         return id;

@@ -6,10 +6,10 @@ public class VenueDetail {
     private String surface;
     private String address;
     private String city;
-    private int capacity = -1;
+    private final int capacity = -1;
     private String image_path;
 
-    public VenueDetail(){
+    public VenueDetail() {
 
     }
 

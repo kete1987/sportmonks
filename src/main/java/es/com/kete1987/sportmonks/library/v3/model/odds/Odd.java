@@ -23,7 +23,8 @@ public class Odd {
     private String original_label;
     private String latest_bookmaker_update;
 
-    public Odd() {}
+    public Odd() {
+    }
 
     public Long getId() {
         return id;

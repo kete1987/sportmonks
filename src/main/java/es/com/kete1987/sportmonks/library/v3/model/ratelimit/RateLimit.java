@@ -5,7 +5,8 @@ public class RateLimit {
     private Long remaining;
     private String requested_entity;
 
-    public RateLimit () {}
+    public RateLimit() {
+    }
 
     public Long getResetsInSeconds() {
         return resets_in_seconds;

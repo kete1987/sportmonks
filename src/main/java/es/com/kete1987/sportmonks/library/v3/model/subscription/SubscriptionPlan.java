@@ -5,7 +5,8 @@ public class SubscriptionPlan {
     private String sport;
     private String category;
 
-    public SubscriptionPlan() {}
+    public SubscriptionPlan() {
+    }
 
     public String getPlan() {
         return plan;
