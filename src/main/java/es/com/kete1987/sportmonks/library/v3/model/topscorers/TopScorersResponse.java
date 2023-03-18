@@ -1,5 +1,6 @@
 package es.com.kete1987.sportmonks.library.v3.model.topscorers;
 
+import es.com.kete1987.sportmonks.library.v3.model.pagination.Pagination;
 import es.com.kete1987.sportmonks.library.v3.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.v3.model.subscription.Subscription;
 
@@ -10,6 +11,7 @@ public class TopScorersResponse {
     private List<Subscription> subscription;
     private RateLimit rate_limit;
     private String timezone;
+    private Pagination pagination;
 
     public TopScorersResponse() {}
 
@@ -27,5 +29,9 @@ public class TopScorersResponse {
 
     public String getTimezone() {
         return timezone;
+    }
+
+    public Pagination getPagination() {
+        return pagination;
     }
 }

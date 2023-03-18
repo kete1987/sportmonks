@@ -18,4 +18,7 @@ public class StatisticsType {
     public static int YELLOWCARDS = 84;
     public static int YELLOWRED_CARDS = 85;
     public static int SHOTS_ON_TARGET = 86;
+    public static int GOAL_TOPSCORER = 208;
+    public static int ASSIST_TOPSCORER = 209;
+    public static int CARD_TOPSCORER = 210;
 }
