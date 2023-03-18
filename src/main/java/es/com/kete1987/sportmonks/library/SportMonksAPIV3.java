@@ -25,6 +25,7 @@ import es.com.kete1987.sportmonks.library.v3.model.stage.Stage;
 import es.com.kete1987.sportmonks.library.v3.model.stage.StageResponse;
 import es.com.kete1987.sportmonks.library.v3.model.stage.StagesResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
+import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsGroup;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 import es.com.kete1987.sportmonks.library.v3.model.team.TeamsResponse;
@@ -34,8 +35,7 @@ import es.com.kete1987.sportmonks.library.v3.model.venue.Venue;
 import es.com.kete1987.sportmonks.library.v3.model.venue.VenueResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * SocceramaAPI Main Class
@@ -530,6 +530,25 @@ public class SportMonksAPIV3 {
             else
                 return new ArrayList<>();
         } else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+    }
+
+    /**
+     * Get standings list
+     *
+     * @param seasonId Season ID
+     * @return List of standing teams
+     * @throws IOException
+     */
+    public TreeMap<String, List<Standings>> getStandingsCup(String seasonId, String... includes) throws IOException, SportMonksException {
+        List<Standings> standingsList = getStandings(seasonId, includes);
+        TreeMap<String, List<Standings>> standingsMap = new TreeMap<>();
+        for (Standings s : standingsList) {
+            standingsMap.computeIfAbsent(s.getGroup().getName(), k -> new ArrayList<>());
+            List<Standings> aux = standingsMap.get(s.getGroup().getName());
+            aux.add(s);
+            standingsMap.put(s.getGroup().getName(), aux);
+        }
+        return standingsMap;
     }
 
     /**

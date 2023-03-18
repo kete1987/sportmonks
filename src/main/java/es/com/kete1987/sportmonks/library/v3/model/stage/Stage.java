@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.v3.model.stage;
 
 import es.com.kete1987.sportmonks.library.v3.model.match.MatchDetail;
+import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsGroup;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Stage implements Comparable<Object> {
     private String games_in_current_week;
     private List<MatchDetail> fixtures;
     private List<StageAggregate> aggregates;
+    private List<StandingsGroup> groups;
 
     public Stage() {
     }
@@ -77,6 +79,10 @@ public class Stage implements Comparable<Object> {
 
     public List<StageAggregate> getAggregates() {
         return aggregates;
+    }
+
+    public List<StandingsGroup> getGroups() {
+        return groups;
     }
 
     @Override
