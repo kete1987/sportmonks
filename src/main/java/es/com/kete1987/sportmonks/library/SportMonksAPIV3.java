@@ -22,6 +22,7 @@ import es.com.kete1987.sportmonks.library.v3.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.v3.model.season.SeasonsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.stage.Stage;
+import es.com.kete1987.sportmonks.library.v3.model.stage.StageResponse;
 import es.com.kete1987.sportmonks.library.v3.model.stage.StagesResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
@@ -681,6 +682,30 @@ public class SportMonksAPIV3 {
                 return stagesData.getData();
             else
                 return new ArrayList<>();
+        } else
+            throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+    }
+
+    /**
+     * Return stage
+     *
+     * @param stageId Stage ID
+     * @param includes Includes
+     * @return Stages list
+     * @throws IOException
+     * @throws SportMonksException
+     */
+    public Stage getStage(String stageId, String... includes) throws IOException, SportMonksException {
+        String url = Constants.baseURLV3 + "stages/" + stageId + "?api_token=" + apiKey + getIncludes(includes);
+        GetResponse response = HttpFunctions.get(url);
+        updateHeaders(response);
+        if (response.getResponseCode() == Constants.RESPONSE_OK) {
+            Gson gson = new Gson();
+            StageResponse stageResponse = gson.fromJson(response.getResponse(), StageResponse.class);
+            if (stageResponse != null && stageResponse.getData() != null)
+                return stageResponse.getData();
+            else
+                return null;
         } else
             throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
     }
