@@ -2,6 +2,7 @@ package es.com.kete1987.sportmonks.library.v3.util;
 
 public class StatisticsType {
     public static int CORNERS = 34;
+    public static int CAPTAIN = 40;
     public static int SHOTS_OFF_TARGET = 41;
     public static int SHOTS_TOTAL = 42;
     public static int BALL_POSSESSION = 45;
@@ -21,4 +22,7 @@ public class StatisticsType {
     public static int GOAL_TOPSCORER = 208;
     public static int ASSIST_TOPSCORER = 209;
     public static int CARD_TOPSCORER = 210;
+    public static int VAR_MOMENTS = 314;
+    public static int LINEUPS = 322;
+    public static int BENCH = 323;
 }
