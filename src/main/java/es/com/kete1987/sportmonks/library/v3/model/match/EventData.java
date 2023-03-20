@@ -114,6 +114,14 @@ public class EventData implements Comparable<Object> {
 
     public int compareTo(Object o) {
         EventData ed = (EventData) o;
+        if (getMinute() != null && ed.getMinute() != null) {
+            if (getMinute().intValue() == ed.getMinute().intValue()) {
+                if (getExtraMinute() != null && ed.getExtraMinute() != null) {
+                    return getExtraMinute().intValue() - ed.getExtraMinute().intValue();
+                }
+            } else
+                return getMinute().intValue() - ed.getMinute().intValue();
+        }
         return (getId() != null ? getId().intValue() : 0) - (ed.getId() != null ? ed.getId().intValue() : 0);
     }
 }
