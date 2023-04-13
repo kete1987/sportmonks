@@ -7,7 +7,7 @@ public class TeamPlayer {
     private Long team_id;
     private Long position_id;
     private Long detailed_position_id;
-    private Long yersey_number;
+    private Long jersey_number;
     private String start;
     private String end;
 
@@ -38,8 +38,8 @@ public class TeamPlayer {
         return detailed_position_id;
     }
 
-    public Long getYerseyNumber() {
-        return yersey_number;
+    public Long getJerseyNumber() {
+        return jersey_number;
     }
 
     public String getStart() {
