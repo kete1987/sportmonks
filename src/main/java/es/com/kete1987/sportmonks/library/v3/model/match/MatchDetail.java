@@ -159,8 +159,14 @@ public class MatchDetail extends Match {
     public Period getCurrentPeriod() {
         if (getPeriods() != null && getPeriods().size() > 0) {
             for (Period period : getPeriods()) {
-                if (period.getTypeId().equals(state.getTypeId())) {
-                    return period;
+                if (period.getTypeId() != null && state.getTypeId() != null) {
+                    if (period.getTypeId().equals(state.getTypeId())) {
+                        return period;
+                    }
+                } else if (period.getTypeId() != null && state.getType() != null && state.getType().getId() != null) {
+                    if (period.getTypeId().equals(state.getType().getId())) {
+                        return period;
+                    }
                 }
             }
         }

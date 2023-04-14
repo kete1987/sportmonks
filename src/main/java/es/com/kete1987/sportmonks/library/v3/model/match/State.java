@@ -5,6 +5,8 @@ public class State {
     private String state;
     private String name;
     private String short_name;
+    private Long type_id; //TODO Comprobar 18/abril si se ha eliminado
+    private Type type;
 
     public State() {
     }
@@ -23,5 +25,13 @@ public class State {
 
     public String getShortName() {
         return short_name;
+    }
+
+    public Long getTypeId() {
+        return type_id;
+    }
+
+    public Type getType() {
+        return type;
     }
 }
