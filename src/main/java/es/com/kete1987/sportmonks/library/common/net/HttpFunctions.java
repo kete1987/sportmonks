@@ -28,7 +28,11 @@ public class HttpFunctions {
         con.setConnectTimeout(30000);
         con.setReadTimeout(30000);
 
-        String endPoint = url.substring(0, url.indexOf("?")).replaceAll(Constants.baseURLV2, "");
+        String endPoint = url;
+        int indexIniAPI = endPoint.indexOf("api_token=");
+        int indexEnd = endPoint.contains("&") ? endPoint.indexOf("&") : endPoint.length();
+        String apiToken = endPoint.substring(indexIniAPI, indexEnd);
+        endPoint = url.replaceAll(apiToken, "apiToken=XXXXX");
         int responseCode = 0;
         StringBuffer response = new StringBuffer();
         String headerTotal = null;
