@@ -30,9 +30,11 @@ public class HttpFunctions {
 
         String endPoint = url;
         int indexIniAPI = endPoint.indexOf("api_token=");
-        int indexEnd = endPoint.contains("&") ? endPoint.indexOf("&") : endPoint.length();
-        String apiToken = endPoint.substring(indexIniAPI, indexEnd);
-        endPoint = url.replaceAll(apiToken, "apiToken=XXXXX");
+        if (indexIniAPI >= 0) {
+            int indexEnd = endPoint.contains("&") ? endPoint.indexOf("&") : endPoint.length();
+            String apiToken = endPoint.substring(indexIniAPI, indexEnd);
+            endPoint = url.replaceAll(apiToken, "apiToken=XXXXX");
+        }
         int responseCode = 0;
         StringBuffer response = new StringBuffer();
         String headerTotal = null;
