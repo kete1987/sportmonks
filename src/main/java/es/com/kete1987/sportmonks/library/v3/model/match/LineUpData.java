@@ -1,5 +1,6 @@
 package es.com.kete1987.sportmonks.library.v3.model.match;
 
+import es.com.kete1987.sportmonks.library.v3.model.player.Player;
 import es.com.kete1987.sportmonks.library.v3.util.PlayerPosition;
 import es.com.kete1987.sportmonks.library.v3.util.StatisticsType;
 
@@ -15,6 +16,7 @@ public class LineUpData {
     private Long type_id;
     private String player_name;
     private Long jersey_number;
+    private Player player;
     public List<LineUpDetails> details;
 
     public LineUpData() {
@@ -62,12 +64,20 @@ public class LineUpData {
         return player_name;
     }
 
+    public String getDisplayPlayerName() {
+        return player != null && player.getDisplayName() != null ? player.getDisplayName() : player_name;
+    }
+
     public Long getJerseyNumber() {
         return jersey_number;
     }
 
     public List<LineUpDetails> getDetails() {
         return details;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public boolean isCaptain() {
