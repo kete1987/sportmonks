@@ -87,6 +87,20 @@ public class Stage implements Comparable<Object> {
 
     @Override
     public int compareTo(Object o) {
-        return getSortOrder().intValue() - ((Stage) o).getSortOrder().intValue();
+        Stage other = (Stage) o;
+
+        // Comparación segura de Longs
+        int cmp = Long.compare(this.getSortOrder(), other.getSortOrder());
+        if (cmp != 0) return cmp;
+
+        // Desempatar por ending_at (nulls al final)
+        String thisEnd = this.getEndingAt();
+        String otherEnd = other.getEndingAt();
+
+        if (thisEnd == null && otherEnd != null) return 1;
+        if (thisEnd != null && otherEnd == null) return -1;
+        if (thisEnd == null && otherEnd == null) return 0;
+
+        return thisEnd.compareTo(otherEnd);
     }
 }
