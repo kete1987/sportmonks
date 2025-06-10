@@ -383,12 +383,31 @@ public class SportMonksAPIV3 {
     /**
      * Get a list with different odds (pre-match)
      *
+     * @param matchID Match ID
+     * @param includes Includes
+     * @return List with pre-match odds
+     * @throws IOException
+     */
+    public List<Odd> getMatchOdds(String matchID, String... includes) throws IOException, SportMonksException {
+        String url = Constants.baseURLV3 + "odds/pre-match/fixtures/" + matchID + "?api_token=" + apiKey + getIncludes(includes);
+        GetResponse response = HttpFunctions.get(url);
+        updateHeaders(response);
+        if (response.getResponseCode() == Constants.RESPONSE_OK) {
+            Gson gson = new Gson();
+            OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
+            return oddsResponse.getData();
+        } else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
+    }
+
+    /**
+     * Get a list with different odds (pre-match)
+     *
      * @param matchID     Match ID
      * @param bookMakerId BookMaker ID
      * @return List with pre-match odds
      * @throws IOException
      */
-    public List<Odd> getMatchOdds(String matchID, String bookMakerId) throws IOException, SportMonksException {
+    public List<Odd> getMatchOddsByBookmaker(String matchID, String bookMakerId) throws IOException, SportMonksException {
         String url = Constants.baseURLV3 + "odds/pre-match/fixtures/" + matchID + "/bookmakers/" + bookMakerId + "?api_token=" + apiKey;
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);

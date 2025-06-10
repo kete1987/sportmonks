@@ -22,6 +22,7 @@ public class Odd {
     private String updated_at;
     private String original_label;
     private String latest_bookmaker_update;
+    private Bookmaker bookmaker;
 
     public Odd() {
     }
@@ -41,6 +42,8 @@ public class Odd {
     public Long getBookmakerId() {
         return bookmaker_id;
     }
+
+    public Bookmaker getBookmaker() { return bookmaker; }
 
     public String getLabel() {
         return label;
