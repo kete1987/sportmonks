@@ -47,6 +47,7 @@ public class LineUpData {
     }
 
     public String getPosition() {
+        if (position_id == null) return "";
         switch (position_id.intValue()) {
             case PlayerPosition.GOALKEEPER: return "P";
             case PlayerPosition.DEFENDER: return "D";
@@ -84,7 +85,7 @@ public class LineUpData {
         boolean isCaptain = false;
         if (getDetails() != null && !getDetails().isEmpty()) {
             for (LineUpDetails lineUpDetails : getDetails()) {
-                if (lineUpDetails.getTypeId().intValue() == StatisticsType.CAPTAIN && lineUpDetails.getData() != null && lineUpDetails.getData().getValue() instanceof Boolean) {
+                if (lineUpDetails.getTypeId() != null && lineUpDetails.getTypeId().intValue() == StatisticsType.CAPTAIN && lineUpDetails.getData() != null && lineUpDetails.getData().getValue() instanceof Boolean) {
                     if (((Boolean) lineUpDetails.getData().getValue()))
                         return true;
                 }
