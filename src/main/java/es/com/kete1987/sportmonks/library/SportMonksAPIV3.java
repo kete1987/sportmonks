@@ -27,6 +27,8 @@ import es.com.kete1987.sportmonks.library.v3.model.stage.StagesResponse;
 import es.com.kete1987.sportmonks.library.v3.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsGroup;
 import es.com.kete1987.sportmonks.library.v3.model.standings.StandingsResponse;
+import es.com.kete1987.sportmonks.library.v3.model.subscription.SubscriptionMeta;
+import es.com.kete1987.sportmonks.library.v3.model.subscription.SubscriptionMetaDeserializer;
 import es.com.kete1987.sportmonks.library.v3.model.team.Team;
 import es.com.kete1987.sportmonks.library.v3.model.team.TeamsResponse;
 import es.com.kete1987.sportmonks.library.v3.model.topscorers.TopScorersResponse;
@@ -57,6 +59,14 @@ public class SportMonksAPIV3 {
             instance = new SportMonksAPIV3(api);
             return instance;
         } else return instance;
+    }
+
+    private Gson getGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+                .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+                .registerTypeAdapter(SubscriptionMeta.class, new SubscriptionMetaDeserializer())
+                .create();
     }
 
     public String getRemainingRequests() {
@@ -105,10 +115,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
-                    .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
-                    .create();
+            Gson gson = getGson();
             MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
             List<MatchDetail> matchsList = matchsResponse.getData();
             int page = 1;
@@ -119,10 +126,7 @@ public class SportMonksAPIV3 {
                 response = HttpFunctions.get(urlAux);
                 updateHeaders(response);
                 if (response.getResponseCode() == Constants.RESPONSE_OK) {
-                    gson = new GsonBuilder()
-                            .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
-                            .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
-                            .create();
+                    gson = getGson();
                     matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
                     List<MatchDetail> matchsListAux = matchsResponse.getData();
                     matchsList.addAll(matchsListAux);
@@ -178,7 +182,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             MatchsResponse matchsResponse = gson.fromJson(response.getResponse(), MatchsResponse.class);
             return matchsResponse.getData();
         } else
@@ -284,12 +288,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-//            Type myOtherClassListType = new TypeToken<PlayerData>() {}.getType();
-            Gson gson = new GsonBuilder()
-//                    .registerTypeAdapter(myOtherClassListType, new PlayerDataAdapter())
-                    .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
-                    .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
-                    .create();
+            Gson gson = getGson();
             MatchData matchData = gson.fromJson(response.getResponse(), MatchData.class);
             return matchData.getMatchDetail();
         } else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
@@ -307,7 +306,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             SeasonsResponse seasonResponse = gson.fromJson(response.getResponse(), SeasonsResponse.class);
             List<SeasonData> seasonDataList = seasonResponse.getData();
             int page = 1;
@@ -318,7 +317,7 @@ public class SportMonksAPIV3 {
                 response = HttpFunctions.get(urlAux);
                 updateHeaders(response);
                 if (response.getResponseCode() == Constants.RESPONSE_OK) {
-                    gson = new Gson();
+                    gson = getGson();
                     seasonResponse = gson.fromJson(response.getResponse(), SeasonsResponse.class);
                     List<SeasonData> seasonsListAux = seasonResponse.getData();
                     seasonDataList.addAll(seasonsListAux);
@@ -356,7 +355,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             SeasonDataResponse seasonResults = gson.fromJson(response.getResponse(), SeasonDataResponse.class);
             return seasonResults.getSeasonData();
         } else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
@@ -374,7 +373,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
             return oddsResponse.getData();
         } else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
@@ -393,7 +392,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
             return oddsResponse.getData();
         } else throw new SportMonksException(response.getResponseCode() + " - " + response.getResponse());
@@ -412,7 +411,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
             return oddsResponse.getData();
         } else
@@ -432,7 +431,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             OddsResponse oddsResponse = gson.fromJson(response.getResponse(), OddsResponse.class);
             return oddsResponse.getData();
         } else
@@ -482,7 +481,7 @@ public class SportMonksAPIV3 {
         updateHeaders(response);
         List<TopScoresPlayer> topScoresPlayerList = new ArrayList<>();
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             TopScorersResponse topScoresResponse = gson.fromJson(response.getResponse(), TopScorersResponse.class);
             topScoresPlayerList = topScoresResponse.getData();
             int page = 1;
@@ -493,7 +492,7 @@ public class SportMonksAPIV3 {
                 response = HttpFunctions.get(urlAux);
                 updateHeaders(response);
                 if (response.getResponseCode() == Constants.RESPONSE_OK) {
-                    gson = new Gson();
+                    gson = getGson();
                     topScoresResponse = gson.fromJson(response.getResponse(), TopScorersResponse.class);
                     List<TopScoresPlayer> topScoresPlayerListAux = topScoresResponse.getData();
                     topScoresPlayerList.addAll(topScoresPlayerListAux);
@@ -542,7 +541,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             StandingsResponse standingsResponse = gson.fromJson(response.getResponse(), StandingsResponse.class);
             if (standingsResponse.getData() != null)
                 return standingsResponse.getData();
@@ -583,7 +582,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             VenueResponse venue = gson.fromJson(response.getResponse(), VenueResponse.class);
             if (venue != null && venue.getData() != null)
                 return venue.getData();
@@ -610,7 +609,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             TeamsResponse teamsResponse = gson.fromJson(response.getResponse(), TeamsResponse.class);
             if (teamsResponse != null && teamsResponse.getData() != null)
                 return teamsResponse.getData();
@@ -634,7 +633,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             Team team = gson.fromJson(response.getResponse(), Team.class);
             return team;
         } else
@@ -653,7 +652,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             LeaguesResponse leagueResponse = gson.fromJson(response.getResponse(), LeaguesResponse.class);
             List<League> leaguesList = leagueResponse.getData();
             int page = 1;
@@ -664,7 +663,7 @@ public class SportMonksAPIV3 {
                 response = HttpFunctions.get(urlAux);
                 updateHeaders(response);
                 if (response.getResponseCode() == Constants.RESPONSE_OK) {
-                    gson = new Gson();
+                    gson = getGson();
                     leagueResponse = gson.fromJson(response.getResponse(), LeaguesResponse.class);
                     List<League> leagueResponseAux = leagueResponse.getData();
                     leaguesList.addAll(leagueResponseAux);
@@ -690,7 +689,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             LeagueResponse leagueData = gson.fromJson(response.getResponse(), LeagueResponse.class);
             if (leagueData != null && leagueData.getData() != null)
                 return leagueData.getData();
@@ -714,7 +713,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             StagesResponse stagesData = gson.fromJson(response.getResponse(), StagesResponse.class);
             if (stagesData != null && stagesData.getData() != null)
                 return stagesData.getData();
@@ -738,7 +737,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             StageResponse stageResponse = gson.fromJson(response.getResponse(), StageResponse.class);
             if (stageResponse != null && stageResponse.getData() != null)
                 return stageResponse.getData();
@@ -762,7 +761,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             RoundsResponse roundsList = gson.fromJson(response.getResponse(), RoundsResponse.class);
             if (roundsList != null && roundsList.getData() != null)
                 return roundsList.getData();
@@ -786,7 +785,7 @@ public class SportMonksAPIV3 {
         GetResponse response = HttpFunctions.get(url);
         updateHeaders(response);
         if (response.getResponseCode() == Constants.RESPONSE_OK) {
-            Gson gson = new Gson();
+            Gson gson = getGson();
             RoundResponse roundData = gson.fromJson(response.getResponse(), RoundResponse.class);
             if (roundData != null && roundData.getData() != null)
                 return roundData.getData();
