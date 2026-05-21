@@ -15,3 +15,9 @@
 .project
 /.idea/
 *.iml
+
+# Local test files with API tokens
+src/main/java/es/com/kete1987/sportmonks/library/APITests.java
+
+# Claude Code local settings (machine-specific)
+.claude/settings.local.json
