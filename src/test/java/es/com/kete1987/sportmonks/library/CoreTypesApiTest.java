@@ -3,6 +3,8 @@ package es.com.kete1987.sportmonks.library;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.core.model.my.MyApi;
 import es.com.kete1987.sportmonks.library.core.model.my.MyLeague;
+import es.com.kete1987.sportmonks.library.core.model.my.MyResource;
+import es.com.kete1987.sportmonks.library.core.model.my.MyUsage;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
@@ -18,10 +20,10 @@ class CoreTypesApiTest extends BaseApiTest {
     // --- Types ---
 
     @Test
-    void getTypes_returnsParsedList() throws IOException, SportMonksException {
+    void getAllTypes_returnsParsedList() throws IOException, SportMonksException {
         enqueue("types.json");
 
-        List<Type> types = api.getTypes();
+        List<Type> types = api.getAllTypes();
 
         assertEquals(2, types.size());
         assertEquals(1L, types.get(0).getId());
@@ -34,10 +36,10 @@ class CoreTypesApiTest extends BaseApiTest {
     }
 
     @Test
-    void getType_returnsSingleParsed() throws IOException, SportMonksException {
+    void getTypeById_returnsSingleParsed() throws IOException, SportMonksException {
         enqueue("type_detail.json");
 
-        Type type = api.getType("1");
+        Type type = api.getTypeById(1L);
 
         assertNotNull(type);
         assertEquals(1L, type.getId());
@@ -46,23 +48,44 @@ class CoreTypesApiTest extends BaseApiTest {
     }
 
     @Test
-    void getType_urlContainsId() throws IOException, SportMonksException, InterruptedException {
+    void getTypeById_urlContainsId() throws IOException, SportMonksException, InterruptedException {
         enqueue("type_detail.json");
 
-        api.getType("1");
+        api.getTypeById(1L);
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("types/1"),
                 "Expected path with type id, got: " + request.getPath());
     }
 
+    @Test
+    void getTypesByEntity_usesEntitiesPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("types_by_entity.json");
+
+        api.getTypesByEntity("fixtures");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("types/entities/fixtures"),
+                "Expected types/entities path, got: " + request.getPath());
+    }
+
+    @Test
+    void getTypesByEntity_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("types_by_entity.json");
+
+        List<Type> types = api.getTypesByEntity("fixtures");
+
+        assertEquals(2, types.size());
+        assertEquals("Goal", types.get(0).getName());
+    }
+
     // --- Timezones ---
 
     @Test
-    void getTimezones_returnsParsedList() throws IOException, SportMonksException {
+    void getAllTimezones_returnsParsedList() throws IOException, SportMonksException {
         enqueue("timezones.json");
 
-        List<String> timezones = api.getTimezones();
+        List<String> timezones = api.getAllTimezones();
 
         assertEquals(4, timezones.size());
         assertEquals("Africa/Abidjan", timezones.get(0));
@@ -70,10 +93,10 @@ class CoreTypesApiTest extends BaseApiTest {
     }
 
     @Test
-    void getTimezones_urlContainsTimezones() throws IOException, SportMonksException, InterruptedException {
+    void getAllTimezones_urlContainsTimezones() throws IOException, SportMonksException, InterruptedException {
         enqueue("timezones.json");
 
-        api.getTimezones();
+        api.getAllTimezones();
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("timezones"),
@@ -83,16 +106,27 @@ class CoreTypesApiTest extends BaseApiTest {
     // --- Filters ---
 
     @Test
-    void getFilters_returnsParsedMap() throws IOException, SportMonksException {
+    void getAllEntityFilters_returnsParsedMap() throws IOException, SportMonksException {
         enqueue("filters.json");
 
-        Map<String, List<String>> filters = api.getFilters();
+        Map<String, List<String>> filters = api.getAllEntityFilters();
 
         assertNotNull(filters);
         assertTrue(filters.containsKey("fixtures"));
         assertEquals(2, filters.get("fixtures").size());
         assertEquals("fixtureStatisticTypes", filters.get("fixtures").get(0));
         assertTrue(filters.containsKey("leagues"));
+    }
+
+    @Test
+    void getAllEntityFilters_usesFiltersEntitiesPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("filters.json");
+
+        api.getAllEntityFilters();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("filters/entities"),
+                "Expected filters/entities path, got: " + request.getPath());
     }
 
     // --- MySportmonks ---
@@ -115,8 +149,10 @@ class CoreTypesApiTest extends BaseApiTest {
         api.getMyApi();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("my/api"),
-                "Expected my/api path, got: " + request.getPath());
+        assertTrue(request.getPath().contains("api"),
+                "Expected api path, got: " + request.getPath());
+        assertFalse(request.getPath().startsWith("/core/"),
+                "Should not use core base, got: " + request.getPath());
     }
 
     @Test
@@ -140,7 +176,73 @@ class CoreTypesApiTest extends BaseApiTest {
         api.getMyLeagues();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("my/leagues"),
-                "Expected my/leagues path, got: " + request.getPath());
+        assertTrue(request.getPath().contains("leagues"),
+                "Expected leagues path, got: " + request.getPath());
+    }
+
+    @Test
+    void getMyEnrichments_usesEnrichmentsPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("my_enrichments.json");
+
+        api.getMyEnrichments();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("enrichments"),
+                "Expected enrichments path, got: " + request.getPath());
+    }
+
+    @Test
+    void getMyEnrichments_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("my_enrichments.json");
+
+        List<String> enrichments = api.getMyEnrichments();
+
+        assertEquals(3, enrichments.size());
+        assertEquals("myfixtures", enrichments.get(0));
+    }
+
+    @Test
+    void getMyResources_usesResourcesPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("my_resources.json");
+
+        api.getMyResources();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("resources"),
+                "Expected resources path, got: " + request.getPath());
+    }
+
+    @Test
+    void getMyResources_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("my_resources.json");
+
+        List<MyResource> resources = api.getMyResources();
+
+        assertEquals(2, resources.size());
+        assertEquals("fixtures", resources.get(0).getName());
+        assertEquals("/v3/football/fixtures", resources.get(0).getEndpoint());
+    }
+
+    @Test
+    void getMyUsage_usesUsagePath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("my_usage.json");
+
+        api.getMyUsage();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("usage"),
+                "Expected usage path, got: " + request.getPath());
+    }
+
+    @Test
+    void getMyUsage_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("my_usage.json");
+
+        List<MyUsage> usages = api.getMyUsage();
+
+        assertEquals(2, usages.size());
+        assertEquals(1, usages.get(0).getSportId().intValue());
+        assertEquals(145, usages.get(0).getRequests().intValue());
+        assertEquals("2024-10-26", usages.get(0).getDate());
     }
 }
