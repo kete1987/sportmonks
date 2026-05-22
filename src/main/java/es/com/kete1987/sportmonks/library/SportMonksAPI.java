@@ -7,6 +7,18 @@ import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.EmptyStringToNumberTypeAdapter;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
+import es.com.kete1987.sportmonks.library.core.model.city.CitiesResponse;
+import es.com.kete1987.sportmonks.library.core.model.city.City;
+import es.com.kete1987.sportmonks.library.core.model.city.CityResponse;
+import es.com.kete1987.sportmonks.library.core.model.continent.Continent;
+import es.com.kete1987.sportmonks.library.core.model.continent.ContinentResponse;
+import es.com.kete1987.sportmonks.library.core.model.continent.ContinentsResponse;
+import es.com.kete1987.sportmonks.library.core.model.country.CountriesResponse;
+import es.com.kete1987.sportmonks.library.core.model.country.Country;
+import es.com.kete1987.sportmonks.library.core.model.country.CountryResponse;
+import es.com.kete1987.sportmonks.library.core.model.region.Region;
+import es.com.kete1987.sportmonks.library.core.model.region.RegionResponse;
+import es.com.kete1987.sportmonks.library.core.model.region.RegionsResponse;
 import es.com.kete1987.sportmonks.library.football.model.league.League;
 import es.com.kete1987.sportmonks.library.football.model.league.LeagueResponse;
 import es.com.kete1987.sportmonks.library.football.model.league.LeaguesResponse;
@@ -48,6 +60,7 @@ public class SportMonksAPI {
     private final OkHttpClient httpClient;
     private final String footballBase;
     private final String oddsBase;
+    private final String coreBase;
     private volatile String rateLimitTotal;
     private volatile String rateLimitRemaining;
 
@@ -61,13 +74,15 @@ public class SportMonksAPI {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build(),
                 Constants.baseURLFootball,
-                Constants.baseURLOdds);
+                Constants.baseURLOdds,
+                Constants.baseURLCore);
     }
 
-    SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase) {
+    SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase) {
         this.httpClient = client;
         this.footballBase = footballBase;
         this.oddsBase = oddsBase;
+        this.coreBase = coreBase;
     }
 
     public String getRemainingRequests() {
@@ -109,6 +124,10 @@ public class SportMonksAPI {
 
     private HttpUrl.Builder oddsUrl(String path) {
         return HttpUrl.parse(oddsBase + path).newBuilder();
+    }
+
+    private HttpUrl.Builder coreUrl(String path) {
+        return HttpUrl.parse(coreBase + path).newBuilder();
     }
 
     private HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {
@@ -390,5 +409,109 @@ public class SportMonksAPI {
         HttpUrl url = withIncludes(footballUrl("rounds/" + roundId), includes).build();
         RoundResponse resp = gson().fromJson(execute(url), RoundResponse.class);
         return resp != null ? resp.getData() : null;
+    }
+
+    // -------------------------------------------------------------------------
+    // Core — Continents
+    // -------------------------------------------------------------------------
+
+    public List<Continent> getContinents(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("continents"), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        ContinentsResponse resp = g.fromJson(body, ContinentsResponse.class);
+        List<Continent> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, ContinentsResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public Continent getContinent(String continentId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("continents/" + continentId), includes).build();
+        return gson().fromJson(execute(url), ContinentResponse.class).getData();
+    }
+
+    // -------------------------------------------------------------------------
+    // Core — Countries
+    // -------------------------------------------------------------------------
+
+    public List<Country> getCountries(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("countries"), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        CountriesResponse resp = g.fromJson(body, CountriesResponse.class);
+        List<Country> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, CountriesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public Country getCountry(String countryId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("countries/" + countryId), includes).build();
+        return gson().fromJson(execute(url), CountryResponse.class).getData();
+    }
+
+    // -------------------------------------------------------------------------
+    // Core — Regions
+    // -------------------------------------------------------------------------
+
+    public List<Region> getRegions(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("regions"), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        RegionsResponse resp = g.fromJson(body, RegionsResponse.class);
+        List<Region> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, RegionsResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public Region getRegion(String regionId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("regions/" + regionId), includes).build();
+        return gson().fromJson(execute(url), RegionResponse.class).getData();
+    }
+
+    // -------------------------------------------------------------------------
+    // Core — Cities
+    // -------------------------------------------------------------------------
+
+    public List<City> getCities(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("cities"), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        CitiesResponse resp = g.fromJson(body, CitiesResponse.class);
+        List<City> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, CitiesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public City getCity(String cityId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(coreUrl("cities/" + cityId), includes).build();
+        return gson().fromJson(execute(url), CityResponse.class).getData();
     }
 }

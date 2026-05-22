@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 1, "country_id": 1, "name": "Bavaria"},
+    {"id": 2, "country_id": 1, "name": "Berlin"}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "next_page": null, "has_more": false}
+}
