@@ -101,24 +101,24 @@ class FixtureApiTest extends BaseApiTest {
     }
 
     // -------------------------------------------------------------------------
-    // getLatestLivescores
+    // getLatestUpdatedLivescores
     // -------------------------------------------------------------------------
 
     @Test
-    void getLatestLivescores_usesLatestPath() throws IOException, SportMonksException, InterruptedException {
+    void getLatestUpdatedLivescores_usesLatestPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("fixtures_single_page.json");
 
-        api.getLatestLivescores();
+        api.getLatestUpdatedLivescores();
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("livescores/latest"));
     }
 
     @Test
-    void getLatestLivescores_returnsParsedList() throws IOException, SportMonksException {
+    void getLatestUpdatedLivescores_returnsParsedList() throws IOException, SportMonksException {
         enqueue("fixtures_single_page.json");
 
-        List<MatchDetail> matches = api.getLatestLivescores();
+        List<MatchDetail> matches = api.getLatestUpdatedLivescores();
 
         assertEquals(2, matches.size());
         assertEquals(1, matches.get(0).getId().intValue());
@@ -199,24 +199,24 @@ class FixtureApiTest extends BaseApiTest {
     }
 
     // -------------------------------------------------------------------------
-    // getHeadToHead
+    // getFixturesByHeadToHead
     // -------------------------------------------------------------------------
 
     @Test
-    void getHeadToHead_usesHeadToHeadPath() throws IOException, SportMonksException, InterruptedException {
+    void getFixturesByHeadToHead_usesHeadToHeadPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("fixtures_single_page.json");
 
-        api.getHeadToHead("10", "20");
+        api.getFixturesByHeadToHead(10L, 20L);
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("fixtures/head-to-head/10/20"));
     }
 
     @Test
-    void getHeadToHead_returnsParsedList() throws IOException, SportMonksException {
+    void getFixturesByHeadToHead_returnsParsedList() throws IOException, SportMonksException {
         enqueue("fixtures_single_page.json");
 
-        List<MatchDetail> matches = api.getHeadToHead("10", "20");
+        List<MatchDetail> matches = api.getFixturesByHeadToHead(10L, 20L);
 
         assertEquals(2, matches.size());
         assertEquals(1, matches.get(0).getId().intValue());
@@ -246,24 +246,93 @@ class FixtureApiTest extends BaseApiTest {
     }
 
     // -------------------------------------------------------------------------
-    // getLatestFixtures
+    // getLatestUpdatedFixtures
     // -------------------------------------------------------------------------
 
     @Test
-    void getLatestFixtures_usesLatestPath() throws IOException, SportMonksException, InterruptedException {
+    void getLatestUpdatedFixtures_usesLatestPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("fixtures_single_page.json");
 
-        api.getLatestFixtures();
+        api.getLatestUpdatedFixtures();
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("fixtures/latest"));
     }
 
     @Test
-    void getLatestFixtures_returnsParsedList() throws IOException, SportMonksException {
+    void getLatestUpdatedFixtures_returnsParsedList() throws IOException, SportMonksException {
         enqueue("fixtures_single_page.json");
 
-        List<MatchDetail> matches = api.getLatestFixtures();
+        List<MatchDetail> matches = api.getLatestUpdatedFixtures();
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getUpcomingFixturesByMarket
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getUpcomingFixturesByMarket_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getUpcomingFixturesByMarket(5L);
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/upcoming/markets/5"));
+    }
+
+    @Test
+    void getUpcomingFixturesByMarket_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getUpcomingFixturesByMarket(5L);
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getUpcomingFixturesByTvStation
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getUpcomingFixturesByTvStation_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getUpcomingFixturesByTvStation(7L);
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/upcoming/tv-stations/7"));
+    }
+
+    @Test
+    void getUpcomingFixturesByTvStation_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getUpcomingFixturesByTvStation(7L);
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getPastFixturesByTvStation
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getPastFixturesByTvStation_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getPastFixturesByTvStation(7L);
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/past/tv-stations/7"));
+    }
+
+    @Test
+    void getPastFixturesByTvStation_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getPastFixturesByTvStation(7L);
 
         assertEquals(2, matches.size());
     }

@@ -230,24 +230,39 @@ public class SportMonksAPI {
         return fetchMatchList(url);
     }
 
-    public List<MatchDetail> getLatestLivescores(String... includes) throws IOException, SportMonksException {
+    public List<MatchDetail> getLatestUpdatedLivescores(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("livescores/latest"), includes).build();
         return gson().fromJson(execute(url), MatchsResponse.class).getData();
     }
 
-    public List<MatchDetail> getHeadToHead(String team1Id, String team2Id, String... includes) throws IOException, SportMonksException {
+    public List<MatchDetail> getFixturesByHeadToHead(long team1Id, long team2Id, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("fixtures/head-to-head/" + team1Id + "/" + team2Id), includes).build();
         return fetchMatchList(url);
     }
 
-    public List<MatchDetail> searchFixtures(String query, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/search/" + query), includes).build();
+    public List<MatchDetail> searchFixtures(String name, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/search/" + name), includes).build();
         return fetchMatchList(url);
     }
 
-    public List<MatchDetail> getLatestFixtures(String... includes) throws IOException, SportMonksException {
+    public List<MatchDetail> getLatestUpdatedFixtures(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("fixtures/latest"), includes).build();
         return gson().fromJson(execute(url), MatchsResponse.class).getData();
+    }
+
+    public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/upcoming/markets/" + marketId), includes).build();
+        return fetchMatchList(url);
+    }
+
+    public List<MatchDetail> getUpcomingFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/upcoming/tv-stations/" + tvStationId), includes).build();
+        return fetchMatchList(url);
+    }
+
+    public List<MatchDetail> getPastFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/past/tv-stations/" + tvStationId), includes).build();
+        return fetchMatchList(url);
     }
 
     public MatchDetail getMatchDetail(String matchId) throws IOException, SportMonksException {
