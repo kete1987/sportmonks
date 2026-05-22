@@ -1,0 +1,34 @@
+{
+  "data": {
+    "id": 1,
+    "name": "FC Barcelona vs Real Madrid",
+    "starting_at": "2024-10-26 20:00:00",
+    "result_info": "FC Barcelona won after full time.",
+    "leg": "1/1",
+    "length": 90,
+    "participants": [
+      {
+        "id": 9,
+        "name": "FC Barcelona",
+        "meta": { "location": "home", "winner": true, "position": 1 }
+      },
+      {
+        "id": 10,
+        "name": "Real Madrid",
+        "meta": { "location": "away", "winner": false, "position": 2 }
+      }
+    ],
+    "scores": [
+      {
+        "id": 11,
+        "description": "CURRENT",
+        "score": { "goals": 3, "participant": "home" }
+      },
+      {
+        "id": 12,
+        "description": "CURRENT",
+        "score": { "goals": 1, "participant": "away" }
+      }
+    ]
+  }
+}

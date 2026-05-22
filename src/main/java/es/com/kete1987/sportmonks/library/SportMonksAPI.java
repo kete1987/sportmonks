@@ -46,6 +46,8 @@ import java.util.concurrent.TimeUnit;
 public class SportMonksAPI {
 
     private final OkHttpClient httpClient;
+    private final String footballBase;
+    private final String oddsBase;
     private volatile String rateLimitTotal;
     private volatile String rateLimitRemaining;
 
@@ -57,11 +59,15 @@ public class SportMonksAPI {
                                 .build()))
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
-                .build());
+                .build(),
+                Constants.baseURLFootball,
+                Constants.baseURLOdds);
     }
 
-    SportMonksAPI(OkHttpClient client) {
+    SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase) {
         this.httpClient = client;
+        this.footballBase = footballBase;
+        this.oddsBase = oddsBase;
     }
 
     public String getRemainingRequests() {
@@ -98,11 +104,11 @@ public class SportMonksAPI {
     }
 
     private HttpUrl.Builder footballUrl(String path) {
-        return HttpUrl.parse(Constants.baseURLFootball + path).newBuilder();
+        return HttpUrl.parse(footballBase + path).newBuilder();
     }
 
     private HttpUrl.Builder oddsUrl(String path) {
-        return HttpUrl.parse(Constants.baseURLOdds + path).newBuilder();
+        return HttpUrl.parse(oddsBase + path).newBuilder();
     }
 
     private HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {

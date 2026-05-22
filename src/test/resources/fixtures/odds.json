@@ -1,0 +1,38 @@
+{
+  "data": [
+    {
+      "id": 101,
+      "fixture_id": 1,
+      "market_id": 1,
+      "bookmaker_id": 2,
+      "label": "1",
+      "value": "2.50",
+      "name": "Home",
+      "sort_order": 1,
+      "market_description": "3Way Result",
+      "probability": "40%",
+      "dp3": "2.500",
+      "fractional": "3/2",
+      "american": "+150",
+      "stopped": false,
+      "total": null,
+      "handicap": null
+    },
+    {
+      "id": 102,
+      "fixture_id": 1,
+      "market_id": 1,
+      "bookmaker_id": 2,
+      "label": "X",
+      "value": "3.20",
+      "name": "Draw",
+      "sort_order": 2,
+      "market_description": "3Way Result",
+      "probability": "28%",
+      "dp3": "3.200",
+      "stopped": false,
+      "total": null,
+      "handicap": null
+    }
+  ]
+}

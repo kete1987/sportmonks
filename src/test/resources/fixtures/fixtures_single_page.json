@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "FC Barcelona vs Real Madrid",
+      "starting_at": "2024-10-26 20:00:00",
+      "result_info": null,
+      "leg": "1/1",
+      "length": 90
+    },
+    {
+      "id": 2,
+      "name": "Atletico Madrid vs Sevilla",
+      "starting_at": "2024-10-26 18:00:00",
+      "result_info": null,
+      "leg": "1/1",
+      "length": 90
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}
