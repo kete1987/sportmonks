@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": 1,
+    "sport_id": 1,
+    "country_id": 462,
+    "city_id": 1001,
+    "name": "Michael Oliver",
+    "display_name": "M. Oliver",
+    "gender": "male",
+    "date_of_birth": "1985-03-25"
+  }
+}

@@ -1,4 +1,4 @@
-package es.com.kete1987.sportmonks.library.football.model.team;
+package es.com.kete1987.sportmonks.library.football.model.player;
 
 import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
@@ -6,17 +6,17 @@ import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription
 
 import java.util.List;
 
-public class TeamsResponse {
-    private List<Team> data;
+public class PlayersResponse {
+    private List<Player> data;
     private Pagination pagination;
     private List<Subscription> subscription;
     private RateLimit rate_limit;
     private String timezone;
 
-    public TeamsResponse() {
+    public PlayersResponse() {
     }
 
-    public List<Team> getData() {
+    public List<Player> getData() {
         return data;
     }
 
