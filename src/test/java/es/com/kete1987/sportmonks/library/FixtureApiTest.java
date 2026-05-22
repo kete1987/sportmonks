@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FixtureApiTest extends BaseApiTest {
 
+    // -------------------------------------------------------------------------
+    // getTodayMatches
+    // -------------------------------------------------------------------------
+
     @Test
     void getTodayMatches_returnsParsedList() throws IOException, SportMonksException {
         enqueue("fixtures_single_page.json");
@@ -46,6 +50,227 @@ class FixtureApiTest extends BaseApiTest {
         assertTrue(request.getPath().contains("include=participants%3Bscores")
                 || request.getPath().contains("include=participants;scores"));
     }
+
+    // -------------------------------------------------------------------------
+    // getTodayMatchesFiltered
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getTodayMatchesFiltered_withIds_usesMultiPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getTodayMatchesFiltered(new String[]{"1", "2"});
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores/multi/1,2"));
+    }
+
+    @Test
+    void getTodayMatchesFiltered_withNullIds_fallsBackToTodayMatches() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getTodayMatchesFiltered(null);
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("multi"));
+    }
+
+    // -------------------------------------------------------------------------
+    // getLiveMatches
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getLiveMatches_usesInplayPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLiveMatches();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores/inplay"));
+    }
+
+    @Test
+    void getLiveMatches_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getLiveMatches();
+
+        assertEquals(2, matches.size());
+        assertEquals(1, matches.get(0).getId().intValue());
+    }
+
+    // -------------------------------------------------------------------------
+    // getLatestLivescores
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getLatestLivescores_usesLatestPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLatestLivescores();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores/latest"));
+    }
+
+    @Test
+    void getLatestLivescores_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getLatestLivescores();
+
+        assertEquals(2, matches.size());
+        assertEquals(1, matches.get(0).getId().intValue());
+    }
+
+    // -------------------------------------------------------------------------
+    // getMatchesByDate
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchesByDate_usesDatePath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getMatchesByDate("2024-10-26");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/date/2024-10-26"));
+    }
+
+    @Test
+    void getMatchesByDate_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getMatchesByDate("2024-10-26");
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getMatchesByDateRange
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchesByDateRange_usesBetweenPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getMatchesByDateRange("2024-10-01", "2024-10-31");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/between/2024-10-01/2024-10-31"));
+    }
+
+    @Test
+    void getMatchesByDateRange_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getMatchesByDateRange("2024-10-01", "2024-10-31");
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getMatchesByDateRangeForTeam
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchesByDateRangeForTeam_usesTeamPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getMatchesByDateRangeForTeam("2024-10-01", "2024-10-31", "42");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/between/2024-10-01/2024-10-31/42"));
+    }
+
+    // -------------------------------------------------------------------------
+    // getMatchesByMultipleIDs
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchesByMultipleIDs_usesMultiPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getMatchesByMultipleIDs(new String[]{"1", "2", "3"});
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/multi/1,2,3"));
+    }
+
+    // -------------------------------------------------------------------------
+    // getHeadToHead
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getHeadToHead_usesHeadToHeadPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getHeadToHead("10", "20");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/head-to-head/10/20"));
+    }
+
+    @Test
+    void getHeadToHead_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getHeadToHead("10", "20");
+
+        assertEquals(2, matches.size());
+        assertEquals(1, matches.get(0).getId().intValue());
+    }
+
+    // -------------------------------------------------------------------------
+    // searchFixtures
+    // -------------------------------------------------------------------------
+
+    @Test
+    void searchFixtures_usesSearchPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.searchFixtures("Barcelona");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/search/Barcelona"));
+    }
+
+    @Test
+    void searchFixtures_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.searchFixtures("Barcelona");
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getLatestFixtures
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getLatestFixtures_usesLatestPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLatestFixtures();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("fixtures/latest"));
+    }
+
+    @Test
+    void getLatestFixtures_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getLatestFixtures();
+
+        assertEquals(2, matches.size());
+    }
+
+    // -------------------------------------------------------------------------
+    // getMatchDetail
+    // -------------------------------------------------------------------------
 
     @Test
     void getMatchDetail_returnsParsedDetail() throws IOException, SportMonksException {

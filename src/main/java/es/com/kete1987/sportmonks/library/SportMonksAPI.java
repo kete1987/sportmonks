@@ -230,6 +230,26 @@ public class SportMonksAPI {
         return fetchMatchList(url);
     }
 
+    public List<MatchDetail> getLatestLivescores(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("livescores/latest"), includes).build();
+        return gson().fromJson(execute(url), MatchsResponse.class).getData();
+    }
+
+    public List<MatchDetail> getHeadToHead(String team1Id, String team2Id, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/head-to-head/" + team1Id + "/" + team2Id), includes).build();
+        return fetchMatchList(url);
+    }
+
+    public List<MatchDetail> searchFixtures(String query, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/search/" + query), includes).build();
+        return fetchMatchList(url);
+    }
+
+    public List<MatchDetail> getLatestFixtures(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("fixtures/latest"), includes).build();
+        return gson().fromJson(execute(url), MatchsResponse.class).getData();
+    }
+
     public MatchDetail getMatchDetail(String matchId) throws IOException, SportMonksException {
         return getMatchDetail(matchId, "venue", "state", "lineups", "events", "statistics", "periods", "participants", "scores");
     }
