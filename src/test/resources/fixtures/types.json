@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 1, "name": "Goal", "code": "goal", "developer_name": "GOAL", "model_type": "sport", "stat_group": null},
+    {"id": 2, "name": "Yellow Card", "code": "yellowcard", "developer_name": "YELLOWCARD", "model_type": "sport", "stat_group": null}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "next_page": null, "has_more": false}
+}

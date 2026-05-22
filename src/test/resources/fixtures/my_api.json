@@ -1,0 +1,8 @@
+{
+  "data": {
+    "sport_id": 1,
+    "subscription": [],
+    "rate_limit": {"resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "Fixture"},
+    "timezone": "UTC"
+  }
+}
