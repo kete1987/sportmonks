@@ -53,8 +53,12 @@ import es.com.kete1987.sportmonks.library.football.model.season.SeasonsResponse;
 import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
 import es.com.kete1987.sportmonks.library.football.model.stage.StageResponse;
 import es.com.kete1987.sportmonks.library.football.model.stage.StagesResponse;
+import es.com.kete1987.sportmonks.library.football.model.schedule.Schedule;
+import es.com.kete1987.sportmonks.library.football.model.schedule.SchedulesResponse;
 import es.com.kete1987.sportmonks.library.football.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.football.model.standings.StandingsResponse;
+import es.com.kete1987.sportmonks.library.football.model.statistic.Statistic;
+import es.com.kete1987.sportmonks.library.football.model.statistic.StatisticsResponse;
 import es.com.kete1987.sportmonks.library.football.model.coach.Coach;
 import es.com.kete1987.sportmonks.library.football.model.coach.CoachResponse;
 import es.com.kete1987.sportmonks.library.football.model.coach.CoachesResponse;
@@ -433,6 +437,80 @@ public class SportMonksAPI {
             map.computeIfAbsent(s.getGroup().getName(), k -> new ArrayList<>()).add(s);
         }
         return map;
+    }
+
+    public List<Standings> getAllStandings(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("standings"), includes).build();
+        StandingsResponse resp = gson().fromJson(execute(url), StandingsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Standings> getStandingsByRound(long roundId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("standings/rounds/" + roundId), includes).build();
+        StandingsResponse resp = gson().fromJson(execute(url), StandingsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Standings> getStandingCorrectionsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("standings/corrections/seasons/" + seasonId), includes).build();
+        StandingsResponse resp = gson().fromJson(execute(url), StandingsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Standings> getLiveStandingsByLeague(long leagueId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("standings/live/leagues/" + leagueId), includes).build();
+        StandingsResponse resp = gson().fromJson(execute(url), StandingsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Standings> getGroupedStandingsByRound(long roundId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("standings/rounds/" + roundId + "/grouped"), includes).build();
+        StandingsResponse resp = gson().fromJson(execute(url), StandingsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    // -------------------------------------------------------------------------
+    // Statistics
+    // -------------------------------------------------------------------------
+
+    public List<Statistic> getSeasonStatsByParticipant(long participantId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("statistics/seasons/participants/" + participantId), includes).build();
+        StatisticsResponse resp = gson().fromJson(execute(url), StatisticsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Statistic> getStatsByStage(long stageId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("statistics/stages/" + stageId), includes).build();
+        StatisticsResponse resp = gson().fromJson(execute(url), StatisticsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Statistic> getStatsByRound(long roundId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("statistics/rounds/" + roundId), includes).build();
+        StatisticsResponse resp = gson().fromJson(execute(url), StatisticsResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    // -------------------------------------------------------------------------
+    // Schedules
+    // -------------------------------------------------------------------------
+
+    public List<Schedule> getSchedulesBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("schedules/seasons/" + seasonId), includes).build();
+        SchedulesResponse resp = gson().fromJson(execute(url), SchedulesResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Schedule> getSchedulesByTeam(long teamId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("schedules/teams/" + teamId), includes).build();
+        SchedulesResponse resp = gson().fromJson(execute(url), SchedulesResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Schedule> getSchedulesBySeasonAndTeam(long seasonId, long teamId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("schedules/seasons/" + seasonId + "/teams/" + teamId), includes).build();
+        SchedulesResponse resp = gson().fromJson(execute(url), SchedulesResponse.class);
+        return resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------

@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "id": 301,
+      "participant_id": 3,
+      "sport_id": 1,
+      "league_id": 501,
+      "season_id": 19686,
+      "position": 5,
+      "result": "Correction",
+      "points": -3
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "id": 101,
+      "participant_id": 1,
+      "sport_id": 1,
+      "league_id": 501,
+      "season_id": 19686,
+      "stage_id": 1,
+      "group_id": null,
+      "round_id": null,
+      "standing_rule_id": null,
+      "position": 1,
+      "result": "Champions League",
+      "points": 89
+    },
+    {
+      "id": 102,
+      "participant_id": 2,
+      "sport_id": 1,
+      "league_id": 501,
+      "season_id": 19686,
+      "stage_id": 1,
+      "group_id": null,
+      "round_id": null,
+      "standing_rule_id": null,
+      "position": 2,
+      "result": "Champions League",
+      "points": 85
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}
