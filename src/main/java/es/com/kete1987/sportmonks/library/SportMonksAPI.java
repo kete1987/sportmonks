@@ -39,9 +39,14 @@ import es.com.kete1987.sportmonks.library.football.model.league.LeaguesResponse;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchData;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchsResponse;
+import es.com.kete1987.sportmonks.library.football.model.match.State;
+import es.com.kete1987.sportmonks.library.football.model.match.StateResponse;
+import es.com.kete1987.sportmonks.library.football.model.match.StatesResponse;
 import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
 import es.com.kete1987.sportmonks.library.football.model.rounds.RoundResponse;
 import es.com.kete1987.sportmonks.library.football.model.rounds.RoundsResponse;
+import es.com.kete1987.sportmonks.library.football.model.season.Bracket;
+import es.com.kete1987.sportmonks.library.football.model.season.BracketsResponse;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonsResponse;
@@ -308,13 +313,48 @@ public class SportMonksAPI {
         return list;
     }
 
-    public SeasonData getSeasonData(String seasonId) throws IOException, SportMonksException {
-        return getSeasonData(seasonId, "stages", "fixtures");
+    public SeasonData getSeasonById(long id, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("seasons/" + id), includes).build();
+        return gson().fromJson(execute(url), SeasonDataResponse.class).getSeasonData();
     }
 
-    public SeasonData getSeasonData(String seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("seasons/" + seasonId), includes).build();
-        return gson().fromJson(execute(url), SeasonDataResponse.class).getSeasonData();
+    public List<SeasonData> getSeasonsByTeam(long teamId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("seasons/teams/" + teamId), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        SeasonsResponse resp = g.fromJson(body, SeasonsResponse.class);
+        List<SeasonData> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, SeasonsResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<SeasonData> searchSeasons(String name, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("seasons/search/" + name), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        SeasonsResponse resp = g.fromJson(body, SeasonsResponse.class);
+        List<SeasonData> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, SeasonsResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<Bracket> getBracketsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("seasons/" + seasonId + "/brackets"), includes).build();
+        return gson().fromJson(execute(url), BracketsResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -412,7 +452,7 @@ public class SportMonksAPI {
     // Leagues
     // -------------------------------------------------------------------------
 
-    public List<League> getLeagues(String... includes) throws IOException, SportMonksException {
+    public List<League> getAllLeagues(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("leagues"), includes).build();
         Gson g = gson();
         String body = execute(url);
@@ -429,42 +469,182 @@ public class SportMonksAPI {
         return list;
     }
 
-    public League getLeague(String leagueId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("leagues/" + leagueId), includes).build();
+    public League getLeagueById(long id, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/" + id), includes).build();
         LeagueResponse resp = gson().fromJson(execute(url), LeagueResponse.class);
         return resp != null ? resp.getData() : null;
+    }
+
+    public List<League> getLiveLeagues(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/live"), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        LeaguesResponse resp = g.fromJson(body, LeaguesResponse.class);
+        List<League> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, LeaguesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<League> getLeaguesByDate(String date, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/date/" + date), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        LeaguesResponse resp = g.fromJson(body, LeaguesResponse.class);
+        List<League> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, LeaguesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<League> getLeaguesByCountry(long countryId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/countries/" + countryId), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        LeaguesResponse resp = g.fromJson(body, LeaguesResponse.class);
+        List<League> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, LeaguesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<League> searchLeagues(String name, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/search/" + name), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        LeaguesResponse resp = g.fromJson(body, LeaguesResponse.class);
+        List<League> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, LeaguesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<League> getLeaguesByTeam(long teamId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/teams/" + teamId), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        LeaguesResponse resp = g.fromJson(body, LeaguesResponse.class);
+        List<League> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, LeaguesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
+    }
+
+    public List<League> getCurrentLeaguesByTeam(long teamId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("leagues/teams/" + teamId + "/current"), includes).build();
+        Gson g = gson();
+        String body = execute(url);
+        LeaguesResponse resp = g.fromJson(body, LeaguesResponse.class);
+        List<League> list = new ArrayList<>(resp.getData());
+        int page = 1;
+        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+            page++;
+            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            body = execute(paged);
+            resp = g.fromJson(body, LeaguesResponse.class);
+            list.addAll(resp.getData());
+        }
+        return list;
     }
 
     // -------------------------------------------------------------------------
     // Stages
     // -------------------------------------------------------------------------
 
-    public List<Stage> getStages(String seasonId, String... includes) throws IOException, SportMonksException {
+    public List<Stage> getAllStages(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("stages"), includes).build();
+        StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
+        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Stage> getStagesBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("stages/seasons/" + seasonId), includes).build();
         StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
-    public Stage getStage(String stageId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("stages/" + stageId), includes).build();
+    public Stage getStageById(long id, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("stages/" + id), includes).build();
         StageResponse resp = gson().fromJson(execute(url), StageResponse.class);
         return resp != null ? resp.getData() : null;
+    }
+
+    public List<Stage> searchStages(String name, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("stages/search/" + name), includes).build();
+        StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
+        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     // -------------------------------------------------------------------------
     // Rounds
     // -------------------------------------------------------------------------
 
-    public List<Round> getRounds(String seasonId, String... includes) throws IOException, SportMonksException {
+    public List<Round> getAllRounds(String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("rounds"), includes).build();
+        RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
+        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    public List<Round> getRoundsBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("rounds/seasons/" + seasonId), includes).build();
         RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
-    public Round getRound(String roundId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("rounds/" + roundId), includes).build();
+    public Round getRoundById(long id, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("rounds/" + id), includes).build();
         RoundResponse resp = gson().fromJson(execute(url), RoundResponse.class);
         return resp != null ? resp.getData() : null;
+    }
+
+    public List<Round> searchRounds(String name, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("rounds/search/" + name), includes).build();
+        RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
+        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    // -------------------------------------------------------------------------
+    // States
+    // -------------------------------------------------------------------------
+
+    public List<State> getAllStates() throws IOException, SportMonksException {
+        HttpUrl url = footballUrl("states").build();
+        return gson().fromJson(execute(url), StatesResponse.class).getData();
+    }
+
+    public State getStateById(long id) throws IOException, SportMonksException {
+        HttpUrl url = footballUrl("states/" + id).build();
+        return gson().fromJson(execute(url), StateResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------

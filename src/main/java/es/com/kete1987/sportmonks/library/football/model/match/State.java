@@ -5,6 +5,7 @@ public class State {
     private String state;
     private String name;
     private String short_name;
+    private String developer_name;
     private Type type;
 
     public State() {
@@ -24,6 +25,10 @@ public class State {
 
     public String getShortName() {
         return short_name;
+    }
+
+    public String getDeveloperName() {
+        return developer_name;
     }
 
     public Type getType() {

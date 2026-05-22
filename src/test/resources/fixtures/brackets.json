@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "sport_id": 1,
+      "season_id": 23614,
+      "name": "Quarter Finals"
+    },
+    {
+      "id": 2,
+      "sport_id": 1,
+      "season_id": 23614,
+      "name": "Semi Finals"
+    }
+  ]
+}

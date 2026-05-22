@@ -1,0 +1,11 @@
+{
+  "data": {
+    "id": 1,
+    "sport_id": 1,
+    "league_id": 8,
+    "season_id": 23614,
+    "name": "Regular Season",
+    "finished": false,
+    "is_current": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "state": "NS",
+      "name": "Not Started",
+      "short_name": "NS",
+      "developer_name": "NOT_STARTED"
+    },
+    {
+      "id": 2,
+      "state": "LIVE",
+      "name": "In Play",
+      "short_name": "LIVE",
+      "developer_name": "IN_PLAY"
+    }
+  ]
+}
