@@ -4,9 +4,12 @@ public class Bookmaker {
     private Long id;
     private Long legacy_id;
     private String name;
+    private String display_name;
+    private Boolean has_streaming;
+    private Boolean is_premium;
+    private String image_path;
 
     public Bookmaker() {
-
     }
 
     public Long getId() {
@@ -19,5 +22,21 @@ public class Bookmaker {
 
     public String getName() {
         return name;
+    }
+
+    public String getDisplayName() {
+        return display_name;
+    }
+
+    public Boolean getHasStreaming() {
+        return has_streaming;
+    }
+
+    public Boolean getIsPremium() {
+        return is_premium;
+    }
+
+    public String getImagePath() {
+        return image_path;
     }
 }

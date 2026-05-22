@@ -6,18 +6,18 @@ import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription
 
 import java.util.List;
 
-public class OddsResponse {
+public class BookmakersResponse {
 
-    private List<Odd> data;
+    private List<Bookmaker> data;
     private Pagination pagination;
     private List<Subscription> subscription;
     private RateLimit rate_limit;
     private String timezone;
 
-    public OddsResponse() {
+    public BookmakersResponse() {
     }
 
-    public List<Odd> getData() {
+    public List<Bookmaker> getData() {
         return data;
     }
 

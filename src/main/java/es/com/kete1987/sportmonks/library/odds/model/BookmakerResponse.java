@@ -1,28 +1,22 @@
 package es.com.kete1987.sportmonks.library.odds.model;
 
-import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
 
 import java.util.List;
 
-public class OddsResponse {
+public class BookmakerResponse {
 
-    private List<Odd> data;
-    private Pagination pagination;
+    private Bookmaker data;
     private List<Subscription> subscription;
     private RateLimit rate_limit;
     private String timezone;
 
-    public OddsResponse() {
+    public BookmakerResponse() {
     }
 
-    public List<Odd> getData() {
+    public Bookmaker getData() {
         return data;
-    }
-
-    public Pagination getPagination() {
-        return pagination;
     }
 
     public List<Subscription> getSubscription() {

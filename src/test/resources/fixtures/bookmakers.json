@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "legacy_id": 10,
+      "name": "Bet365",
+      "display_name": "Bet 365",
+      "has_streaming": true,
+      "is_premium": false,
+      "image_path": "https://cdn.sportmonks.com/bookmakers/bet365.png"
+    },
+    {
+      "id": 2,
+      "legacy_id": 20,
+      "name": "Betfair",
+      "display_name": "Betfair",
+      "has_streaming": false,
+      "is_premium": true,
+      "image_path": "https://cdn.sportmonks.com/bookmakers/betfair.png"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false,
+    "total": 2,
+    "last_page": 1
+  },
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "bookmaker" },
+  "timezone": "UTC"
+}
