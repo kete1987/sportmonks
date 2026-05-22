@@ -8,6 +8,12 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
+/**
+ * Handles JSON fields that the Sportmonks API occasionally serializes as "" instead of null for
+ * int/Integer fields. Originated in API v2; no evidence of this in v3 fixtures as of v3.0.0, but
+ * kept as a defensive measure until real API integration tests confirm it is no longer needed.
+ * Safe to remove once task 86c9xz70u (integration tests) verifies no empty-string int fields appear.
+ */
 public class EmptyStringToNumberTypeAdapter extends TypeAdapter<Number> {
     @Override
     public void write(JsonWriter out, Number value)
