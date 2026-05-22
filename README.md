@@ -1,6 +1,6 @@
 # Sportmonks Library
 
-Java library to access the [Sportmonks](https://sportmonks.com) football data API. Supports both API v2 and v3.
+Java library (Java 8+) to access the [Sportmonks](https://sportmonks.com) football data API v3.
 
 ## Add to your project
 
@@ -8,23 +8,17 @@ Java library to access the [Sportmonks](https://sportmonks.com) football data AP
 <dependency>
     <groupId>es.com.kete1987</groupId>
     <artifactId>sportmonks.library</artifactId>
-    <version>2.0.3.3</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
 ## Usage
 
-Get the singleton instance with your API key and call the desired method:
-
 ```java
-// API v3 (recommended)
-SportMonksAPIV3 api = SportMonksAPIV3.getInstance("YOUR_API_KEY");
-
-// API v2 (legacy)
-SportMonksAPIV2 api = SportMonksAPIV2.getInstance("YOUR_API_KEY");
+SportMonksAPI api = new SportMonksAPI("YOUR_API_KEY");
 ```
 
-All methods throw `IOException` and `SportMonksException`. Check remaining rate-limit quota after any call:
+All methods throw `IOException` and `SportMonksException`. Check rate-limit quota after any call:
 
 ```java
 api.getRemainingRequests();
@@ -33,49 +27,86 @@ api.getMaximumRequests();
 
 ## Available methods
 
-Both `SportMonksAPIV2` and `SportMonksAPIV3` expose the same set of methods unless noted.
-
-### Matches
+### Fixtures / Livescores
 * `getTodayMatches(includes...)`
 * `getTodayMatchesFiltered(matchIds, includes...)`
 * `getLiveMatches(includes...)`
+* `getLatestUpdatedLivescores(includes...)`
 * `getMatchesByDate(date, includes...)`
-* `getMatchesByDateRange(beginDate, endDate, includes...)`
-* `getMatchesByDateRangeForTeam(beginDate, endDate, teamId, includes...)`
+* `getMatchesByDateRange(from, to, includes...)`
+* `getMatchesByDateRangeForTeam(from, to, teamId, includes...)`
 * `getMatchesByMultipleIDs(ids, includes...)`
+* `getFixturesByHeadToHead(team1Id, team2Id, includes...)`
+* `searchFixtures(name, includes...)`
+* `getLatestUpdatedFixtures(includes...)`
+* `getUpcomingFixturesByMarket(marketId, includes...)`
+* `getUpcomingFixturesByTvStation(tvStationId, includes...)`
+* `getPastFixturesByTvStation(tvStationId, includes...)`
 * `getMatchDetail(matchId, includes...)`
 
-### Seasons & Rounds
-* `getSeasons()`
-* `getSeasonData(seasonId, includes...)`
-* `getStages(seasonId, includes...)`
-* `getStage(stageId, includes...)` *(v3 only)*
-* `getRounds(seasonId, includes...)`
-* `getRound(roundId, includes...)`
+### Leagues
+* `getAllLeagues(includes...)`
+* `getLeagueById(leagueId, includes...)`
 
-### Teams & Leagues
-* `getTeams(seasonId, includes...)`
-* `getTeam(teamId, includes...)`
-* `getLeagues(includes...)`
-* `getLeague(leagueId, includes...)`
+### Seasons
+* `getAllSeasons(includes...)`
+* `getSeasonById(seasonId, includes...)`
+
+### Stages
+* `getStagesBySeasonId(seasonId, includes...)`
+* `getStageById(stageId, includes...)`
+
+### Rounds
+* `getRoundsBySeasonId(seasonId, includes...)`
+* `getRoundById(roundId, includes...)`
+
+### Teams
+* `getTeamsBySeasonId(seasonId, includes...)`
+* `getTeamById(teamId, includes...)`
 
 ### Standings
 * `getStandings(seasonId, includes...)`
-* `getCupStandings(seasonId)` *(v2)* / `getStandingsCup(seasonId, includes...)` *(v3)*
-
-### Odds
-* `getMatchOdds(matchId, includes...)`
-* `getMatchOddsByMarket(matchId, market, includes...)`
-* `getMatchOddsByBookmaker(matchId, bookmakerId)` *(v3 only)*
+* `getStandingsCup(seasonId, includes...)`
 
 ### Top Scorers
 * `getTopScores(seasonId, includes...)`
-* `getAggregatedTopScores(seasonId, includes...)` *(v2 only)*
-* `getTopScoresFiltered(seasonId, typeId, includes...)` *(v3 only)*
-* `getTopScoresByStage(stageId, includes...)` *(v3 only)*
+* `getTopScoresFiltered(seasonId, typeId, includes...)`
+* `getTopScoresByStage(stageId, includes...)`
 
-### Other
+### Venues
 * `getVenues(seasonId)`
+
+### Odds
+* `getMatchOdds(matchId, includes...)`
+* `getMatchOddsByMarket(matchId, marketId)`
+* `getMatchOddsByBookmaker(matchId, bookmakerId)`
+
+### Core — Geography
+* `getAllContinents(includes...)`
+* `getContinentById(id, includes...)`
+* `getAllCountries(includes...)`
+* `getCountryById(id, includes...)`
+* `searchCountries(name, includes...)`
+* `getAllRegions(includes...)`
+* `getRegionById(id, includes...)`
+* `searchRegions(name, includes...)`
+* `getAllCities(includes...)`
+* `getCityById(id, includes...)`
+* `searchCities(name, includes...)`
+
+### Core — Metadata
+* `getAllTypes(includes...)`
+* `getTypeById(id)`
+* `getTypesByEntity(entity)`
+* `getAllTimezones()`
+* `getAllEntityFilters()`
+
+### My Sportmonks
+* `getMyApi()`
+* `getMyLeagues(includes...)`
+* `getMyResources()`
+* `getMyEnrichments()`
+* `getMyUsage()`
 
 See the [Sportmonks API documentation](https://docs.sportmonks.com/football) for details on includes and parameters.
 
