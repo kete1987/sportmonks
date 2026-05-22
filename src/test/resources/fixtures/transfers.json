@@ -1,0 +1,35 @@
+{
+  "data": [
+    {
+      "id": 2001,
+      "player_id": 101,
+      "type_id": 1,
+      "from_team_id": 1,
+      "to_team_id": 2,
+      "position_id": 10,
+      "date": "2023-07-01",
+      "career_ended": false,
+      "completed": true,
+      "amount": 50000000
+    },
+    {
+      "id": 2002,
+      "player_id": 102,
+      "type_id": 1,
+      "from_team_id": 3,
+      "to_team_id": 4,
+      "position_id": 11,
+      "date": "2023-07-05",
+      "career_ended": false,
+      "completed": true,
+      "amount": null
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}
