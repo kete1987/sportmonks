@@ -22,3 +22,11 @@ jobs:
 
       - name: Build and test
         run: mvn test --batch-mode
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: JUnit Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
