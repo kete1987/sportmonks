@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "id": 4001,
+      "fixture_id": 100,
+      "season_id": 19686,
+      "author": "SportMonks",
+      "title": "Preview: Team A vs Team B",
+      "body": "An exciting match is expected between Team A and Team B.",
+      "image_path": "https://cdn.sportmonks.com/news/4001.jpg",
+      "created_at": "2024-01-01T08:00:00.000000Z",
+      "published_at": "2024-01-01T09:00:00.000000Z",
+      "type": "pre-match"
+    }
+  ],
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "news" },
+  "timezone": "UTC"
+}
