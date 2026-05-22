@@ -22,7 +22,7 @@ public abstract class BaseApiTest {
 
         String base = server.url("/").toString();
         OkHttpClient client = new OkHttpClient();
-        api = new SportMonksAPI(client, base, base, base);
+        api = new SportMonksAPI(client, base, base, base, base);
     }
 
     @AfterEach

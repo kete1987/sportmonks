@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "name": "fixtures",
+      "endpoint": "/v3/football/fixtures",
+      "sport_id": 1
+    },
+    {
+      "name": "leagues",
+      "endpoint": "/v3/football/leagues",
+      "sport_id": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "sport_id": 1,
+      "requests": 145,
+      "date": "2024-10-26"
+    },
+    {
+      "sport_id": 1,
+      "requests": 302,
+      "date": "2024-10-25"
+    }
+  ]
+}

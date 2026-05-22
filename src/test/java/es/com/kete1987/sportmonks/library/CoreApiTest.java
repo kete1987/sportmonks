@@ -18,10 +18,10 @@ class CoreApiTest extends BaseApiTest {
     // --- Continents ---
 
     @Test
-    void getContinents_returnsParsedList() throws IOException, SportMonksException {
+    void getAllContinents_returnsParsedList() throws IOException, SportMonksException {
         enqueue("continents.json");
 
-        List<Continent> continents = api.getContinents();
+        List<Continent> continents = api.getAllContinents();
 
         assertEquals(2, continents.size());
         assertEquals(1L, continents.get(0).getId());
@@ -32,10 +32,10 @@ class CoreApiTest extends BaseApiTest {
     }
 
     @Test
-    void getContinents_urlUsesCoreBase() throws IOException, SportMonksException, InterruptedException {
+    void getAllContinents_urlUsesCoreBase() throws IOException, SportMonksException, InterruptedException {
         enqueue("continents.json");
 
-        api.getContinents();
+        api.getAllContinents();
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("continents"),
@@ -43,10 +43,10 @@ class CoreApiTest extends BaseApiTest {
     }
 
     @Test
-    void getContinent_returnsSingleParsed() throws IOException, SportMonksException {
+    void getContinentById_returnsSingleParsed() throws IOException, SportMonksException {
         enqueue("continent_detail.json");
 
-        Continent continent = api.getContinent("1");
+        Continent continent = api.getContinentById(1L);
 
         assertNotNull(continent);
         assertEquals(1L, continent.getId());
@@ -55,10 +55,10 @@ class CoreApiTest extends BaseApiTest {
     }
 
     @Test
-    void getContinent_urlContainsId() throws IOException, SportMonksException, InterruptedException {
+    void getContinentById_urlContainsId() throws IOException, SportMonksException, InterruptedException {
         enqueue("continent_detail.json");
 
-        api.getContinent("1");
+        api.getContinentById(1L);
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("continents/1"),
@@ -68,10 +68,10 @@ class CoreApiTest extends BaseApiTest {
     // --- Countries ---
 
     @Test
-    void getCountries_returnsParsedList() throws IOException, SportMonksException {
+    void getAllCountries_returnsParsedList() throws IOException, SportMonksException {
         enqueue("countries.json");
 
-        List<Country> countries = api.getCountries();
+        List<Country> countries = api.getAllCountries();
 
         assertEquals(2, countries.size());
         assertEquals(1L, countries.get(0).getId());
@@ -84,10 +84,10 @@ class CoreApiTest extends BaseApiTest {
     }
 
     @Test
-    void getCountry_returnsSingleParsed() throws IOException, SportMonksException {
+    void getCountryById_returnsSingleParsed() throws IOException, SportMonksException {
         enqueue("country_detail.json");
 
-        Country country = api.getCountry("1");
+        Country country = api.getCountryById(1L);
 
         assertNotNull(country);
         assertEquals(1L, country.getId());
@@ -96,13 +96,34 @@ class CoreApiTest extends BaseApiTest {
         assertEquals("DEU", country.getIso3());
     }
 
+    @Test
+    void searchCountries_usesSearchPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("countries.json");
+
+        api.searchCountries("Germany");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("countries/search/Germany"),
+                "Expected search path, got: " + request.getPath());
+    }
+
+    @Test
+    void searchCountries_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("countries.json");
+
+        List<Country> countries = api.searchCountries("Germany");
+
+        assertEquals(2, countries.size());
+        assertEquals("Germany", countries.get(0).getName());
+    }
+
     // --- Regions ---
 
     @Test
-    void getRegions_returnsParsedList() throws IOException, SportMonksException {
+    void getAllRegions_returnsParsedList() throws IOException, SportMonksException {
         enqueue("regions.json");
 
-        List<Region> regions = api.getRegions();
+        List<Region> regions = api.getAllRegions();
 
         assertEquals(2, regions.size());
         assertEquals(1L, regions.get(0).getId());
@@ -113,10 +134,10 @@ class CoreApiTest extends BaseApiTest {
     }
 
     @Test
-    void getRegion_returnsSingleParsed() throws IOException, SportMonksException {
+    void getRegionById_returnsSingleParsed() throws IOException, SportMonksException {
         enqueue("region_detail.json");
 
-        Region region = api.getRegion("1");
+        Region region = api.getRegionById(1L);
 
         assertNotNull(region);
         assertEquals(1L, region.getId());
@@ -124,13 +145,33 @@ class CoreApiTest extends BaseApiTest {
         assertEquals(1L, region.getCountryId());
     }
 
+    @Test
+    void searchRegions_usesSearchPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("regions.json");
+
+        api.searchRegions("Bavaria");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("regions/search/Bavaria"),
+                "Expected search path, got: " + request.getPath());
+    }
+
+    @Test
+    void searchRegions_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("regions.json");
+
+        List<Region> regions = api.searchRegions("Bavaria");
+
+        assertEquals(2, regions.size());
+    }
+
     // --- Cities ---
 
     @Test
-    void getCities_returnsParsedList() throws IOException, SportMonksException {
+    void getAllCities_returnsParsedList() throws IOException, SportMonksException {
         enqueue("cities.json");
 
-        List<City> cities = api.getCities();
+        List<City> cities = api.getAllCities();
 
         assertEquals(2, cities.size());
         assertEquals(1L, cities.get(0).getId());
@@ -142,15 +183,35 @@ class CoreApiTest extends BaseApiTest {
     }
 
     @Test
-    void getCity_returnsSingleParsed() throws IOException, SportMonksException {
+    void getCityById_returnsSingleParsed() throws IOException, SportMonksException {
         enqueue("city_detail.json");
 
-        City city = api.getCity("1");
+        City city = api.getCityById(1L);
 
         assertNotNull(city);
         assertEquals(1L, city.getId());
         assertEquals("Munich", city.getName());
         assertEquals("48.1374", city.getLatitude());
         assertEquals("11.5755", city.getLongitude());
+    }
+
+    @Test
+    void searchCities_usesSearchPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("cities.json");
+
+        api.searchCities("Munich");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("cities/search/Munich"),
+                "Expected search path, got: " + request.getPath());
+    }
+
+    @Test
+    void searchCities_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("cities.json");
+
+        List<City> cities = api.searchCities("Munich");
+
+        assertEquals(2, cities.size());
     }
 }

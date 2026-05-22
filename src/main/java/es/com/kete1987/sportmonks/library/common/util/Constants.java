@@ -4,4 +4,5 @@ public class Constants {
     public static final String baseURLFootball = "https://api.sportmonks.com/v3/football/";
     public static final String baseURLOdds     = "https://api.sportmonks.com/v3/odds/";
     public static final String baseURLCore     = "https://api.sportmonks.com/v3/core/";
+    public static final String baseURLMy       = "https://api.sportmonks.com/v3/my/";
 }
