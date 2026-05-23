@@ -1,6 +1,6 @@
 # Migration Guide — v3.0.0
 
-This guide covers migrating from the previous `SportMonksAPIV3` (the `master` branch) to `SportMonksAPI` v3.0.0. The underlying Sportmonks API version has not changed (still v3); only the Java library has been restructured.
+This guide covers migrating from library version **2.0.3.3** (`SportMonksAPIV3`) to **3.0.0** (`SportMonksAPI`). The underlying Sportmonks API version has not changed (still v3); only the Java library has been restructured.
 
 ---
 
