@@ -1,6 +1,6 @@
 # Sportmonks Library
 
-Java library (Java 8+) to access the [Sportmonks](https://sportmonks.com) football data API v3.
+Java library (Java 11+) to access the [Sportmonks](https://sportmonks.com) football data API v3.
 
 ## Add to your project
 
@@ -109,6 +109,10 @@ api.getMaximumRequests();
 * `getMyUsage()`
 
 See the [Sportmonks API documentation](https://docs.sportmonks.com/football) for details on includes and parameters.
+
+## Upgrading from a previous version
+
+See [MIGRATION.md](MIGRATION.md) for a full list of breaking changes, renamed methods, and model package updates.
 
 ## Authors
 Iván Morales
