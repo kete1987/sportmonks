@@ -1,7 +1,5 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
-import java.util.List;
-
 public class LineUpDetails {
     private Long id;
     private Long fixture_id;
