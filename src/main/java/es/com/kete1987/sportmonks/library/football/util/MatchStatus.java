@@ -23,7 +23,7 @@ public class MatchStatus {
     public static final int DELETED = 20;
     public static final int EXTRA_TIME_BREAK = 21;
     public static final int INPLAY_2ND_HALF = 22;
-    public static final int INPLAY_ET_2ND_HALF = 23;
+    public static final int INPLAY_ET_2ND_HALF = 23; // Not listed in v3 docs; may reuse INPLAY_ET(6)
     public static final int PEN_BREAK = 25;
     public static final int PENDING = 26;
 
