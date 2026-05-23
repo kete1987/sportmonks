@@ -137,10 +137,15 @@ public class SportMonksAPI {
     private final String oddsBase;
     private final String coreBase;
     private final String myBase;
+    private final String locale;
     private volatile String rateLimitTotal;
     private volatile String rateLimitRemaining;
 
     public SportMonksAPI(String apiToken) {
+        this(apiToken, null);
+    }
+
+    public SportMonksAPI(String apiToken, String locale) {
         this(new OkHttpClient.Builder()
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
@@ -152,15 +157,21 @@ public class SportMonksAPI {
                 Constants.baseURLFootball,
                 Constants.baseURLOdds,
                 Constants.baseURLCore,
-                Constants.baseURLMy);
+                Constants.baseURLMy,
+                locale);
     }
 
     SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase) {
+        this(client, footballBase, oddsBase, coreBase, myBase, null);
+    }
+
+    private SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase, String locale) {
         this.httpClient = client;
         this.footballBase = footballBase;
         this.oddsBase = oddsBase;
         this.coreBase = coreBase;
         this.myBase = myBase;
+        this.locale = locale;
     }
 
     public String getRemainingRequests() {
@@ -197,19 +208,26 @@ public class SportMonksAPI {
     }
 
     private HttpUrl.Builder footballUrl(String path) {
-        return HttpUrl.parse(footballBase + path).newBuilder();
+        return localeUrl(HttpUrl.parse(footballBase + path).newBuilder());
     }
 
     private HttpUrl.Builder oddsUrl(String path) {
-        return HttpUrl.parse(oddsBase + path).newBuilder();
+        return localeUrl(HttpUrl.parse(oddsBase + path).newBuilder());
     }
 
     private HttpUrl.Builder coreUrl(String path) {
-        return HttpUrl.parse(coreBase + path).newBuilder();
+        return localeUrl(HttpUrl.parse(coreBase + path).newBuilder());
     }
 
     private HttpUrl.Builder myUrl(String path) {
-        return HttpUrl.parse(myBase + path).newBuilder();
+        return localeUrl(HttpUrl.parse(myBase + path).newBuilder());
+    }
+
+    private HttpUrl.Builder localeUrl(HttpUrl.Builder builder) {
+        if (locale != null && !locale.isEmpty()) {
+            builder.addQueryParameter("locale", locale);
+        }
+        return builder;
     }
 
     private HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {
