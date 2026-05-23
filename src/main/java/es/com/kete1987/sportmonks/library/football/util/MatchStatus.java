@@ -4,7 +4,7 @@ public class MatchStatus {
     public static final int NOT_STARTED = 1;
     public static final int INPLAY_1st_HALF = 2;
     public static final int HT = 3; // Half-time
-    public static final int BREAK = 4; // Regular time finished
+    public static final int BREAK = 4; // Waiting for extra time to start
     public static final int FT = 5; // Full time
     public static final int INPLAY_ET = 6; // Extra time
     public static final int AET = 7; // Finished after extra-time
