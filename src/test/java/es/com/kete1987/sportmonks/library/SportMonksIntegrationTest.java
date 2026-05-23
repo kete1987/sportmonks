@@ -185,9 +185,11 @@ public class SportMonksIntegrationTest {
     }
 
     @Test
-    void getMatchOddsByMarket_returnsNonNullList() throws IOException, SportMonksException {
-        List<Odd> result = api.getMatchOddsByMarket(MATCH_ID_ODDS, "12");
+    void getMatchOddsByMarket_returnsNonEmptyList() throws IOException, SportMonksException {
+        List<Odd> result = api.getMatchOddsByMarket(MATCH_ID_ODDS, "57");
         assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertTrue(result.get(0).getId() > 0);
     }
 
     // -------------------------------------------------------------------------
