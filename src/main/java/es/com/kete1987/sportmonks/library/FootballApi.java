@@ -105,13 +105,14 @@ public class FootballApi extends SportMonksApiBase {
     private List<MatchDetail> fetchMatchList(HttpUrl url) throws IOException, SportMonksException {
         Gson g = gson();
         MatchsResponse resp = g.fromJson(execute(url), MatchsResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<MatchDetail> list = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), MatchsResponse.class);
-            list.addAll(resp.getData());
+            if (resp.getData() != null) list.addAll(resp.getData());
         }
         return list;
     }
