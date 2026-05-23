@@ -12,4 +12,5 @@ public class EventType {
     public static int YELLOWREDCARD = 21;
     public static int PENALTY_SHOOTOUT_MISS = 22;
     public static int PENALTY_SHOOTOUT_GOAL = 23;
+    public static int HIGHLIGHT = 1675;
 }
