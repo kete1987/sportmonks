@@ -77,6 +77,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+/**
+ * Football sub-API: fixtures, leagues, seasons, teams, standings, statistics, transfers,
+ * venues, predictions, and all other football-domain endpoints.
+ *
+ * <p>Can be used standalone ({@code new FootballApi("apiKey")}) or via the
+ * {@link SportMonksAPI} facade ({@code api.getFootball()}).
+ */
 public class FootballApi extends SportMonksApiBase {
 
     private final String footballBase;

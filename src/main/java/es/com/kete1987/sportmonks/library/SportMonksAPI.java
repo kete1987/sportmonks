@@ -53,6 +53,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Main entry point for the Sportmonks v3 API.
+ *
+ * <p>Create one instance per API key and reuse it — each instance owns an OkHttp connection
+ * pool and a shared {@link RateLimitTracker}. Rate-limit headers are updated automatically
+ * after every request and can be read via {@link #getRemainingRequests()} and
+ * {@link #getMaximumRequests()}.
+ *
+ * <p>The facade delegates to four specialised sub-APIs accessible via {@link #getFootball()},
+ * {@link #getOdds()}, {@link #getPredictions()}, and {@link #getCore()}.
+ */
 public class SportMonksAPI {
 
     private final FootballApi football;
@@ -61,10 +72,22 @@ public class SportMonksAPI {
     private final CoreApi core;
     private final RateLimitTracker tracker;
 
+    /**
+     * Creates an API client with the default (English) locale.
+     *
+     * @param apiToken your Sportmonks API key
+     */
     public SportMonksAPI(String apiToken) {
         this(apiToken, null);
     }
 
+    /**
+     * Creates an API client that requests data in the specified locale.
+     *
+     * @param apiToken your Sportmonks API key
+     * @param locale   BCP 47 language tag accepted by Sportmonks (e.g. {@code "en"}, {@code "es"});
+     *                 pass {@code null} for the default locale
+     */
     public SportMonksAPI(String apiToken, String locale) {
         OkHttpClient client = SportMonksApiBase.buildHttpClient(apiToken);
         this.tracker = new RateLimitTracker();
@@ -87,7 +110,10 @@ public class SportMonksAPI {
     public PredictionsApi getPredictions() { return predictions; }
     public CoreApi getCore() { return core; }
 
+    /** Returns the value of the {@code X-RateLimit-Remaining} header from the last response, or {@code null} if no request has been made yet. */
     public String getRemainingRequests() { return tracker.remaining; }
+
+    /** Returns the value of the {@code X-RateLimit-Limit} header from the last response, or {@code null} if no request has been made yet. */
     public String getMaximumRequests() { return tracker.total; }
 
     // -------------------------------------------------------------------------
@@ -98,6 +124,7 @@ public class SportMonksAPI {
     public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException { return football.getTodayMatchesFiltered(matchIds, includes); }
     public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException { return football.getLiveMatches(includes); }
     public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException { return football.getMatchesByDate(date, includes); }
+    /** Fetches fixtures in a date range with default include: {@code participants}. */
     public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate) throws IOException, SportMonksException { return football.getMatchesByDateRange(beginDate, endDate); }
     public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException { return football.getMatchesByDateRange(beginDate, endDate, includes); }
     public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException { return football.getMatchesByDateRangeForTeam(beginDate, endDate, teamId, includes); }
@@ -109,6 +136,7 @@ public class SportMonksAPI {
     public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String... includes) throws IOException, SportMonksException { return football.getUpcomingFixturesByMarket(marketId, includes); }
     public List<MatchDetail> getUpcomingFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException { return football.getUpcomingFixturesByTvStation(tvStationId, includes); }
     public List<MatchDetail> getPastFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException { return football.getPastFixturesByTvStation(tvStationId, includes); }
+    /** Fetches a fixture with default includes: {@code venue, state, lineups, events, statistics, periods, participants, scores}. */
     public MatchDetail getMatchDetail(String matchId) throws IOException, SportMonksException { return football.getMatchDetail(matchId); }
     public MatchDetail getMatchDetail(String matchId, String... includes) throws IOException, SportMonksException { return football.getMatchDetail(matchId, includes); }
 
@@ -205,9 +233,11 @@ public class SportMonksAPI {
     // Top Scorers
     // -------------------------------------------------------------------------
 
+    /** Fetches top scorers with default includes: {@code season, stage, player, type, participant}. */
     public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException { return football.getTopScores(seasonId); }
     public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException { return football.getTopScores(seasonId, includes); }
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, String... includes) throws IOException, SportMonksException { return football.getTopScoresFiltered(seasonId, typeId, includes); }
+    /** Fetches top scorers by stage with default includes: {@code season, stage, player, type}. */
     public List<TopScoresPlayer> getTopScoresByStage(String stageId) throws IOException, SportMonksException { return football.getTopScoresByStage(stageId); }
     public List<TopScoresPlayer> getTopScoresByStage(String stageId, String... includes) throws IOException, SportMonksException { return football.getTopScoresByStage(stageId, includes); }
 

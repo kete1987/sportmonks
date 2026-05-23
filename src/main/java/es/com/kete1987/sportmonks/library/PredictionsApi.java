@@ -18,6 +18,13 @@ import okhttp3.OkHttpClient;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Predictions sub-API: win/draw/loss probabilities, value bets, expected goals (XG),
+ * and pre/post-match news.
+ *
+ * <p>Can be used standalone ({@code new PredictionsApi("apiKey")}) or via the
+ * {@link SportMonksAPI} facade ({@code api.getPredictions()}).
+ */
 public class PredictionsApi extends SportMonksApiBase {
 
     private final String footballBase;

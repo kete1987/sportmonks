@@ -20,6 +20,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Odds sub-API: pre-match odds, inplay odds, premium odds feeds, markets, and bookmakers.
+ *
+ * <p>Can be used standalone ({@code new OddsApi("apiKey")}) or via the
+ * {@link SportMonksAPI} facade ({@code api.getOdds()}).
+ */
 public class OddsApi extends SportMonksApiBase {
 
     private final String oddsBase;

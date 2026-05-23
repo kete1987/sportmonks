@@ -37,6 +37,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Core sub-API: continents, countries, regions, cities, types, timezones, filters,
+ * and MySportmonks account data.
+ *
+ * <p>Can be used standalone ({@code new CoreApi("apiKey")}) or via the
+ * {@link SportMonksAPI} facade ({@code api.getCore()}).
+ */
 public class CoreApi extends SportMonksApiBase {
 
     private final String coreBase;
