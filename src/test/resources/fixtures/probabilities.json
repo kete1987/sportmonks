@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 1001,
+      "fixture_id": 100,
+      "type_id": 1,
+      "home": 55.5,
+      "draw": 25.0,
+      "away": 19.5,
+      "yes": null,
+      "no": null
+    },
+    {
+      "id": 1002,
+      "fixture_id": 100,
+      "type_id": 2,
+      "home": null,
+      "draw": null,
+      "away": null,
+      "yes": 72.3,
+      "no": 27.7
+    }
+  ],
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "probability" },
+  "timezone": "UTC"
+}

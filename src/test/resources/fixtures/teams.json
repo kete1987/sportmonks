@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "sport_id": 1,
+      "country_id": 462,
+      "name": "Manchester United",
+      "short_code": "MUN",
+      "gender": "male"
+    },
+    {
+      "id": 2,
+      "sport_id": 1,
+      "country_id": 462,
+      "name": "Arsenal",
+      "short_code": "ARS",
+      "gender": "male"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "data": {
+    "fixtures": ["fixtureStatisticTypes", "fixtureTypes"],
+    "leagues": ["leagueTypes"],
+    "players": ["playerStatisticTypes"]
+  }
+}

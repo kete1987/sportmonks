@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 1, "name": "Europe", "code": "EU", "flag": "🇪🇺", "image_path": "https://cdn.sportmonks.com/images/continents/eu.png"},
+    {"id": 2, "name": "South America", "code": "SA", "flag": "🌎", "image_path": "https://cdn.sportmonks.com/images/continents/sa.png"}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "next_page": null, "has_more": false}
+}

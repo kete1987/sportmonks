@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "league_id": 271,
+      "predictability": 68.4,
+      "season_id": 19686
+    }
+  ],
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "predictability" },
+  "timezone": "UTC"
+}

@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "id": 8001,
+      "fixture_id": 1001,
+      "type_id": 10,
+      "participant_id": 1,
+      "participant_type": "App\\Models\\Football\\Team",
+      "value": "yellow card",
+      "created_at": "2023-10-15T20:30:00Z"
+    },
+    {
+      "id": 8002,
+      "fixture_id": 1001,
+      "type_id": 11,
+      "participant_id": 2,
+      "participant_type": "App\\Models\\Football\\Team",
+      "value": "red card",
+      "created_at": "2023-10-15T21:00:00Z"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

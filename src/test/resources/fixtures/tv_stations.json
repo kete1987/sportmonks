@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 7001,
+      "sport_id": 1,
+      "country_id": 462,
+      "name": "Sky Sports",
+      "image_path": "https://cdn.sportmonks.com/images/tv-stations/sky-sports.png",
+      "url": "https://www.skysports.com"
+    },
+    {
+      "id": 7002,
+      "sport_id": 1,
+      "country_id": 462,
+      "name": "BT Sport",
+      "image_path": null,
+      "url": null
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "id": 3001,
+      "fixture_id": 100,
+      "participant_id": 1,
+      "participant_type": "team",
+      "possession": 58.2,
+      "goals_expected": 1.73,
+      "scoring_chances": 12.0,
+      "player_id": null,
+      "minute": null,
+      "period_id": null
+    }
+  ],
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "expected_goal" },
+  "timezone": "UTC"
+}

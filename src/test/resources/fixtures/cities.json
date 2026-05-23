@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 1, "region_id": 1, "country_id": 1, "name": "Munich", "latitude": "48.1374", "longitude": "11.5755"},
+    {"id": 2, "region_id": 1, "country_id": 1, "name": "Nuremberg", "latitude": "49.4539", "longitude": "11.0775"}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "next_page": null, "has_more": false}
+}

@@ -1,0 +1,35 @@
+{
+  "data": [
+    {
+      "id": 100,
+      "sport_id": 1,
+      "country_id": 462,
+      "nationality_id": 462,
+      "name": "Marcus Rashford",
+      "firstname": "Marcus",
+      "lastname": "Rashford",
+      "display_name": "M. Rashford",
+      "gender": "male",
+      "date_of_birth": "1997-10-31"
+    },
+    {
+      "id": 200,
+      "sport_id": 1,
+      "country_id": 5,
+      "nationality_id": 5,
+      "name": "Lionel Messi",
+      "firstname": "Lionel",
+      "lastname": "Messi",
+      "display_name": "L. Messi",
+      "gender": "male",
+      "date_of_birth": "1987-06-24"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "id": 501,
+      "participant_id": 1,
+      "sport_id": 1,
+      "league_id": 501,
+      "season_id": 19686,
+      "round_id": 88,
+      "position": 1,
+      "result": "Champions League",
+      "points": 23
+    },
+    {
+      "id": 502,
+      "participant_id": 2,
+      "sport_id": 1,
+      "league_id": 501,
+      "season_id": 19686,
+      "round_id": 88,
+      "position": 2,
+      "result": "Champions League",
+      "points": 20
+    }
+  ]
+}

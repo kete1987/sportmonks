@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": 1,
+    "name": "3Way Result",
+    "display_name": "1X2",
+    "has_winning_calculations": true,
+    "developer_name": "3way_result"
+  },
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "market" },
+  "timezone": "UTC"
+}

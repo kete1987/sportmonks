@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": 8,
+    "sport_id": 1,
+    "country_id": 462,
+    "name": "Premier League",
+    "active": true,
+    "short_code": "EPL",
+    "type": "league",
+    "sub_type": "domestic"
+  }
+}

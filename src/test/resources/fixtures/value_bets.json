@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "id": 2001,
+      "fixture_id": 100,
+      "type_id": 1,
+      "bookmaker_id": 1,
+      "market_id": 1,
+      "odds": 2.15,
+      "value": 8.3,
+      "label": "Home",
+      "fair_odds": 1.98,
+      "created_at": "2024-01-01T10:00:00.000000Z"
+    }
+  ],
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "value_bet" },
+  "timezone": "UTC"
+}

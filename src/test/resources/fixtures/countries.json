@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 1, "continent_id": 1, "name": "Germany", "official_name": "Federal Republic of Germany", "fifa_name": "GER", "iso2": "DE", "iso3": "DEU", "latitude": "51.5167", "longitude": "9.9167", "image_path": "https://cdn.sportmonks.com/images/countries/de.png"},
+    {"id": 2, "continent_id": 1, "name": "France", "official_name": "French Republic", "fifa_name": "FRA", "iso2": "FR", "iso3": "FRA", "latitude": "46.0000", "longitude": "2.0000", "image_path": "https://cdn.sportmonks.com/images/countries/fr.png"}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "next_page": null, "has_more": false}
+}

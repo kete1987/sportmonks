@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"league_id": 271, "sport_id": 1, "name": "Superliga", "image_path": "https://cdn.sportmonks.com/images/leagues/271.png", "type": "domestic", "sub_type": "league", "last_played_at": "2024-05-29 16:00:00"},
+    {"league_id": 8, "sport_id": 1, "name": "Premier League", "image_path": "https://cdn.sportmonks.com/images/leagues/8.png", "type": "domestic", "sub_type": "league", "last_played_at": "2024-05-19 16:00:00"}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "next_page": null, "has_more": false}
+}

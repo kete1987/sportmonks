@@ -1,0 +1,37 @@
+package es.com.kete1987.sportmonks.library.football.model.match;
+
+public class State {
+    private Long id;
+    private String state;
+    private String name;
+    private String short_name;
+    private String developer_name;
+    private Type type;
+
+    public State() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getShortName() {
+        return short_name;
+    }
+
+    public String getDeveloperName() {
+        return developer_name;
+    }
+
+    public Type getType() {
+        return type;
+    }
+}

@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Goal",
+      "code": "goal",
+      "developer_name": "GOAL",
+      "model_type": "sport"
+    },
+    {
+      "id": 2,
+      "name": "Yellow Card",
+      "code": "yellowcard",
+      "developer_name": "YELLOW_CARD",
+      "model_type": "sport"
+    }
+  ]
+}

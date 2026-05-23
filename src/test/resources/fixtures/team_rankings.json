@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "id": 10001,
+      "team_id": 1,
+      "league_id": 501,
+      "season_id": 19686,
+      "position": 1,
+      "points": 1850,
+      "ranking_date": "2024-01-01"
+    },
+    {
+      "id": 10002,
+      "team_id": 2,
+      "league_id": 501,
+      "season_id": 19686,
+      "position": 2,
+      "points": 1820,
+      "ranking_date": "2024-01-01"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": 6001,
+      "country_id": 462,
+      "city_id": 100,
+      "name": "Old Trafford",
+      "address": "Sir Matt Busby Way",
+      "capacity": 76000
+    },
+    {
+      "id": 6002,
+      "country_id": 462,
+      "city_id": 101,
+      "name": "Emirates Stadium",
+      "address": "Hornsey Rd",
+      "capacity": 60704
+    }
+  ]
+}

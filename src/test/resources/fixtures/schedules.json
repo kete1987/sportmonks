@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "season_id": 19686,
+      "team_id": 1,
+      "rounds": [
+        {
+          "id": 88,
+          "sport_id": 1,
+          "league_id": 501,
+          "season_id": 19686,
+          "stage_id": 1,
+          "name": "1",
+          "finished": true,
+          "is_current": false
+        }
+      ]
+    }
+  ]
+}

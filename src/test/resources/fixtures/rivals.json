@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "id": 4001,
+      "sport_id": 1,
+      "team_id": 1,
+      "rival_id": 2
+    },
+    {
+      "id": 4002,
+      "sport_id": 1,
+      "team_id": 1,
+      "rival_id": 3
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "sport_id": 1,
+      "country_id": 462,
+      "city_id": 1001,
+      "name": "Michael Oliver",
+      "display_name": "M. Oliver",
+      "gender": "male",
+      "date_of_birth": "1985-03-25"
+    },
+    {
+      "id": 2,
+      "sport_id": 1,
+      "country_id": 462,
+      "city_id": 1002,
+      "name": "Anthony Taylor",
+      "display_name": "A. Taylor",
+      "gender": "male",
+      "date_of_birth": "1978-10-25"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

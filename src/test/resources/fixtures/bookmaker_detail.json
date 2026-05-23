@@ -1,0 +1,14 @@
+{
+  "data": {
+    "id": 1,
+    "legacy_id": 10,
+    "name": "Bet365",
+    "display_name": "Bet 365",
+    "has_streaming": true,
+    "is_premium": false,
+    "image_path": "https://cdn.sportmonks.com/bookmakers/bet365.png"
+  },
+  "subscription": [],
+  "rate_limit": { "resets_in_seconds": 3600, "remaining": 2999, "requested_entity": "bookmaker" },
+  "timezone": "UTC"
+}

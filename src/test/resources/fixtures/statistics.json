@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "id": 1001,
+      "type_id": 52,
+      "participant_id": 1,
+      "participant_type": "App\\Models\\Football\\Team",
+      "value": 12,
+      "season_id": 19686,
+      "stage_id": null
+    },
+    {
+      "id": 1002,
+      "type_id": 53,
+      "participant_id": 1,
+      "participant_type": "App\\Models\\Football\\Team",
+      "value": 45,
+      "season_id": 19686,
+      "stage_id": null
+    }
+  ]
+}

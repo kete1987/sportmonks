@@ -1,0 +1,14 @@
+{
+  "data": {
+    "id": 2001,
+    "player_id": 101,
+    "type_id": 1,
+    "from_team_id": 1,
+    "to_team_id": 2,
+    "position_id": 10,
+    "date": "2023-07-01",
+    "career_ended": false,
+    "completed": true,
+    "amount": 50000000
+  }
+}

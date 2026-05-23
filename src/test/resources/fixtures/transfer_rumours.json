@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 3001,
+      "player_id": 101,
+      "from_team_id": 1,
+      "to_team_id": 5,
+      "start_date": "2024-01-01",
+      "end_date": "2024-06-30"
+    },
+    {
+      "id": 3002,
+      "player_id": 103,
+      "from_team_id": 2,
+      "to_team_id": 6,
+      "start_date": "2024-01-15",
+      "end_date": null
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

@@ -1,0 +1,34 @@
+package es.com.kete1987.sportmonks.library.football.model.referee;
+
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
+import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
+
+import java.util.List;
+
+public class RefereeResponse {
+    @SerializedName("data")
+    private Referee referee;
+    private List<Subscription> subscription;
+    private RateLimit rate_limit;
+    private String timezone;
+
+    public RefereeResponse() {
+    }
+
+    public Referee getData() {
+        return referee;
+    }
+
+    public List<Subscription> getSubscription() {
+        return subscription;
+    }
+
+    public RateLimit getRateLimit() {
+        return rate_limit;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+}

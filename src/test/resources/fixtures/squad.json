@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "player_id": 100,
+      "team_id": 1,
+      "position_id": 24,
+      "jersey_number": 10,
+      "start": "2020-09-01",
+      "end": null,
+      "captain": false,
+      "transfer_id": 500
+    },
+    {
+      "player_id": 200,
+      "team_id": 1,
+      "position_id": 25,
+      "jersey_number": 1,
+      "start": "2021-07-01",
+      "end": null,
+      "captain": true,
+      "transfer_id": 600
+    }
+  ]
+}

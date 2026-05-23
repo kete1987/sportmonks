@@ -1,0 +1,14 @@
+{
+  "data": {
+    "id": 100,
+    "sport_id": 1,
+    "country_id": 462,
+    "nationality_id": 462,
+    "name": "Marcus Rashford",
+    "firstname": "Marcus",
+    "lastname": "Rashford",
+    "display_name": "M. Rashford",
+    "gender": "male",
+    "date_of_birth": "1997-10-31"
+  }
+}

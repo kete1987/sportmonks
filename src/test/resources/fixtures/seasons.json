@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "id": 21646,
+      "sport_id": 1,
+      "league_id": 8,
+      "name": "2023/2024",
+      "finished": true,
+      "pending": false,
+      "is_current": false
+    },
+    {
+      "id": 23614,
+      "sport_id": 1,
+      "league_id": 8,
+      "name": "2024/2025",
+      "finished": false,
+      "pending": false,
+      "is_current": true
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}

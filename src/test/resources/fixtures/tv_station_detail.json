@@ -1,0 +1,10 @@
+{
+  "data": {
+    "id": 7001,
+    "sport_id": 1,
+    "country_id": 462,
+    "name": "Sky Sports",
+    "image_path": "https://cdn.sportmonks.com/images/tv-stations/sky-sports.png",
+    "url": "https://www.skysports.com"
+  }
+}

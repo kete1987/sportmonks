@@ -1,0 +1,35 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "sport_id": 1,
+      "country_id": 462,
+      "nationality_id": 462,
+      "name": "Erik ten Hag",
+      "firstname": "Erik",
+      "lastname": "ten Hag",
+      "display_name": "E. ten Hag",
+      "gender": "male",
+      "date_of_birth": "1970-02-02"
+    },
+    {
+      "id": 2,
+      "sport_id": 1,
+      "country_id": 17,
+      "nationality_id": 17,
+      "name": "Pep Guardiola",
+      "firstname": "Pep",
+      "lastname": "Guardiola",
+      "display_name": "P. Guardiola",
+      "gender": "male",
+      "date_of_birth": "1971-01-18"
+    }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 25,
+    "current_page": 1,
+    "next_page": null,
+    "has_more": false
+  }
+}
