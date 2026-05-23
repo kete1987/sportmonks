@@ -28,7 +28,7 @@ public class SportMonksIntegrationTest {
     // Fixed test data IDs — same used in historical manual tests
     private static final String SEASON_ID       = "13133";
     private static final String MATCH_ID_STATS  = "18545372";
-    private static final String MATCH_ID_ODDS   = "11437856";
+    private static final String MATCH_ID_ODDS   = "19439629";
     private static final long   LEAGUE_ID       = 564L;
     private static final long   STAGE_SEASON_ID = 12950L;
     private static final long   ROUND_ID        = 151251L;
@@ -180,26 +180,14 @@ public class SportMonksIntegrationTest {
 
     @Test
     void getMatchOdds_returnsNonNullList() throws IOException, SportMonksException {
-        try {
-            List<Odd> result = api.getMatchOdds(MATCH_ID_ODDS);
-            assertNotNull(result);
-        } catch (SportMonksException e) {
-            Assumptions.assumeFalse(e.getMessage().contains("404"),
-                    "Odds endpoint not available on current plan — skipping");
-            throw e;
-        }
+        List<Odd> result = api.getMatchOdds(MATCH_ID_ODDS);
+        assertNotNull(result);
     }
 
     @Test
     void getMatchOddsByMarket_returnsNonNullList() throws IOException, SportMonksException {
-        try {
-            List<Odd> result = api.getMatchOddsByMarket(MATCH_ID_ODDS, "12");
-            assertNotNull(result);
-        } catch (SportMonksException e) {
-            Assumptions.assumeFalse(e.getMessage().contains("404"),
-                    "Odds endpoint not available on current plan — skipping");
-            throw e;
-        }
+        List<Odd> result = api.getMatchOddsByMarket(MATCH_ID_ODDS, "12");
+        assertNotNull(result);
     }
 
     // -------------------------------------------------------------------------
