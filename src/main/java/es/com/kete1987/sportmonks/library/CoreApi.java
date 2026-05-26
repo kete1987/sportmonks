@@ -79,13 +79,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("continents"), includes).build();
         Gson g = gson();
         ContinentsResponse resp = g.fromJson(execute(base), ContinentsResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<Continent> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), ContinentsResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -103,13 +104,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("countries"), includes).build();
         Gson g = gson();
         CountriesResponse resp = g.fromJson(execute(base), CountriesResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<Country> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), CountriesResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -123,13 +125,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("countries/search/" + name), includes).build();
         Gson g = gson();
         CountriesResponse resp = g.fromJson(execute(base), CountriesResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<Country> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), CountriesResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -142,13 +145,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("regions"), includes).build();
         Gson g = gson();
         RegionsResponse resp = g.fromJson(execute(base), RegionsResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<Region> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), RegionsResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -162,13 +166,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("regions/search/" + name), includes).build();
         Gson g = gson();
         RegionsResponse resp = g.fromJson(execute(base), RegionsResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<Region> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), RegionsResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -181,13 +186,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("cities"), includes).build();
         Gson g = gson();
         CitiesResponse resp = g.fromJson(execute(base), CitiesResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<City> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), CitiesResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -201,13 +207,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("cities/search/" + name), includes).build();
         Gson g = gson();
         CitiesResponse resp = g.fromJson(execute(base), CitiesResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<City> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), CitiesResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -220,13 +227,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(coreUrl("types"), includes).build();
         Gson g = gson();
         TypesResponse resp = g.fromJson(execute(base), TypesResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<Type> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), TypesResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }
@@ -272,13 +280,14 @@ public class CoreApi extends SportMonksApiBase {
         HttpUrl base = withIncludes(myUrl("leagues"), includes).build();
         Gson g = gson();
         MyLeaguesResponse resp = g.fromJson(execute(base), MyLeaguesResponse.class);
+        if (resp.getData() == null) return new ArrayList<>();
         List<MyLeague> all = new ArrayList<>(resp.getData());
         int page = 1;
         while (resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
             HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), MyLeaguesResponse.class);
-            all.addAll(resp.getData());
+            if (resp.getData() != null) all.addAll(resp.getData());
         }
         return all;
     }

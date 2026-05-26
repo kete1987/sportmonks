@@ -107,11 +107,20 @@ public class EventData implements Comparable<Object> {
         return player;
     }
 
+    @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EventData)) return false;
         EventData ed = (EventData) o;
         return (ed.getId() != null ? ed.getId().intValue() : 0) == (getId() != null ? getId().intValue() : 0);
     }
 
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().intValue() : 0;
+    }
+
+    @Override
     public int compareTo(Object o) {
         EventData ed = (EventData) o;
         if (getMinute() != null && ed.getMinute() != null) {

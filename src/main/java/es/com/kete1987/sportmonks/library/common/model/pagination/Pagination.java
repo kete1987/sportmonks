@@ -27,7 +27,7 @@ public class Pagination {
         return next_page;
     }
 
-    public Boolean hasMore() {
-        return has_more;
+    public boolean hasMore() {
+        return Boolean.TRUE.equals(has_more);
     }
 }
