@@ -38,6 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar --batch-mode
+          -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.projectKey=kete1987_sportmonks
           -Dsonar.organization=kete1987
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
