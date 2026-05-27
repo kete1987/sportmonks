@@ -26,6 +26,18 @@ public class MatchDetail extends Match {
     public MatchDetail() {
     }
 
+    // MatchDetail adds enrichment fields (lineups, scores, etc.) but identity
+    // is still determined by the match id inherited from Match.
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     public Venue getVenue() {
         return venue;
     }

@@ -1,5 +1,10 @@
 # Sportmonks Library
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kete1987_sportmonks&metric=alert_status)](https://sonarcloud.io/summary/overall?id=kete1987_sportmonks)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kete1987_sportmonks&metric=coverage)](https://sonarcloud.io/summary/overall?id=kete1987_sportmonks)
+[![CI](https://github.com/kete1987/sportmonks/actions/workflows/ci.yml/badge.svg)](https://github.com/kete1987/sportmonks/actions/workflows/ci.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/es.com.kete1987/sportmonks.library)](https://central.sonatype.com/artifact/es.com.kete1987/sportmonks.library)
+
 Java library (Java 11+) to access the [Sportmonks](https://sportmonks.com) football data API v3.
 
 ## Installation
