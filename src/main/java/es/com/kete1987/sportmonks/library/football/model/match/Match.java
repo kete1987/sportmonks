@@ -3,6 +3,8 @@ package es.com.kete1987.sportmonks.library.football.model.match;
 import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Match implements Comparable<Match> {
     protected Long id; //ID del partido
     @SerializedName("sport_id")
@@ -99,37 +101,40 @@ public class Match implements Comparable<Match> {
         return meta;
     }
 
+    // ---- Ordering: Live (0) → Not Started (1) → Finished (2) → Other (3) ----
+
     @Override
-    public int compareTo(Match aux) {
-        if (getStateId() != null && aux.getStateId() != null) {
-            Long status1 = getStateId();
-            Long status2 = aux.getStateId();
-            if (status1.intValue() == MatchStatus.NOT_STARTED) {
-                if (status2.intValue() == MatchStatus.NOT_STARTED)
-                    return (int) (getStartingAtTimestamp() - aux.getStartingAtTimestamp());
-                else if (MatchStatus.isLiveMatch(status2.intValue()))
-                    return 1;
-                else
-                    return -1;
-            } else if (MatchStatus.isLiveMatch(status1.intValue())) {
-                if (MatchStatus.isLiveMatch(status2.intValue()))
-                    return 0;
-                else
-                    return -1;
-            } else if (MatchStatus.isMatchFinished(status1.intValue())) {
-                if (status2.intValue() == MatchStatus.NOT_STARTED || MatchStatus.isLiveMatch(status2.intValue()))
-                    return 1;
-                else if (MatchStatus.isMatchFinished(status2.intValue()))
-                    return 0;
-                else
-                    return -1;
-            } else {
-                if (status2.intValue() == MatchStatus.NOT_STARTED || MatchStatus.isLiveMatch(status2.intValue()) || MatchStatus.isMatchFinished(status2.intValue()))
-                    return 1;
-                else
-                    return 0;
-            }
+    public int compareTo(Match other) {
+        if (getStateId() == null || other.getStateId() == null) return 0;
+        int p1 = matchPriority(getStateId().intValue());
+        int p2 = matchPriority(other.getStateId().intValue());
+        if (p1 != p2) {
+            return Integer.compare(p1, p2);
+        }
+        // Both not-started: sort ascending by kick-off timestamp
+        if (p1 == 1 && getStartingAtTimestamp() != null && other.getStartingAtTimestamp() != null) {
+            return Long.compare(getStartingAtTimestamp(), other.getStartingAtTimestamp());
         }
         return 0;
+    }
+
+    private static int matchPriority(int stateId) {
+        if (MatchStatus.isLiveMatch(stateId))     return 0;
+        if (stateId == MatchStatus.NOT_STARTED)   return 1;
+        if (MatchStatus.isMatchFinished(stateId)) return 2;
+        return 3;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Match)) return false;
+        Match match = (Match) o;
+        return Objects.equals(id, match.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
