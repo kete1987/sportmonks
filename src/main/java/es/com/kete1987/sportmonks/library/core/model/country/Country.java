@@ -1,16 +1,22 @@
 package es.com.kete1987.sportmonks.library.core.model.country;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Country {
     private Long id;
-    private Long continent_id;
+    @SerializedName("continent_id")
+    private Long continentId;
     private String name;
-    private String official_name;
-    private String fifa_name;
+    @SerializedName("official_name")
+    private String officialName;
+    @SerializedName("fifa_name")
+    private String fifaName;
     private String iso2;
     private String iso3;
     private String latitude;
     private String longitude;
-    private String image_path;
+    @SerializedName("image_path")
+    private String imagePath;
 
     public Country() {
     }
@@ -20,7 +26,7 @@ public class Country {
     }
 
     public Long getContinentId() {
-        return continent_id;
+        return continentId;
     }
 
     public String getName() {
@@ -28,11 +34,11 @@ public class Country {
     }
 
     public String getOfficialName() {
-        return official_name;
+        return officialName;
     }
 
     public String getFifaName() {
-        return fifa_name;
+        return fifaName;
     }
 
     public String getIso2() {
@@ -52,6 +58,6 @@ public class Country {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 }

@@ -3,11 +3,15 @@ package es.com.kete1987.sportmonks.library.football.model.expectedlineup;
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class ExpectedLineup {
     private Long id;
-    private Long fixture_id;
-    private Long team_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("team_id")
+    private Long teamId;
     private String formation;
     private List<Player> players;
 
@@ -19,11 +23,11 @@ public class ExpectedLineup {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public String getFormation() {
@@ -31,6 +35,6 @@ public class ExpectedLineup {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return ModelCollections.unmodifiable(players);
     }
 }

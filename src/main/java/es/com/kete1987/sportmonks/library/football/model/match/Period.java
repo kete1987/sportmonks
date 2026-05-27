@@ -1,17 +1,25 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Period {
     private Long id;
-    private Long fixture_id;
-    private Long type_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("type_id")
+    private Long typeId;
     private Long started;
     private Long ended;
-    private Long counts_from;
+    @SerializedName("counts_from")
+    private Long countsFrom;
     private Boolean ticking;
-    private Long sort_order;
+    @SerializedName("sort_order")
+    private Long sortOrder;
     private String description;
-    private Long time_added;
-    private Long period_length;
+    @SerializedName("time_added")
+    private Long timeAdded;
+    @SerializedName("period_length")
+    private Long periodLength;
     private Long minutes;
     private Long seconds;
 
@@ -23,11 +31,11 @@ public class Period {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getStarted() {
@@ -39,7 +47,7 @@ public class Period {
     }
 
     public Long getCountsFrom() {
-        return counts_from;
+        return countsFrom;
     }
 
     public Boolean getTicking() {
@@ -47,7 +55,7 @@ public class Period {
     }
 
     public Long getSortOrder() {
-        return sort_order;
+        return sortOrder;
     }
 
     public String getDescription() {
@@ -55,11 +63,11 @@ public class Period {
     }
 
     public Long getTimeAdded() {
-        return time_added;
+        return timeAdded;
     }
 
     public Long getPeriodLength() {
-        return period_length;
+        return periodLength;
     }
 
     public Long getMinutes() {

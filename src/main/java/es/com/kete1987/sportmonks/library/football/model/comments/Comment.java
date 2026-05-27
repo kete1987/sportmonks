@@ -1,13 +1,19 @@
 package es.com.kete1987.sportmonks.library.football.model.comments;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Comment implements Comparable<Object> {
     private Long id;
-    private Long fixture_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
     private String comment;
     private Long minute;
-    private Long extra_minute;
-    private Boolean is_goal;
-    private Boolean is_important;
+    @SerializedName("extra_minute")
+    private Long extraMinute;
+    @SerializedName("is_goal")
+    private Boolean isGoal;
+    @SerializedName("is_important")
+    private Boolean isImportant;
     private Long order;
 
     public Comment() {
@@ -18,7 +24,7 @@ public class Comment implements Comparable<Object> {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public String getComment() {
@@ -30,15 +36,15 @@ public class Comment implements Comparable<Object> {
     }
 
     public Long getExtraMinute() {
-        return extra_minute;
+        return extraMinute;
     }
 
     public Boolean isGoal() {
-        return is_goal;
+        return isGoal;
     }
 
     public Boolean isImportant() {
-        return is_important;
+        return isImportant;
     }
 
     public Long getOrder() {

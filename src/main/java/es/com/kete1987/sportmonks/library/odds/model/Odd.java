@@ -1,14 +1,20 @@
 package es.com.kete1987.sportmonks.library.odds.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Odd {
     private Long id;
-    private Long fixture_id;
-    private Long market_id;
-    private Long bookmaker_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("market_id")
+    private Long marketId;
+    @SerializedName("bookmaker_id")
+    private Long bookmakerId;
     private String label;
     private String value;
     private String name;
-    private String market_description;
+    @SerializedName("market_description")
+    private String marketDescription;
     private String probability;
     private String dp3;
     private String fractional;
@@ -18,10 +24,14 @@ public class Odd {
     private String total;
     private String handicap;
     private String participants;
-    private String created_at;
-    private String updated_at;
-    private String original_label;
-    private String latest_bookmaker_update;
+    @SerializedName("created_at")
+    private String createdAt;
+    @SerializedName("updated_at")
+    private String updatedAt;
+    @SerializedName("original_label")
+    private String originalLabel;
+    @SerializedName("latest_bookmaker_update")
+    private String latestBookmakerUpdate;
     private Bookmaker bookmaker;
 
     public Odd() {
@@ -32,15 +42,15 @@ public class Odd {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getMarketId() {
-        return market_id;
+        return marketId;
     }
 
     public Long getBookmakerId() {
-        return bookmaker_id;
+        return bookmakerId;
     }
 
     public Bookmaker getBookmaker() { return bookmaker; }
@@ -58,7 +68,7 @@ public class Odd {
     }
 
     public String getMarketDescription() {
-        return market_description;
+        return marketDescription;
     }
 
     public String getProbability() {
@@ -98,18 +108,18 @@ public class Odd {
     }
 
     public String getCreatedAt() {
-        return created_at;
+        return createdAt;
     }
 
     public String getUpdatedAt() {
-        return updated_at;
+        return updatedAt;
     }
 
     public String getOriginalLabel() {
-        return original_label;
+        return originalLabel;
     }
 
     public String getLatestBookmakerUpdate() {
-        return latest_bookmaker_update;
+        return latestBookmakerUpdate;
     }
 }

@@ -1,23 +1,37 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
 import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
+import com.google.gson.annotations.SerializedName;
 
-public class Match implements Comparable<Object> {
+import java.util.Objects;
+
+public class Match implements Comparable<Match> {
     protected Long id; //ID del partido
-    protected Long sport_id;
-    protected Long league_id;
-    protected Long season_id;
-    protected Long stage_id;
-    protected Long group_id;
-    protected Long aggregate_id;
-    protected Long round_id;
-    protected Long state_id;
-    protected Long venue_id;
+    @SerializedName("sport_id")
+    protected Long sportId;
+    @SerializedName("league_id")
+    protected Long leagueId;
+    @SerializedName("season_id")
+    protected Long seasonId;
+    @SerializedName("stage_id")
+    protected Long stageId;
+    @SerializedName("group_id")
+    protected Long groupId;
+    @SerializedName("aggregate_id")
+    protected Long aggregateId;
+    @SerializedName("round_id")
+    protected Long roundId;
+    @SerializedName("state_id")
+    protected Long stateId;
+    @SerializedName("venue_id")
+    protected Long venueId;
     protected String name;
-    protected String starting_at;
+    @SerializedName("starting_at")
+    protected String startingAt;
     protected String leg;
     protected Long length;
-    protected Long starting_at_timestamp;
+    @SerializedName("starting_at_timestamp")
+    protected Long startingAtTimestamp;
     protected MatchMeta meta;
 
     public Match() {
@@ -28,39 +42,39 @@ public class Match implements Comparable<Object> {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 
     public Long getGroupId() {
-        return group_id;
+        return groupId;
     }
 
     public Long getAggregateId() {
-        return aggregate_id;
+        return aggregateId;
     }
 
     public Long getRoundId() {
-        return round_id;
+        return roundId;
     }
 
     public Long getStateId() {
-        return state_id;
+        return stateId;
     }
 
     public Long getVenueId() {
-        return venue_id;
+        return venueId;
     }
 
     public String getName() {
@@ -68,7 +82,7 @@ public class Match implements Comparable<Object> {
     }
 
     public String getStartingAt() {
-        return starting_at;
+        return startingAt;
     }
 
     public String getLeg() {
@@ -80,46 +94,47 @@ public class Match implements Comparable<Object> {
     }
 
     public Long getStartingAtTimestamp() {
-        return starting_at_timestamp;
+        return startingAtTimestamp;
     }
 
     public MatchMeta getMeta() {
         return meta;
     }
 
+    // ---- Ordering: Live (0) → Not Started (1) → Finished (2) → Other (3) ----
+
     @Override
-    public int compareTo(Object o) {
-        Match aux = (Match) o;
-        // getStarting_at_timestamp
-        if (getStateId() != null && aux.getStateId() != null) {
-            Long status1 = getStateId();
-            Long status2 = aux.getStateId();
-            if (status1.intValue() == MatchStatus.NOT_STARTED) {
-                if (status2.intValue() == MatchStatus.NOT_STARTED)
-                    return (int) (getStartingAtTimestamp() - aux.getStartingAtTimestamp());
-                else if (MatchStatus.isLiveMatch(status2.intValue()))
-                    return 1;
-                else
-                    return -1;
-            } else if (MatchStatus.isLiveMatch(status1.intValue())) {
-                if (MatchStatus.isLiveMatch(status2.intValue()))
-                    return 0;
-                else
-                    return -1;
-            } else if (MatchStatus.isMatchFinished(status1.intValue())) {
-                if (status2.intValue() == MatchStatus.NOT_STARTED || MatchStatus.isLiveMatch(status2.intValue()))
-                    return 1;
-                else if (MatchStatus.isMatchFinished(status2.intValue()))
-                    return 0;
-                else
-                    return -1;
-            } else {
-                if (status2.intValue() == MatchStatus.NOT_STARTED || MatchStatus.isLiveMatch(status2.intValue()) || MatchStatus.isMatchFinished(status2.intValue()))
-                    return 1;
-                else
-                    return 0;
-            }
+    public int compareTo(Match other) {
+        if (getStateId() == null || other.getStateId() == null) return 0;
+        int p1 = matchPriority(getStateId().intValue());
+        int p2 = matchPriority(other.getStateId().intValue());
+        if (p1 != p2) {
+            return Integer.compare(p1, p2);
+        }
+        // Both not-started: sort ascending by kick-off timestamp
+        if (p1 == 1 && getStartingAtTimestamp() != null && other.getStartingAtTimestamp() != null) {
+            return Long.compare(getStartingAtTimestamp(), other.getStartingAtTimestamp());
         }
         return 0;
+    }
+
+    private static int matchPriority(int stateId) {
+        if (MatchStatus.isLiveMatch(stateId))     return 0;
+        if (stateId == MatchStatus.NOT_STARTED)   return 1;
+        if (MatchStatus.isMatchFinished(stateId)) return 2;
+        return 3;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Match)) return false;
+        Match match = (Match) o;
+        return Objects.equals(id, match.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

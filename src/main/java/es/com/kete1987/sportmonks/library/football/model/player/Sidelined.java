@@ -1,15 +1,24 @@
 package es.com.kete1987.sportmonks.library.football.model.player;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Sidelined {
     private Long id;
-    private Long player_id;
-    private Long type_id;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("type_id")
+    private Long typeId;
     private String category;
-    private Long team_id;
-    private Long season_id;
-    private String start_date;
-    private String end_date;
-    private Long games_missed;
+    @SerializedName("team_id")
+    private Long teamId;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("start_date")
+    private String startDate;
+    @SerializedName("end_date")
+    private String endDate;
+    @SerializedName("games_missed")
+    private Long gamesMissed;
     private Boolean completed;
 
     public Sidelined() {
@@ -20,11 +29,11 @@ public class Sidelined {
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public String getCategory() {
@@ -32,23 +41,23 @@ public class Sidelined {
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public String getStartDate() {
-        return start_date;
+        return startDate;
     }
 
     public String getEndDdate() {
-        return end_date;
+        return endDate;
     }
 
     public Long getGamesMissed() {
-        return games_missed;
+        return gamesMissed;
     }
 
     public Boolean getCompleted() {

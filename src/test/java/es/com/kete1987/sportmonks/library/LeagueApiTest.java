@@ -19,8 +19,23 @@ class LeagueApiTest extends BaseApiTest {
         List<League> leagues = api.getAllLeagues();
 
         assertEquals(2, leagues.size());
-        assertEquals(8L, leagues.get(0).getId());
-        assertEquals("Premier League", leagues.get(0).getName());
+        League first = leagues.get(0);
+        assertEquals(8L, first.getId());
+        assertEquals("Premier League", first.getName());
+        assertEquals(1L, first.getSportId());
+        assertEquals(462L, first.getCountryId());
+        assertTrue(first.getActive());
+        assertEquals("EPL", first.getShortCode());
+        assertEquals("league", first.getType());
+        assertEquals("domestic", first.getSubType());
+        // fields not in fixture — should be null
+        assertNull(first.getImagePath());
+        assertNull(first.getLastPlayerdAt());
+        assertNull(first.getHasJerseys());
+        assertNull(first.getSeasons());
+        assertNull(first.getCurrentseason());
+        assertNull(first.getCountry());
+
         assertEquals(271L, leagues.get(1).getId());
         assertEquals("Superliga", leagues.get(1).getName());
     }

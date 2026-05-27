@@ -7,7 +7,9 @@ import es.com.kete1987.sportmonks.library.football.util.LineUpType;
 import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class MatchDetail extends Match {
     private Venue venue;
@@ -24,6 +26,18 @@ public class MatchDetail extends Match {
     public MatchDetail() {
     }
 
+    // MatchDetail adds enrichment fields (lineups, scores, etc.) but identity
+    // is still determined by the match id inherited from Match.
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     public Venue getVenue() {
         return venue;
     }
@@ -33,13 +47,16 @@ public class MatchDetail extends Match {
     }
 
     public List<LineUpData> getLineups() {
-        return lineups;
+        return ModelCollections.unmodifiable(lineups);
     }
 
     public List<LineUpData> getLineupLocalTeam() {
+        if (lineups == null || getHomeTeam() == null) {
+            return Collections.emptyList();
+        }
         List<LineUpData> list = new ArrayList<>();
         int homeTeamId = getHomeTeam().getId().intValue();
-        for (LineUpData lud : getLineups()) {
+        for (LineUpData lud : lineups) {
             if (lud.getTypeId().intValue() == LineUpType.LINEUP && lud.getTeamId().intValue() == homeTeamId) {
                 list.add(lud);
             }
@@ -48,9 +65,12 @@ public class MatchDetail extends Match {
     }
 
     public List<LineUpData> getLineupVisitorTeam() {
+        if (lineups == null || getAwayTeam() == null) {
+            return Collections.emptyList();
+        }
         List<LineUpData> list = new ArrayList<>();
         int awayTeamId = getAwayTeam().getId().intValue();
-        for (LineUpData lud : getLineups()) {
+        for (LineUpData lud : lineups) {
             if (lud.getTypeId().intValue() == LineUpType.LINEUP && lud.getTeamId().intValue() == awayTeamId) {
                 list.add(lud);
             }
@@ -59,9 +79,12 @@ public class MatchDetail extends Match {
     }
 
     public List<LineUpData> getBenchLocalTeam() {
+        if (lineups == null || getHomeTeam() == null) {
+            return Collections.emptyList();
+        }
         List<LineUpData> list = new ArrayList<>();
         int homeTeamId = getHomeTeam().getId().intValue();
-        for (LineUpData lud : getLineups()) {
+        for (LineUpData lud : lineups) {
             if (lud.getTypeId().intValue() == LineUpType.BENCH && lud.getTeamId().intValue() == homeTeamId) {
                 list.add(lud);
             }
@@ -70,9 +93,12 @@ public class MatchDetail extends Match {
     }
 
     public List<LineUpData> getBenchVisitorTeam() {
+        if (lineups == null || getAwayTeam() == null) {
+            return Collections.emptyList();
+        }
         List<LineUpData> list = new ArrayList<>();
         int awayTeamId = getAwayTeam().getId().intValue();
-        for (LineUpData lud : getLineups()) {
+        for (LineUpData lud : lineups) {
             if (lud.getTypeId().intValue() == LineUpType.BENCH && lud.getTeamId().intValue() == awayTeamId) {
                 list.add(lud);
             }
@@ -81,15 +107,18 @@ public class MatchDetail extends Match {
     }
 
     public List<EventData> getEvents() {
-        return events;
+        return ModelCollections.unmodifiable(events);
     }
 
     public List<StatisticsData> getStatistics() {
-        return statistics;
+        return ModelCollections.unmodifiable(statistics);
     }
 
     public StatisticsData getStatisticDataByTypeAndTeamId(int teamId, int type) {
-        for (StatisticsData sd : getStatistics()) {
+        if (statistics == null) {
+            return null;
+        }
+        for (StatisticsData sd : statistics) {
             if (sd.getParticipantId().intValue() == teamId && sd.getTypeId().intValue() == type)
                 return sd;
         }
@@ -97,15 +126,18 @@ public class MatchDetail extends Match {
     }
 
     public List<Period> getPeriods() {
-        return periods;
+        return ModelCollections.unmodifiable(periods);
     }
 
     public List<Team> getParticipants() {
-        return participants;
+        return ModelCollections.unmodifiable(participants);
     }
 
     public Team getHomeTeam() {
-        for (Team team : getParticipants()) {
+        if (participants == null) {
+            return null;
+        }
+        for (Team team : participants) {
             if (team.getMeta() != null && team.getMeta().getLocation().equals("home"))
                 return team;
         }
@@ -113,7 +145,10 @@ public class MatchDetail extends Match {
     }
 
     public Team getAwayTeam() {
-        for (Team team : getParticipants()) {
+        if (participants == null) {
+            return null;
+        }
+        for (Team team : participants) {
             if (team.getMeta() != null && team.getMeta().getLocation().equals("away"))
                 return team;
         }
@@ -121,16 +156,16 @@ public class MatchDetail extends Match {
     }
 
     public List<Scores> getScores() {
-        return scores;
+        return ModelCollections.unmodifiable(scores);
     }
 
     public List<Comment> getComments() {
-        return comments;
+        return ModelCollections.unmodifiable(comments);
     }
 
     public int getCurrentLocalTeamGoals() {
-        if (getScores() != null) {
-            for (Scores score : getScores()) {
+        if (scores != null) {
+            for (Scores score : scores) {
                 if (score.getDescription().equalsIgnoreCase("CURRENT") && score.getScore() != null && score.getScore().getParticipant().equalsIgnoreCase("home"))
                     return score.getScore().getGoals().intValue();
             }
@@ -139,8 +174,8 @@ public class MatchDetail extends Match {
     }
 
     public int getCurrentVisitorTeamGoals() {
-        if (getScores() != null) {
-            for (Scores score : getScores()) {
+        if (scores != null) {
+            for (Scores score : scores) {
                 if (score.getDescription().equalsIgnoreCase("CURRENT") && score.getScore() != null && score.getScore().getParticipant().equalsIgnoreCase("away"))
                     return score.getScore().getGoals().intValue();
             }
@@ -149,17 +184,17 @@ public class MatchDetail extends Match {
     }
 
     public boolean isLiveMatch() {
-        return MatchStatus.isLiveMatch(getState().getId().intValue());
+        return state != null && MatchStatus.isLiveMatch(state.getId().intValue());
     }
 
     public boolean isMatchFinished() {
-        return MatchStatus.isMatchFinished(getState().getId().intValue());
+        return state != null && MatchStatus.isMatchFinished(state.getId().intValue());
     }
 
     public Period getCurrentPeriod() {
-        if (getPeriods() != null && getPeriods().size() > 0) {
-            for (Period period : getPeriods()) {
-                if (period.getTypeId() != null && state.getType() != null && state.getType().getId() != null) {
+        if (periods != null && !periods.isEmpty()) {
+            for (Period period : periods) {
+                if (period.getTypeId() != null && state != null && state.getType() != null && state.getType().getId() != null) {
                     if (period.getTypeId().equals(state.getType().getId())) {
                         return period;
                     }

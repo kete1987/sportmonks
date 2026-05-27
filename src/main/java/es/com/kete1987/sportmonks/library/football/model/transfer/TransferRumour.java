@@ -1,12 +1,19 @@
 package es.com.kete1987.sportmonks.library.football.model.transfer;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TransferRumour {
     private Long id;
-    private Long player_id;
-    private Long from_team_id;
-    private Long to_team_id;
-    private String start_date;
-    private String end_date;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("from_team_id")
+    private Long fromTeamId;
+    @SerializedName("to_team_id")
+    private Long toTeamId;
+    @SerializedName("start_date")
+    private String startDate;
+    @SerializedName("end_date")
+    private String endDate;
 
     public TransferRumour() {
     }
@@ -16,22 +23,22 @@ public class TransferRumour {
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getFromTeamId() {
-        return from_team_id;
+        return fromTeamId;
     }
 
     public Long getToTeamId() {
-        return to_team_id;
+        return toTeamId;
     }
 
     public String getStartDate() {
-        return start_date;
+        return startDate;
     }
 
     public String getEndDate() {
-        return end_date;
+        return endDate;
     }
 }

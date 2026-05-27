@@ -1,9 +1,13 @@
 package es.com.kete1987.sportmonks.library.football.model.prediction;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Probability {
     private Long id;
-    private Long fixture_id;
-    private Long type_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("type_id")
+    private Long typeId;
     private Double home;
     private Double draw;
     private Double away;
@@ -18,11 +22,11 @@ public class Probability {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Double getHome() {

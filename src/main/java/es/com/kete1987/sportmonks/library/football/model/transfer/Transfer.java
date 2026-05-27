@@ -1,14 +1,22 @@
 package es.com.kete1987.sportmonks.library.football.model.transfer;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Transfer {
     private Long id;
-    private Long player_id;
-    private Long type_id;
-    private Long from_team_id;
-    private Long to_team_id;
-    private Long position_id;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("from_team_id")
+    private Long fromTeamId;
+    @SerializedName("to_team_id")
+    private Long toTeamId;
+    @SerializedName("position_id")
+    private Long positionId;
     private String date;
-    private Boolean career_ended;
+    @SerializedName("career_ended")
+    private Boolean careerEnded;
     private Boolean completed;
     private Long amount;
 
@@ -20,23 +28,23 @@ public class Transfer {
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getFromTeamId() {
-        return from_team_id;
+        return fromTeamId;
     }
 
     public Long getToTeamId() {
-        return to_team_id;
+        return toTeamId;
     }
 
     public Long getPositionId() {
-        return position_id;
+        return positionId;
     }
 
     public String getDate() {
@@ -44,7 +52,7 @@ public class Transfer {
     }
 
     public Boolean getCareerEnded() {
-        return career_ended;
+        return careerEnded;
     }
 
     public Boolean getCompleted() {

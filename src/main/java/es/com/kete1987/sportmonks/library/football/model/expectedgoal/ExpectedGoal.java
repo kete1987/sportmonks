@@ -1,16 +1,25 @@
 package es.com.kete1987.sportmonks.library.football.model.expectedgoal;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ExpectedGoal {
     private Long id;
-    private Long fixture_id;
-    private Long participant_id;
-    private String participant_type;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("participant_id")
+    private Long participantId;
+    @SerializedName("participant_type")
+    private String participantType;
     private Double possession;
-    private Double goals_expected;
-    private Double scoring_chances;
-    private Long player_id;
+    @SerializedName("goals_expected")
+    private Double goalsExpected;
+    @SerializedName("scoring_chances")
+    private Double scoringChances;
+    @SerializedName("player_id")
+    private Long playerId;
     private Integer minute;
-    private Long period_id;
+    @SerializedName("period_id")
+    private Long periodId;
 
     public ExpectedGoal() {
     }
@@ -20,15 +29,15 @@ public class ExpectedGoal {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public String getParticipantType() {
-        return participant_type;
+        return participantType;
     }
 
     public Double getPossession() {
@@ -36,15 +45,15 @@ public class ExpectedGoal {
     }
 
     public Double getGoalsExpected() {
-        return goals_expected;
+        return goalsExpected;
     }
 
     public Double getScoringChances() {
-        return scoring_chances;
+        return scoringChances;
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Integer getMinute() {
@@ -52,6 +61,6 @@ public class ExpectedGoal {
     }
 
     public Long getPeriodId() {
-        return period_id;
+        return periodId;
     }
 }

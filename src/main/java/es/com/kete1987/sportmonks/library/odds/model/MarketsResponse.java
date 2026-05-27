@@ -5,20 +5,23 @@ import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class MarketsResponse {
 
     private List<Market> data;
     private Pagination pagination;
     private List<Subscription> subscription;
-    private RateLimit rate_limit;
+    @SerializedName("rate_limit")
+    private RateLimit rateLimit;
     private String timezone;
 
     public MarketsResponse() {
     }
 
     public List<Market> getData() {
-        return data;
+        return ModelCollections.unmodifiable(data);
     }
 
     public Pagination getPagination() {
@@ -26,11 +29,11 @@ public class MarketsResponse {
     }
 
     public List<Subscription> getSubscription() {
-        return subscription;
+        return ModelCollections.unmodifiable(subscription);
     }
 
     public RateLimit getRateLimit() {
-        return rate_limit;
+        return rateLimit;
     }
 
     public String getTimezone() {

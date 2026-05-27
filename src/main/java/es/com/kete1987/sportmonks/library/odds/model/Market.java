@@ -1,11 +1,16 @@
 package es.com.kete1987.sportmonks.library.odds.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Market {
     private Long id;
     private String name;
-    private String display_name;
-    private Boolean has_winning_calculations;
-    private String developer_name;
+    @SerializedName("display_name")
+    private String displayName;
+    @SerializedName("has_winning_calculations")
+    private Boolean hasWinningCalculations;
+    @SerializedName("developer_name")
+    private String developerName;
 
     public Market() {
     }
@@ -19,14 +24,14 @@ public class Market {
     }
 
     public String getDisplayName() {
-        return display_name;
+        return displayName;
     }
 
     public Boolean getHasWinningCalculations() {
-        return has_winning_calculations;
+        return hasWinningCalculations;
     }
 
     public String getDeveloperName() {
-        return developer_name;
+        return developerName;
     }
 }

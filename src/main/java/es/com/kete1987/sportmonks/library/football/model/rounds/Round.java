@@ -3,19 +3,29 @@ package es.com.kete1987.sportmonks.library.football.model.rounds;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Round {
     private Long id;
-    private Long sport_id;
-    private Long league_id;
-    private Long season_id;
-    private Long stage_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("stage_id")
+    private Long stageId;
     private String name;
     private Boolean finished;
-    private Boolean is_current;
-    private String starting_at;
-    private String ending_at;
-    private Boolean games_in_current_week;
+    @SerializedName("is_current")
+    private Boolean isCurrent;
+    @SerializedName("starting_at")
+    private String startingAt;
+    @SerializedName("ending_at")
+    private String endingAt;
+    @SerializedName("games_in_current_week")
+    private Boolean gamesInCurrentWeek;
     private List<MatchDetail> fixtures;
 
     public Round() {
@@ -26,19 +36,19 @@ public class Round {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 
     public String getName() {
@@ -50,22 +60,22 @@ public class Round {
     }
 
     public Boolean getIsCurrent() {
-        return is_current;
+        return isCurrent;
     }
 
     public String getStartingAt() {
-        return starting_at;
+        return startingAt;
     }
 
     public String getEndingAt() {
-        return ending_at;
+        return endingAt;
     }
 
     public Boolean getGamesInCurrentWeek() {
-        return games_in_current_week;
+        return gamesInCurrentWeek;
     }
 
     public List<MatchDetail> getFixtures() {
-        return fixtures;
+        return ModelCollections.unmodifiable(fixtures);
     }
 }

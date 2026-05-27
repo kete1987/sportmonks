@@ -3,6 +3,7 @@ package es.com.kete1987.sportmonks.library.core.model.city;
 import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 
 import java.util.List;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class CitiesResponse {
     private List<City> data;
@@ -12,7 +13,7 @@ public class CitiesResponse {
     }
 
     public List<City> getData() {
-        return data;
+        return ModelCollections.unmodifiable(data);
     }
 
     public Pagination getPagination() {

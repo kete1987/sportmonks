@@ -4,20 +4,31 @@ import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.standings.StandingsGroup;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Stage implements Comparable<Object> {
     private Long id;
-    private Long sport_id;
-    private Long league_id;
-    private Long season_id;
-    private Long type_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("type_id")
+    private Long typeId;
     private String name;
-    private Long sort_order;
+    @SerializedName("sort_order")
+    private Long sortOrder;
     private Boolean finished;
-    private Boolean is_current;
-    private String starting_at;
-    private String ending_at;
-    private String games_in_current_week;
+    @SerializedName("is_current")
+    private Boolean isCurrent;
+    @SerializedName("starting_at")
+    private String startingAt;
+    @SerializedName("ending_at")
+    private String endingAt;
+    @SerializedName("games_in_current_week")
+    private String gamesInCurrentWeek;
     private List<MatchDetail> fixtures;
     private List<StageAggregate> aggregates;
     private List<StandingsGroup> groups;
@@ -30,19 +41,19 @@ public class Stage implements Comparable<Object> {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public String getName() {
@@ -50,7 +61,7 @@ public class Stage implements Comparable<Object> {
     }
 
     public Long getSortOrder() {
-        return sort_order;
+        return sortOrder;
     }
 
     public Boolean getFinished() {
@@ -58,31 +69,31 @@ public class Stage implements Comparable<Object> {
     }
 
     public Boolean getIsCurrent() {
-        return is_current;
+        return isCurrent;
     }
 
     public String getStartingAt() {
-        return starting_at;
+        return startingAt;
     }
 
     public String getEndingAt() {
-        return ending_at;
+        return endingAt;
     }
 
     public String getGamesInCurrentWeek() {
-        return games_in_current_week;
+        return gamesInCurrentWeek;
     }
 
     public List<MatchDetail> getFixtures() {
-        return fixtures;
+        return ModelCollections.unmodifiable(fixtures);
     }
 
     public List<StageAggregate> getAggregates() {
-        return aggregates;
+        return ModelCollections.unmodifiable(aggregates);
     }
 
     public List<StandingsGroup> getGroups() {
-        return groups;
+        return ModelCollections.unmodifiable(groups);
     }
 
     @Override
@@ -93,7 +104,7 @@ public class Stage implements Comparable<Object> {
         int cmp = Long.compare(this.getSortOrder(), other.getSortOrder());
         if (cmp != 0) return cmp;
 
-        // Desempatar por ending_at (nulls al final)
+        // Desempatar por endingAt (nulls al final)
         String thisEnd = this.getEndingAt();
         String otherEnd = other.getEndingAt();
 

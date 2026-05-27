@@ -1,15 +1,21 @@
 package es.com.kete1987.sportmonks.library.football.model.venue;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Venue {
     private Long id;
-    private Long country_id;
-    private Long city_id;
+    @SerializedName("country_id")
+    private Long countryId;
+    @SerializedName("city_id")
+    private Long cityId;
     private String name;
     private String address;
     private Long zipcode;
     private Long capacity;
-    private String image_path;
-    private String city_name;
+    @SerializedName("image_path")
+    private String imagePath;
+    @SerializedName("city_name")
+    private String cityName;
 
     public Venue() {
     }
@@ -19,11 +25,11 @@ public class Venue {
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public Long getCityId() {
-        return city_id;
+        return cityId;
     }
 
     public String getName() {
@@ -43,10 +49,10 @@ public class Venue {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getCityName() {
-        return city_name;
+        return cityName;
     }
 }

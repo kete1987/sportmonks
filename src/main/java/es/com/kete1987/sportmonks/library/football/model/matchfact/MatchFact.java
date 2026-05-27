@@ -1,13 +1,20 @@
 package es.com.kete1987.sportmonks.library.football.model.matchfact;
 
+import com.google.gson.annotations.SerializedName;
+
 public class MatchFact {
     private Long id;
-    private Long fixture_id;
-    private Long type_id;
-    private Long participant_id;
-    private String participant_type;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("participant_id")
+    private Long participantId;
+    @SerializedName("participant_type")
+    private String participantType;
     private Object value;
-    private String created_at;
+    @SerializedName("created_at")
+    private String createdAt;
 
     public MatchFact() {
     }
@@ -17,19 +24,19 @@ public class MatchFact {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public String getParticipantType() {
-        return participant_type;
+        return participantType;
     }
 
     public Object getValue() {
@@ -37,6 +44,6 @@ public class MatchFact {
     }
 
     public String getCreatedAt() {
-        return created_at;
+        return createdAt;
     }
 }

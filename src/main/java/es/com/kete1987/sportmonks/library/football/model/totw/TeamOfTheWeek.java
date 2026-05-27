@@ -3,12 +3,17 @@ package es.com.kete1987.sportmonks.library.football.model.totw;
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class TeamOfTheWeek {
     private Long id;
-    private Long fixture_id;
-    private Long round_id;
-    private Long league_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("round_id")
+    private Long roundId;
+    @SerializedName("league_id")
+    private Long leagueId;
     private List<Player> players;
 
     public TeamOfTheWeek() {
@@ -19,18 +24,18 @@ public class TeamOfTheWeek {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getRoundId() {
-        return round_id;
+        return roundId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return ModelCollections.unmodifiable(players);
     }
 }

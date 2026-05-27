@@ -1,11 +1,17 @@
 package es.com.kete1987.sportmonks.library.common.model.pagination;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Pagination {
     private Long count;
-    private Long per_page;
-    private Long current_page;
-    private String next_page;
-    private Boolean has_more;
+    @SerializedName("per_page")
+    private Long perPage;
+    @SerializedName("current_page")
+    private Long currentPage;
+    @SerializedName("next_page")
+    private String nextPage;
+    @SerializedName("has_more")
+    private Boolean hasMore;
 
     public Pagination() {
 
@@ -16,18 +22,18 @@ public class Pagination {
     }
 
     public Long getPerPage() {
-        return per_page;
+        return perPage;
     }
 
     public Long getCurrentPage() {
-        return current_page;
+        return currentPage;
     }
 
     public String getNextPage() {
-        return next_page;
+        return nextPage;
     }
 
     public boolean hasMore() {
-        return Boolean.TRUE.equals(has_more);
+        return Boolean.TRUE.equals(hasMore);
     }
 }

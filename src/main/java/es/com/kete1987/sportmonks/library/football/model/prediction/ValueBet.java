@@ -1,16 +1,24 @@
 package es.com.kete1987.sportmonks.library.football.model.prediction;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ValueBet {
     private Long id;
-    private Long fixture_id;
-    private Long type_id;
-    private Long bookmaker_id;
-    private Long market_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("bookmaker_id")
+    private Long bookmakerId;
+    @SerializedName("market_id")
+    private Long marketId;
     private Double odds;
     private Double value;
     private String label;
-    private Double fair_odds;
-    private String created_at;
+    @SerializedName("fair_odds")
+    private Double fairOdds;
+    @SerializedName("created_at")
+    private String createdAt;
 
     public ValueBet() {
     }
@@ -20,19 +28,19 @@ public class ValueBet {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getBookmakerId() {
-        return bookmaker_id;
+        return bookmakerId;
     }
 
     public Long getMarketId() {
-        return market_id;
+        return marketId;
     }
 
     public Double getOdds() {
@@ -48,10 +56,10 @@ public class ValueBet {
     }
 
     public Double getFairOdds() {
-        return fair_odds;
+        return fairOdds;
     }
 
     public String getCreatedAt() {
-        return created_at;
+        return createdAt;
     }
 }

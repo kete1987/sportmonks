@@ -1,11 +1,14 @@
 package es.com.kete1987.sportmonks.library.core.model.continent;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Continent {
     private Long id;
     private String name;
     private String code;
     private String flag;
-    private String image_path;
+    @SerializedName("image_path")
+    private String imagePath;
 
     public Continent() {
     }
@@ -27,6 +30,6 @@ public class Continent {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 }

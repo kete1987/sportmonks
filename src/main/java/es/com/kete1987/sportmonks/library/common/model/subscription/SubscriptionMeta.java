@@ -1,25 +1,29 @@
 package es.com.kete1987.sportmonks.library.common.model.subscription;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SubscriptionMeta {
-    private String trial_ends_at;
-    private String ends_at;
+    @SerializedName("trial_ends_at")
+    private String trialEndsAt;
+    @SerializedName("ends_at")
+    private String endsAt;
 
     public SubscriptionMeta() {
     }
 
     public String getTrialEndsAt() {
-        return trial_ends_at;
+        return trialEndsAt;
     }
 
-    public void setTrialEndsAt(String trial_ends_at) {
-        this.trial_ends_at = trial_ends_at;
+    public void setTrialEndsAt(String trialEndsAt) {
+        this.trialEndsAt = trialEndsAt;
     }
 
     public String getEndsAt() {
-        return ends_at;
+        return endsAt;
     }
 
-    public void setEndsAt(String ends_at) {
-        this.ends_at = ends_at;
+    public void setEndsAt(String endsAt) {
+        this.endsAt = endsAt;
     }
 }
