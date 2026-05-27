@@ -6,7 +6,7 @@ import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class TeamsResponse {
     private List<Team> data;
@@ -20,7 +20,7 @@ public class TeamsResponse {
     }
 
     public List<Team> getData() {
-        return data == null ? null : Collections.unmodifiableList(data);
+        return ModelCollections.unmodifiable(data);
     }
 
     public Pagination getPagination() {
@@ -28,7 +28,7 @@ public class TeamsResponse {
     }
 
     public List<Subscription> getSubscription() {
-        return subscription == null ? null : Collections.unmodifiableList(subscription);
+        return ModelCollections.unmodifiable(subscription);
     }
 
     public RateLimit getRateLimit() {

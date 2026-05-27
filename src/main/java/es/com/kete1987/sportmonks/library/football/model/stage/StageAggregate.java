@@ -2,7 +2,7 @@ package es.com.kete1987.sportmonks.library.football.model.stage;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class StageAggregate {
     private Long id;
@@ -45,7 +45,7 @@ public class StageAggregate {
     }
 
     public List<Long> getFixtureIds() {
-        return fixtureIds == null ? null : Collections.unmodifiableList(fixtureIds);
+        return ModelCollections.unmodifiable(fixtureIds);
     }
 
     public String getResult() {

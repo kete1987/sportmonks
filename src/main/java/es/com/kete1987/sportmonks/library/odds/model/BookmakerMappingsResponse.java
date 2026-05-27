@@ -5,7 +5,7 @@ import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class BookmakerMappingsResponse {
 
@@ -19,11 +19,11 @@ public class BookmakerMappingsResponse {
     }
 
     public List<BookmakerMapping> getData() {
-        return data == null ? null : Collections.unmodifiableList(data);
+        return ModelCollections.unmodifiable(data);
     }
 
     public List<Subscription> getSubscription() {
-        return subscription == null ? null : Collections.unmodifiableList(subscription);
+        return ModelCollections.unmodifiable(subscription);
     }
 
     public RateLimit getRateLimit() {

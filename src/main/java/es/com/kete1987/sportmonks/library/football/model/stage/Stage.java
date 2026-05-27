@@ -5,7 +5,7 @@ import es.com.kete1987.sportmonks.library.football.model.standings.StandingsGrou
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Stage implements Comparable<Object> {
     private Long id;
@@ -85,15 +85,15 @@ public class Stage implements Comparable<Object> {
     }
 
     public List<MatchDetail> getFixtures() {
-        return fixtures == null ? null : Collections.unmodifiableList(fixtures);
+        return ModelCollections.unmodifiable(fixtures);
     }
 
     public List<StageAggregate> getAggregates() {
-        return aggregates == null ? null : Collections.unmodifiableList(aggregates);
+        return ModelCollections.unmodifiable(aggregates);
     }
 
     public List<StandingsGroup> getGroups() {
-        return groups == null ? null : Collections.unmodifiableList(groups);
+        return ModelCollections.unmodifiable(groups);
     }
 
     @Override

@@ -30,12 +30,17 @@ class CoachApiTest extends BaseApiTest {
         List<Coach> coaches = api.getAllCoaches();
 
         assertEquals(2, coaches.size());
-        assertEquals(1L, coaches.get(0).getId());
-        assertEquals("Erik ten Hag", coaches.get(0).getName());
-        assertEquals("Erik", coaches.get(0).getFirstname());
-        assertEquals("ten Hag", coaches.get(0).getLastname());
-        assertEquals("E. ten Hag", coaches.get(0).getDisplayName());
-        assertEquals("male", coaches.get(0).getGender());
+        Coach first = coaches.get(0);
+        assertEquals(1L, first.getId());
+        assertEquals("Erik ten Hag", first.getName());
+        assertEquals("Erik", first.getFirstname());
+        assertEquals("ten Hag", first.getLastname());
+        assertEquals("E. ten Hag", first.getDisplayName());
+        assertEquals("male", first.getGender());
+        assertEquals(1L, first.getSportId());
+        assertEquals(462L, first.getCountryId());
+        assertEquals(462L, first.getNationalityId());
+        assertEquals("1970-02-02", first.getDateOfBirth());
     }
 
     @Test

@@ -20,11 +20,19 @@ class SeasonApiTest extends BaseApiTest {
         List<SeasonData> seasons = api.getSeasons();
 
         assertEquals(2, seasons.size());
-        assertEquals(21646, seasons.get(0).getId().intValue());
-        assertEquals("2023/2024", seasons.get(0).getName());
-        assertTrue(seasons.get(0).getFinished());
-        assertEquals(23614, seasons.get(1).getId().intValue());
-        assertTrue(seasons.get(1).getIsCurrent());
+        SeasonData first = seasons.get(0);
+        assertEquals(21646, first.getId().intValue());
+        assertEquals("2023/2024", first.getName());
+        assertTrue(first.getFinished());
+        assertFalse(first.getPending());
+        assertFalse(first.getIsCurrent());
+        assertEquals(1L, first.getSportId());
+        assertEquals(8L, first.getLeagueId());
+
+        SeasonData second = seasons.get(1);
+        assertEquals(23614, second.getId().intValue());
+        assertTrue(second.getIsCurrent());
+        assertFalse(second.getPending());
     }
 
     @Test

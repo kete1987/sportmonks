@@ -3,7 +3,7 @@ package es.com.kete1987.sportmonks.library.core.model.continent;
 import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 
 import java.util.List;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class ContinentsResponse {
     private List<Continent> data;
@@ -13,7 +13,7 @@ public class ContinentsResponse {
     }
 
     public List<Continent> getData() {
-        return data == null ? null : Collections.unmodifiableList(data);
+        return ModelCollections.unmodifiable(data);
     }
 
     public Pagination getPagination() {

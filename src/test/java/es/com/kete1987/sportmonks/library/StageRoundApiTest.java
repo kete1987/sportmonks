@@ -66,6 +66,14 @@ class StageRoundApiTest extends BaseApiTest {
         assertNotNull(stage);
         assertEquals(1L, stage.getId());
         assertEquals("Regular Season", stage.getName());
+        assertEquals(1L, stage.getSportId());
+        assertEquals(8L, stage.getLeagueId());
+        assertEquals(23614L, stage.getSeasonId());
+        assertFalse(stage.getFinished());
+        assertTrue(stage.getIsCurrent());
+        assertNull(stage.getFixtures());
+        assertNull(stage.getAggregates());
+        assertNull(stage.getGroups());
     }
 
     @Test
@@ -131,7 +139,13 @@ class StageRoundApiTest extends BaseApiTest {
         assertNotNull(round);
         assertEquals(1L, round.getId());
         assertEquals("1", round.getName());
+        assertEquals(1L, round.getSportId());
+        assertEquals(8L, round.getLeagueId());
         assertEquals(23614L, round.getSeasonId());
+        assertEquals(1L, round.getStageId());
+        assertTrue(round.getFinished());
+        assertFalse(round.getIsCurrent());
+        assertNull(round.getFixtures());
     }
 
     @Test

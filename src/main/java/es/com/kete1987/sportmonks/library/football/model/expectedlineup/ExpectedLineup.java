@@ -4,7 +4,7 @@ import es.com.kete1987.sportmonks.library.football.model.player.Player;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class ExpectedLineup {
     private Long id;
@@ -35,6 +35,6 @@ public class ExpectedLineup {
     }
 
     public List<Player> getPlayers() {
-        return players == null ? null : Collections.unmodifiableList(players);
+        return ModelCollections.unmodifiable(players);
     }
 }

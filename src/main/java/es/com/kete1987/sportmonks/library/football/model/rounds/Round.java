@@ -4,7 +4,7 @@ import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Round {
     private Long id;
@@ -76,6 +76,6 @@ public class Round {
     }
 
     public List<MatchDetail> getFixtures() {
-        return fixtures == null ? null : Collections.unmodifiableList(fixtures);
+        return ModelCollections.unmodifiable(fixtures);
     }
 }

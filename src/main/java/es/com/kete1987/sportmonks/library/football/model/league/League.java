@@ -4,7 +4,7 @@ import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class League {
     private Long id;
@@ -77,7 +77,7 @@ public class League {
     }
 
     public List<SeasonData> getSeasons() {
-        return seasons == null ? null : Collections.unmodifiableList(seasons);
+        return ModelCollections.unmodifiable(seasons);
     }
 
     public SeasonData getCurrentseason() {

@@ -7,7 +7,7 @@ import es.com.kete1987.sportmonks.library.football.model.team.Team;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Standings {
     private Long id;
@@ -99,7 +99,7 @@ public class Standings {
     }
 
     public List<StandingsDetail> getDetails() {
-        return details == null ? null : Collections.unmodifiableList(details);
+        return ModelCollections.unmodifiable(details);
     }
 
     public Team getParticipant() {
@@ -107,7 +107,7 @@ public class Standings {
     }
 
     public List<StandingsForm> getForm() {
-        return form == null ? null : Collections.unmodifiableList(form);
+        return ModelCollections.unmodifiable(form);
     }
 
     public Stage getStage() {

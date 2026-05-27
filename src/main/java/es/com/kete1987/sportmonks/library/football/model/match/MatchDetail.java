@@ -9,6 +9,7 @@ import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class MatchDetail extends Match {
     private Venue venue;
@@ -34,7 +35,7 @@ public class MatchDetail extends Match {
     }
 
     public List<LineUpData> getLineups() {
-        return lineups == null ? null : Collections.unmodifiableList(lineups);
+        return ModelCollections.unmodifiable(lineups);
     }
 
     public List<LineUpData> getLineupLocalTeam() {
@@ -94,11 +95,11 @@ public class MatchDetail extends Match {
     }
 
     public List<EventData> getEvents() {
-        return events == null ? null : Collections.unmodifiableList(events);
+        return ModelCollections.unmodifiable(events);
     }
 
     public List<StatisticsData> getStatistics() {
-        return statistics == null ? null : Collections.unmodifiableList(statistics);
+        return ModelCollections.unmodifiable(statistics);
     }
 
     public StatisticsData getStatisticDataByTypeAndTeamId(int teamId, int type) {
@@ -113,11 +114,11 @@ public class MatchDetail extends Match {
     }
 
     public List<Period> getPeriods() {
-        return periods == null ? null : Collections.unmodifiableList(periods);
+        return ModelCollections.unmodifiable(periods);
     }
 
     public List<Team> getParticipants() {
-        return participants == null ? null : Collections.unmodifiableList(participants);
+        return ModelCollections.unmodifiable(participants);
     }
 
     public Team getHomeTeam() {
@@ -143,11 +144,11 @@ public class MatchDetail extends Match {
     }
 
     public List<Scores> getScores() {
-        return scores == null ? null : Collections.unmodifiableList(scores);
+        return ModelCollections.unmodifiable(scores);
     }
 
     public List<Comment> getComments() {
-        return comments == null ? null : Collections.unmodifiableList(comments);
+        return ModelCollections.unmodifiable(comments);
     }
 
     public int getCurrentLocalTeamGoals() {

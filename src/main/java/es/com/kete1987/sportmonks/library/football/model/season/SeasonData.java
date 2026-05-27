@@ -5,7 +5,7 @@ import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class SeasonData {
     private Long id;
@@ -83,10 +83,10 @@ public class SeasonData {
     }
 
     public List<Stage> getStages() {
-        return stages == null ? null : Collections.unmodifiableList(stages);
+        return ModelCollections.unmodifiable(stages);
     }
 
     public List<Match> getFixtures() {
-        return fixtures == null ? null : Collections.unmodifiableList(fixtures);
+        return ModelCollections.unmodifiable(fixtures);
     }
 }

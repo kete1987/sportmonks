@@ -4,7 +4,7 @@ import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Schedule {
     @SerializedName("season_id")
@@ -25,6 +25,6 @@ public class Schedule {
     }
 
     public List<Round> getRounds() {
-        return rounds == null ? null : Collections.unmodifiableList(rounds);
+        return ModelCollections.unmodifiable(rounds);
     }
 }

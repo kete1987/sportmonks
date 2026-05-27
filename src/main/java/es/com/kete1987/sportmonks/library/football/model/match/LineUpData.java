@@ -6,7 +6,7 @@ import es.com.kete1987.sportmonks.library.football.util.StatisticsType;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class LineUpData {
     private Long id;
@@ -84,7 +84,7 @@ public class LineUpData {
     }
 
     public List<LineUpDetails> getDetails() {
-        return details == null ? null : Collections.unmodifiableList(details);
+        return ModelCollections.unmodifiable(details);
     }
 
     public Player getPlayer() {
