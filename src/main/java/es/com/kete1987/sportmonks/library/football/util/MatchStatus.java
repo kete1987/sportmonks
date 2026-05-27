@@ -2,7 +2,7 @@ package es.com.kete1987.sportmonks.library.football.util;
 
 public class MatchStatus {
     public static final int NOT_STARTED = 1;
-    public static final int INPLAY_1ST_HALF = 2;
+    public static final int INPLAY_1st_HALF = 2;
     public static final int HT = 3; // Half-time
     public static final int BREAK = 4; // Waiting for extra time to start
     public static final int FT = 5; // Full time
@@ -28,7 +28,7 @@ public class MatchStatus {
     public static final int PENDING = 26;
 
     public static boolean isLiveMatch(int status) {
-        return status == INPLAY_1ST_HALF || status == HT || status == BREAK || status == INPLAY_ET || status == INPLAY_PENALTIES ||
+        return status == INPLAY_1st_HALF || status == HT || status == BREAK || status == INPLAY_ET || status == INPLAY_PENALTIES ||
                 status == EXTRA_TIME_BREAK || status == INPLAY_2ND_HALF || status == INPLAY_ET_2ND_HALF || status == PEN_BREAK;
     }
 
@@ -40,7 +40,7 @@ public class MatchStatus {
         switch (status) {
             case NOT_STARTED:
                 return "Sin comenzar";
-            case INPLAY_1ST_HALF:
+            case INPLAY_1st_HALF:
                 return "En juego (1ª parte)";
             case HT:
                 return "Descanso";

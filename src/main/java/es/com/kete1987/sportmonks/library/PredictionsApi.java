@@ -34,7 +34,7 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public PredictionsApi(String apiToken, String locale) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_FOOTBALL, locale, new RateLimitTracker());
+        this(buildHttpClient(apiToken), Constants.baseURLFootball, locale, new RateLimitTracker());
     }
 
     PredictionsApi(OkHttpClient client, String footballBase, String locale, RateLimitTracker tracker) {
