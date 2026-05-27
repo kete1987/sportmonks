@@ -1,15 +1,23 @@
 package es.com.kete1987.sportmonks.library.football.model.referee;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Referee {
     private Long id;
-    private Long sport_id;
-    private Long country_id;
-    private Long city_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("country_id")
+    private Long countryId;
+    @SerializedName("city_id")
+    private Long cityId;
     private String name;
-    private String display_name;
-    private String image_path;
+    @SerializedName("display_name")
+    private String displayName;
+    @SerializedName("image_path")
+    private String imagePath;
     private String gender;
-    private String date_of_birth;
+    @SerializedName("date_of_birth")
+    private String dateOfBirth;
 
     public Referee() {
     }
@@ -19,15 +27,15 @@ public class Referee {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public Long getCityId() {
-        return city_id;
+        return cityId;
     }
 
     public String getName() {
@@ -35,11 +43,11 @@ public class Referee {
     }
 
     public String getDisplayName() {
-        return display_name;
+        return displayName;
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getGender() {
@@ -47,6 +55,6 @@ public class Referee {
     }
 
     public String getDateOfBirth() {
-        return date_of_birth;
+        return dateOfBirth;
     }
 }

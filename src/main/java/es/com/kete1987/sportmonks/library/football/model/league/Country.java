@@ -1,12 +1,18 @@
 package es.com.kete1987.sportmonks.library.football.model.league;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Country {
     private Long id;
-    private Long continent_id;
+    @SerializedName("continent_id")
+    private Long continentId;
     private String name;
-    private String official_name;
-    private String fifa_name;
-    private String image_path;
+    @SerializedName("official_name")
+    private String officialName;
+    @SerializedName("fifa_name")
+    private String fifaName;
+    @SerializedName("image_path")
+    private String imagePath;
 
     public Country() {
     }
@@ -16,7 +22,7 @@ public class Country {
     }
 
     public Long getContinentId() {
-        return continent_id;
+        return continentId;
     }
 
     public String getName() {
@@ -24,14 +30,14 @@ public class Country {
     }
 
     public String getOfficialName() {
-        return official_name;
+        return officialName;
     }
 
     public String getFifaName() {
-        return fifa_name;
+        return fifaName;
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 }

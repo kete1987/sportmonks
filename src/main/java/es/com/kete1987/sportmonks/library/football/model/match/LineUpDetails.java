@@ -1,12 +1,19 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LineUpDetails {
     private Long id;
-    private Long fixture_id;
-    private Long player_id;
-    private Long team_id;
-    private Long lineup_id;
-    private Long type_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("team_id")
+    private Long teamId;
+    @SerializedName("lineup_id")
+    private Long lineupId;
+    @SerializedName("type_id")
+    private Long typeId;
     private LineUpDetailsData data;
 
     public LineUpDetails() {}
@@ -16,23 +23,23 @@ public class LineUpDetails {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public Long getLineupId() {
-        return lineup_id;
+        return lineupId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public LineUpDetailsData getData() {

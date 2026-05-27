@@ -1,13 +1,19 @@
 package es.com.kete1987.sportmonks.library.football.model.teamranking;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TeamRanking {
     private Long id;
-    private Long team_id;
-    private Long league_id;
-    private Long season_id;
+    @SerializedName("team_id")
+    private Long teamId;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("season_id")
+    private Long seasonId;
     private Long position;
     private Long points;
-    private String ranking_date;
+    @SerializedName("ranking_date")
+    private String rankingDate;
 
     public TeamRanking() {
     }
@@ -17,15 +23,15 @@ public class TeamRanking {
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getPosition() {
@@ -37,6 +43,6 @@ public class TeamRanking {
     }
 
     public String getRankingDate() {
-        return ranking_date;
+        return rankingDate;
     }
 }

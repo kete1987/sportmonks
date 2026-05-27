@@ -5,12 +5,14 @@ import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
 
 import java.util.List;
+import java.util.Collections;
 
 public class SeasonDataResponse {
     @SerializedName("data")
     private SeasonData seasonData;
     private List<Subscription> subscription;
-    private RateLimit rate_limit;
+    @SerializedName("rate_limit")
+    private RateLimit rateLimit;
     private String timezone;
 
     public SeasonDataResponse() {
@@ -21,11 +23,11 @@ public class SeasonDataResponse {
     }
 
     public List<Subscription> getSubscription() {
-        return subscription;
+        return subscription == null ? null : Collections.unmodifiableList(subscription);
     }
 
     public RateLimit getRateLimit() {
-        return rate_limit;
+        return rateLimit;
     }
 
     public String getTimezone() {

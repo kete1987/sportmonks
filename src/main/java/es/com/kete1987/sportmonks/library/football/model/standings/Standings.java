@@ -6,17 +6,27 @@ import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 
 public class Standings {
     private Long id;
-    private Long participant_id;
-    private Long sport_id;
-    private Long league_id;
-    private Long season_id;
-    private Long stage_id;
-    private Long group_id;
-    private Long round_id;
-    private Long standing_rule_id;
+    @SerializedName("participant_id")
+    private Long participantId;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("stage_id")
+    private Long stageId;
+    @SerializedName("group_id")
+    private Long groupId;
+    @SerializedName("round_id")
+    private Long roundId;
+    @SerializedName("standing_rule_id")
+    private Long standingRuleId;
     private Long position;
     private String result;
     private Long points;
@@ -37,35 +47,35 @@ public class Standings {
     }
 
     public Long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 
     public Long getGroupId() {
-        return group_id;
+        return groupId;
     }
 
     public Long getRoundId() {
-        return round_id;
+        return roundId;
     }
 
     public Long getStandingRuleId() {
-        return standing_rule_id;
+        return standingRuleId;
     }
 
     public Long getPosition() {
@@ -89,7 +99,7 @@ public class Standings {
     }
 
     public List<StandingsDetail> getDetails() {
-        return details;
+        return details == null ? null : Collections.unmodifiableList(details);
     }
 
     public Team getParticipant() {
@@ -97,7 +107,7 @@ public class Standings {
     }
 
     public List<StandingsForm> getForm() {
-        return form;
+        return form == null ? null : Collections.unmodifiableList(form);
     }
 
     public Stage getStage() {

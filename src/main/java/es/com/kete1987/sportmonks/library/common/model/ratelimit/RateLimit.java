@@ -1,19 +1,23 @@
 package es.com.kete1987.sportmonks.library.common.model.ratelimit;
 
+import com.google.gson.annotations.SerializedName;
+
 public class RateLimit {
-    private Long resets_in_seconds;
+    @SerializedName("resets_in_seconds")
+    private Long resetsInSeconds;
     private Long remaining;
-    private String requested_entity;
+    @SerializedName("requested_entity")
+    private String requestedEntity;
 
     public RateLimit() {
     }
 
     public Long getResetsInSeconds() {
-        return resets_in_seconds;
+        return resetsInSeconds;
     }
 
-    public void setResetsInSeconds(Long resets_in_seconds) {
-        this.resets_in_seconds = resets_in_seconds;
+    public void setResetsInSeconds(Long resetsInSeconds) {
+        this.resetsInSeconds = resetsInSeconds;
     }
 
     public Long getRemaining() {
@@ -25,10 +29,10 @@ public class RateLimit {
     }
 
     public String getRequestedEntity() {
-        return requested_entity;
+        return requestedEntity;
     }
 
-    public void setRequestedEntity(String requested_entity) {
-        this.requested_entity = requested_entity;
+    public void setRequestedEntity(String requestedEntity) {
+        this.requestedEntity = requestedEntity;
     }
 }

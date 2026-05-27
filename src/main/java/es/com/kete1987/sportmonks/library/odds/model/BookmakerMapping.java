@@ -1,22 +1,27 @@
 package es.com.kete1987.sportmonks.library.odds.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class BookmakerMapping {
-    private Long fixture_id;
-    private Long bookmaker_id;
-    private String fixture_identifier;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("bookmaker_id")
+    private Long bookmakerId;
+    @SerializedName("fixture_identifier")
+    private String fixtureIdentifier;
 
     public BookmakerMapping() {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getBookmakerId() {
-        return bookmaker_id;
+        return bookmakerId;
     }
 
     public String getFixtureIdentifier() {
-        return fixture_identifier;
+        return fixtureIdentifier;
     }
 }

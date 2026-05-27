@@ -6,20 +6,28 @@ import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 
 public class Team {
     private Long id;
-    private Long sport_id;
-    private Long country_id;
-    private Long venue_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("country_id")
+    private Long countryId;
+    @SerializedName("venue_id")
+    private Long venueId;
     private String gender;
     private String name;
-    private String short_code;
-    private String image_path;
+    @SerializedName("short_code")
+    private String shortCode;
+    @SerializedName("image_path")
+    private String imagePath;
     private Long founded;
     private String type;
     private Boolean placeholder;
-    private String last_played_at;
+    @SerializedName("last_played_at")
+    private String lastPlayedAt;
     private Venue venue;
     private List<TeamPlayer> players;
     private List<Match> latest;
@@ -39,15 +47,15 @@ public class Team {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public Long getVenueId() {
-        return venue_id;
+        return venueId;
     }
 
     public String getName() {
@@ -55,7 +63,7 @@ public class Team {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public Long getFounded() {
@@ -63,7 +71,7 @@ public class Team {
     }
 
     public String getLastPlayedAt() {
-        return last_played_at;
+        return lastPlayedAt;
     }
 
     public String getGender() {
@@ -71,7 +79,7 @@ public class Team {
     }
 
     public String getShortCode() {
-        return short_code;
+        return shortCode;
     }
 
     public String getType() {
@@ -91,30 +99,30 @@ public class Team {
     }
 
     public List<TeamPlayer> getPlayers() {
-        return players;
+        return players == null ? null : Collections.unmodifiableList(players);
     }
 
     public List<Match> getLatest() {
-        return latest;
+        return latest == null ? null : Collections.unmodifiableList(latest);
     }
 
     public List<Match> getUpcoming() {
-        return upcoming;
+        return upcoming == null ? null : Collections.unmodifiableList(upcoming);
     }
 
     public List<SeasonData> getSeasons() {
-        return seasons;
+        return seasons == null ? null : Collections.unmodifiableList(seasons);
     }
 
     public List<SeasonData> getActiveSeasons() {
-        return activeseasons;
+        return activeseasons == null ? null : Collections.unmodifiableList(activeseasons);
     }
 
     public List<Sidelined> getSidelined() {
-        return sidelined;
+        return sidelined == null ? null : Collections.unmodifiableList(sidelined);
     }
 
     public List<Sidelined> getSidelinedhistory() {
-        return sidelinedhistory;
+        return sidelinedhistory == null ? null : Collections.unmodifiableList(sidelinedhistory);
     }
 }

@@ -5,17 +5,27 @@ import es.com.kete1987.sportmonks.library.football.util.PlayerPosition;
 import es.com.kete1987.sportmonks.library.football.util.StatisticsType;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 
 public class LineUpData {
     private Long id;
-    private Long sport_id;
-    private Long fixture_id;
-    private Long player_id;
-    private Long team_id;
-    private Long position_id;
-    private Long type_id;
-    private String player_name;
-    private Long jersey_number;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("team_id")
+    private Long teamId;
+    @SerializedName("position_id")
+    private Long positionId;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("player_name")
+    private String playerName;
+    @SerializedName("jersey_number")
+    private Long jerseyNumber;
     private Player player;
     public List<LineUpDetails> details;
 
@@ -27,28 +37,28 @@ public class LineUpData {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public Long getPositionId() {
-        return position_id;
+        return positionId;
     }
 
     public String getPosition() {
-        if (position_id == null) return "";
-        switch (position_id.intValue()) {
+        if (positionId == null) return "";
+        switch (positionId.intValue()) {
             case PlayerPosition.GOALKEEPER: return "P";
             case PlayerPosition.DEFENDER: return "D";
             case PlayerPosition.MIDFIELDER: return "M";
@@ -58,23 +68,23 @@ public class LineUpData {
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public String getPlayerName() {
-        return player_name;
+        return playerName;
     }
 
     public String getDisplayPlayerName() {
-        return player != null && player.getDisplayName() != null ? player.getDisplayName() : player_name;
+        return player != null && player.getDisplayName() != null ? player.getDisplayName() : playerName;
     }
 
     public Long getJerseyNumber() {
-        return jersey_number;
+        return jerseyNumber;
     }
 
     public List<LineUpDetails> getDetails() {
-        return details;
+        return details == null ? null : Collections.unmodifiableList(details);
     }
 
     public Player getPlayer() {

@@ -1,23 +1,35 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
 import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
+import com.google.gson.annotations.SerializedName;
 
-public class Match implements Comparable<Object> {
+public class Match implements Comparable<Match> {
     protected Long id; //ID del partido
-    protected Long sport_id;
-    protected Long league_id;
-    protected Long season_id;
-    protected Long stage_id;
-    protected Long group_id;
-    protected Long aggregate_id;
-    protected Long round_id;
-    protected Long state_id;
-    protected Long venue_id;
+    @SerializedName("sport_id")
+    protected Long sportId;
+    @SerializedName("league_id")
+    protected Long leagueId;
+    @SerializedName("season_id")
+    protected Long seasonId;
+    @SerializedName("stage_id")
+    protected Long stageId;
+    @SerializedName("group_id")
+    protected Long groupId;
+    @SerializedName("aggregate_id")
+    protected Long aggregateId;
+    @SerializedName("round_id")
+    protected Long roundId;
+    @SerializedName("state_id")
+    protected Long stateId;
+    @SerializedName("venue_id")
+    protected Long venueId;
     protected String name;
-    protected String starting_at;
+    @SerializedName("starting_at")
+    protected String startingAt;
     protected String leg;
     protected Long length;
-    protected Long starting_at_timestamp;
+    @SerializedName("starting_at_timestamp")
+    protected Long startingAtTimestamp;
     protected MatchMeta meta;
 
     public Match() {
@@ -28,39 +40,39 @@ public class Match implements Comparable<Object> {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 
     public Long getGroupId() {
-        return group_id;
+        return groupId;
     }
 
     public Long getAggregateId() {
-        return aggregate_id;
+        return aggregateId;
     }
 
     public Long getRoundId() {
-        return round_id;
+        return roundId;
     }
 
     public Long getStateId() {
-        return state_id;
+        return stateId;
     }
 
     public Long getVenueId() {
-        return venue_id;
+        return venueId;
     }
 
     public String getName() {
@@ -68,7 +80,7 @@ public class Match implements Comparable<Object> {
     }
 
     public String getStartingAt() {
-        return starting_at;
+        return startingAt;
     }
 
     public String getLeg() {
@@ -80,7 +92,7 @@ public class Match implements Comparable<Object> {
     }
 
     public Long getStartingAtTimestamp() {
-        return starting_at_timestamp;
+        return startingAtTimestamp;
     }
 
     public MatchMeta getMeta() {
@@ -88,9 +100,7 @@ public class Match implements Comparable<Object> {
     }
 
     @Override
-    public int compareTo(Object o) {
-        Match aux = (Match) o;
-        // getStarting_at_timestamp
+    public int compareTo(Match aux) {
         if (getStateId() != null && aux.getStateId() != null) {
             Long status1 = getStateId();
             Long status2 = aux.getStateId();

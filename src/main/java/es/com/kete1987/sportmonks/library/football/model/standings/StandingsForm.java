@@ -1,12 +1,18 @@
 package es.com.kete1987.sportmonks.library.football.model.standings;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StandingsForm {
     private Long id;
-    private String standing_type;
-    private Long standing_id;
-    private Long fixture_id;
+    @SerializedName("standing_type")
+    private String standingType;
+    @SerializedName("standing_id")
+    private Long standingId;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
     private String form;
-    private Long sort_order;
+    @SerializedName("sort_order")
+    private Long sortOrder;
 
     public StandingsForm() {
     }
@@ -16,15 +22,15 @@ public class StandingsForm {
     }
 
     public String getStandingType() {
-        return standing_type;
+        return standingType;
     }
 
     public Long getStandingId() {
-        return standing_id;
+        return standingId;
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public String getForm() {
@@ -32,6 +38,6 @@ public class StandingsForm {
     }
 
     public Long getSortOrder() {
-        return sort_order;
+        return sortOrder;
     }
 }

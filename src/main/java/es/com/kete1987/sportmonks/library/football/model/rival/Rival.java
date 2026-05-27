@@ -1,10 +1,15 @@
 package es.com.kete1987.sportmonks.library.football.model.rival;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Rival {
     private Long id;
-    private Long sport_id;
-    private Long team_id;
-    private Long rival_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("team_id")
+    private Long teamId;
+    @SerializedName("rival_id")
+    private Long rivalId;
 
     public Rival() {
     }
@@ -14,14 +19,14 @@ public class Rival {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public Long getRivalId() {
-        return rival_id;
+        return rivalId;
     }
 }

@@ -1,10 +1,15 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Scores {
     private Long id;
-    private Long fixture_id;
-    private Long type_id;
-    private Long participant_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("participant_id")
+    private Long participantId;
     private Score score;
     private String description;
 
@@ -16,15 +21,15 @@ public class Scores {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public Score getScore() {

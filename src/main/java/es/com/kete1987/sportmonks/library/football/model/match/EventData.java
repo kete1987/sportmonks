@@ -1,27 +1,40 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
+import com.google.gson.annotations.SerializedName;
 
 public class EventData implements Comparable<Object> {
     private Long id;
-    private Long fixture_id;
-    private Long period_id;
-    private Long participant_id;
-    private Long type_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("period_id")
+    private Long periodId;
+    @SerializedName("participant_id")
+    private Long participantId;
+    @SerializedName("type_id")
+    private Long typeId;
     private String section;
-    private Long player_id;
-    private Long related_player_id;
-    private String player_name;
-    private String related_player_name;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("related_player_id")
+    private Long relatedPlayerId;
+    @SerializedName("player_name")
+    private String playerName;
+    @SerializedName("related_player_name")
+    private String relatedPlayerName;
     private String result;
     private String info;
     private String addition;
     private Long minute;
-    private Long extra_minute;
+    @SerializedName("extra_minute")
+    private Long extraMinute;
     private Boolean injured;
-    private Boolean on_bench;
-    private Long coach_id;
-    private Long sub_type_id;
+    @SerializedName("on_bench")
+    private Boolean onBench;
+    @SerializedName("coach_id")
+    private Long coachId;
+    @SerializedName("sub_type_id")
+    private Long subTypeId;
     private Player player;
 
     public EventData() {
@@ -32,19 +45,19 @@ public class EventData implements Comparable<Object> {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getPeriodId() {
-        return period_id;
+        return periodId;
     }
 
     public Long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public String getSection() {
@@ -52,19 +65,19 @@ public class EventData implements Comparable<Object> {
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getRelatedPlayerId() {
-        return related_player_id;
+        return relatedPlayerId;
     }
 
     public String getPlayerName() {
-        return player_name;
+        return playerName;
     }
 
     public String getRelatedPlayerName() {
-        return related_player_name;
+        return relatedPlayerName;
     }
 
     public String getResult() {
@@ -84,7 +97,7 @@ public class EventData implements Comparable<Object> {
     }
 
     public Long getExtraMinute() {
-        return extra_minute;
+        return extraMinute;
     }
 
     public Boolean getInjured() {
@@ -92,15 +105,15 @@ public class EventData implements Comparable<Object> {
     }
 
     public Boolean getOnBench() {
-        return on_bench;
+        return onBench;
     }
 
     public Long getCoachId() {
-        return coach_id;
+        return coachId;
     }
 
     public Long getSubTypeId() {
-        return sub_type_id;
+        return subTypeId;
     }
 
     public Player getPlayer() {

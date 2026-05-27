@@ -1,13 +1,20 @@
 package es.com.kete1987.sportmonks.library.odds.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Bookmaker {
     private Long id;
-    private Long legacy_id;
+    @SerializedName("legacy_id")
+    private Long legacyId;
     private String name;
-    private String display_name;
-    private Boolean has_streaming;
-    private Boolean is_premium;
-    private String image_path;
+    @SerializedName("display_name")
+    private String displayName;
+    @SerializedName("has_streaming")
+    private Boolean hasStreaming;
+    @SerializedName("is_premium")
+    private Boolean isPremium;
+    @SerializedName("image_path")
+    private String imagePath;
 
     public Bookmaker() {
     }
@@ -17,7 +24,7 @@ public class Bookmaker {
     }
 
     public Long getLegacyId() {
-        return legacy_id;
+        return legacyId;
     }
 
     public String getName() {
@@ -25,18 +32,18 @@ public class Bookmaker {
     }
 
     public String getDisplayName() {
-        return display_name;
+        return displayName;
     }
 
     public Boolean getHasStreaming() {
-        return has_streaming;
+        return hasStreaming;
     }
 
     public Boolean getIsPremium() {
-        return is_premium;
+        return isPremium;
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 }

@@ -4,27 +4,30 @@ import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 
 public class ExpectedGoalsResponse {
 
     private List<ExpectedGoal> data;
     private List<Subscription> subscription;
-    private RateLimit rate_limit;
+    @SerializedName("rate_limit")
+    private RateLimit rateLimit;
     private String timezone;
 
     public ExpectedGoalsResponse() {
     }
 
     public List<ExpectedGoal> getData() {
-        return data;
+        return data == null ? null : Collections.unmodifiableList(data);
     }
 
     public List<Subscription> getSubscription() {
-        return subscription;
+        return subscription == null ? null : Collections.unmodifiableList(subscription);
     }
 
     public RateLimit getRateLimit() {
-        return rate_limit;
+        return rateLimit;
     }
 
     public String getTimezone() {

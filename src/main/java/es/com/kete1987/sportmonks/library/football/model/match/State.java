@@ -1,11 +1,15 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
+import com.google.gson.annotations.SerializedName;
+
 public class State {
     private Long id;
     private String state;
     private String name;
-    private String short_name;
-    private String developer_name;
+    @SerializedName("short_name")
+    private String shortName;
+    @SerializedName("developer_name")
+    private String developerName;
     private Type type;
 
     public State() {
@@ -24,11 +28,11 @@ public class State {
     }
 
     public String getShortName() {
-        return short_name;
+        return shortName;
     }
 
     public String getDeveloperName() {
-        return developer_name;
+        return developerName;
     }
 
     public Type getType() {

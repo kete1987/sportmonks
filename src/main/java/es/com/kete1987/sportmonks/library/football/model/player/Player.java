@@ -1,23 +1,36 @@
 package es.com.kete1987.sportmonks.library.football.model.player;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Player {
     private Long id;
-    private Long sport_id;
-    private Long country_id;
-    private Long nationality_id;
-    private Long city_id;
-    private Long position_id;
-    private Long detailed_position_id;
-    private Long type_id;
-    private String common_name;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("country_id")
+    private Long countryId;
+    @SerializedName("nationality_id")
+    private Long nationalityId;
+    @SerializedName("city_id")
+    private Long cityId;
+    @SerializedName("position_id")
+    private Long positionId;
+    @SerializedName("detailed_position_id")
+    private Long detailedPositionId;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("common_name")
+    private String commonName;
     private String firstname;
     private String lastname;
     private String name;
-    private String display_name;
-    private String image_path;
+    @SerializedName("display_name")
+    private String displayName;
+    @SerializedName("image_path")
+    private String imagePath;
     private Long height;
     private Long weight;
-    private String date_of_birth;
+    @SerializedName("date_of_birth")
+    private String dateOfBirth;
     private String gender;
 
     public Player() {
@@ -28,35 +41,35 @@ public class Player {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public Long getNationalityId() {
-        return nationality_id;
+        return nationalityId;
     }
 
     public Long getCityId() {
-        return city_id;
+        return cityId;
     }
 
     public Long getPositionId() {
-        return position_id;
+        return positionId;
     }
 
     public Long getDetailedPositionId() {
-        return detailed_position_id;
+        return detailedPositionId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public String getCommonName() {
-        return common_name;
+        return commonName;
     }
 
     public String getFirstname() {
@@ -72,11 +85,11 @@ public class Player {
     }
 
     public String getDisplayName() {
-        return display_name;
+        return displayName;
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public Long getHeight() {
@@ -88,7 +101,7 @@ public class Player {
     }
 
     public String getDateOfBirth() {
-        return date_of_birth;
+        return dateOfBirth;
     }
 
     public String getGender() {

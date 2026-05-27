@@ -1,23 +1,30 @@
 package es.com.kete1987.sportmonks.library.core.model.my;
 
+import com.google.gson.annotations.SerializedName;
+
 public class MyLeague {
-    private Long league_id;
-    private Long sport_id;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("sport_id")
+    private Long sportId;
     private String name;
-    private String image_path;
+    @SerializedName("image_path")
+    private String imagePath;
     private String type;
-    private String sub_type;
-    private String last_played_at;
+    @SerializedName("sub_type")
+    private String subType;
+    @SerializedName("last_played_at")
+    private String lastPlayedAt;
 
     public MyLeague() {
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public String getName() {
@@ -25,7 +32,7 @@ public class MyLeague {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getType() {
@@ -33,10 +40,10 @@ public class MyLeague {
     }
 
     public String getSubType() {
-        return sub_type;
+        return subType;
     }
 
     public String getLastPlayedAt() {
-        return last_played_at;
+        return lastPlayedAt;
     }
 }

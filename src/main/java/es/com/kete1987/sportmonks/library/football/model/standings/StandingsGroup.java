@@ -1,17 +1,28 @@
 package es.com.kete1987.sportmonks.library.football.model.standings;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StandingsGroup {
     private Long id;
-    private Long sport_id;
-    private Long league_id;
-    private Long season_id;
-    private Long stage_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("stage_id")
+    private Long stageId;
     private String name;
-    private String starting_at;
-    private String ending_at;
-    private Boolean games_in_current_week;
-    private Boolean is_current;
-    private Boolean is_finished;
+    @SerializedName("starting_at")
+    private String startingAt;
+    @SerializedName("ending_at")
+    private String endingAt;
+    @SerializedName("games_in_current_week")
+    private Boolean gamesInCurrentWeek;
+    @SerializedName("is_current")
+    private Boolean isCurrent;
+    @SerializedName("is_finished")
+    private Boolean isFinished;
     private Boolean pending;
 
     public StandingsGroup() {
@@ -22,19 +33,19 @@ public class StandingsGroup {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 
     public String getName() {
@@ -42,23 +53,23 @@ public class StandingsGroup {
     }
 
     public String getStartingAt() {
-        return starting_at;
+        return startingAt;
     }
 
     public String getEndingAt() {
-        return ending_at;
+        return endingAt;
     }
 
     public Boolean getGamesInCurrentWeek() {
-        return games_in_current_week;
+        return gamesInCurrentWeek;
     }
 
     public Boolean getIsCurrent() {
-        return is_current;
+        return isCurrent;
     }
 
     public Boolean getIsFinished() {
-        return is_finished;
+        return isFinished;
     }
 
     public Boolean getPending() {

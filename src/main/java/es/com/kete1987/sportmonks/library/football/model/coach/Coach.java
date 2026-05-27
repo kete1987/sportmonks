@@ -1,16 +1,24 @@
 package es.com.kete1987.sportmonks.library.football.model.coach;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Coach {
     private Long id;
-    private Long sport_id;
-    private Long country_id;
-    private Long nationality_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("country_id")
+    private Long countryId;
+    @SerializedName("nationality_id")
+    private Long nationalityId;
     private String name;
     private String firstname;
     private String lastname;
-    private String display_name;
-    private String image_path;
-    private String date_of_birth;
+    @SerializedName("display_name")
+    private String displayName;
+    @SerializedName("image_path")
+    private String imagePath;
+    @SerializedName("date_of_birth")
+    private String dateOfBirth;
     private String gender;
 
     public Coach() {
@@ -21,15 +29,15 @@ public class Coach {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public Long getNationalityId() {
-        return nationality_id;
+        return nationalityId;
     }
 
     public String getName() {
@@ -45,15 +53,15 @@ public class Coach {
     }
 
     public String getDisplayName() {
-        return display_name;
+        return displayName;
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getDateOfBirth() {
-        return date_of_birth;
+        return dateOfBirth;
     }
 
     public String getGender() {

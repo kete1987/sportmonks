@@ -1,32 +1,39 @@
 package es.com.kete1987.sportmonks.library.football.model.squad;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SquadPlayer {
-    private Long player_id;
-    private Long team_id;
-    private Long position_id;
-    private Long jersey_number;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("team_id")
+    private Long teamId;
+    @SerializedName("position_id")
+    private Long positionId;
+    @SerializedName("jersey_number")
+    private Long jerseyNumber;
     private String start;
     private String end;
     private Boolean captain;
-    private Long transfer_id;
+    @SerializedName("transfer_id")
+    private Long transferId;
 
     public SquadPlayer() {
     }
 
     public Long getPlayerId() {
-        return player_id;
+        return playerId;
     }
 
     public Long getTeamId() {
-        return team_id;
+        return teamId;
     }
 
     public Long getPositionId() {
-        return position_id;
+        return positionId;
     }
 
     public Long getJerseyNumber() {
-        return jersey_number;
+        return jerseyNumber;
     }
 
     public String getStart() {
@@ -42,6 +49,6 @@ public class SquadPlayer {
     }
 
     public Long getTransferId() {
-        return transfer_id;
+        return transferId;
     }
 }

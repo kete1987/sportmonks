@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.common.model.subscription;
 
 import java.util.List;
+import java.util.Collections;
 
 public class Subscription {
     private SubscriptionMeta meta;
@@ -18,7 +19,7 @@ public class Subscription {
     }
 
     public List<SubscriptionPlan> getPlans() {
-        return plans;
+        return plans == null ? null : Collections.unmodifiableList(plans);
     }
 
     public void setPlans(List<SubscriptionPlan> plans) {

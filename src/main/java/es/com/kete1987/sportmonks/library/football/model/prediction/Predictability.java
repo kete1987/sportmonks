@@ -1,15 +1,19 @@
 package es.com.kete1987.sportmonks.library.football.model.prediction;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Predictability {
-    private Long league_id;
+    @SerializedName("league_id")
+    private Long leagueId;
     private Double predictability;
-    private Long season_id;
+    @SerializedName("season_id")
+    private Long seasonId;
 
     public Predictability() {
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Double getPredictability() {
@@ -17,6 +21,6 @@ public class Predictability {
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 }

@@ -1,15 +1,22 @@
 package es.com.kete1987.sportmonks.library.football.model.news;
 
+import com.google.gson.annotations.SerializedName;
+
 public class NewsArticle {
     private Long id;
-    private Long fixture_id;
-    private Long season_id;
+    @SerializedName("fixture_id")
+    private Long fixtureId;
+    @SerializedName("season_id")
+    private Long seasonId;
     private String author;
     private String title;
     private String body;
-    private String image_path;
-    private String created_at;
-    private String published_at;
+    @SerializedName("image_path")
+    private String imagePath;
+    @SerializedName("created_at")
+    private String createdAt;
+    @SerializedName("published_at")
+    private String publishedAt;
     private String type;
 
     public NewsArticle() {
@@ -20,11 +27,11 @@ public class NewsArticle {
     }
 
     public Long getFixtureId() {
-        return fixture_id;
+        return fixtureId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public String getAuthor() {
@@ -40,15 +47,15 @@ public class NewsArticle {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getCreatedAt() {
-        return created_at;
+        return createdAt;
     }
 
     public String getPublishedAt() {
-        return published_at;
+        return publishedAt;
     }
 
     public String getType() {

@@ -1,11 +1,16 @@
 package es.com.kete1987.sportmonks.library.football.model.tvstation;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TvStation {
     private Long id;
-    private Long sport_id;
-    private Long country_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("country_id")
+    private Long countryId;
     private String name;
-    private String image_path;
+    @SerializedName("image_path")
+    private String imagePath;
     private String url;
 
     public TvStation() {
@@ -16,11 +21,11 @@ public class TvStation {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public String getName() {
@@ -28,7 +33,7 @@ public class TvStation {
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getUrl() {

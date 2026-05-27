@@ -1,13 +1,20 @@
 package es.com.kete1987.sportmonks.library.football.model.statistic;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Statistic {
     private Long id;
-    private Long type_id;
-    private Long participant_id;
-    private String participant_type;
+    @SerializedName("type_id")
+    private Long typeId;
+    @SerializedName("participant_id")
+    private Long participantId;
+    @SerializedName("participant_type")
+    private String participantType;
     private Object value;
-    private Long season_id;
-    private Long stage_id;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("stage_id")
+    private Long stageId;
 
     public Statistic() {
     }
@@ -17,15 +24,15 @@ public class Statistic {
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public String getParticipantType() {
-        return participant_type;
+        return participantType;
     }
 
     public Object getValue() {
@@ -33,10 +40,10 @@ public class Statistic {
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 }

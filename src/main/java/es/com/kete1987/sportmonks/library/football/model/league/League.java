@@ -3,19 +3,28 @@ package es.com.kete1987.sportmonks.library.football.model.league;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 
 public class League {
     private Long id;
-    private Long sport_id;
-    private Long country_id;
+    @SerializedName("sport_id")
+    private Long sportId;
+    @SerializedName("country_id")
+    private Long countryId;
     private String name;
     private Boolean active;
-    private String short_code;
-    private String image_path;
+    @SerializedName("short_code")
+    private String shortCode;
+    @SerializedName("image_path")
+    private String imagePath;
     private String type;
-    private String sub_type;
-    private String last_playerd_at;
-    private Boolean has_jerseys;
+    @SerializedName("sub_type")
+    private String subType;
+    @SerializedName("last_playerd_at")
+    private String lastPlayerdAt;
+    @SerializedName("has_jerseys")
+    private Boolean hasJerseys;
     private List<SeasonData> seasons;
     private SeasonData currentseason;
     private Country country;
@@ -28,11 +37,11 @@ public class League {
     }
 
     public Long getSportId() {
-        return sport_id;
+        return sportId;
     }
 
     public Long getCountryId() {
-        return country_id;
+        return countryId;
     }
 
     public String getName() {
@@ -44,11 +53,11 @@ public class League {
     }
 
     public String getShortCode() {
-        return short_code;
+        return shortCode;
     }
 
     public String getImagePath() {
-        return image_path;
+        return imagePath;
     }
 
     public String getType() {
@@ -56,19 +65,19 @@ public class League {
     }
 
     public String getSubType() {
-        return sub_type;
+        return subType;
     }
 
     public String getLastPlayerdAt() {
-        return last_playerd_at;
+        return lastPlayerdAt;
     }
 
     public Boolean getHasJerseys() {
-        return has_jerseys;
+        return hasJerseys;
     }
 
     public List<SeasonData> getSeasons() {
-        return seasons;
+        return seasons == null ? null : Collections.unmodifiableList(seasons);
     }
 
     public SeasonData getCurrentseason() {

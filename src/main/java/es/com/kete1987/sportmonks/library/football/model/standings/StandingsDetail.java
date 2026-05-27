@@ -1,10 +1,15 @@
 package es.com.kete1987.sportmonks.library.football.model.standings;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StandingsDetail {
     private Long id;
-    private String standing_type;
-    private Long standing_id;
-    private Long type_id;
+    @SerializedName("standing_type")
+    private String standingType;
+    @SerializedName("standing_id")
+    private Long standingId;
+    @SerializedName("type_id")
+    private Long typeId;
     private Long value;
 
     public StandingsDetail() {
@@ -15,15 +20,15 @@ public class StandingsDetail {
     }
 
     public String getStandingType() {
-        return standing_type;
+        return standingType;
     }
 
     public Long getStandingId() {
-        return standing_id;
+        return standingId;
     }
 
     public Long getTypeId() {
-        return type_id;
+        return typeId;
     }
 
     public Long getValue() {

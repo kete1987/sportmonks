@@ -1,17 +1,24 @@
 package es.com.kete1987.sportmonks.library.football.model.stage;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 
 public class StageAggregate {
     private Long id;
-    private Long league_id;
-    private Long season_id;
-    private Long stage_id;
+    @SerializedName("league_id")
+    private Long leagueId;
+    @SerializedName("season_id")
+    private Long seasonId;
+    @SerializedName("stage_id")
+    private Long stageId;
     private String name;
-    private List<Long> fixture_ids;
+    @SerializedName("fixture_ids")
+    private List<Long> fixtureIds;
     private String result;
     private String detail;
-    private Long winner_participant_id;
+    @SerializedName("winner_participant_id")
+    private Long winnerParticipantId;
 
     private StageAggregate() {
 
@@ -22,15 +29,15 @@ public class StageAggregate {
     }
 
     public Long getLeagueId() {
-        return league_id;
+        return leagueId;
     }
 
     public Long getSeasonId() {
-        return season_id;
+        return seasonId;
     }
 
     public Long getStageId() {
-        return stage_id;
+        return stageId;
     }
 
     public String getName() {
@@ -38,7 +45,7 @@ public class StageAggregate {
     }
 
     public List<Long> getFixtureIds() {
-        return fixture_ids;
+        return fixtureIds == null ? null : Collections.unmodifiableList(fixtureIds);
     }
 
     public String getResult() {
@@ -50,6 +57,6 @@ public class StageAggregate {
     }
 
     public Long getWinnerParticipantId() {
-        return winner_participant_id;
+        return winnerParticipantId;
     }
 }

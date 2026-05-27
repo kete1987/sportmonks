@@ -1,12 +1,17 @@
 package es.com.kete1987.sportmonks.library.core.model.type;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Type {
     private Long id;
     private String name;
     private String code;
-    private String developer_name;
-    private String model_type;
-    private String stat_group;
+    @SerializedName("developer_name")
+    private String developerName;
+    @SerializedName("model_type")
+    private String modelType;
+    @SerializedName("stat_group")
+    private String statGroup;
 
     public Type() {
     }
@@ -24,14 +29,14 @@ public class Type {
     }
 
     public String getDeveloperName() {
-        return developer_name;
+        return developerName;
     }
 
     public String getModelType() {
-        return model_type;
+        return modelType;
     }
 
     public String getStatGroup() {
-        return stat_group;
+        return statGroup;
     }
 }
