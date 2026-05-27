@@ -91,10 +91,10 @@ public class SportMonksAPI {
     public SportMonksAPI(String apiToken, String locale) {
         OkHttpClient client = SportMonksApiBase.buildHttpClient(apiToken);
         this.tracker = new RateLimitTracker();
-        this.football = new FootballApi(client, Constants.baseURLFootball, locale, tracker);
-        this.odds = new OddsApi(client, Constants.baseURLOdds, locale, tracker);
-        this.predictions = new PredictionsApi(client, Constants.baseURLFootball, locale, tracker);
-        this.core = new CoreApi(client, Constants.baseURLCore, Constants.baseURLMy, locale, tracker);
+        this.football = new FootballApi(client, Constants.BASE_URL_FOOTBALL, locale, tracker);
+        this.odds = new OddsApi(client, Constants.BASE_URL_ODDS, locale, tracker);
+        this.predictions = new PredictionsApi(client, Constants.BASE_URL_FOOTBALL, locale, tracker);
+        this.core = new CoreApi(client, Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, tracker);
     }
 
     SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase) {

@@ -54,7 +54,7 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public CoreApi(String apiToken, String locale) {
-        this(buildHttpClient(apiToken), Constants.baseURLCore, Constants.baseURLMy, locale, new RateLimitTracker());
+        this(buildHttpClient(apiToken), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, new RateLimitTracker());
     }
 
     CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, RateLimitTracker tracker) {

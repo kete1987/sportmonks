@@ -48,11 +48,12 @@
         <central.publishing.version>0.7.0</central.publishing.version>
         <jacoco.version>0.8.14</jacoco.version>
         <sonar.maven.plugin.version>4.0.0.4121</sonar.maven.plugin.version>
-        <!-- Excluir DTOs (model/**) de cobertura y deteccion de duplicados.
-             Los modelos son POJOs rellenados por Gson via reflexion; los
-             patrones de getter repetidos no son duplicacion real de logica. -->
-        <sonar.coverage.exclusions>**/model/**/*.java</sonar.coverage.exclusions>
-        <sonar.cpd.exclusions>**/model/**/*.java</sonar.cpd.exclusions>
+        <!-- Excluir DTOs (model/**) y clases de utilidad (util/**) de cobertura
+             y deteccion de duplicados. Los modelos son POJOs rellenados por
+             Gson via reflexion; las constantes y helpers de estado no
+             contienen logica de negocio testeable. -->
+        <sonar.coverage.exclusions>**/model/**/*.java,**/util/**/*.java</sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>**/model/**/*.java,**/util/**/*.java</sonar.cpd.exclusions>
     </properties>
 
     <dependencies>

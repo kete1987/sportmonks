@@ -4,10 +4,11 @@ import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.standings.StandingsGroup;
 
 import java.util.List;
+import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
 import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
-public class Stage implements Comparable<Object> {
+public class Stage implements Comparable<Stage> {
     private Long id;
     @SerializedName("sport_id")
     private Long sportId;
@@ -97,21 +98,39 @@ public class Stage implements Comparable<Object> {
     }
 
     @Override
-    public int compareTo(Object o) {
-        Stage other = (Stage) o;
-
-        // Comparación segura de Longs
-        int cmp = Long.compare(this.getSortOrder(), other.getSortOrder());
-        if (cmp != 0) return cmp;
+    public int compareTo(Stage other) {
+        // Null-safe comparison of sortOrder (nulls sorted last)
+        Long thisSortOrder = this.getSortOrder();
+        Long otherSortOrder = other.getSortOrder();
+        if (thisSortOrder == null && otherSortOrder == null) {
+            // fall through to endingAt comparison
+        } else if (thisSortOrder == null) {
+            return 1;
+        } else if (otherSortOrder == null) {
+            return -1;
+        } else {
+            int cmp = Long.compare(thisSortOrder, otherSortOrder);
+            if (cmp != 0) return cmp;
+        }
 
         // Desempatar por endingAt (nulls al final)
         String thisEnd = this.getEndingAt();
         String otherEnd = other.getEndingAt();
 
-        if (thisEnd == null && otherEnd != null) return 1;
-        if (thisEnd != null && otherEnd == null) return -1;
-        if (thisEnd == null && otherEnd == null) return 0;
-
+        if (thisEnd == null) return 1;
+        if (otherEnd == null) return -1;
         return thisEnd.compareTo(otherEnd);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Stage)) return false;
+        return Objects.equals(id, ((Stage) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

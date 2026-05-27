@@ -2,7 +2,9 @@ package es.com.kete1987.sportmonks.library.football.model.comments;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Comment implements Comparable<Object> {
+import java.util.Objects;
+
+public class Comment implements Comparable<Comment> {
     private Long id;
     @SerializedName("fixture_id")
     private Long fixtureId;
@@ -52,13 +54,25 @@ public class Comment implements Comparable<Object> {
     }
 
     @Override
-    public int compareTo(Object o) {
-        Comment aux = (Comment) o;
-        if (getOrder() != null && aux.getOrder() != null) {
-            return getOrder().intValue() - aux.getOrder().intValue();
-        } else if (getOrder() == null)
+    public int compareTo(Comment other) {
+        if (getOrder() != null && other.getOrder() != null) {
+            return Long.compare(getOrder(), other.getOrder());
+        } else if (getOrder() == null) {
             return -1;
-        else
+        } else {
             return 1;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comment)) return false;
+        return Objects.equals(id, ((Comment) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

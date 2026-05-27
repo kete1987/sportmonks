@@ -2,7 +2,11 @@ package es.com.kete1987.sportmonks.library.common.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,36 +19,22 @@ class EmptyStringToNumberTypeAdapterTest {
 
     private static class IntHolder {
         Integer value;
-        int primitive;
     }
 
-    @Test
-    void emptyString_parsedAsNull_forInteger() {
-        IntHolder result = gson.fromJson("{\"value\": \"\"}", IntHolder.class);
-        assertNull(result.value);
+    static Stream<Arguments> integerParsingCases() {
+        return Stream.of(
+                Arguments.of("{\"value\": \"\"}", null),
+                Arguments.of("{\"value\": null}", null),
+                Arguments.of("{\"value\": 42}", 42),
+                Arguments.of("{\"value\": \"42\"}", 42),
+                Arguments.of("{}", null)
+        );
     }
 
-    @Test
-    void nullJson_parsedAsNull_forInteger() {
-        IntHolder result = gson.fromJson("{\"value\": null}", IntHolder.class);
-        assertNull(result.value);
-    }
-
-    @Test
-    void validNumber_parsedCorrectly_forInteger() {
-        IntHolder result = gson.fromJson("{\"value\": 42}", IntHolder.class);
-        assertEquals(42, result.value);
-    }
-
-    @Test
-    void validNumberAsString_parsedCorrectly_forInteger() {
-        IntHolder result = gson.fromJson("{\"value\": \"42\"}", IntHolder.class);
-        assertEquals(42, result.value);
-    }
-
-    @Test
-    void missingField_remainsNull_forInteger() {
-        IntHolder result = gson.fromJson("{}", IntHolder.class);
-        assertNull(result.value);
+    @ParameterizedTest
+    @MethodSource("integerParsingCases")
+    void parsesIntegerField(String json, Integer expected) {
+        IntHolder result = gson.fromJson(json, IntHolder.class);
+        assertEquals(expected, result.value);
     }
 }

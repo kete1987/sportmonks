@@ -23,7 +23,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SportMonksIntegrationTest {
+class SportMonksIntegrationTest {
 
     // Fixed test data IDs — same used in historical manual tests
     private static final String SEASON_ID       = "13133";
