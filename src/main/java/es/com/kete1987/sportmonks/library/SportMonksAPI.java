@@ -28,7 +28,7 @@ import es.com.kete1987.sportmonks.library.football.model.referee.Referee;
 import es.com.kete1987.sportmonks.library.football.model.rival.Rival;
 import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
 import es.com.kete1987.sportmonks.library.football.model.schedule.Schedule;
-import es.com.kete1987.sportmonks.library.football.model.season.Bracket;
+import es.com.kete1987.sportmonks.library.football.model.season.KnockoutBracket;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.squad.SquadPlayer;
 import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
@@ -148,7 +148,7 @@ public class SportMonksAPI {
     public SeasonData getSeasonById(long id, String... includes) throws IOException, SportMonksException { return football.getSeasonById(id, includes); }
     public List<SeasonData> getSeasonsByTeam(long teamId, String... includes) throws IOException, SportMonksException { return football.getSeasonsByTeam(teamId, includes); }
     public List<SeasonData> searchSeasons(String name, String... includes) throws IOException, SportMonksException { return football.searchSeasons(name, includes); }
-    public List<Bracket> getBracketsBySeason(long seasonId, String... includes) throws IOException, SportMonksException { return football.getBracketsBySeason(seasonId, includes); }
+    public KnockoutBracket getBracketsBySeason(long seasonId, String... includes) throws IOException, SportMonksException { return football.getBracketsBySeason(seasonId, includes); }
 
     // -------------------------------------------------------------------------
     // Odds

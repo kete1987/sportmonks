@@ -1,7 +1,7 @@
 package es.com.kete1987.sportmonks.library;
 
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
-import es.com.kete1987.sportmonks.library.football.model.season.Bracket;
+import es.com.kete1987.sportmonks.library.football.model.season.KnockoutBracket;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
@@ -106,13 +106,25 @@ class SeasonApiTest extends BaseApiTest {
     }
 
     @Test
-    void getBracketsBySeason_returnsParsedList() throws IOException, SportMonksException {
+    void getBracketsBySeason_returnsParsedKnockout() throws IOException, SportMonksException {
         enqueue("brackets.json");
 
-        List<Bracket> brackets = api.getBracketsBySeason(23614L);
+        KnockoutBracket bracket = api.getBracketsBySeason(26618L);
 
-        assertEquals(2, brackets.size());
-        assertEquals("Quarter Finals", brackets.get(0).getName());
-        assertEquals(23614L, brackets.get(0).getSeasonId());
+        assertNotNull(bracket.getStages());
+        assertEquals(2, bracket.getStages().size());
+        assertEquals("16th Finals", bracket.getStages().get(0).getStageName());
+        assertEquals(77479086L, bracket.getStages().get(0).getStageId());
+        assertEquals(1, bracket.getStages().get(0).getFixtures().size());
+        assertTrue(bracket.getStages().get(0).getFixtures().get(0).getPlaceholder());
+        assertEquals("2nd position Group A vs 2nd position Group B",
+                bracket.getStages().get(0).getFixtures().get(0).getName());
+
+        assertNotNull(bracket.getEdges());
+        assertEquals(2, bracket.getEdges().size());
+        assertEquals(19606961L, bracket.getEdges().get(0).getChildFixtureId());
+        assertEquals("home", bracket.getEdges().get(0).getChildSlot());
+        assertEquals(19606960L, bracket.getEdges().get(0).getParentFixtureId());
+        assertEquals("winner", bracket.getEdges().get(0).getParentOutcome());
     }
 }

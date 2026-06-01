@@ -35,6 +35,11 @@ public class EventData implements Comparable<Object> {
     private Long coachId;
     @SerializedName("sub_type_id")
     private Long subTypeId;
+    @SerializedName("sort_order")
+    private Long sortOrder;
+    private Boolean rescinded;
+    @SerializedName("detailed_period_id")
+    private Long detailedPeriodId;
     private Player player;
 
     public EventData() {
@@ -114,6 +119,18 @@ public class EventData implements Comparable<Object> {
 
     public Long getSubTypeId() {
         return subTypeId;
+    }
+
+    public Long getSortOrder() {
+        return sortOrder;
+    }
+
+    public Boolean getRescinded() {
+        return rescinded;
+    }
+
+    public Long getDetailedPeriodId() {
+        return detailedPeriodId;
     }
 
     public Player getPlayer() {

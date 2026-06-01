@@ -1,0 +1,45 @@
+{
+  "data": {
+    "id": 19339023,
+    "name": "Team A vs Team B",
+    "starting_at": "2026-06-15 15:00:00",
+    "events": [
+      {
+        "id": 1001,
+        "fixture_id": 19339023,
+        "participant_id": 18,
+        "type_id": 132791,
+        "minute": 26,
+        "info": "Hydration break",
+        "addition": "1st Delay Start"
+      },
+      {
+        "id": 1002,
+        "fixture_id": 19339023,
+        "participant_id": 591,
+        "type_id": 132791,
+        "minute": 26,
+        "info": "Hydration break",
+        "addition": "1st Delay Start"
+      },
+      {
+        "id": 1003,
+        "fixture_id": 19339023,
+        "participant_id": 18,
+        "type_id": 132792,
+        "minute": 29,
+        "info": null,
+        "addition": "1st Delay End"
+      },
+      {
+        "id": 1004,
+        "fixture_id": 19339023,
+        "participant_id": 591,
+        "type_id": 132792,
+        "minute": 29,
+        "info": null,
+        "addition": "1st Delay End"
+      }
+    ]
+  }
+}

@@ -34,8 +34,8 @@ import es.com.kete1987.sportmonks.library.football.model.rounds.RoundResponse;
 import es.com.kete1987.sportmonks.library.football.model.rounds.RoundsResponse;
 import es.com.kete1987.sportmonks.library.football.model.schedule.Schedule;
 import es.com.kete1987.sportmonks.library.football.model.schedule.SchedulesResponse;
-import es.com.kete1987.sportmonks.library.football.model.season.Bracket;
 import es.com.kete1987.sportmonks.library.football.model.season.BracketsResponse;
+import es.com.kete1987.sportmonks.library.football.model.season.KnockoutBracket;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonDataResponse;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonsResponse;
@@ -286,7 +286,7 @@ public class FootballApi extends SportMonksApiBase {
         return all;
     }
 
-    public List<Bracket> getBracketsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
+    public KnockoutBracket getBracketsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("seasons/" + seasonId + "/brackets"), includes).build();
         return gson().fromJson(execute(url), BracketsResponse.class).getData();
     }

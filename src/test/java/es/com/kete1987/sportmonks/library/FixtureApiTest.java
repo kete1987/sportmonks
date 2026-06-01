@@ -1,7 +1,9 @@
 package es.com.kete1987.sportmonks.library;
 
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
+import es.com.kete1987.sportmonks.library.football.model.match.EventData;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
+import es.com.kete1987.sportmonks.library.football.util.EventType;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
@@ -383,6 +385,42 @@ class FixtureApiTest extends BaseApiTest {
         SportMonksException ex = assertThrows(SportMonksException.class,
                 () -> api.getMatchDetail("1"));
         assertTrue(ex.getMessage().startsWith("429"));
+    }
+
+    // -------------------------------------------------------------------------
+    // Timeline delay events (hydration breaks)
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchDetail_parsesDelayStartEvents() throws IOException, SportMonksException {
+        enqueue("fixture_timeline_delays.json");
+
+        MatchDetail match = api.getMatchDetail("19339023");
+
+        List<EventData> events = match.getEvents();
+        assertNotNull(events);
+        assertEquals(4, events.size());
+
+        EventData delayStart = events.get(0);
+        assertEquals(EventType.DELAY_START, delayStart.getTypeId().intValue());
+        assertEquals(26, delayStart.getMinute().intValue());
+        assertEquals("Hydration break", delayStart.getInfo());
+        assertEquals("1st Delay Start", delayStart.getAddition());
+        assertEquals(18L, delayStart.getParticipantId());
+    }
+
+    @Test
+    void getMatchDetail_parsesDelayEndEvents() throws IOException, SportMonksException {
+        enqueue("fixture_timeline_delays.json");
+
+        MatchDetail match = api.getMatchDetail("19339023");
+
+        List<EventData> events = match.getEvents();
+        EventData delayEnd = events.get(2);
+        assertEquals(EventType.DELAY_END, delayEnd.getTypeId().intValue());
+        assertEquals(29, delayEnd.getMinute().intValue());
+        assertNull(delayEnd.getInfo());
+        assertEquals("1st Delay End", delayEnd.getAddition());
     }
 
     @Test

@@ -1,16 +1,62 @@
 {
-  "data": [
-    {
-      "id": 1,
-      "sport_id": 1,
-      "season_id": 23614,
-      "name": "Quarter Finals"
-    },
-    {
-      "id": 2,
-      "sport_id": 1,
-      "season_id": 23614,
-      "name": "Semi Finals"
-    }
-  ]
+  "data": {
+    "stages": [
+      {
+        "stage_id": 77479086,
+        "stage_name": "16th Finals",
+        "fixtures": [
+          {
+            "id": 19606960,
+            "sport_id": 1,
+            "league_id": 732,
+            "season_id": 26618,
+            "stage_id": 77479086,
+            "name": "2nd position Group A vs 2nd position Group B",
+            "starting_at": "2026-06-28 19:00:00",
+            "placeholder": true,
+            "has_odds": false,
+            "has_premium_odds": false,
+            "starting_at_timestamp": 1782673200
+          }
+        ]
+      },
+      {
+        "stage_id": 77479087,
+        "stage_name": "Quarter Finals",
+        "fixtures": [
+          {
+            "id": 19606961,
+            "sport_id": 1,
+            "league_id": 732,
+            "season_id": 26618,
+            "stage_id": 77479087,
+            "name": "Winner Match 73 vs Winner Match 74",
+            "starting_at": "2026-07-04 19:00:00",
+            "placeholder": true,
+            "has_odds": false,
+            "has_premium_odds": false,
+            "starting_at_timestamp": 1783277400
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "id": 13,
+        "season_id": 26618,
+        "child_fixture_id": 19606961,
+        "child_slot": "home",
+        "parent_fixture_id": 19606960,
+        "parent_outcome": "winner"
+      },
+      {
+        "id": 14,
+        "season_id": 26618,
+        "child_fixture_id": 19606961,
+        "child_slot": "away",
+        "parent_fixture_id": 19606960,
+        "parent_outcome": "winner"
+      }
+    ]
+  }
 }
