@@ -13,4 +13,6 @@ public class EventType {
     public static final int PENALTY_SHOOTOUT_MISS = 22;
     public static final int PENALTY_SHOOTOUT_GOAL = 23;
     public static final int HIGHLIGHT = 1675;
+    public static final int DELAY_START = 132791;
+    public static final int DELAY_END = 132792;
 }
