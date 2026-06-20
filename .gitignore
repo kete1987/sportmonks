@@ -19,5 +19,8 @@
 # Local test files with API tokens
 src/main/java/es/com/kete1987/sportmonks/library/APITests.java
 
+# Local maintenance/migration scripts (not part of the build)
+/scripts/
+
 # Claude Code local settings (machine-specific)
 .claude/settings.local.json
