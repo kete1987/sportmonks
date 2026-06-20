@@ -13,7 +13,7 @@ Java library (Java 11+) to access the [Sportmonks](https://sportmonks.com) footb
 <dependency>
     <groupId>es.com.kete1987</groupId>
     <artifactId>sportmonks.library</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.2</version>
 </dependency>
 ```
 
