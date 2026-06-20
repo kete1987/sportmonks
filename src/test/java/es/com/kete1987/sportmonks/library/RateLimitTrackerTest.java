@@ -55,9 +55,10 @@ class RateLimitTrackerTest {
     @Test
     void byEntityIsAnImmutableSnapshot() {
         tracker.track(rateLimit("league", 2999L));
-
         Map<String, RateLimit> snapshot = tracker.byEntity();
-        assertThrows(UnsupportedOperationException.class, () -> snapshot.put("team", rateLimit("team", 1L)));
+
+        RateLimit team = rateLimit("team", 1L);
+        assertThrows(UnsupportedOperationException.class, () -> snapshot.put("team", team));
         // A later reading does not leak into the earlier snapshot.
         tracker.track(rateLimit("team", 2998L));
         assertEquals(1, snapshot.size());
