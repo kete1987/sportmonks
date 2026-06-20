@@ -1,5 +1,6 @@
 package es.com.kete1987.sportmonks.library;
 
+import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.core.model.city.City;
@@ -57,9 +58,10 @@ import java.util.TreeMap;
  * Main entry point for the Sportmonks v3 API.
  *
  * <p>Create one instance per API key and reuse it — each instance owns an OkHttp connection
- * pool and a shared {@link RateLimitTracker}. Rate-limit headers are updated automatically
- * after every request and can be read via {@link #getRemainingRequests()} and
- * {@link #getMaximumRequests()}.
+ * pool and a shared {@link RateLimitTracker}. Rate-limit state is updated automatically after every
+ * request: the global {@code X-RateLimit-*} headers via {@link #getRemainingRequests()} and
+ * {@link #getMaximumRequests()}, and the per-entity {@code rate_limit} from the response body via
+ * {@link #getLastRateLimit()} and {@link #getRateLimitsByEntity()}.
  *
  * <p>The facade delegates to four specialised sub-APIs accessible via {@link #getFootball()},
  * {@link #getOdds()}, {@link #getPredictions()}, and {@link #getCore()}.
@@ -115,6 +117,18 @@ public class SportMonksAPI {
 
     /** Returns the value of the {@code X-RateLimit-Limit} header from the last response, or {@code null} if no request has been made yet. */
     public String getMaximumRequests() { return tracker.total; }
+
+    /**
+     * Returns the {@code rate_limit} object from the body of the most recent response (scoped to
+     * that response's {@code requested_entity}), or {@code null} if no request has been made yet.
+     */
+    public RateLimit getLastRateLimit() { return tracker.last(); }
+
+    /**
+     * Returns an immutable snapshot of the latest {@code rate_limit} seen per {@code requested_entity}
+     * (e.g. {@code "league"}, {@code "team"}), accumulated across every request. Empty until the first request.
+     */
+    public Map<String, RateLimit> getRateLimitsByEntity() { return tracker.byEntity(); }
 
     // -------------------------------------------------------------------------
     // Matches / Fixtures

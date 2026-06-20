@@ -2,6 +2,8 @@ package es.com.kete1987.sportmonks.library;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.model.subscription.SubscriptionMeta;
 import es.com.kete1987.sportmonks.library.common.model.subscription.SubscriptionMetaDeserializer;
 import es.com.kete1987.sportmonks.library.common.util.EmptyStringToNumberTypeAdapter;
@@ -12,6 +14,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 abstract class SportMonksApiBase {
@@ -54,8 +57,26 @@ abstract class SportMonksApiBase {
             if (!response.isSuccessful()) {
                 throw new SportMonksException(response.code() + " - " + body);
             }
+            recordRateLimit(body);
             return body;
         }
+    }
+
+    private void recordRateLimit(String body) {
+        if (body.isEmpty()) return;
+        try {
+            RateLimitEnvelope envelope = gson().fromJson(body, RateLimitEnvelope.class);
+            if (envelope != null) {
+                rateLimitTracker.track(envelope.rateLimit);
+            }
+        } catch (RuntimeException ignored) {
+            // rate_limit is best-effort metadata; never fail a request over a parse hiccup.
+        }
+    }
+
+    private static final class RateLimitEnvelope {
+        @SerializedName("rate_limit")
+        RateLimit rateLimit;
     }
 
     HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {
@@ -78,5 +99,23 @@ abstract class SportMonksApiBase {
 
     public String getMaximumRequests() {
         return rateLimitTracker.total;
+    }
+
+    /**
+     * Returns the {@code rate_limit} object from the body of the most recent response, or
+     * {@code null} if no request has been made yet. Unlike {@link #getRemainingRequests()} (a
+     * global header counter), this is scoped to the entity that response requested.
+     */
+    public RateLimit getLastRateLimit() {
+        return rateLimitTracker.last();
+    }
+
+    /**
+     * Returns an immutable snapshot of the latest {@code rate_limit} seen for each
+     * {@code requested_entity} (e.g. {@code "league"}, {@code "team"}), accumulated across every
+     * request made through this client. Empty until the first request.
+     */
+    public Map<String, RateLimit> getRateLimitsByEntity() {
+        return rateLimitTracker.byEntity();
     }
 }

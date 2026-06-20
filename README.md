@@ -40,6 +40,24 @@ System.out.println(api.getMaximumRequests());   // "500"
 
 Both return `null` until the first request is made.
 
+Sportmonks also reports rate limits **per entity** in the response body (Sportmonks scopes the
+quota per `requested_entity`). These are captured automatically and accumulated across requests:
+
+```java
+api.getAllLeagues();
+api.getTeamById(1);
+
+RateLimit last = api.getLastRateLimit();          // the most recent call's rate_limit
+System.out.println(last.getRemaining());          // e.g. 2999
+System.out.println(last.getRequestedEntity());    // "team"
+
+Map<String, RateLimit> byEntity = api.getRateLimitsByEntity();
+System.out.println(byEntity.get("league").getRemaining()); // 2999
+System.out.println(byEntity.get("team").getRemaining());   // 2999
+```
+
+`getLastRateLimit()` returns `null` and `getRateLimitsByEntity()` is empty until the first request.
+
 ## Usage Examples
 
 ### Fixtures
