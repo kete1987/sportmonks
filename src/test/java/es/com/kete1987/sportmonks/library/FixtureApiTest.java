@@ -5,6 +5,7 @@ import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.match.EventData;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.util.EventType;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
@@ -447,5 +448,37 @@ class FixtureApiTest extends BaseApiTest {
 
         RateLimit byEntity = api.getRateLimitsByEntity().get("bookmaker");
         assertEquals(2999L, byEntity.getRemaining().longValue());
+
+        // The same readings are reachable from any specialised sub-API (shared tracker).
+        assertEquals(2999L, api.getOdds().getLastRateLimit().getRemaining().longValue());
+        assertEquals("bookmaker", api.getOdds().getRateLimitsByEntity().get("bookmaker").getRequestedEntity());
+    }
+
+    @Test
+    void rateLimitBody_absentLeavesBodyRateLimitEmpty() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json"); // this fixture has no rate_limit block
+
+        api.getTodayMatches();
+
+        assertNull(api.getLastRateLimit());
+        assertTrue(api.getRateLimitsByEntity().isEmpty());
+    }
+
+    @Test
+    void rateLimitBody_emptyOrNullBodyIsIgnored() throws IOException, SportMonksException {
+        server.enqueue(jsonBody(""));      // empty body → skipped without parsing
+        api.getAllBookmakers();
+        assertNull(api.getLastRateLimit());
+
+        server.enqueue(jsonBody("null"));  // parses to no envelope → nothing recorded
+        api.getAllBookmakers();
+        assertNull(api.getLastRateLimit());
+    }
+
+    private MockResponse jsonBody(String body) {
+        return new MockResponse()
+                .setResponseCode(200)
+                .setBody(body)
+                .addHeader("Content-Type", "application/json; charset=utf-8");
     }
 }

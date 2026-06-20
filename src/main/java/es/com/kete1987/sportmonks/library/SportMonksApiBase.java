@@ -63,11 +63,11 @@ abstract class SportMonksApiBase {
     }
 
     private void recordRateLimit(String body) {
-        if (body == null || body.isEmpty()) return;
+        if (body.isEmpty()) return;
         try {
             RateLimitEnvelope envelope = gson().fromJson(body, RateLimitEnvelope.class);
             if (envelope != null) {
-                rateLimitTracker.record(envelope.rateLimit);
+                rateLimitTracker.track(envelope.rateLimit);
             }
         } catch (RuntimeException ignored) {
             // rate_limit is best-effort metadata; never fail a request over a parse hiccup.

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Shared, mutable holder for the rate-limit state observed across requests.
@@ -21,11 +22,11 @@ class RateLimitTracker {
     volatile String remaining;
 
     private final Map<String, RateLimit> byEntity = new ConcurrentHashMap<>();
-    private volatile RateLimit last;
+    private final AtomicReference<RateLimit> last = new AtomicReference<>();
 
-    void record(RateLimit rateLimit) {
+    void track(RateLimit rateLimit) {
         if (rateLimit == null) return;
-        last = rateLimit;
+        last.set(rateLimit);
         String entity = rateLimit.getRequestedEntity();
         if (entity != null) {
             byEntity.put(entity, rateLimit);
@@ -33,7 +34,7 @@ class RateLimitTracker {
     }
 
     RateLimit last() {
-        return last;
+        return last.get();
     }
 
     Map<String, RateLimit> byEntity() {
