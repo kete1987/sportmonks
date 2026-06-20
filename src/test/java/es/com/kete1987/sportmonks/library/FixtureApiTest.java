@@ -1,5 +1,6 @@
 package es.com.kete1987.sportmonks.library;
 
+import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.match.EventData;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
@@ -431,5 +432,20 @@ class FixtureApiTest extends BaseApiTest {
 
         assertEquals("3000", api.getMaximumRequests());
         assertEquals("2999", api.getRemainingRequests());
+    }
+
+    @Test
+    void rateLimitBody_isExposedPerEntityAfterRequest() throws IOException, SportMonksException {
+        enqueue("bookmakers.json");
+
+        api.getAllBookmakers();
+
+        RateLimit last = api.getLastRateLimit();
+        assertEquals(2999L, last.getRemaining().longValue());
+        assertEquals(3600L, last.getResetsInSeconds().longValue());
+        assertEquals("bookmaker", last.getRequestedEntity());
+
+        RateLimit byEntity = api.getRateLimitsByEntity().get("bookmaker");
+        assertEquals(2999L, byEntity.getRemaining().longValue());
     }
 }
