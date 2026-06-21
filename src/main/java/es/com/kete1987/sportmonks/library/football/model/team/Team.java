@@ -1,6 +1,6 @@
 package es.com.kete1987.sportmonks.library.football.model.team;
 
-import es.com.kete1987.sportmonks.library.football.model.match.Match;
+import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.player.Sidelined;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
@@ -30,8 +30,8 @@ public class Team {
     private String lastPlayedAt;
     private Venue venue;
     private List<TeamPlayer> players;
-    private List<Match> latest;
-    private List<Match> upcoming;
+    private List<MatchDetail> latest;
+    private List<MatchDetail> upcoming;
     private List<SeasonData> seasons;
     private List<SeasonData> activeseasons;
     private List<Sidelined> sidelined;
@@ -102,11 +102,11 @@ public class Team {
         return ModelCollections.unmodifiable(players);
     }
 
-    public List<Match> getLatest() {
+    public List<MatchDetail> getLatest() {
         return ModelCollections.unmodifiable(latest);
     }
 
-    public List<Match> getUpcoming() {
+    public List<MatchDetail> getUpcoming() {
         return ModelCollections.unmodifiable(upcoming);
     }
 
