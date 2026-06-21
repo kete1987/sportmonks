@@ -161,17 +161,44 @@ public class FootballApi extends SportMonksApiBase {
     // Matches / Fixtures
     // -------------------------------------------------------------------------
 
-    public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
+    /**
+     * Livescores from the {@code /livescores} endpoint: fixtures within a ~15 minute
+     * window before and after kickoff (about to start, in play, or just finished),
+     * <em>not</em> every fixture scheduled for the calendar day. For the full day's
+     * fixtures use {@link #getMatchesByDate(String, String...)} with today's date.
+     */
+    public List<MatchDetail> getLivescores(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("livescores"), includes).build();
         return fetchMatchList(url);
     }
 
-    public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
+    /**
+     * @deprecated misleading name: this calls {@code /livescores}, which returns the
+     * ~15 minute live window, not the matches of the current day. Use
+     * {@link #getLivescores(String...)} (or {@link #getMatchesByDate(String, String...)}
+     * for an actual day). Still delegates for now, but scheduled for removal in a future
+     * major release.
+     */
+    @Deprecated(since = "3.1.0", forRemoval = true)
+    public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
+        return getLivescores(includes);
+    }
+
+    public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
         if (matchIds != null && matchIds.length > 0) {
             HttpUrl url = withIncludes(footballUrl("livescores/multi/" + String.join(",", matchIds)), includes).build();
             return fetchMatchList(url);
         }
-        return getTodayMatches(includes);
+        return getLivescores(includes);
+    }
+
+    /**
+     * @deprecated misleading name, see {@link #getTodayMatches(String...)}. Use
+     * {@link #getLivescoresFiltered(String[], String...)}.
+     */
+    @Deprecated(since = "3.1.0", forRemoval = true)
+    public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
+        return getLivescoresFiltered(matchIds, includes);
     }
 
     public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException {

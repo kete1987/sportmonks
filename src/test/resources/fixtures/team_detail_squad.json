@@ -1,0 +1,48 @@
+{
+  "data": {
+    "id": 1,
+    "sport_id": 1,
+    "country_id": 462,
+    "name": "Manchester United",
+    "short_code": "MUN",
+    "gender": "male",
+    "players": [
+      {
+        "id": 1001,
+        "transfer_id": null,
+        "player_id": 37605747,
+        "team_id": 1,
+        "position_id": 24,
+        "detailed_position_id": 148,
+        "jersey_number": 1,
+        "start": "2023-07-01",
+        "end": null,
+        "player": {
+          "id": 37605747,
+          "name": "André Onana",
+          "display_name": "André Onana",
+          "image_path": "https://cdn.sportmonks.com/images/soccer/players/19/37605747.png",
+          "position_id": 24
+        }
+      },
+      {
+        "id": 1002,
+        "transfer_id": null,
+        "player_id": 14,
+        "team_id": 1,
+        "position_id": 27,
+        "detailed_position_id": 156,
+        "jersey_number": 11,
+        "start": "2024-08-01",
+        "end": null,
+        "player": {
+          "id": 14,
+          "name": "Joshua Zirkzee",
+          "display_name": "Joshua Zirkzee",
+          "image_path": "https://cdn.sportmonks.com/images/soccer/players/14/14.png",
+          "position_id": 27
+        }
+      }
+    ]
+  }
+}
