@@ -56,7 +56,64 @@ class FixtureApiTest extends BaseApiTest {
     }
 
     // -------------------------------------------------------------------------
-    // getTodayMatchesFiltered
+    // getLivescores (replaces getTodayMatches)
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getLivescores_usesLivescoresPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLivescores();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("livescores/"));
+    }
+
+    @Test
+    void getLivescores_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getLivescores();
+
+        assertEquals(2, matches.size());
+        assertEquals(1, matches.get(0).getId().intValue());
+    }
+
+    @Test
+    void getTodayMatches_isDeprecatedAliasOfLivescores() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getTodayMatches();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("livescores/"));
+    }
+
+    @Test
+    void getLivescoresFiltered_withIds_usesMultiPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLivescoresFiltered(new String[]{"1", "2"});
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores/multi/1,2"));
+    }
+
+    @Test
+    void getLivescoresFiltered_withNullIds_fallsBackToLivescores() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLivescoresFiltered(null);
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("multi"));
+    }
+
+    // -------------------------------------------------------------------------
+    // getTodayMatchesFiltered (deprecated)
     // -------------------------------------------------------------------------
 
     @Test
