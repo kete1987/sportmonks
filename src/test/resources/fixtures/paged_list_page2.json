@@ -1,0 +1,13 @@
+{
+  "data": [
+    { "id": 3 },
+    { "id": 4 }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 2,
+    "current_page": 2,
+    "next_page": null,
+    "has_more": false
+  }
+}
