@@ -183,6 +183,36 @@ public class MatchDetail extends Match {
         return 0;
     }
 
+    public int getPenaltyLocalTeamGoals() {
+        return getPenaltyTeamGoals("home");
+    }
+
+    public int getPenaltyVisitorTeamGoals() {
+        return getPenaltyTeamGoals("away");
+    }
+
+    private int getPenaltyTeamGoals(String participant) {
+        if (scores != null) {
+            for (Scores score : scores) {
+                if ("PENALTY_SHOOTOUT".equalsIgnoreCase(score.getDescription())
+                        && score.getScore() != null
+                        && participant.equalsIgnoreCase(score.getScore().getParticipant()))
+                    return score.getScore().getGoals().intValue();
+            }
+        }
+        return 0;
+    }
+
+    public boolean hasPenaltyShootout() {
+        if (scores != null) {
+            for (Scores score : scores) {
+                if ("PENALTY_SHOOTOUT".equalsIgnoreCase(score.getDescription()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isLiveMatch() {
         return state != null && MatchStatus.isLiveMatch(state.getId().intValue());
     }
