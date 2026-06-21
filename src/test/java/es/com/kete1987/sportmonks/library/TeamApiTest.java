@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library;
 
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
+import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
 import es.com.kete1987.sportmonks.library.football.model.team.TeamPlayer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -108,6 +109,19 @@ class TeamApiTest extends BaseApiTest {
         assertEquals("André Onana", keeper.getPlayer().getDisplayName());
         assertEquals("https://cdn.sportmonks.com/images/soccer/players/19/37605747.png",
                 keeper.getPlayer().getImagePath());
+    }
+
+    @Test
+    void getTeamById_latestMatchesDeserializeWithScores() throws IOException, SportMonksException {
+        enqueue("team_detail_squad.json");
+
+        Team team = api.getTeamById(1L, "players.player", "latest.scores");
+
+        // latest/upcoming are MatchDetail now, so the score accessors are available (task 86cac3dwk).
+        assertEquals(1, team.getLatest().size());
+        MatchDetail last = team.getLatest().get(0);
+        assertEquals(2, last.getCurrentLocalTeamGoals());
+        assertEquals(1, last.getCurrentVisitorTeamGoals());
     }
 
     @Test

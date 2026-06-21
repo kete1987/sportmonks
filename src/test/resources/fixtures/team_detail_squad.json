@@ -43,6 +43,18 @@
           "position_id": 27
         }
       }
+    ],
+    "latest": [
+      {
+        "id": 700001,
+        "name": "Manchester United vs Arsenal",
+        "state_id": 5,
+        "starting_at_timestamp": 1781539200,
+        "scores": [
+          { "id": 1, "description": "CURRENT", "score": { "goals": 2, "participant": "home" } },
+          { "id": 2, "description": "CURRENT", "score": { "goals": 1, "participant": "away" } }
+        ]
+      }
     ]
   }
 }
