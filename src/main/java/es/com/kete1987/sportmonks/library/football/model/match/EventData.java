@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
+import es.com.kete1987.sportmonks.library.football.util.EventType;
 import com.google.gson.annotations.SerializedName;
 
 public class EventData implements Comparable<Object> {
@@ -137,6 +138,17 @@ public class EventData implements Comparable<Object> {
         return player;
     }
 
+    /**
+     * @return {@code true} if this event belongs to a penalty shootout
+     * ({@link EventType#PENALTY_SHOOTOUT_GOAL} scored / {@link EventType#PENALTY_SHOOTOUT_MISS} missed).
+     * Their {@code minute} is the penalty number (1..N), not a match minute.
+     */
+    public boolean isShootoutEvent() {
+        return typeId != null
+                && (typeId.intValue() == EventType.PENALTY_SHOOTOUT_GOAL
+                || typeId.intValue() == EventType.PENALTY_SHOOTOUT_MISS);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -153,6 +165,14 @@ public class EventData implements Comparable<Object> {
     @Override
     public int compareTo(Object o) {
         EventData ed = (EventData) o;
+        // Penalty shootout events (scored 23 / missed 22) belong to the post-match
+        // shootout phase: their `minute` is the penalty number (1..N), not a match
+        // minute, so they must always sort after the regular-time events.
+        boolean thisShootout = isShootoutEvent();
+        boolean otherShootout = ed.isShootoutEvent();
+        if (thisShootout != otherShootout) {
+            return thisShootout ? 1 : -1;
+        }
         if (getMinute() != null && ed.getMinute() != null) {
             if (getMinute().intValue() == ed.getMinute().intValue()) {
                 if (getExtraMinute() != null && ed.getExtraMinute() != null) {
