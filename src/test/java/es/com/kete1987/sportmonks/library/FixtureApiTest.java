@@ -425,6 +425,61 @@ class FixtureApiTest extends BaseApiTest {
         assertEquals("1st Delay End", delayEnd.getAddition());
     }
 
+    // -------------------------------------------------------------------------
+    // Penalty shootout support
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchDetail_penaltyShootoutScoreAccessors() throws IOException, SportMonksException {
+        enqueue("fixture_penalties.json");
+
+        MatchDetail match = api.getMatchDetail("19683241");
+
+        // CURRENT reflects the result after extra time, not the shootout.
+        assertEquals(1, match.getCurrentLocalTeamGoals());
+        assertEquals(1, match.getCurrentVisitorTeamGoals());
+
+        assertTrue(match.hasPenaltyShootout());
+        assertEquals(4, match.getPenaltyLocalTeamGoals());
+        assertEquals(3, match.getPenaltyVisitorTeamGoals());
+    }
+
+    @Test
+    void getMatchDetail_noPenaltyShootout_returnsDefaults() throws IOException, SportMonksException {
+        enqueue("fixture_detail.json");
+
+        MatchDetail match = api.getMatchDetail("1");
+
+        assertFalse(match.hasPenaltyShootout());
+        assertEquals(0, match.getPenaltyLocalTeamGoals());
+        assertEquals(0, match.getPenaltyVisitorTeamGoals());
+    }
+
+    @Test
+    void events_shootoutEventsSortAfterRegularTime() throws IOException, SportMonksException {
+        enqueue("fixture_penalties.json");
+
+        MatchDetail match = api.getMatchDetail("19683241");
+
+        List<EventData> sorted = new java.util.ArrayList<>(match.getEvents());
+        java.util.Collections.sort(sorted);
+
+        // Regular-time goals (min 6, 65) first, despite shootout events carrying
+        // lower `minute` values (penalty number 1..N).
+        assertEquals(EventType.GOAL, sorted.get(0).getTypeId().intValue());
+        assertEquals(6, sorted.get(0).getMinute().intValue());
+        assertEquals(EventType.GOAL, sorted.get(1).getTypeId().intValue());
+        assertEquals(65, sorted.get(1).getMinute().intValue());
+
+        // Shootout events last, in penalty order.
+        assertTrue(sorted.get(2).isShootoutEvent());
+        assertTrue(sorted.get(3).isShootoutEvent());
+        assertTrue(sorted.get(4).isShootoutEvent());
+        assertEquals(1, sorted.get(2).getMinute().intValue());
+        assertEquals(2, sorted.get(3).getMinute().intValue());
+        assertEquals(3, sorted.get(4).getMinute().intValue());
+    }
+
     @Test
     void rateLimitHeaders_areExposedAfterRequest() throws IOException, SportMonksException {
         enqueue("fixtures_single_page.json");
