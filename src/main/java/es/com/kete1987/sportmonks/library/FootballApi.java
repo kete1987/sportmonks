@@ -158,9 +158,10 @@ public class FootballApi extends SportMonksApiBase {
      * @deprecated misleading name: this calls {@code /livescores}, which returns the
      * ~15 minute live window, not the matches of the current day. Use
      * {@link #getLivescores(String...)} (or {@link #getMatchesByDate(String, String...)}
-     * for an actual day). Kept for backwards compatibility.
+     * for an actual day). Still delegates for now, but scheduled for removal in a future
+     * major release.
      */
-    @Deprecated(since = "3.0.3", forRemoval = false)
+    @Deprecated(since = "3.1.0", forRemoval = true)
     public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
         return getLivescores(includes);
     }
@@ -177,7 +178,7 @@ public class FootballApi extends SportMonksApiBase {
      * @deprecated misleading name, see {@link #getTodayMatches(String...)}. Use
      * {@link #getLivescoresFiltered(String[], String...)}.
      */
-    @Deprecated(since = "3.0.3", forRemoval = false)
+    @Deprecated(since = "3.1.0", forRemoval = true)
     public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
         return getLivescoresFiltered(matchIds, includes);
     }
