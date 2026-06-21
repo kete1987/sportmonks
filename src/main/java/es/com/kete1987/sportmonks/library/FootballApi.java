@@ -125,16 +125,34 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     private List<TopScoresPlayer> fetchTopScoresList(HttpUrl url) throws IOException, SportMonksException {
+        return fetchTopScoresList(url, 0);
+    }
+
+    /**
+     * Like {@link #fetchTopScoresList(HttpUrl)} but caps the result at {@code limit} elements.
+     * When {@code limit > 0} it shrinks {@code per_page} (max 50, the API page size) so the first
+     * page already carries enough rows, stops paginating as soon as {@code limit} is reached, and
+     * trims any overflow — avoiding fetching every page just to keep the top N. A non-positive
+     * {@code limit} means "no limit" (fetch all pages, original behaviour).
+     */
+    private List<TopScoresPlayer> fetchTopScoresList(HttpUrl url, int limit) throws IOException, SportMonksException {
         Gson g = gson();
-        TopScorersResponse resp = g.fromJson(execute(url), TopScorersResponse.class);
+        HttpUrl first = limit > 0
+                ? url.newBuilder().addQueryParameter("per_page", String.valueOf(Math.min(limit, 50))).build()
+                : url;
+        TopScorersResponse resp = g.fromJson(execute(first), TopScorersResponse.class);
         if (resp.getData() == null) return new ArrayList<>();
         List<TopScoresPlayer> list = new ArrayList<>(resp.getData());
         int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
+        while ((limit <= 0 || list.size() < limit)
+                && resp.getPagination() != null && resp.getPagination().hasMore()) {
             page++;
-            HttpUrl paged = url.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
+            HttpUrl paged = first.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
             resp = g.fromJson(execute(paged), TopScorersResponse.class);
             if (resp.getData() != null) list.addAll(resp.getData());
+        }
+        if (limit > 0 && list.size() > limit) {
+            return new ArrayList<>(list.subList(0, limit));
         }
         return list;
     }
@@ -322,20 +340,41 @@ public class FootballApi extends SportMonksApiBase {
     // Top Scorers
     // -------------------------------------------------------------------------
 
+    private static final String TOPSCORERS_SEASONS = "topscorers/seasons/";
+
     public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException {
         return getTopScores(seasonId, "season", "stage", "player", "type", "participant");
     }
 
     public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes).build();
         return fetchTopScoresList(url);
     }
 
+    /**
+     * Top scorers of a season, capped at {@code limit} entries (e.g. {@code 25} for the top 25).
+     * The endpoint returns players already ordered by tally, so this yields the leaders without
+     * fetching every page. {@code limit <= 0} means no cap (all pages). Pass the includes you need
+     * (e.g. {@code "player"}) — unlike {@link #getTopScores(String)} this overload has no defaults.
+     */
+    public List<TopScoresPlayer> getTopScores(String seasonId, int limit, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes).build();
+        return fetchTopScoresList(url, limit);
+    }
+
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes)
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes)
                 .addQueryParameter("filters", "seasontopscorerTypes:" + typeId)
                 .build();
         return fetchTopScoresList(url);
+    }
+
+    /** Filtered season top scorers, capped at {@code limit} entries. See {@link #getTopScores(String, int, String...)}. */
+    public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, int limit, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes)
+                .addQueryParameter("filters", "seasontopscorerTypes:" + typeId)
+                .build();
+        return fetchTopScoresList(url, limit);
     }
 
     public List<TopScoresPlayer> getTopScoresByStage(String stageId) throws IOException, SportMonksException {
@@ -345,6 +384,12 @@ public class FootballApi extends SportMonksApiBase {
     public List<TopScoresPlayer> getTopScoresByStage(String stageId, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("topscorers/stages/" + stageId), includes).build();
         return fetchTopScoresList(url);
+    }
+
+    /** Stage top scorers, capped at {@code limit} entries. See {@link #getTopScores(String, int, String...)}. */
+    public List<TopScoresPlayer> getTopScoresByStage(String stageId, int limit, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("topscorers/stages/" + stageId), includes).build();
+        return fetchTopScoresList(url, limit);
     }
 
     // -------------------------------------------------------------------------

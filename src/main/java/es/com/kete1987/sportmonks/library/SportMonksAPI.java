@@ -257,10 +257,16 @@ public class SportMonksAPI {
     /** Fetches top scorers with default includes: {@code season, stage, player, type, participant}. */
     public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException { return football.getTopScores(seasonId); }
     public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException { return football.getTopScores(seasonId, includes); }
+    /** Top scorers of a season capped at {@code limit} (e.g. top 25), without fetching every page. */
+    public List<TopScoresPlayer> getTopScores(String seasonId, int limit, String... includes) throws IOException, SportMonksException { return football.getTopScores(seasonId, limit, includes); }
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, String... includes) throws IOException, SportMonksException { return football.getTopScoresFiltered(seasonId, typeId, includes); }
+    /** Filtered season top scorers capped at {@code limit}. */
+    public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, int limit, String... includes) throws IOException, SportMonksException { return football.getTopScoresFiltered(seasonId, typeId, limit, includes); }
     /** Fetches top scorers by stage with default includes: {@code season, stage, player, type}. */
     public List<TopScoresPlayer> getTopScoresByStage(String stageId) throws IOException, SportMonksException { return football.getTopScoresByStage(stageId); }
     public List<TopScoresPlayer> getTopScoresByStage(String stageId, String... includes) throws IOException, SportMonksException { return football.getTopScoresByStage(stageId, includes); }
+    /** Stage top scorers capped at {@code limit}. */
+    public List<TopScoresPlayer> getTopScoresByStage(String stageId, int limit, String... includes) throws IOException, SportMonksException { return football.getTopScoresByStage(stageId, limit, includes); }
 
     // -------------------------------------------------------------------------
     // Standings

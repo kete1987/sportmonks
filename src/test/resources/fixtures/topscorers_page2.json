@@ -1,0 +1,13 @@
+{
+  "data": [
+    { "id": 3, "season_id": 100, "player_id": 13, "position": 3, "total": 25 },
+    { "id": 4, "season_id": 100, "player_id": 14, "position": 4, "total": 22 }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 2,
+    "current_page": 2,
+    "next_page": null,
+    "has_more": false
+  }
+}
