@@ -160,7 +160,7 @@ public class FootballApi extends SportMonksApiBase {
      * {@link #getLivescores(String...)} (or {@link #getMatchesByDate(String, String...)}
      * for an actual day). Kept for backwards compatibility.
      */
-    @Deprecated
+    @Deprecated(since = "3.0.3", forRemoval = false)
     public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
         return getLivescores(includes);
     }
@@ -177,7 +177,7 @@ public class FootballApi extends SportMonksApiBase {
      * @deprecated misleading name, see {@link #getTodayMatches(String...)}. Use
      * {@link #getLivescoresFiltered(String[], String...)}.
      */
-    @Deprecated
+    @Deprecated(since = "3.0.3", forRemoval = false)
     public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
         return getLivescoresFiltered(matchIds, includes);
     }

@@ -138,10 +138,10 @@ public class SportMonksAPI {
     public List<MatchDetail> getLivescores(String... includes) throws IOException, SportMonksException { return football.getLivescores(includes); }
     public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException { return football.getLivescoresFiltered(matchIds, includes); }
     /** @deprecated misleading name, calls {@code /livescores}. Use {@link #getLivescores(String...)}. */
-    @Deprecated
+    @Deprecated(since = "3.0.3", forRemoval = false)
     public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException { return football.getTodayMatches(includes); }
     /** @deprecated misleading name, calls {@code /livescores/multi}. Use {@link #getLivescoresFiltered(String[], String...)}. */
-    @Deprecated
+    @Deprecated(since = "3.0.3", forRemoval = false)
     public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException { return football.getTodayMatchesFiltered(matchIds, includes); }
     public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException { return football.getLiveMatches(includes); }
     public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException { return football.getMatchesByDate(date, includes); }
