@@ -340,12 +340,14 @@ public class FootballApi extends SportMonksApiBase {
     // Top Scorers
     // -------------------------------------------------------------------------
 
+    private static final String TOPSCORERS_SEASONS = "topscorers/seasons/";
+
     public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException {
         return getTopScores(seasonId, "season", "stage", "player", "type", "participant");
     }
 
     public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes).build();
         return fetchTopScoresList(url);
     }
 
@@ -356,12 +358,12 @@ public class FootballApi extends SportMonksApiBase {
      * (e.g. {@code "player"}) — unlike {@link #getTopScores(String)} this overload has no defaults.
      */
     public List<TopScoresPlayer> getTopScores(String seasonId, int limit, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes).build();
         return fetchTopScoresList(url, limit);
     }
 
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes)
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes)
                 .addQueryParameter("filters", "seasontopscorerTypes:" + typeId)
                 .build();
         return fetchTopScoresList(url);
@@ -369,7 +371,7 @@ public class FootballApi extends SportMonksApiBase {
 
     /** Filtered season top scorers, capped at {@code limit} entries. See {@link #getTopScores(String, int, String...)}. */
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, int limit, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes)
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes)
                 .addQueryParameter("filters", "seasontopscorerTypes:" + typeId)
                 .build();
         return fetchTopScoresList(url, limit);
