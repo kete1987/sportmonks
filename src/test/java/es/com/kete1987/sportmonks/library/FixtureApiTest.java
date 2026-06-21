@@ -464,20 +464,28 @@ class FixtureApiTest extends BaseApiTest {
         List<EventData> sorted = new java.util.ArrayList<>(match.getEvents());
         java.util.Collections.sort(sorted);
 
-        // Regular-time goals (min 6, 65) first, despite shootout events carrying
-        // lower `minute` values (penalty number 1..N).
+        // 30 events: 20 regular-time, then 10 shootout penalties.
+        assertEquals(30, sorted.size());
+
+        // The first event is the regular-time opener (Havertz, min 6), despite the
+        // shootout events carrying lower `minute` values (penalty number 1..N).
         assertEquals(EventType.GOAL, sorted.get(0).getTypeId().intValue());
         assertEquals(6, sorted.get(0).getMinute().intValue());
-        assertEquals(EventType.GOAL, sorted.get(1).getTypeId().intValue());
-        assertEquals(65, sorted.get(1).getMinute().intValue());
 
-        // Shootout events last, in penalty order.
-        assertTrue(sorted.get(2).isShootoutEvent());
-        assertTrue(sorted.get(3).isShootoutEvent());
-        assertTrue(sorted.get(4).isShootoutEvent());
-        assertEquals(1, sorted.get(2).getMinute().intValue());
-        assertEquals(2, sorted.get(3).getMinute().intValue());
-        assertEquals(3, sorted.get(4).getMinute().intValue());
+        // All shootout events sort into a contiguous block at the end, in penalty
+        // order; no regular-time event appears after a shootout one.
+        int firstShootout = -1;
+        for (int i = 0; i < sorted.size(); i++) {
+            if (sorted.get(i).isShootoutEvent()) {
+                firstShootout = i;
+                break;
+            }
+        }
+        assertEquals(20, firstShootout);
+        for (int i = firstShootout; i < sorted.size(); i++) {
+            assertTrue(sorted.get(i).isShootoutEvent(), "event at " + i + " should be a shootout event");
+            assertEquals(i - firstShootout + 1, sorted.get(i).getMinute().intValue());
+        }
     }
 
     @Test
