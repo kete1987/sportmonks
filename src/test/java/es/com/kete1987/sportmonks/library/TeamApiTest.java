@@ -2,6 +2,7 @@ package es.com.kete1987.sportmonks.library;
 
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
+import es.com.kete1987.sportmonks.library.football.model.team.TeamPlayer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
@@ -82,6 +83,40 @@ class TeamApiTest extends BaseApiTest {
         assertNotNull(team);
         assertEquals(1L, team.getId());
         assertEquals("Manchester United", team.getName());
+    }
+
+    @Test
+    void getTeamById_withPlayersPlayerInclude_deserializesNestedPlayer() throws IOException, SportMonksException, InterruptedException {
+        enqueue("team_detail_squad.json");
+
+        Team team = api.getTeamById(1L, "players.player");
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("include=players.player"));
+
+        List<TeamPlayer> players = team.getPlayers();
+        assertEquals(2, players.size());
+
+        TeamPlayer keeper = players.get(0);
+        // Squad pivot fields still present.
+        assertEquals(37605747L, keeper.getPlayerId());
+        assertEquals(1L, keeper.getJerseyNumber());
+        assertEquals(24L, keeper.getPositionId());
+        // Nested player resolved from players.player.
+        assertNotNull(keeper.getPlayer());
+        assertEquals("André Onana", keeper.getPlayer().getName());
+        assertEquals("André Onana", keeper.getPlayer().getDisplayName());
+        assertEquals("https://cdn.sportmonks.com/images/soccer/players/19/37605747.png",
+                keeper.getPlayer().getImagePath());
+    }
+
+    @Test
+    void getTeamById_withoutPlayersInclude_nestedPlayerIsNull() throws IOException, SportMonksException {
+        enqueue("team_detail.json");
+
+        Team team = api.getTeamById(1L);
+
+        assertNull(team.getPlayers());
     }
 
     @Test
