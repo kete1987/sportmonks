@@ -56,7 +56,64 @@ class FixtureApiTest extends BaseApiTest {
     }
 
     // -------------------------------------------------------------------------
-    // getTodayMatchesFiltered
+    // getLivescores (replaces getTodayMatches)
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getLivescores_usesLivescoresPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLivescores();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("livescores/"));
+    }
+
+    @Test
+    void getLivescores_returnsParsedList() throws IOException, SportMonksException {
+        enqueue("fixtures_single_page.json");
+
+        List<MatchDetail> matches = api.getLivescores();
+
+        assertEquals(2, matches.size());
+        assertEquals(1, matches.get(0).getId().intValue());
+    }
+
+    @Test
+    void getTodayMatches_isDeprecatedAliasOfLivescores() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getTodayMatches();
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("livescores/"));
+    }
+
+    @Test
+    void getLivescoresFiltered_withIds_usesMultiPath() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLivescoresFiltered(new String[]{"1", "2"});
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores/multi/1,2"));
+    }
+
+    @Test
+    void getLivescoresFiltered_withNullIds_fallsBackToLivescores() throws IOException, SportMonksException, InterruptedException {
+        enqueue("fixtures_single_page.json");
+
+        api.getLivescoresFiltered(null);
+
+        RecordedRequest request = server.takeRequest();
+        assertTrue(request.getPath().contains("livescores"));
+        assertFalse(request.getPath().contains("multi"));
+    }
+
+    // -------------------------------------------------------------------------
+    // getTodayMatchesFiltered (deprecated)
     // -------------------------------------------------------------------------
 
     @Test
@@ -423,6 +480,69 @@ class FixtureApiTest extends BaseApiTest {
         assertEquals(29, delayEnd.getMinute().intValue());
         assertNull(delayEnd.getInfo());
         assertEquals("1st Delay End", delayEnd.getAddition());
+    }
+
+    // -------------------------------------------------------------------------
+    // Penalty shootout support
+    // -------------------------------------------------------------------------
+
+    @Test
+    void getMatchDetail_penaltyShootoutScoreAccessors() throws IOException, SportMonksException {
+        enqueue("fixture_penalties.json");
+
+        MatchDetail match = api.getMatchDetail("19683241");
+
+        // CURRENT reflects the result after extra time, not the shootout.
+        assertEquals(1, match.getCurrentLocalTeamGoals());
+        assertEquals(1, match.getCurrentVisitorTeamGoals());
+
+        assertTrue(match.hasPenaltyShootout());
+        assertEquals(4, match.getPenaltyLocalTeamGoals());
+        assertEquals(3, match.getPenaltyVisitorTeamGoals());
+    }
+
+    @Test
+    void getMatchDetail_noPenaltyShootout_returnsDefaults() throws IOException, SportMonksException {
+        enqueue("fixture_detail.json");
+
+        MatchDetail match = api.getMatchDetail("1");
+
+        assertFalse(match.hasPenaltyShootout());
+        assertEquals(0, match.getPenaltyLocalTeamGoals());
+        assertEquals(0, match.getPenaltyVisitorTeamGoals());
+    }
+
+    @Test
+    void events_shootoutEventsSortAfterRegularTime() throws IOException, SportMonksException {
+        enqueue("fixture_penalties.json");
+
+        MatchDetail match = api.getMatchDetail("19683241");
+
+        List<EventData> sorted = new java.util.ArrayList<>(match.getEvents());
+        java.util.Collections.sort(sorted);
+
+        // 30 events: 20 regular-time, then 10 shootout penalties.
+        assertEquals(30, sorted.size());
+
+        // The first event is the regular-time opener (Havertz, min 6), despite the
+        // shootout events carrying lower `minute` values (penalty number 1..N).
+        assertEquals(EventType.GOAL, sorted.get(0).getTypeId().intValue());
+        assertEquals(6, sorted.get(0).getMinute().intValue());
+
+        // All shootout events sort into a contiguous block at the end, in penalty
+        // order; no regular-time event appears after a shootout one.
+        int firstShootout = -1;
+        for (int i = 0; i < sorted.size(); i++) {
+            if (sorted.get(i).isShootoutEvent()) {
+                firstShootout = i;
+                break;
+            }
+        }
+        assertEquals(20, firstShootout);
+        for (int i = firstShootout; i < sorted.size(); i++) {
+            assertTrue(sorted.get(i).isShootoutEvent(), "event at " + i + " should be a shootout event");
+            assertEquals(i - firstShootout + 1, sorted.get(i).getMinute().intValue());
+        }
     }
 
     @Test

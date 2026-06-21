@@ -192,17 +192,44 @@ public class FootballApi extends SportMonksApiBase {
     // Matches / Fixtures
     // -------------------------------------------------------------------------
 
-    public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
+    /**
+     * Livescores from the {@code /livescores} endpoint: fixtures within a ~15 minute
+     * window before and after kickoff (about to start, in play, or just finished),
+     * <em>not</em> every fixture scheduled for the calendar day. For the full day's
+     * fixtures use {@link #getMatchesByDate(String, String...)} with today's date.
+     */
+    public List<MatchDetail> getLivescores(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("livescores"), includes).build();
         return fetchMatchList(url);
     }
 
-    public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
+    /**
+     * @deprecated misleading name: this calls {@code /livescores}, which returns the
+     * ~15 minute live window, not the matches of the current day. Use
+     * {@link #getLivescores(String...)} (or {@link #getMatchesByDate(String, String...)}
+     * for an actual day). Still delegates for now, but scheduled for removal in a future
+     * major release.
+     */
+    @Deprecated(since = "3.1.0", forRemoval = true)
+    public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException {
+        return getLivescores(includes);
+    }
+
+    public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
         if (matchIds != null && matchIds.length > 0) {
             HttpUrl url = withIncludes(footballUrl("livescores/multi/" + String.join(",", matchIds)), includes).build();
             return fetchMatchList(url);
         }
-        return getTodayMatches(includes);
+        return getLivescores(includes);
+    }
+
+    /**
+     * @deprecated misleading name, see {@link #getTodayMatches(String...)}. Use
+     * {@link #getLivescoresFiltered(String[], String...)}.
+     */
+    @Deprecated(since = "3.1.0", forRemoval = true)
+    public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
+        return getLivescoresFiltered(matchIds, includes);
     }
 
     public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException {
@@ -344,12 +371,14 @@ public class FootballApi extends SportMonksApiBase {
     // Top Scorers
     // -------------------------------------------------------------------------
 
+    private static final String TOPSCORERS_SEASONS = "topscorers/seasons/";
+
     public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException {
         return getTopScores(seasonId, "season", "stage", "player", "type", "participant");
     }
 
     public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes).build();
         return fetchTopScoresList(url);
     }
 
@@ -360,12 +389,12 @@ public class FootballApi extends SportMonksApiBase {
      * (e.g. {@code "player"}) — unlike {@link #getTopScores(String)} this overload has no defaults.
      */
     public List<TopScoresPlayer> getTopScores(String seasonId, int limit, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes).build();
         return fetchTopScoresList(url, limit);
     }
 
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes)
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes)
                 .addQueryParameter("filters", "seasontopscorerTypes:" + typeId)
                 .build();
         return fetchTopScoresList(url);
@@ -373,7 +402,7 @@ public class FootballApi extends SportMonksApiBase {
 
     /** Filtered season top scorers, capped at {@code limit} entries. See {@link #getTopScores(String, int, String...)}. */
     public List<TopScoresPlayer> getTopScoresFiltered(String seasonId, int typeId, int limit, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("topscorers/seasons/" + seasonId), includes)
+        HttpUrl url = withIncludes(footballUrl(TOPSCORERS_SEASONS + seasonId), includes)
                 .addQueryParameter("filters", "seasontopscorerTypes:" + typeId)
                 .build();
         return fetchTopScoresList(url, limit);

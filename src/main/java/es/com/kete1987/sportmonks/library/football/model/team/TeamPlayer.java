@@ -1,5 +1,6 @@
 package es.com.kete1987.sportmonks.library.football.model.team;
 
+import es.com.kete1987.sportmonks.library.football.model.player.Player;
 import com.google.gson.annotations.SerializedName;
 
 public class TeamPlayer {
@@ -18,6 +19,7 @@ public class TeamPlayer {
     private Long jerseyNumber;
     private String start;
     private String end;
+    private Player player;
 
     public TeamPlayer() {
     }
@@ -56,5 +58,14 @@ public class TeamPlayer {
 
     public String getEnd() {
         return end;
+    }
+
+    /**
+     * @return the nested player (name, display name, image, …) when the request
+     * was made with the {@code players.player} include; {@code null} otherwise
+     * (the bare {@code players} include only returns the squad pivot).
+     */
+    public Player getPlayer() {
+        return player;
     }
 }
