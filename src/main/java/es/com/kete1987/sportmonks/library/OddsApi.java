@@ -35,16 +35,20 @@ public class OddsApi extends SportMonksApiBase {
     }
 
     public OddsApi(String apiToken, String locale) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_ODDS, locale, new RateLimitTracker());
+        this(apiToken, locale, null);
     }
 
-    OddsApi(OkHttpClient client, String oddsBase, String locale, RateLimitTracker tracker) {
-        super(client, locale, tracker);
+    public OddsApi(String apiToken, String locale, String timezone) {
+        this(buildHttpClient(apiToken), Constants.BASE_URL_ODDS, locale, timezone, new RateLimitTracker());
+    }
+
+    OddsApi(OkHttpClient client, String oddsBase, String locale, String timezone, RateLimitTracker tracker) {
+        super(client, locale, timezone, tracker);
         this.oddsBase = oddsBase;
     }
 
     private HttpUrl.Builder oddsUrl(String path) {
-        return localeUrl(HttpUrl.parse(oddsBase + path).newBuilder());
+        return timezoneUrl(localeUrl(HttpUrl.parse(oddsBase + path).newBuilder()));
     }
 
     private List<Odd> oddsData(OddsResponse resp) {

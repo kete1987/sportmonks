@@ -24,7 +24,15 @@ SportMonksAPI api = new SportMonksAPI("YOUR_API_KEY");
 
 // Optional: request data in a specific language
 SportMonksAPI api = new SportMonksAPI("YOUR_API_KEY", "en");
+
+// Optional: also convert date/time fields to a timezone (default is UTC).
+// Use null for locale if you only want to set the timezone.
+SportMonksAPI api = new SportMonksAPI("YOUR_API_KEY", "en", "Europe/Amsterdam");
 ```
+
+The `timezone` is sent as the `timezone` query parameter on every request, so date/time
+fields in the response are expressed in that zone. Accepted values are the identifiers
+returned by `getAllTimezones()`.
 
 All methods throw `IOException` and `SportMonksException`.
 

@@ -54,21 +54,25 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public CoreApi(String apiToken, String locale) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, new RateLimitTracker());
+        this(apiToken, locale, null);
     }
 
-    CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, RateLimitTracker tracker) {
-        super(client, locale, tracker);
+    public CoreApi(String apiToken, String locale, String timezone) {
+        this(buildHttpClient(apiToken), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, new RateLimitTracker());
+    }
+
+    CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, String timezone, RateLimitTracker tracker) {
+        super(client, locale, timezone, tracker);
         this.coreBase = coreBase;
         this.myBase = myBase;
     }
 
     private HttpUrl.Builder coreUrl(String path) {
-        return localeUrl(HttpUrl.parse(coreBase + path).newBuilder());
+        return timezoneUrl(localeUrl(HttpUrl.parse(coreBase + path).newBuilder()));
     }
 
     private HttpUrl.Builder myUrl(String path) {
-        return localeUrl(HttpUrl.parse(myBase + path).newBuilder());
+        return timezoneUrl(localeUrl(HttpUrl.parse(myBase + path).newBuilder()));
     }
 
     // -------------------------------------------------------------------------

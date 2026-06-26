@@ -91,20 +91,43 @@ public class SportMonksAPI {
      *                 pass {@code null} for the default locale
      */
     public SportMonksAPI(String apiToken, String locale) {
+        this(apiToken, locale, null);
+    }
+
+    /**
+     * Creates an API client that requests data in the specified locale and timezone.
+     *
+     * <p>When a timezone is supplied it is sent as the {@code timezone} query parameter on every
+     * request, so date/time fields in the response are expressed in that zone instead of the
+     * default UTC. Accepted values are the identifiers returned by {@link CoreApi#getAllTimezones()}
+     * (e.g. {@code "Europe/Amsterdam"}).
+     *
+     * @param apiToken your Sportmonks API key
+     * @param locale   BCP 47 language tag accepted by Sportmonks (e.g. {@code "en"}, {@code "es"});
+     *                 pass {@code null} for the default locale
+     * @param timezone IANA timezone identifier accepted by Sportmonks (e.g. {@code "Europe/Amsterdam"});
+     *                 pass {@code null} for the default (UTC)
+     */
+    public SportMonksAPI(String apiToken, String locale, String timezone) {
         OkHttpClient client = SportMonksApiBase.buildHttpClient(apiToken);
         this.tracker = new RateLimitTracker();
-        this.football = new FootballApi(client, Constants.BASE_URL_FOOTBALL, locale, tracker);
-        this.odds = new OddsApi(client, Constants.BASE_URL_ODDS, locale, tracker);
-        this.predictions = new PredictionsApi(client, Constants.BASE_URL_FOOTBALL, locale, tracker);
-        this.core = new CoreApi(client, Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, tracker);
+        this.football = new FootballApi(client, Constants.BASE_URL_FOOTBALL, locale, timezone, tracker);
+        this.odds = new OddsApi(client, Constants.BASE_URL_ODDS, locale, timezone, tracker);
+        this.predictions = new PredictionsApi(client, Constants.BASE_URL_FOOTBALL, locale, timezone, tracker);
+        this.core = new CoreApi(client, Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, tracker);
     }
 
     SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase) {
+        this(client, footballBase, oddsBase, coreBase, myBase, null, null);
+    }
+
+    SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase,
+                  String locale, String timezone) {
         this.tracker = new RateLimitTracker();
-        this.football = new FootballApi(client, footballBase, null, tracker);
-        this.odds = new OddsApi(client, oddsBase, null, tracker);
-        this.predictions = new PredictionsApi(client, footballBase, null, tracker);
-        this.core = new CoreApi(client, coreBase, myBase, null, tracker);
+        this.football = new FootballApi(client, footballBase, locale, timezone, tracker);
+        this.odds = new OddsApi(client, oddsBase, locale, timezone, tracker);
+        this.predictions = new PredictionsApi(client, footballBase, locale, timezone, tracker);
+        this.core = new CoreApi(client, coreBase, myBase, locale, timezone, tracker);
     }
 
     public FootballApi getFootball() { return football; }
