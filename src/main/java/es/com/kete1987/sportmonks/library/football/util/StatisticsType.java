@@ -134,4 +134,5 @@ public class StatisticsType {
     public static final int MISSED_PENALTY_TOPSCORER = 1601;
     public static final int SUCCESSFUL_DRIBBLES_PERCENTAGE = 1605;
     public static final int SHOTS = 1677;
+    public static final int CUMULATIVE_MINUTES_PLAYED = 117172;
 }
