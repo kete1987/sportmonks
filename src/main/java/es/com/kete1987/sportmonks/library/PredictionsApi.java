@@ -34,16 +34,20 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public PredictionsApi(String apiToken, String locale) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_FOOTBALL, locale, new RateLimitTracker());
+        this(apiToken, locale, null);
     }
 
-    PredictionsApi(OkHttpClient client, String footballBase, String locale, RateLimitTracker tracker) {
-        super(client, locale, tracker);
+    public PredictionsApi(String apiToken, String locale, String timezone) {
+        this(buildHttpClient(apiToken), Constants.BASE_URL_FOOTBALL, locale, timezone, new RateLimitTracker());
+    }
+
+    PredictionsApi(OkHttpClient client, String footballBase, String locale, String timezone, RateLimitTracker tracker) {
+        super(client, locale, timezone, tracker);
         this.footballBase = footballBase;
     }
 
     private HttpUrl.Builder footballUrl(String path) {
-        return localeUrl(HttpUrl.parse(footballBase + path).newBuilder());
+        return timezoneUrl(localeUrl(HttpUrl.parse(footballBase + path).newBuilder()));
     }
 
     // -------------------------------------------------------------------------

@@ -21,11 +21,13 @@ abstract class SportMonksApiBase {
 
     final OkHttpClient httpClient;
     final String locale;
+    final String timezone;
     final RateLimitTracker rateLimitTracker;
 
-    SportMonksApiBase(OkHttpClient httpClient, String locale, RateLimitTracker rateLimitTracker) {
+    SportMonksApiBase(OkHttpClient httpClient, String locale, String timezone, RateLimitTracker rateLimitTracker) {
         this.httpClient = httpClient;
         this.locale = locale;
+        this.timezone = timezone;
         this.rateLimitTracker = rateLimitTracker;
     }
 
@@ -89,6 +91,13 @@ abstract class SportMonksApiBase {
     HttpUrl.Builder localeUrl(HttpUrl.Builder builder) {
         if (locale != null && !locale.isEmpty()) {
             builder.addQueryParameter("locale", locale);
+        }
+        return builder;
+    }
+
+    HttpUrl.Builder timezoneUrl(HttpUrl.Builder builder) {
+        if (timezone != null && !timezone.isEmpty()) {
+            builder.addQueryParameter("timezone", timezone);
         }
         return builder;
     }

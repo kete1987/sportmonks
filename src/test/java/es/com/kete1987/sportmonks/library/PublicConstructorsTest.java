@@ -60,4 +60,13 @@ class PublicConstructorsTest {
     void sportMonksApi_constructsWithTokenAndLocale() {
         assertDoesNotThrow(() -> new SportMonksAPI("dummy-token", "es"));
     }
+
+    @Test
+    void apis_constructWithTokenLocaleAndTimezone() {
+        assertDoesNotThrow(() -> new FootballApi("dummy-token", "es", "Europe/Amsterdam"));
+        assertDoesNotThrow(() -> new OddsApi("dummy-token", "es", "Europe/Amsterdam"));
+        assertDoesNotThrow(() -> new PredictionsApi("dummy-token", "es", "Europe/Amsterdam"));
+        assertDoesNotThrow(() -> new CoreApi("dummy-token", "es", "Europe/Amsterdam"));
+        assertDoesNotThrow(() -> new SportMonksAPI("dummy-token", "es", "Europe/Amsterdam"));
+    }
 }
