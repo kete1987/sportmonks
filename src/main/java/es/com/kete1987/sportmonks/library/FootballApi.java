@@ -1,6 +1,5 @@
 package es.com.kete1987.sportmonks.library;
 
-import com.google.gson.Gson;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.comments.Comment;
@@ -69,7 +68,6 @@ import es.com.kete1987.sportmonks.library.football.model.tvstation.TvStationsRes
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
 import es.com.kete1987.sportmonks.library.football.model.venue.VenueDetailResponse;
 import es.com.kete1987.sportmonks.library.football.model.venue.VenueResponse;
-import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
@@ -77,7 +75,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.function.Function;
 
 /**
  * Football sub-API: fixtures, leagues, seasons, teams, standings, statistics, transfers,
@@ -123,73 +120,13 @@ public class FootballApi extends SportMonksApiBase {
         return fetchPaged(url, MatchsResponse.class, MatchsResponse::getData, MatchsResponse::getPagination, limit);
     }
 
-    /**
-     * Generic limit-aware paginator shared by the list endpoints. When {@code limit > 0} it shrinks
-     * {@code per_page} (capped at 50, the API page size) so the first page already carries enough
-     * rows, stops paginating as soon as {@code limit} is reached, and trims any overflow — avoiding
-     * crawling every page just to keep the first N. A non-positive {@code limit} means "no limit"
-     * (fetch all pages). The {@code dataFn}/{@code pagFn} extract the {@code data}/{@code pagination}
-     * from each response so the same loop serves every {@code *Response} type.
-     */
-    private <T, R> List<T> fetchPaged(HttpUrl base, Class<R> type,
-                                      Function<R, List<T>> dataFn, Function<R, Pagination> pagFn,
-                                      int limit) throws IOException, SportMonksException {
-        Gson g = gson();
-        HttpUrl first = limit > 0
-                ? base.newBuilder().addQueryParameter("per_page", String.valueOf(Math.min(limit, 50))).build()
-                : base;
-        R resp = g.fromJson(execute(first), type);
-        List<T> data = resp != null ? dataFn.apply(resp) : null;
-        if (data == null) return new ArrayList<>();
-        List<T> all = new ArrayList<>(data);
-        int page = 1;
-        Pagination pg = pagFn.apply(resp);
-        while ((limit <= 0 || all.size() < limit) && pg != null && pg.hasMore()) {
-            page++;
-            HttpUrl paged = first.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), type);
-            if (resp == null) break;
-            List<T> more = dataFn.apply(resp);
-            if (more != null) all.addAll(more);
-            pg = pagFn.apply(resp);
-        }
-        if (limit > 0 && all.size() > limit) {
-            return new ArrayList<>(all.subList(0, limit));
-        }
-        return all;
-    }
-
     private List<TopScoresPlayer> fetchTopScoresList(HttpUrl url) throws IOException, SportMonksException {
         return fetchTopScoresList(url, 0);
     }
 
-    /**
-     * Like {@link #fetchTopScoresList(HttpUrl)} but caps the result at {@code limit} elements.
-     * When {@code limit > 0} it shrinks {@code per_page} (max 50, the API page size) so the first
-     * page already carries enough rows, stops paginating as soon as {@code limit} is reached, and
-     * trims any overflow — avoiding fetching every page just to keep the top N. A non-positive
-     * {@code limit} means "no limit" (fetch all pages, original behaviour).
-     */
+    /** Like {@link #fetchTopScoresList(HttpUrl)} but caps the result at {@code limit} elements. */
     private List<TopScoresPlayer> fetchTopScoresList(HttpUrl url, int limit) throws IOException, SportMonksException {
-        Gson g = gson();
-        HttpUrl first = limit > 0
-                ? url.newBuilder().addQueryParameter("per_page", String.valueOf(Math.min(limit, 50))).build()
-                : url;
-        TopScorersResponse resp = g.fromJson(execute(first), TopScorersResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<TopScoresPlayer> list = new ArrayList<>(resp.getData());
-        int page = 1;
-        while ((limit <= 0 || list.size() < limit)
-                && resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = first.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), TopScorersResponse.class);
-            if (resp.getData() != null) list.addAll(resp.getData());
-        }
-        if (limit > 0 && list.size() > limit) {
-            return new ArrayList<>(list.subList(0, limit));
-        }
-        return list;
+        return fetchPaged(url, TopScorersResponse.class, TopScorersResponse::getData, TopScorersResponse::getPagination, limit);
     }
 
     // -------------------------------------------------------------------------
@@ -321,18 +258,7 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<SeasonData> getSeasons() throws IOException, SportMonksException {
         HttpUrl base = footballUrl("seasons").build();
-        Gson g = gson();
-        SeasonsResponse resp = g.fromJson(execute(base), SeasonsResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<SeasonData> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), SeasonsResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, SeasonsResponse.class, SeasonsResponse::getData, SeasonsResponse::getPagination, 0);
     }
 
     public SeasonData getSeasonById(long id, String... includes) throws IOException, SportMonksException {
@@ -342,18 +268,7 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<SeasonData> getSeasonsByTeam(long teamId, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("seasons/teams/" + teamId), includes).build();
-        Gson g = gson();
-        SeasonsResponse resp = g.fromJson(execute(base), SeasonsResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<SeasonData> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), SeasonsResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, SeasonsResponse.class, SeasonsResponse::getData, SeasonsResponse::getPagination, 0);
     }
 
     public List<SeasonData> searchSeasons(String name, String... includes) throws IOException, SportMonksException {
@@ -857,50 +772,17 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<League> getLiveLeagues(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("leagues/live"), includes).build();
-        Gson g = gson();
-        LeaguesResponse resp = g.fromJson(execute(base), LeaguesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<League> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), LeaguesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, LeaguesResponse.class, LeaguesResponse::getData, LeaguesResponse::getPagination, 0);
     }
 
     public List<League> getLeaguesByDate(String date, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("leagues/date/" + date), includes).build();
-        Gson g = gson();
-        LeaguesResponse resp = g.fromJson(execute(base), LeaguesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<League> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), LeaguesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, LeaguesResponse.class, LeaguesResponse::getData, LeaguesResponse::getPagination, 0);
     }
 
     public List<League> getLeaguesByCountry(long countryId, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("leagues/countries/" + countryId), includes).build();
-        Gson g = gson();
-        LeaguesResponse resp = g.fromJson(execute(base), LeaguesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<League> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), LeaguesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, LeaguesResponse.class, LeaguesResponse::getData, LeaguesResponse::getPagination, 0);
     }
 
     public List<League> searchLeagues(String name, String... includes) throws IOException, SportMonksException {
@@ -915,34 +797,12 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<League> getLeaguesByTeam(long teamId, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("leagues/teams/" + teamId), includes).build();
-        Gson g = gson();
-        LeaguesResponse resp = g.fromJson(execute(base), LeaguesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<League> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), LeaguesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, LeaguesResponse.class, LeaguesResponse::getData, LeaguesResponse::getPagination, 0);
     }
 
     public List<League> getCurrentLeaguesByTeam(long teamId, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("leagues/teams/" + teamId + "/current"), includes).build();
-        Gson g = gson();
-        LeaguesResponse resp = g.fromJson(execute(base), LeaguesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<League> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), LeaguesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, LeaguesResponse.class, LeaguesResponse::getData, LeaguesResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
@@ -1091,18 +951,7 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<Coach> getAllCoaches(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("coaches"), includes).build();
-        Gson g = gson();
-        CoachesResponse resp = g.fromJson(execute(base), CoachesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Coach> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), CoachesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, CoachesResponse.class, CoachesResponse::getData, CoachesResponse::getPagination, 0);
     }
 
     public Coach getCoachById(long id, String... includes) throws IOException, SportMonksException {
@@ -1135,18 +984,7 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<Referee> getAllReferees(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(footballUrl("referees"), includes).build();
-        Gson g = gson();
-        RefereesResponse resp = g.fromJson(execute(base), RefereesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Referee> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), RefereesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, RefereesResponse.class, RefereesResponse::getData, RefereesResponse::getPagination, 0);
     }
 
     public Referee getRefereeById(long id, String... includes) throws IOException, SportMonksException {

@@ -93,7 +93,18 @@ All methods throw `IOException` and `SportMonksException`. `SportMonksException`
 
 ## Pagination
 
-List endpoints in v2 that return paginated results handle pagination automatically — the library iterates all pages internally and returns a complete list. This means a single call may fire multiple HTTP requests.
+List endpoints handle pagination automatically — the library iterates all pages internally and returns a complete list. This means a single call may fire multiple HTTP requests.
+
+Everything goes through one helper, `SportMonksApiBase.fetchPaged()`. Never write a pagination loop inline in `FootballApi`/`CoreApi`/`OddsApi`: add the call there instead, passing the `*Response` class plus its `getData`/`getPagination` method refs.
+
+**Cursor first, offset as fallback.** The API offers two ways forward, both reported inside `pagination`:
+
+- `next_cursor` (recommended by Sportmonks since 2026-06-05) — no depth limit and faster under load. It arrives as a **full URL without the API token and without the original query**, so following it verbatim would fail authentication and drop the `include`/filter params. Only the opaque `cursor` value is extracted and re-applied to the URL the library built. Never parse the cursor itself.
+- `next_page` / `&page=N` — used only when the endpoint returns no `next_cursor`.
+
+**Offset depth limit.** Since 2026-06-23 the API rejects offset pagination past 20.000 rows (page 801 with `per_page=25`, page 401 with `per_page=50`). When walking by offset, `fetchPaged` stops right before crossing it and returns what it has gathered, rather than letting the request 4xx. The result is silently truncated in that case — endpoints large enough to hit it should be paginated by cursor, which has no such limit.
+
+**`limit`.** A positive `limit` shrinks `per_page` (capped at 50) so the first page already carries enough rows, stops as soon as `limit` is reached, and trims the overflow. It works the same on both cursor and offset walks. A non-positive `limit` means "fetch everything".
 
 ## Gson / type adapters
 

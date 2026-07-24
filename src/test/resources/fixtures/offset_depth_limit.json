@@ -1,0 +1,13 @@
+{
+  "data": [
+    { "id": 1 },
+    { "id": 2 }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 50,
+    "current_page": 400,
+    "next_page": "https://api.sportmonks.com/v3/odds/markets?page=401",
+    "has_more": true
+  }
+}

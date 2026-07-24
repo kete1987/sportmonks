@@ -10,6 +10,8 @@ public class Pagination {
     private Long currentPage;
     @SerializedName("next_page")
     private String nextPage;
+    @SerializedName("next_cursor")
+    private String nextCursor;
     @SerializedName("has_more")
     private Boolean hasMore;
 
@@ -31,6 +33,16 @@ public class Pagination {
 
     public String getNextPage() {
         return nextPage;
+    }
+
+    /**
+     * Cursor pointing at the next page, as a full URL carrying an opaque {@code cursor} query
+     * parameter. Unlike {@link #getNextPage()} it has no depth limit, and the API returns it
+     * without an API token — follow it by reusing only the {@code cursor} value on top of the
+     * original request URL. Null on endpoints that do not offer cursor pagination.
+     */
+    public String getNextCursor() {
+        return nextCursor;
     }
 
     public boolean hasMore() {
