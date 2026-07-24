@@ -174,31 +174,31 @@ abstract class SportMonksApiBase {
             if (offsetLimitReached(page, pg)) return null;
             return first.newBuilder().setQueryParameter("page", String.valueOf(page)).build();
         }
-    }
 
-    /**
-     * Extracts the opaque {@code cursor} value from a {@code next_cursor} URL. The API returns it
-     * as a full URL but strips the API token from it, and it also drops any {@code include} or
-     * filter of the original request — so only the cursor is reused, on top of the URL we built.
-     */
-    private static String cursorOf(String nextCursor) {
-        if (nextCursor == null || nextCursor.isEmpty()) return null;
-        HttpUrl url = HttpUrl.parse(nextCursor);
-        String cursor = url != null ? url.queryParameter("cursor") : null;
-        return cursor != null && !cursor.isEmpty() ? cursor : null;
-    }
+        /**
+         * Extracts the opaque {@code cursor} value from a {@code next_cursor} URL. The API returns
+         * it as a full URL but strips the API token from it, and it also drops any {@code include}
+         * or filter of the original request — so only the cursor is reused, on top of our URL.
+         */
+        private static String cursorOf(String nextCursor) {
+            if (nextCursor == null || nextCursor.isEmpty()) return null;
+            HttpUrl url = HttpUrl.parse(nextCursor);
+            String cursor = url != null ? url.queryParameter("cursor") : null;
+            return cursor != null && !cursor.isEmpty() ? cursor : null;
+        }
 
-    /** Page to request next: the one the API reports as current plus one, or the local count. */
-    private static int nextPage(Pagination pg, int lastPage) {
-        Long current = pg.getCurrentPage();
-        return (current != null && current > 0 ? current.intValue() : lastPage) + 1;
-    }
+        /** Page to request next: the one the API reports as current plus one, or the local count. */
+        private static int nextPage(Pagination pg, int lastPage) {
+            Long current = pg.getCurrentPage();
+            return (current != null && current > 0 ? current.intValue() : lastPage) + 1;
+        }
 
-    /** True when requesting {@code page} by offset would cross the API's 20.000-row depth limit. */
-    private static boolean offsetLimitReached(int page, Pagination pg) {
-        Long perPage = pg.getPerPage();
-        long size = perPage != null && perPage > 0 ? perPage : DEFAULT_PER_PAGE;
-        return page * size > MAX_OFFSET_ROWS;
+        /** True when requesting {@code page} by offset would cross the 20.000-row depth limit. */
+        private static boolean offsetLimitReached(int page, Pagination pg) {
+            Long perPage = pg.getPerPage();
+            long size = perPage != null && perPage > 0 ? perPage : DEFAULT_PER_PAGE;
+            return page * size > MAX_OFFSET_ROWS;
+        }
     }
 
     HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {
