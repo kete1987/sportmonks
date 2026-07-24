@@ -112,6 +112,9 @@ abstract class SportMonksApiBase {
      * trims any overflow — avoiding crawling every page just to keep the first N. A non-positive
      * {@code limit} means "no limit". The {@code dataFn}/{@code pagFn} extract the {@code data}
      * and {@code pagination} of each response so the same loop serves every {@code *Response} type.
+     *
+     * <p>A response that cannot be parsed, or one carrying no {@code data} at all, ends the walk
+     * and returns whatever was gathered so far.
      */
     <T, R> List<T> fetchPaged(HttpUrl base, Class<R> type,
                               Function<R, List<T>> dataFn, Function<R, Pagination> pagFn,
@@ -120,42 +123,57 @@ abstract class SportMonksApiBase {
         HttpUrl first = limit > 0
                 ? base.newBuilder().setQueryParameter("per_page", String.valueOf(Math.min(limit, MAX_PER_PAGE))).build()
                 : base;
+        PageWalk walk = new PageWalk();
+        List<T> all = new ArrayList<>();
         R resp = g.fromJson(execute(first), type);
-        List<T> data = resp != null ? dataFn.apply(resp) : null;
-        if (data == null) return new ArrayList<>();
-        List<T> all = new ArrayList<>(data);
-        int page = 1;
-        String lastCursor = null;
-        Pagination pg = pagFn.apply(resp);
-        while ((limit <= 0 || all.size() < limit) && pg != null && pg.hasMore()) {
-            HttpUrl next;
+        while (resp != null) {
+            List<T> data = dataFn.apply(resp);
+            if (data == null) break;
+            all.addAll(data);
+            HttpUrl next = walk.next(first, pagFn.apply(resp), limitReached(all, limit));
+            resp = next != null ? g.fromJson(execute(next), type) : null;
+        }
+        return limit > 0 && all.size() > limit ? new ArrayList<>(all.subList(0, limit)) : all;
+    }
+
+    private static boolean limitReached(List<?> gathered, int limit) {
+        return limit > 0 && gathered.size() >= limit;
+    }
+
+    /**
+     * Decides where the next page comes from, keeping the state the decision needs: the last
+     * offset page requested and the last cursor followed. {@link #next} returns {@code null} when
+     * the walk is over — no more pages, the limit is covered, or the next step would be unsafe.
+     */
+    private static final class PageWalk {
+
+        private int page = 1;
+        private String lastCursor;
+
+        HttpUrl next(HttpUrl first, Pagination pg, boolean limitReached) {
+            if (limitReached || pg == null || !pg.hasMore()) return null;
             String cursor = cursorOf(pg.getNextCursor());
-            if (cursor != null) {
-                if (cursor.equals(lastCursor)) break; // a repeated cursor would loop forever
-                lastCursor = cursor;
-                // per_page is rejected alongside a cursor ("start a new request without a cursor
-                // to change the page size"); the size the first request asked for travels encoded
-                // inside the cursor itself, so dropping it here preserves it.
-                next = first.newBuilder()
-                        .removeAllQueryParameters("page")
-                        .removeAllQueryParameters("per_page")
-                        .setQueryParameter("cursor", cursor)
-                        .build();
-            } else {
-                page = nextPage(pg, page);
-                if (offsetLimitReached(page, pg)) break;
-                next = first.newBuilder().setQueryParameter("page", String.valueOf(page)).build();
-            }
-            resp = g.fromJson(execute(next), type);
-            if (resp == null) break;
-            List<T> more = dataFn.apply(resp);
-            if (more != null) all.addAll(more);
-            pg = pagFn.apply(resp);
+            return cursor != null ? byCursor(first, cursor) : byOffset(first, pg);
         }
-        if (limit > 0 && all.size() > limit) {
-            return new ArrayList<>(all.subList(0, limit));
+
+        private HttpUrl byCursor(HttpUrl first, String cursor) {
+            if (cursor.equals(lastCursor)) return null; // a repeated cursor would loop forever
+            lastCursor = cursor;
+            // per_page is rejected alongside a cursor ("start a new request without a cursor to
+            // change the page size"); the size the first request asked for travels encoded inside
+            // the cursor itself, so dropping it here preserves it.
+            return first.newBuilder()
+                    .removeAllQueryParameters("page")
+                    .removeAllQueryParameters("per_page")
+                    .setQueryParameter("cursor", cursor)
+                    .build();
         }
-        return all;
+
+        private HttpUrl byOffset(HttpUrl first, Pagination pg) {
+            page = nextPage(pg, page);
+            if (offsetLimitReached(page, pg)) return null;
+            return first.newBuilder().setQueryParameter("page", String.valueOf(page)).build();
+        }
     }
 
     /**
@@ -180,7 +198,7 @@ abstract class SportMonksApiBase {
     private static boolean offsetLimitReached(int page, Pagination pg) {
         Long perPage = pg.getPerPage();
         long size = perPage != null && perPage > 0 ? perPage : DEFAULT_PER_PAGE;
-        return (long) page * size > MAX_OFFSET_ROWS;
+        return page * size > MAX_OFFSET_ROWS;
     }
 
     HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {
