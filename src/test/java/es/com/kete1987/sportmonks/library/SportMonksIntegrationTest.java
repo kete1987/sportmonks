@@ -33,6 +33,7 @@ class SportMonksIntegrationTest {
     private static final long   STAGE_SEASON_ID = 12950L;
     private static final long   ROUND_ID        = 151251L;
     private static final long   TEAM_ID         = 676L;
+    private static final long   TOPSCORER_STAGE_ID = 77457696L;
 
     private static SportMonksAPI api;
 
@@ -210,6 +211,13 @@ class SportMonksIntegrationTest {
     @Test
     void getTopScores_returnsNonEmptyList() throws IOException, SportMonksException {
         List<TopScoresPlayer> result = api.getTopScores(SEASON_ID);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    void getTopScoresByStage_returnsNonEmptyList() throws IOException, SportMonksException {
+        List<TopScoresPlayer> result = api.getTopScoresByStage(String.valueOf(TOPSCORER_STAGE_ID));
         assertNotNull(result);
         assertFalse(result.isEmpty());
     }
