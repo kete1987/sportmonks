@@ -1,6 +1,5 @@
 package es.com.kete1987.sportmonks.library;
 
-import com.google.gson.Gson;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.odds.model.Bookmaker;
@@ -80,18 +79,7 @@ public class OddsApi extends SportMonksApiBase {
 
     public List<Market> getAllMarkets() throws IOException, SportMonksException {
         HttpUrl base = oddsUrl("markets").build();
-        Gson g = gson();
-        MarketsResponse resp = g.fromJson(execute(base), MarketsResponse.class);
-        if (resp == null || resp.getData() == null) return new ArrayList<>();
-        List<Market> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), MarketsResponse.class);
-            if (resp != null && resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, MarketsResponse.class, MarketsResponse::getData, MarketsResponse::getPagination, 0);
     }
 
     public Market getMarketById(long marketId) throws IOException, SportMonksException {
@@ -112,18 +100,7 @@ public class OddsApi extends SportMonksApiBase {
 
     public List<Bookmaker> getAllBookmakers() throws IOException, SportMonksException {
         HttpUrl base = oddsUrl("bookmakers").build();
-        Gson g = gson();
-        BookmakersResponse resp = g.fromJson(execute(base), BookmakersResponse.class);
-        if (resp == null || resp.getData() == null) return new ArrayList<>();
-        List<Bookmaker> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), BookmakersResponse.class);
-            if (resp != null && resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, BookmakersResponse.class, BookmakersResponse::getData, BookmakersResponse::getPagination, 0);
     }
 
     public Bookmaker getBookmakerById(long bookmakerId) throws IOException, SportMonksException {

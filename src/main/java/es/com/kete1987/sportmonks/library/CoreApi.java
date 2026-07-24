@@ -1,6 +1,5 @@
 package es.com.kete1987.sportmonks.library;
 
-import com.google.gson.Gson;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.core.model.city.CitiesResponse;
@@ -33,7 +32,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,18 +79,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<Continent> getAllContinents(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("continents"), includes).build();
-        Gson g = gson();
-        ContinentsResponse resp = g.fromJson(execute(base), ContinentsResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Continent> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), ContinentsResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, ContinentsResponse.class, ContinentsResponse::getData, ContinentsResponse::getPagination, 0);
     }
 
     public Continent getContinentById(long id, String... includes) throws IOException, SportMonksException {
@@ -106,18 +93,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<Country> getAllCountries(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("countries"), includes).build();
-        Gson g = gson();
-        CountriesResponse resp = g.fromJson(execute(base), CountriesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Country> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), CountriesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, CountriesResponse.class, CountriesResponse::getData, CountriesResponse::getPagination, 0);
     }
 
     public Country getCountryById(long id, String... includes) throws IOException, SportMonksException {
@@ -127,18 +103,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<Country> searchCountries(String name, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("countries/search/" + name), includes).build();
-        Gson g = gson();
-        CountriesResponse resp = g.fromJson(execute(base), CountriesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Country> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), CountriesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, CountriesResponse.class, CountriesResponse::getData, CountriesResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
@@ -147,18 +112,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<Region> getAllRegions(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("regions"), includes).build();
-        Gson g = gson();
-        RegionsResponse resp = g.fromJson(execute(base), RegionsResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Region> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), RegionsResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, RegionsResponse.class, RegionsResponse::getData, RegionsResponse::getPagination, 0);
     }
 
     public Region getRegionById(long id, String... includes) throws IOException, SportMonksException {
@@ -168,18 +122,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<Region> searchRegions(String name, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("regions/search/" + name), includes).build();
-        Gson g = gson();
-        RegionsResponse resp = g.fromJson(execute(base), RegionsResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Region> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), RegionsResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, RegionsResponse.class, RegionsResponse::getData, RegionsResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
@@ -188,18 +131,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<City> getAllCities(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("cities"), includes).build();
-        Gson g = gson();
-        CitiesResponse resp = g.fromJson(execute(base), CitiesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<City> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), CitiesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, CitiesResponse.class, CitiesResponse::getData, CitiesResponse::getPagination, 0);
     }
 
     public City getCityById(long id, String... includes) throws IOException, SportMonksException {
@@ -209,18 +141,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<City> searchCities(String name, String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("cities/search/" + name), includes).build();
-        Gson g = gson();
-        CitiesResponse resp = g.fromJson(execute(base), CitiesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<City> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), CitiesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, CitiesResponse.class, CitiesResponse::getData, CitiesResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
@@ -229,18 +150,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<Type> getAllTypes(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(coreUrl("types"), includes).build();
-        Gson g = gson();
-        TypesResponse resp = g.fromJson(execute(base), TypesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<Type> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), TypesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, TypesResponse.class, TypesResponse::getData, TypesResponse::getPagination, 0);
     }
 
     public Type getTypeById(long id) throws IOException, SportMonksException {
@@ -282,18 +192,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<MyLeague> getMyLeagues(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(myUrl("leagues"), includes).build();
-        Gson g = gson();
-        MyLeaguesResponse resp = g.fromJson(execute(base), MyLeaguesResponse.class);
-        if (resp.getData() == null) return new ArrayList<>();
-        List<MyLeague> all = new ArrayList<>(resp.getData());
-        int page = 1;
-        while (resp.getPagination() != null && resp.getPagination().hasMore()) {
-            page++;
-            HttpUrl paged = base.newBuilder().addQueryParameter("page", String.valueOf(page)).build();
-            resp = g.fromJson(execute(paged), MyLeaguesResponse.class);
-            if (resp.getData() != null) all.addAll(resp.getData());
-        }
-        return all;
+        return fetchPaged(base, MyLeaguesResponse.class, MyLeaguesResponse::getData, MyLeaguesResponse::getPagination, 0);
     }
 
     public List<String> getMyEnrichments() throws IOException, SportMonksException {

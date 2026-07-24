@@ -1,0 +1,14 @@
+{
+  "data": [
+    { "id": 3 },
+    { "id": 4 }
+  ],
+  "pagination": {
+    "count": 2,
+    "per_page": 2,
+    "current_page": 2,
+    "next_page": "https://api.sportmonks.com/v3/football/transfers?page=3",
+    "next_cursor": "https://api.sportmonks.com/v3/football/transfers?cursor=Y1VSU09SLVBBR0UtMw",
+    "has_more": true
+  }
+}
