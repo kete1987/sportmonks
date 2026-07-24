@@ -293,7 +293,7 @@ public class FootballApi extends SportMonksApiBase {
     private static final String TOPSCORERS_SEASONS = "topscorers/seasons/";
 
     public List<TopScoresPlayer> getTopScores(String seasonId) throws IOException, SportMonksException {
-        return getTopScores(seasonId, "season", "stage", "player", "type", "participant");
+        return getTopScores(seasonId, "season", "player", "type", "participant");
     }
 
     public List<TopScoresPlayer> getTopScores(String seasonId, String... includes) throws IOException, SportMonksException {
@@ -328,7 +328,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<TopScoresPlayer> getTopScoresByStage(String stageId) throws IOException, SportMonksException {
-        return getTopScoresByStage(stageId, "season", "stage", "player", "type");
+        return getTopScoresByStage(stageId, "season", "player", "type");
     }
 
     public List<TopScoresPlayer> getTopScoresByStage(String stageId, String... includes) throws IOException, SportMonksException {
