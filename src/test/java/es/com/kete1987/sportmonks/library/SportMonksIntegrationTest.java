@@ -108,6 +108,17 @@ class SportMonksIntegrationTest {
         assertEquals(5, api.getAllLeagues(5).size());
     }
 
+    /**
+     * A limit above the 50-row page cap needs a second page, so the walk sets {@code per_page} on
+     * the first request and then follows a cursor. The API rejects {@code per_page} sent together
+     * with a {@code cursor}, so this is the case that catches it being carried over. Players is
+     * used because it spans many pages under any subscription — {@code leagues} may fit in one.
+     */
+    @Test
+    void getAllPlayers_withLimitCrossingAPageBoundary_keepsWalking() throws IOException, SportMonksException {
+        assertEquals(60, api.getAllPlayers(60).size());
+    }
+
     // -------------------------------------------------------------------------
     // Leagues
     // -------------------------------------------------------------------------

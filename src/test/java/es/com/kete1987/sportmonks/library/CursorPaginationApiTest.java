@@ -75,6 +75,24 @@ class CursorPaginationApiTest extends BaseApiTest {
         assertTrue(server.takeRequest().getPath().contains("per_page=2"));
     }
 
+    /**
+     * The API rejects {@code per_page} sent alongside a {@code cursor} with a 400 — the page size
+     * is already encoded in the cursor. So the {@code per_page} of the first request must not be
+     * carried into the cursor requests, even though {@code limit} put it there.
+     */
+    @Test
+    void cursorPagination_dropsPerPageOnCursorRequests() throws IOException, SportMonksException, InterruptedException {
+        enqueue("cursor_page1.json");
+        enqueue("cursor_page3.json");
+
+        assertEquals(3, api.getAllTransfers(4).size());
+
+        assertTrue(server.takeRequest().getPath().contains("per_page=4"));
+        RecordedRequest second = server.takeRequest();
+        assertTrue(second.getPath().contains("cursor=" + CURSOR_PAGE_2), second.getPath());
+        assertFalse(second.getPath().contains("per_page"), second.getPath());
+    }
+
     /** A cursor repeating itself would otherwise loop forever, so the walk stops on the repeat. */
     @Test
     void cursorPagination_stopsWhenTheCursorRepeats() throws IOException, SportMonksException {

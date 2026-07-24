@@ -133,8 +133,12 @@ abstract class SportMonksApiBase {
             if (cursor != null) {
                 if (cursor.equals(lastCursor)) break; // a repeated cursor would loop forever
                 lastCursor = cursor;
+                // per_page is rejected alongside a cursor ("start a new request without a cursor
+                // to change the page size"); the size the first request asked for travels encoded
+                // inside the cursor itself, so dropping it here preserves it.
                 next = first.newBuilder()
                         .removeAllQueryParameters("page")
+                        .removeAllQueryParameters("per_page")
                         .setQueryParameter("cursor", cursor)
                         .build();
             } else {
