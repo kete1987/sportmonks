@@ -3,6 +3,7 @@ package es.com.kete1987.sportmonks.library;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.core.model.continent.Continent;
 import es.com.kete1987.sportmonks.library.core.model.country.Country;
+import es.com.kete1987.sportmonks.library.core.model.type.Type;
 import es.com.kete1987.sportmonks.library.football.model.league.League;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.match.StatisticsData;
@@ -19,7 +20,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,6 +65,47 @@ class SportMonksIntegrationTest {
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertTrue(result.get(0).getId() > 0);
+    }
+
+    // -------------------------------------------------------------------------
+    // Pagination (cursor / offset)
+    // -------------------------------------------------------------------------
+
+    /**
+     * End-to-end check of the auto-pagination against the real API. {@code /core/types} spans
+     * several pages and is one of the endpoints that reports {@code next_cursor}, so this walks
+     * the whole cursor chain. Duplicate ids would mean the cursor was ignored and the same page
+     * came back — the failure mode a mocked test cannot rule out.
+     */
+    @Test
+    void getAllTypes_walksEveryPageWithoutRepeating() throws IOException, SportMonksException {
+        List<Type> result = api.getAllTypes();
+
+        assertNotNull(result);
+        assertTrue(result.size() > 25, "expected more than one page, got " + result.size());
+
+        Set<Long> ids = new HashSet<>();
+        for (Type type : result) {
+            assertTrue(ids.add(type.getId()), "repeated id " + type.getId() + " — page was re-fetched");
+        }
+    }
+
+    @Test
+    void getAllCountries_walksEveryPageWithoutRepeating() throws IOException, SportMonksException {
+        List<Country> result = api.getAllCountries();
+
+        assertTrue(result.size() > 25, "expected more than one page, got " + result.size());
+
+        Set<Long> ids = new HashSet<>();
+        for (Country country : result) {
+            assertTrue(ids.add(country.getId()), "repeated id " + country.getId() + " — page was re-fetched");
+        }
+    }
+
+    /** {@code limit} must still cut the walk short whichever way the API paginates. */
+    @Test
+    void getAllLeagues_withLimit_returnsExactlyThatMany() throws IOException, SportMonksException {
+        assertEquals(5, api.getAllLeagues(5).size());
     }
 
     // -------------------------------------------------------------------------
