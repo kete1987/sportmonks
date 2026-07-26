@@ -133,7 +133,7 @@ Never build a `Gson` instance directly — call `gson()` from `SportMonksApiBase
 
 | Artifact | Version | Scope |
 |---|---|---|
-| `com.squareup.okhttp3:okhttp` | 4.12.0 | compile |
+| `com.squareup.okhttp3:okhttp-jvm` | 5.4.0 | compile |
 | `com.google.code.gson:gson` | 2.14.0 | compile |
 | `org.junit.jupiter:junit-jupiter` | 5.11.0 | test |
-| `com.squareup.okhttp3:mockwebserver` | 4.12.0 | test |
+| `com.squareup.okhttp3:mockwebserver` | 5.4.0 | test |
