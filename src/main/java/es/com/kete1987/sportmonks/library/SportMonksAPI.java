@@ -300,6 +300,11 @@ public class SportMonksAPI {
     // -------------------------------------------------------------------------
 
     public List<Standings> getStandings(String seasonId, String... includes) throws IOException, SportMonksException { return football.getStandings(seasonId, includes); }
+    /**
+     * Groups standings by group name, using {@code ""} for a missing group or
+     * null group name. Include {@code group} to obtain named groups.
+     * @see FootballApi#getStandingsCup(String, String...)
+     */
     public TreeMap<String, List<Standings>> getStandingsCup(String seasonId, String... includes) throws IOException, SportMonksException { return football.getStandingsCup(seasonId, includes); }
     public List<Standings> getAllStandings(String... includes) throws IOException, SportMonksException { return football.getAllStandings(includes); }
     public List<Standings> getStandingsByRound(long roundId, String... includes) throws IOException, SportMonksException { return football.getStandingsByRound(roundId, includes); }

@@ -4,6 +4,7 @@ import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class League {
@@ -80,10 +81,14 @@ public class League {
         return ModelCollections.unmodifiable(seasons);
     }
 
+    /** @return the current season, or null if none is active or the include is absent. */
+    @Nullable
     public SeasonData getCurrentseason() {
         return currentseason;
     }
 
+    /** @return the country, or null if unavailable or the include is absent. */
+    @Nullable
     public Country getCountry() {
         return country;
     }

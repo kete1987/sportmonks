@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 732, "name": "World Cup", "currentseason": null},
+    {"id": 8, "name": "Premier League", "currentseason": {"id": 23614}}
+  ],
+  "pagination": {"has_more": false}
+}
