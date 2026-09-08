@@ -13,6 +13,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class LeagueApiTest extends BaseApiTest {
 
     @Test
+    void getAllLeagues_currentSeasonInclude_handlesInactiveAndActiveLeagues() throws IOException, SportMonksException {
+        enqueue("leagues_current_season.json");
+
+        List<League> leagues = api.getAllLeagues("currentSeason");
+
+        assertEquals(2, leagues.size());
+        assertEquals(732L, leagues.get(0).getId());
+        assertNull(leagues.get(0).getCurrentseason());
+        assertEquals(8L, leagues.get(1).getId());
+        assertNotNull(leagues.get(1).getCurrentseason());
+        assertEquals(23614L, leagues.get(1).getCurrentseason().getId());
+    }
+
+    @Test
     void getAllLeagues_returnsParsedList() throws IOException, SportMonksException {
         enqueue("leagues.json");
 

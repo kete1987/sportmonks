@@ -7,6 +7,7 @@ import es.com.kete1987.sportmonks.library.football.model.team.Team;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Standings {
@@ -118,6 +119,8 @@ public class Standings {
         return round;
     }
 
+    /** @return the group, or null for ungrouped standings or an absent include. */
+    @Nullable
     public StandingsGroup getGroup() {
         return group;
     }

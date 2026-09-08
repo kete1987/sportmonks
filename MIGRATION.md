@@ -1,4 +1,34 @@
-# Migration Guide — v3.0.0
+# Migration Guide
+
+## 3.2.1 (unreleased): null safety
+
+`getStandingsCup()` now groups rows with a missing group or a null group name
+under the empty-string key (`""`), instead of throwing `NullPointerException`.
+This also applies when the `group` include is omitted. Named groups retain their
+existing keys, and row order within each group is preserved.
+
+The following getters now declare `org.jetbrains.annotations.Nullable`:
+
+- `League.getCurrentseason()` and `League.getCountry()`
+- `Standings.getGroup()`
+- `Match.getLeg()` and `Match.getAggregateId()` (also inherited by `MatchDetail`)
+
+This is **source-incompatible for Kotlin**: these properties now have nullable
+types, so previously unchecked access must handle null. Java method signatures
+and runtime values are unchanged. For example:
+
+```kotlin
+val seasonId = league.currentseason?.id
+if (seasonId != null) {
+    // Load the standings for this season.
+}
+```
+
+The current season can be null even with `currentSeason` included when no season
+is active. Other model getters may still expose platform types; this change is
+limited to the getters listed above.
+
+## Migrating to v3.0.0
 
 This guide covers migrating from library version **2.0.3.3** (`SportMonksAPIV3`) to **3.0.0** (`SportMonksAPI`). The underlying Sportmonks API version has not changed (still v3); only the Java library has been restructured.
 

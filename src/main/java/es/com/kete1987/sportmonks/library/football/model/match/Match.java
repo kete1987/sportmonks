@@ -2,6 +2,7 @@ package es.com.kete1987.sportmonks.library.football.model.match;
 
 import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -61,6 +62,8 @@ public class Match implements Comparable<Match> {
         return groupId;
     }
 
+    /** @return the aggregate ID, or null when the fixture has no aggregate. */
+    @Nullable
     public Long getAggregateId() {
         return aggregateId;
     }
@@ -85,6 +88,8 @@ public class Match implements Comparable<Match> {
         return startingAt;
     }
 
+    /** @return the leg, or null when not applicable. */
+    @Nullable
     public String getLeg() {
         return leg;
     }

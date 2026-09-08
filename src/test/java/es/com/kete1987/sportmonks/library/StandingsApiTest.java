@@ -13,6 +13,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class StandingsApiTest extends BaseApiTest {
 
     @Test
+    void getStandingsCup_withoutGroups_returnsAllRowsUnderEmptyKey() throws IOException, SportMonksException {
+        enqueue("standings_without_groups.json");
+
+        var standings = api.getStandingsCup("25580", "participant", "group", "stage");
+
+        assertEquals(1, standings.size());
+        assertEquals(36, standings.get("").size());
+        for (int i = 0; i < 36; i++) {
+            assertEquals((long) i + 1, standings.get("").get(i).getPosition());
+        }
+    }
+
+    @Test
+    void getStandingsCup_mixedGroups_preservesNamesAndHandlesMissingNames() throws IOException, SportMonksException {
+        enqueue("standings_mixed_groups.json");
+
+        var standings = api.getFootball().getStandingsCup("123", "group");
+
+        assertEquals(List.of("", "Group A", "Group B"), List.copyOf(standings.keySet()));
+        assertEquals(List.of(2L, 3L, 4L, 5L), standings.get("").stream()
+                .map(Standings::getId).collect(java.util.stream.Collectors.toList()));
+        assertEquals(2, standings.get("Group A").size());
+        assertEquals(1L, standings.get("Group B").get(0).getId());
+    }
+
+    @Test
     void getAllStandings_usesStandingsPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("standings_all.json");
 

@@ -352,10 +352,16 @@ public class FootballApi extends SportMonksApiBase {
         return resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
+    /**
+     * Groups standings by group name. Rows with no group (including when the
+     * group include is omitted) or a null group name use the empty-string key
+     * {@code ""}. Rows retain their response order within each group.
+     */
     public TreeMap<String, List<Standings>> getStandingsCup(String seasonId, String... includes) throws IOException, SportMonksException {
         TreeMap<String, List<Standings>> map = new TreeMap<>();
         for (Standings s : getStandings(seasonId, includes)) {
-            map.computeIfAbsent(s.getGroup().getName(), k -> new ArrayList<>()).add(s);
+            String groupName = s.getGroup() == null ? null : s.getGroup().getName();
+            map.computeIfAbsent(groupName == null ? "" : groupName, k -> new ArrayList<>()).add(s);
         }
         return map;
     }
