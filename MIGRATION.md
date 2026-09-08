@@ -1,6 +1,6 @@
 # Migration Guide
 
-## 4.0.0 (unreleased): null safety
+## 3.3.0 (unreleased): null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name
 under the empty-string key (`""`), instead of throwing `NullPointerException`.
@@ -13,8 +13,8 @@ The following getters now declare `org.jetbrains.annotations.Nullable`:
 - `Standings.getGroup()`
 - `Match.getLeg()` and `Match.getAggregateId()` (also inherited by `MatchDetail`)
 
-This change is scheduled for a major release because it is **source-incompatible
-for Kotlin**: these properties now have nullable
+This minor release intentionally includes a **source-incompatible change for
+Kotlin** as an exception to strict semantic versioning: these properties now have nullable
 types, so previously unchecked access must handle null. Java method signatures
 and runtime values are unchanged. For example:
 
