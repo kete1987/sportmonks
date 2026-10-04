@@ -3,6 +3,7 @@ package es.com.kete1987.sportmonks.library;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.match.LineUpData;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
+import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
 import es.com.kete1987.sportmonks.library.football.util.StatisticsType;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -57,5 +58,15 @@ class FixtureFiltersIntegrationTest {
         assertTrue(fixtures.stream().flatMap(f -> f.getLineups().stream()).anyMatch(LineUpData::isCaptain));
         assertTrue(fixtures.stream().flatMap(f -> f.getLineups().stream()).flatMap(p -> p.getDetails().stream())
                 .allMatch(d -> d.getTypeId() != null && d.getTypeId() == StatisticsType.CAPTAIN));
+    }
+
+    @Test
+    void filteredRoundCollectionReturnsTheCompleteSeason() throws IOException, SportMonksException {
+        Round reference = api.getRoundById(275911L);
+        List<Round> rounds = api.getRoundsBySeasonId(reference.getSeasonId(), new String[0], "roundLeagues:564");
+        assertEquals(38, rounds.size(), "The completed La Liga season has 38 rounds, exceeding one 25-row page");
+        assertEquals(38, rounds.stream().map(Round::getId).distinct().count());
+        assertTrue(rounds.stream().anyMatch(r -> r.getId().equals(reference.getId())));
+        assertTrue(rounds.stream().allMatch(r -> r.getSeasonId().equals(reference.getSeasonId())));
     }
 }

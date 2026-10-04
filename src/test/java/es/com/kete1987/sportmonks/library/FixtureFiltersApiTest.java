@@ -2,7 +2,6 @@ package es.com.kete1987.sportmonks.library;
 
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.match.LineUpData;
-import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
@@ -33,27 +32,27 @@ class FixtureFiltersApiTest extends BaseApiTest {
 
     static Stream<Arguments> endpoints() {
         return Stream.of(
-                endpoint("/livescores", "fixtures_single_page.json", (a, i, f) -> a.getLivescores(i, f), (a, i) -> a.getLivescores(i)),
+                endpoint("/livescores", "fixtures_single_page.json", SportMonksAPI::getLivescores, SportMonksAPI::getLivescores),
                 endpoint("/livescores/multi/1,2", "fixtures_single_page.json", (a, i, f) -> a.getLivescoresFiltered(new String[]{"1", "2"}, i, f), (a, i) -> a.getLivescoresFiltered(new String[]{"1", "2"}, i)),
-                endpoint("/livescores/inplay", "fixtures_single_page.json", (a, i, f) -> a.getLiveMatches(i, f), (a, i) -> a.getLiveMatches(i)),
+                endpoint("/livescores/inplay", "fixtures_single_page.json", SportMonksAPI::getLiveMatches, SportMonksAPI::getLiveMatches),
                 endpoint("/fixtures/date/2026-09-01", "fixtures_single_page.json", (a, i, f) -> a.getMatchesByDate("2026-09-01", i, f), (a, i) -> a.getMatchesByDate("2026-09-01", i)),
                 endpoint("/fixtures/between/2026-09-01/2026-09-02", "fixtures_single_page.json", (a, i, f) -> a.getMatchesByDateRange("2026-09-01", "2026-09-02", i, f), (a, i) -> a.getMatchesByDateRange("2026-09-01", "2026-09-02", i)),
                 endpoint("/fixtures/between/2026-09-01/2026-09-02/9", "fixtures_single_page.json", (a, i, f) -> a.getMatchesByDateRangeForTeam("2026-09-01", "2026-09-02", "9", i, f), (a, i) -> a.getMatchesByDateRangeForTeam("2026-09-01", "2026-09-02", "9", i)),
                 endpoint("/fixtures/multi/1,2", "fixtures_single_page.json", (a, i, f) -> a.getMatchesByMultipleIDs(new String[]{"1", "2"}, i, f), (a, i) -> a.getMatchesByMultipleIDs(new String[]{"1", "2"}, i)),
-                endpoint("/livescores/latest", "fixtures_single_page.json", (a, i, f) -> a.getLatestUpdatedLivescores(i, f), (a, i) -> a.getLatestUpdatedLivescores(i)),
+                endpoint("/livescores/latest", "fixtures_single_page.json", SportMonksAPI::getLatestUpdatedLivescores, SportMonksAPI::getLatestUpdatedLivescores),
                 endpoint("/fixtures/head-to-head/9/10", "fixtures_single_page.json", (a, i, f) -> a.getFixturesByHeadToHead(9, 10, i, f), (a, i) -> a.getFixturesByHeadToHead(9, 10, i)),
                 endpoint("/fixtures/search/Barcelona", "fixtures_single_page.json", (a, i, f) -> a.searchFixtures("Barcelona", i, f), (a, i) -> a.searchFixtures("Barcelona", i)),
                 endpoint("/fixtures/search/Barcelona", "fixtures_single_page.json", (a, i, f) -> a.searchFixtures("Barcelona", 1, i, f), (a, i) -> a.searchFixtures("Barcelona", 1, i)),
-                endpoint("/fixtures/latest", "fixtures_single_page.json", (a, i, f) -> a.getLatestUpdatedFixtures(i, f), (a, i) -> a.getLatestUpdatedFixtures(i)),
+                endpoint("/fixtures/latest", "fixtures_single_page.json", SportMonksAPI::getLatestUpdatedFixtures, SportMonksAPI::getLatestUpdatedFixtures),
                 endpoint("/fixtures/upcoming/markets/1", "fixtures_single_page.json", (a, i, f) -> a.getUpcomingFixturesByMarket(1, i, f), (a, i) -> a.getUpcomingFixturesByMarket(1, i)),
                 endpoint("/fixtures/upcoming/tv-stations/1", "fixtures_single_page.json", (a, i, f) -> a.getUpcomingFixturesByTvStation(1, i, f), (a, i) -> a.getUpcomingFixturesByTvStation(1, i)),
                 endpoint("/fixtures/past/tv-stations/1", "fixtures_single_page.json", (a, i, f) -> a.getPastFixturesByTvStation(1, i, f), (a, i) -> a.getPastFixturesByTvStation(1, i)),
                 endpoint("/fixtures/18545372", "fixture_lineups_captain.json", (a, i, f) -> a.getMatchDetail("18545372", i, f), (a, i) -> a.getMatchDetail("18545372", i)),
-                endpoint("/stages", "stages.json", (a, i, f) -> a.getAllStages(i, f), (a, i) -> a.getAllStages(i)),
+                endpoint("/stages", "stages.json", SportMonksAPI::getAllStages, SportMonksAPI::getAllStages),
                 endpoint("/stages/seasons/13133", "stages.json", (a, i, f) -> a.getStagesBySeasonId(13133, i, f), (a, i) -> a.getStagesBySeasonId(13133, i)),
                 endpoint("/stages/1", "stage_detail.json", (a, i, f) -> a.getStageById(1, i, f), (a, i) -> a.getStageById(1, i)),
                 endpoint("/stages/search/Final", "stages.json", (a, i, f) -> a.searchStages("Final", i, f), (a, i) -> a.searchStages("Final", i)),
-                endpoint("/rounds", "rounds.json", (a, i, f) -> a.getAllRounds(i, f), (a, i) -> a.getAllRounds(i)),
+                endpoint("/rounds", "rounds.json", SportMonksAPI::getAllRounds, SportMonksAPI::getAllRounds),
                 endpoint("/rounds/seasons/13133", "rounds.json", (a, i, f) -> a.getRoundsBySeasonId(13133, i, f), (a, i) -> a.getRoundsBySeasonId(13133, i)),
                 endpoint("/rounds/1", "round_detail.json", (a, i, f) -> a.getRoundById(1, i, f), (a, i) -> a.getRoundById(1, i)),
                 endpoint("/rounds/search/Final", "rounds.json", (a, i, f) -> a.searchRounds("Final", i, f), (a, i) -> a.searchRounds("Final", i))

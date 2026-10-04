@@ -987,8 +987,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<Stage> getAllStages(String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("stages"), includes), filters).build();
-        StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, StagesResponse.class, StagesResponse::getData, StagesResponse::getPagination, 0);
     }
 
     public List<Stage> getStagesBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException {
@@ -1003,8 +1002,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<Stage> getStagesBySeasonId(long seasonId, String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("stages/seasons/" + seasonId), includes), filters).build();
-        StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, StagesResponse.class, StagesResponse::getData, StagesResponse::getPagination, 0);
     }
 
     public Stage getStageById(long id, String... includes) throws IOException, SportMonksException {
@@ -1035,8 +1033,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<Stage> searchStages(String name, String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("stages/search/" + name), includes), filters).build();
-        StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, StagesResponse.class, StagesResponse::getData, StagesResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
@@ -1055,8 +1052,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<Round> getAllRounds(String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("rounds"), includes), filters).build();
-        RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, RoundsResponse.class, RoundsResponse::getData, RoundsResponse::getPagination, 0);
     }
 
     public List<Round> getRoundsBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException {
@@ -1071,8 +1067,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<Round> getRoundsBySeasonId(long seasonId, String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("rounds/seasons/" + seasonId), includes), filters).build();
-        RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, RoundsResponse.class, RoundsResponse::getData, RoundsResponse::getPagination, 0);
     }
 
     public Round getRoundById(long id, String... includes) throws IOException, SportMonksException {
@@ -1103,8 +1098,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<Round> searchRounds(String name, String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("rounds/search/" + name), includes), filters).build();
-        RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, RoundsResponse.class, RoundsResponse::getData, RoundsResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
