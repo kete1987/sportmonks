@@ -177,7 +177,7 @@ public class CoreApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public Map<String, List<String>> getAllEntityFilters() throws IOException, SportMonksException {
-        HttpUrl url = coreUrl("filters/entities").build();
+        HttpUrl url = myUrl("filters/entity").build();
         return gson().fromJson(execute(url), FiltersResponse.class).getData();
     }
 

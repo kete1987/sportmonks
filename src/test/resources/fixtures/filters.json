@@ -1,7 +1,8 @@
 {
   "data": {
-    "fixtures": ["fixtureStatisticTypes", "fixtureTypes"],
-    "leagues": ["leagueTypes"],
-    "players": ["playerStatisticTypes"]
+    "fixture": ["fixtureLeagues", "fixtureStates"],
+    "league": ["leagueLeagues", "leagueCountries"],
+    "player": ["playerCountries", "genders"],
+    "lineupdetail": ["lineupdetailLeagues", "lineupdetailTypes", "lineupdetailPlayers"]
   }
 }

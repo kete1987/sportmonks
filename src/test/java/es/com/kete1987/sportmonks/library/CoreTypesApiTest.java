@@ -112,21 +112,20 @@ class CoreTypesApiTest extends BaseApiTest {
         Map<String, List<String>> filters = api.getAllEntityFilters();
 
         assertNotNull(filters);
-        assertTrue(filters.containsKey("fixtures"));
-        assertEquals(2, filters.get("fixtures").size());
-        assertEquals("fixtureStatisticTypes", filters.get("fixtures").get(0));
-        assertTrue(filters.containsKey("leagues"));
+        assertTrue(filters.containsKey("fixture"));
+        assertEquals(2, filters.get("fixture").size());
+        assertEquals("fixtureLeagues", filters.get("fixture").get(0));
+        assertTrue(filters.containsKey("league"));
     }
 
     @Test
-    void getAllEntityFilters_usesFiltersEntitiesPath() throws IOException, SportMonksException, InterruptedException {
+    void getAllEntityFilters_usesMyFiltersEntityPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("filters.json");
 
         api.getAllEntityFilters();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("filters/entities"),
-                "Expected filters/entities path, got: " + request.getPath());
+        assertEquals("/filters/entity", request.getRequestUrl().encodedPath());
     }
 
     // --- MySportmonks ---

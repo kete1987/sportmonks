@@ -89,6 +89,49 @@ MatchDetail match = api.getMatchDetail("18545372", "state", "participants", "sco
 List<MatchDetail> live = api.getLiveMatches("participants", "scores");
 ```
 
+### Filtering fixture includes (3.3.0+)
+
+Fixtures, livescores, rounds and stages accept an additional overload with an explicit
+`String[] includes` followed by a `String filters` expression. Existing varargs calls and
+their default includes are unchanged. These overloads are also available on `FootballApi`.
+
+```java
+// Download only the captain detail (type 40), rather than every player statistic.
+MatchDetail match = api.getMatchDetail("18545372",
+        new String[]{"lineups.details"}, "lineupdetailTypes:40");
+boolean captain = match.getLineups().get(0).isCaptain();
+
+List<MatchDetail> range = api.getMatchesByDateRange("2023-04-15", "2023-04-16",
+        new String[]{"lineups.details", "participants"},
+        "lineupdetailTypes:40;fixtureLeagues:564");
+
+// The same filter applies to nested fixtures in rounds and stages.
+Round round = api.getRoundById(275911L,
+        new String[]{"fixtures.lineups.details"}, "lineupdetailTypes:40");
+Stage stage = api.getStageById(77458033L,
+        new String[]{"fixtures.lineups.details"}, "lineupdetailTypes:40");
+
+// Discover the exact, case-sensitive filter names supported by Sportmonks.
+List<String> lineupFilters = api.getAllEntityFilters().get("lineupdetail");
+// Includes "lineupdetailTypes".
+```
+
+Pass the expression without URL encoding: the client encodes it as one `filters` query
+parameter. Separate filters with `;` and multiple IDs within a filter with `,`.
+Null, empty or blank filters omit the parameter; null or empty includes omit `include`
+rather than selecting the convenience method's defaults. Filters are retained across
+automatic cursor and offset pagination.
+
+`getAllEntityFilters()` uses the current `/v3/my/filters/entity` endpoint; the former
+`/v3/core/filters/entities` path returns 404. The API confirms `lineupdetailTypes`
+(lowercase `detail`), and captain details have type ID 40. See the
+[fixture endpoint filters](https://docs.sportmonks.com/v3/endpoints-and-entities/endpoints/fixtures/get-all-fixtures)
+and [statistics types](https://docs.sportmonks.com/v3/definitions/types/statistics/fixture-statistics).
+
+The focused live regression tests require `SPORTMONKS_API_KEY` in the environment:
+`mvn test -Pintegration -Dtest=FixtureFiltersIntegrationTest`. They are excluded from
+the normal mock-server suite.
+
 ### Leagues & Seasons
 
 ```java
