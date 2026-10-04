@@ -1,0 +1,19 @@
+{
+  "data": {
+    "id": 18545372,
+    "lineups": [
+      {
+        "id": 1,
+        "player_id": 101,
+        "details": [{"type_id": 40, "data": {"value": true}}]
+      },
+      {
+        "id": 2,
+        "player_id": 102,
+        "details": [{"type_id": 40, "data": {"value": false}}]
+      },
+      {"id": 3, "player_id": 103, "details": []},
+      {"id": 4, "player_id": 104}
+    ]
+  }
+}

@@ -140,7 +140,17 @@ public class FootballApi extends SportMonksApiBase {
      * fixtures use {@link #getMatchesByDate(String, String...)} with today's date.
      */
     public List<MatchDetail> getLivescores(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("livescores"), includes).build();
+        return getLivescores(includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getLivescores(String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("livescores"), includes), filters).build();
         return fetchMatchList(url);
     }
 
@@ -157,11 +167,21 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException {
+        return getLivescoresFiltered(matchIds, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String[] includes, String filters) throws IOException, SportMonksException {
         if (matchIds != null && matchIds.length > 0) {
-            HttpUrl url = withIncludes(footballUrl("livescores/multi/" + String.join(",", matchIds)), includes).build();
+            HttpUrl url = withFilters(withIncludes(footballUrl("livescores/multi/" + String.join(",", matchIds)), includes), filters).build();
             return fetchMatchList(url);
         }
-        return getLivescores(includes);
+        return getLivescores(includes, filters);
     }
 
     /**
@@ -174,12 +194,32 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("livescores/inplay"), includes).build();
+        return getLiveMatches(includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getLiveMatches(String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("livescores/inplay"), includes), filters).build();
         return gson().fromJson(execute(url), MatchsResponse.class).getData();
     }
 
     public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/date/" + date), includes).build();
+        return getMatchesByDate(date, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getMatchesByDate(String date, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/date/" + date), includes), filters).build();
         return fetchMatchList(url);
     }
 
@@ -188,58 +228,168 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/between/" + beginDate + "/" + endDate), includes).build();
+        return getMatchesByDateRange(beginDate, endDate, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/between/" + beginDate + "/" + endDate), includes), filters).build();
         return fetchMatchList(url);
     }
 
     public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/between/" + beginDate + "/" + endDate + "/" + teamId), includes).build();
+        return getMatchesByDateRangeForTeam(beginDate, endDate, teamId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/between/" + beginDate + "/" + endDate + "/" + teamId), includes), filters).build();
         return fetchMatchList(url);
     }
 
     public List<MatchDetail> getMatchesByMultipleIDs(String[] fixtureIds, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/multi/" + String.join(",", fixtureIds)), includes).build();
+        return getMatchesByMultipleIDs(fixtureIds, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getMatchesByMultipleIDs(String[] fixtureIds, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/multi/" + String.join(",", fixtureIds)), includes), filters).build();
         return fetchMatchList(url);
     }
 
     public List<MatchDetail> getLatestUpdatedLivescores(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("livescores/latest"), includes).build();
+        return getLatestUpdatedLivescores(includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getLatestUpdatedLivescores(String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("livescores/latest"), includes), filters).build();
         return gson().fromJson(execute(url), MatchsResponse.class).getData();
     }
 
     public List<MatchDetail> getFixturesByHeadToHead(long team1Id, long team2Id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/head-to-head/" + team1Id + "/" + team2Id), includes).build();
+        return getFixturesByHeadToHead(team1Id, team2Id, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getFixturesByHeadToHead(long team1Id, long team2Id, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/head-to-head/" + team1Id + "/" + team2Id), includes), filters).build();
         return fetchMatchList(url);
     }
 
     public List<MatchDetail> searchFixtures(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/search/" + name), includes).build();
+        return searchFixtures(name, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> searchFixtures(String name, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/search/" + name), includes), filters).build();
         return fetchMatchList(url);
     }
 
     /** Fixture search capped at {@code limit} results (no cap when {@code limit <= 0}). */
     public List<MatchDetail> searchFixtures(String name, int limit, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/search/" + name), includes).build();
+        return searchFixtures(name, limit, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> searchFixtures(String name, int limit, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/search/" + name), includes), filters).build();
         return fetchMatchList(url, limit);
     }
 
     public List<MatchDetail> getLatestUpdatedFixtures(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/latest"), includes).build();
+        return getLatestUpdatedFixtures(includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getLatestUpdatedFixtures(String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/latest"), includes), filters).build();
         return gson().fromJson(execute(url), MatchsResponse.class).getData();
     }
 
     public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/upcoming/markets/" + marketId), includes).build();
+        return getUpcomingFixturesByMarket(marketId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/upcoming/markets/" + marketId), includes), filters).build();
         return fetchMatchList(url);
     }
 
     public List<MatchDetail> getUpcomingFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/upcoming/tv-stations/" + tvStationId), includes).build();
+        return getUpcomingFixturesByTvStation(tvStationId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getUpcomingFixturesByTvStation(long tvStationId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/upcoming/tv-stations/" + tvStationId), includes), filters).build();
         return fetchMatchList(url);
     }
 
     public List<MatchDetail> getPastFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/past/tv-stations/" + tvStationId), includes).build();
+        return getPastFixturesByTvStation(tvStationId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getPastFixturesByTvStation(long tvStationId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/past/tv-stations/" + tvStationId), includes), filters).build();
         return fetchMatchList(url);
     }
 
@@ -248,7 +398,17 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public MatchDetail getMatchDetail(String matchId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("fixtures/" + matchId), includes).build();
+        return getMatchDetail(matchId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public MatchDetail getMatchDetail(String matchId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/" + matchId), includes), filters).build();
         return gson().fromJson(execute(url), MatchData.class).getMatchDetail();
     }
 
@@ -816,25 +976,65 @@ public class FootballApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<Stage> getAllStages(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("stages"), includes).build();
+        return getAllStages(includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<Stage> getAllStages(String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("stages"), includes), filters).build();
         StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     public List<Stage> getStagesBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("stages/seasons/" + seasonId), includes).build();
+        return getStagesBySeasonId(seasonId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<Stage> getStagesBySeasonId(long seasonId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("stages/seasons/" + seasonId), includes), filters).build();
         StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     public Stage getStageById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("stages/" + id), includes).build();
+        return getStageById(id, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public Stage getStageById(long id, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("stages/" + id), includes), filters).build();
         StageResponse resp = gson().fromJson(execute(url), StageResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
     public List<Stage> searchStages(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("stages/search/" + name), includes).build();
+        return searchStages(name, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<Stage> searchStages(String name, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("stages/search/" + name), includes), filters).build();
         StagesResponse resp = gson().fromJson(execute(url), StagesResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
@@ -844,25 +1044,65 @@ public class FootballApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<Round> getAllRounds(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("rounds"), includes).build();
+        return getAllRounds(includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<Round> getAllRounds(String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("rounds"), includes), filters).build();
         RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     public List<Round> getRoundsBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("rounds/seasons/" + seasonId), includes).build();
+        return getRoundsBySeasonId(seasonId, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<Round> getRoundsBySeasonId(long seasonId, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("rounds/seasons/" + seasonId), includes), filters).build();
         RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     public Round getRoundById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("rounds/" + id), includes).build();
+        return getRoundById(id, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public Round getRoundById(long id, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("rounds/" + id), includes), filters).build();
         RoundResponse resp = gson().fromJson(execute(url), RoundResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
     public List<Round> searchRounds(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("rounds/search/" + name), includes).build();
+        return searchRounds(name, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code lineupdetailTypes:40});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<Round> searchRounds(String name, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("rounds/search/" + name), includes), filters).build();
         RoundsResponse resp = gson().fromJson(execute(url), RoundsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }

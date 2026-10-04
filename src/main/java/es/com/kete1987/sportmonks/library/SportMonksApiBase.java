@@ -208,6 +208,13 @@ abstract class SportMonksApiBase {
         return builder;
     }
 
+    HttpUrl.Builder withFilters(HttpUrl.Builder builder, String filters) {
+        if (filters != null && !filters.isBlank()) {
+            builder.addQueryParameter("filters", filters);
+        }
+        return builder;
+    }
+
     HttpUrl.Builder localeUrl(HttpUrl.Builder builder) {
         if (locale != null && !locale.isEmpty()) {
             builder.addQueryParameter("locale", locale);

@@ -159,7 +159,11 @@ public class SportMonksAPI {
 
     /** Livescores ({@code /livescores}): ~15 min window around kickoff, not the whole day. */
     public List<MatchDetail> getLivescores(String... includes) throws IOException, SportMonksException { return football.getLivescores(includes); }
+    /** @see FootballApi#getLivescores(String[], String) */
+    public List<MatchDetail> getLivescores(String[] includes, String filters) throws IOException, SportMonksException { return football.getLivescores(includes, filters); }
     public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException { return football.getLivescoresFiltered(matchIds, includes); }
+    /** @see FootballApi#getLivescoresFiltered(String[], String[], String) */
+    public List<MatchDetail> getLivescoresFiltered(String[] matchIds, String[] includes, String filters) throws IOException, SportMonksException { return football.getLivescoresFiltered(matchIds, includes, filters); }
     /** @deprecated misleading name, calls {@code /livescores}. Use {@link #getLivescores(String...)}. */
     @Deprecated(since = "3.1.0", forRemoval = true)
     public List<MatchDetail> getTodayMatches(String... includes) throws IOException, SportMonksException { return football.getTodayMatches(includes); }
@@ -167,24 +171,52 @@ public class SportMonksAPI {
     @Deprecated(since = "3.1.0", forRemoval = true)
     public List<MatchDetail> getTodayMatchesFiltered(String[] matchIds, String... includes) throws IOException, SportMonksException { return football.getTodayMatchesFiltered(matchIds, includes); }
     public List<MatchDetail> getLiveMatches(String... includes) throws IOException, SportMonksException { return football.getLiveMatches(includes); }
+    /** @see FootballApi#getLiveMatches(String[], String) */
+    public List<MatchDetail> getLiveMatches(String[] includes, String filters) throws IOException, SportMonksException { return football.getLiveMatches(includes, filters); }
     public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException { return football.getMatchesByDate(date, includes); }
+    /** @see FootballApi#getMatchesByDate(String, String[], String) */
+    public List<MatchDetail> getMatchesByDate(String date, String[] includes, String filters) throws IOException, SportMonksException { return football.getMatchesByDate(date, includes, filters); }
     /** Fetches fixtures in a date range with default include: {@code participants}. */
     public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate) throws IOException, SportMonksException { return football.getMatchesByDateRange(beginDate, endDate); }
     public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String... includes) throws IOException, SportMonksException { return football.getMatchesByDateRange(beginDate, endDate, includes); }
+    /** @see FootballApi#getMatchesByDateRange(String, String, String[], String) */
+    public List<MatchDetail> getMatchesByDateRange(String beginDate, String endDate, String[] includes, String filters) throws IOException, SportMonksException { return football.getMatchesByDateRange(beginDate, endDate, includes, filters); }
     public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String... includes) throws IOException, SportMonksException { return football.getMatchesByDateRangeForTeam(beginDate, endDate, teamId, includes); }
+    /** @see FootballApi#getMatchesByDateRangeForTeam(String, String, String, String[], String) */
+    public List<MatchDetail> getMatchesByDateRangeForTeam(String beginDate, String endDate, String teamId, String[] includes, String filters) throws IOException, SportMonksException { return football.getMatchesByDateRangeForTeam(beginDate, endDate, teamId, includes, filters); }
     public List<MatchDetail> getMatchesByMultipleIDs(String[] fixtureIds, String... includes) throws IOException, SportMonksException { return football.getMatchesByMultipleIDs(fixtureIds, includes); }
+    /** @see FootballApi#getMatchesByMultipleIDs(String[], String[], String) */
+    public List<MatchDetail> getMatchesByMultipleIDs(String[] fixtureIds, String[] includes, String filters) throws IOException, SportMonksException { return football.getMatchesByMultipleIDs(fixtureIds, includes, filters); }
     public List<MatchDetail> getLatestUpdatedLivescores(String... includes) throws IOException, SportMonksException { return football.getLatestUpdatedLivescores(includes); }
+    /** @see FootballApi#getLatestUpdatedLivescores(String[], String) */
+    public List<MatchDetail> getLatestUpdatedLivescores(String[] includes, String filters) throws IOException, SportMonksException { return football.getLatestUpdatedLivescores(includes, filters); }
     public List<MatchDetail> getFixturesByHeadToHead(long team1Id, long team2Id, String... includes) throws IOException, SportMonksException { return football.getFixturesByHeadToHead(team1Id, team2Id, includes); }
+    /** @see FootballApi#getFixturesByHeadToHead(long, long, String[], String) */
+    public List<MatchDetail> getFixturesByHeadToHead(long team1Id, long team2Id, String[] includes, String filters) throws IOException, SportMonksException { return football.getFixturesByHeadToHead(team1Id, team2Id, includes, filters); }
     public List<MatchDetail> searchFixtures(String name, String... includes) throws IOException, SportMonksException { return football.searchFixtures(name, includes); }
+    /** @see FootballApi#searchFixtures(String, String[], String) */
+    public List<MatchDetail> searchFixtures(String name, String[] includes, String filters) throws IOException, SportMonksException { return football.searchFixtures(name, includes, filters); }
     /** Fixture search capped at {@code limit} results. */
     public List<MatchDetail> searchFixtures(String name, int limit, String... includes) throws IOException, SportMonksException { return football.searchFixtures(name, limit, includes); }
+    /** @see FootballApi#searchFixtures(String, int, String[], String) */
+    public List<MatchDetail> searchFixtures(String name, int limit, String[] includes, String filters) throws IOException, SportMonksException { return football.searchFixtures(name, limit, includes, filters); }
     public List<MatchDetail> getLatestUpdatedFixtures(String... includes) throws IOException, SportMonksException { return football.getLatestUpdatedFixtures(includes); }
+    /** @see FootballApi#getLatestUpdatedFixtures(String[], String) */
+    public List<MatchDetail> getLatestUpdatedFixtures(String[] includes, String filters) throws IOException, SportMonksException { return football.getLatestUpdatedFixtures(includes, filters); }
     public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String... includes) throws IOException, SportMonksException { return football.getUpcomingFixturesByMarket(marketId, includes); }
+    /** @see FootballApi#getUpcomingFixturesByMarket(long, String[], String) */
+    public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String[] includes, String filters) throws IOException, SportMonksException { return football.getUpcomingFixturesByMarket(marketId, includes, filters); }
     public List<MatchDetail> getUpcomingFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException { return football.getUpcomingFixturesByTvStation(tvStationId, includes); }
+    /** @see FootballApi#getUpcomingFixturesByTvStation(long, String[], String) */
+    public List<MatchDetail> getUpcomingFixturesByTvStation(long tvStationId, String[] includes, String filters) throws IOException, SportMonksException { return football.getUpcomingFixturesByTvStation(tvStationId, includes, filters); }
     public List<MatchDetail> getPastFixturesByTvStation(long tvStationId, String... includes) throws IOException, SportMonksException { return football.getPastFixturesByTvStation(tvStationId, includes); }
+    /** @see FootballApi#getPastFixturesByTvStation(long, String[], String) */
+    public List<MatchDetail> getPastFixturesByTvStation(long tvStationId, String[] includes, String filters) throws IOException, SportMonksException { return football.getPastFixturesByTvStation(tvStationId, includes, filters); }
     /** Fetches a fixture with default includes: {@code venue, state, lineups, events, statistics, periods, participants, scores}. */
     public MatchDetail getMatchDetail(String matchId) throws IOException, SportMonksException { return football.getMatchDetail(matchId); }
     public MatchDetail getMatchDetail(String matchId, String... includes) throws IOException, SportMonksException { return football.getMatchDetail(matchId, includes); }
+    /** @see FootballApi#getMatchDetail(String, String[], String) */
+    public MatchDetail getMatchDetail(String matchId, String[] includes, String filters) throws IOException, SportMonksException { return football.getMatchDetail(matchId, includes, filters); }
 
     // -------------------------------------------------------------------------
     // Seasons
@@ -462,18 +494,34 @@ public class SportMonksAPI {
     // -------------------------------------------------------------------------
 
     public List<Stage> getAllStages(String... includes) throws IOException, SportMonksException { return football.getAllStages(includes); }
+    /** @see FootballApi#getAllStages(String[], String) */
+    public List<Stage> getAllStages(String[] includes, String filters) throws IOException, SportMonksException { return football.getAllStages(includes, filters); }
     public List<Stage> getStagesBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException { return football.getStagesBySeasonId(seasonId, includes); }
+    /** @see FootballApi#getStagesBySeasonId(long, String[], String) */
+    public List<Stage> getStagesBySeasonId(long seasonId, String[] includes, String filters) throws IOException, SportMonksException { return football.getStagesBySeasonId(seasonId, includes, filters); }
     public Stage getStageById(long id, String... includes) throws IOException, SportMonksException { return football.getStageById(id, includes); }
+    /** @see FootballApi#getStageById(long, String[], String) */
+    public Stage getStageById(long id, String[] includes, String filters) throws IOException, SportMonksException { return football.getStageById(id, includes, filters); }
     public List<Stage> searchStages(String name, String... includes) throws IOException, SportMonksException { return football.searchStages(name, includes); }
+    /** @see FootballApi#searchStages(String, String[], String) */
+    public List<Stage> searchStages(String name, String[] includes, String filters) throws IOException, SportMonksException { return football.searchStages(name, includes, filters); }
 
     // -------------------------------------------------------------------------
     // Rounds
     // -------------------------------------------------------------------------
 
     public List<Round> getAllRounds(String... includes) throws IOException, SportMonksException { return football.getAllRounds(includes); }
+    /** @see FootballApi#getAllRounds(String[], String) */
+    public List<Round> getAllRounds(String[] includes, String filters) throws IOException, SportMonksException { return football.getAllRounds(includes, filters); }
     public List<Round> getRoundsBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException { return football.getRoundsBySeasonId(seasonId, includes); }
+    /** @see FootballApi#getRoundsBySeasonId(long, String[], String) */
+    public List<Round> getRoundsBySeasonId(long seasonId, String[] includes, String filters) throws IOException, SportMonksException { return football.getRoundsBySeasonId(seasonId, includes, filters); }
     public Round getRoundById(long id, String... includes) throws IOException, SportMonksException { return football.getRoundById(id, includes); }
+    /** @see FootballApi#getRoundById(long, String[], String) */
+    public Round getRoundById(long id, String[] includes, String filters) throws IOException, SportMonksException { return football.getRoundById(id, includes, filters); }
     public List<Round> searchRounds(String name, String... includes) throws IOException, SportMonksException { return football.searchRounds(name, includes); }
+    /** @see FootballApi#searchRounds(String, String[], String) */
+    public List<Round> searchRounds(String name, String[] includes, String filters) throws IOException, SportMonksException { return football.searchRounds(name, includes, filters); }
 
     // -------------------------------------------------------------------------
     // States
