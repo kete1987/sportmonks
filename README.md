@@ -13,7 +13,7 @@ Java library (Java 11+) to access the [Sportmonks](https://sportmonks.com) footb
 <dependency>
     <groupId>es.com.kete1987</groupId>
     <artifactId>sportmonks.library</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
 </dependency>
 ```
 
@@ -89,7 +89,7 @@ MatchDetail match = api.getMatchDetail("18545372", "state", "participants", "sco
 List<MatchDetail> live = api.getLiveMatches("participants", "scores");
 ```
 
-### Lineup positions and official formations (unreleased)
+### Lineup positions and official formations (3.4.0+)
 
 ```java
 MatchDetail match = api.getMatchDetail("18545372",
