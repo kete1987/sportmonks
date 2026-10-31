@@ -37,7 +37,8 @@ class FormationApiTest extends BaseApiTest {
         assertEquals(2, formations.size());
         assertFormation(formations.get(0), 2002L, 20L, "4-4-2", "away");
         assertFormation(formations.get(1), 2001L, 10L, "4-2-3-1", "home");
-        assertThrows(UnsupportedOperationException.class, () -> formations.add(new Formation()));
+        Formation additionalFormation = new Formation();
+        assertThrows(UnsupportedOperationException.class, () -> formations.add(additionalFormation));
 
         LineUpData starter = match.getLineups().get(0);
         assertEquals("2:4", starter.getFormationField());
@@ -72,7 +73,8 @@ class FormationApiTest extends BaseApiTest {
         server.enqueue(new MockResponse().setBody("{\"data\":{\"formations\":[]}}"));
         List<Formation> formations = api.getMatchDetail("1001", "formations").getFormations();
         assertTrue(formations.isEmpty());
-        assertThrows(UnsupportedOperationException.class, () -> formations.add(new Formation()));
+        Formation additionalFormation = new Formation();
+        assertThrows(UnsupportedOperationException.class, () -> formations.add(additionalFormation));
     }
 
     @ParameterizedTest

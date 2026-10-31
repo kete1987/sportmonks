@@ -14,7 +14,8 @@ public class Formation {
     @SerializedName("participant_id")
     private Long participantId;
     @Nullable
-    private String formation;
+    @SerializedName("formation")
+    private String system;
     @Nullable
     private String location;
 
@@ -39,7 +40,7 @@ public class Formation {
     /** @return the raw system (e.g. {@code "4-2-3-1"}), or null when unavailable. */
     @Nullable
     public String getFormation() {
-        return formation;
+        return system;
     }
 
     /** @return the location (usually {@code "home"} or {@code "away"}), or null when unavailable. */
