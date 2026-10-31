@@ -7,6 +7,7 @@ import es.com.kete1987.sportmonks.library.football.util.StatisticsType;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
+import org.jetbrains.annotations.Nullable;
 
 public class LineUpData {
     private Long id;
@@ -20,6 +21,15 @@ public class LineUpData {
     private Long teamId;
     @SerializedName("position_id")
     private Long positionId;
+    @Nullable
+    @SerializedName("detailed_position_id")
+    private Long detailedPositionId;
+    @Nullable
+    @SerializedName("formation_field")
+    private String formationField;
+    @Nullable
+    @SerializedName("formation_position")
+    private Long formationPosition;
     @SerializedName("type_id")
     private Long typeId;
     @SerializedName("player_name")
@@ -54,6 +64,24 @@ public class LineUpData {
 
     public Long getPositionId() {
         return positionId;
+    }
+
+    /** @return the detailed role ID, or null when absent; this is not a tactical location. */
+    @Nullable
+    public Long getDetailedPositionId() {
+        return detailedPositionId;
+    }
+
+    /** @return the raw tactical slot (e.g. {@code "2:4"}), or null when unavailable. */
+    @Nullable
+    public String getFormationField() {
+        return formationField;
+    }
+
+    /** @return the order within the starting eleven, or null; not a jersey number or coordinate. */
+    @Nullable
+    public Long getFormationPosition() {
+        return formationPosition;
     }
 
     public String getPosition() {
