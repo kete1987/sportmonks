@@ -89,6 +89,33 @@ MatchDetail match = api.getMatchDetail("18545372", "state", "participants", "sco
 List<MatchDetail> live = api.getLiveMatches("participants", "scores");
 ```
 
+### Lineup positions and official formations (unreleased)
+
+```java
+MatchDetail match = api.getMatchDetail("18545372",
+        "participants", "formations", "lineups", "lineups.details");
+List<Formation> formations = match.getFormations();
+for (LineUpData player : match.getLineupLocalTeam()) {
+    String slot = player.getFormationField();       // e.g. "2:4", nullable
+    Long order = player.getFormationPosition();    // nullable order within the eleven
+    Long role = player.getDetailedPositionId();    // nullable detailed role ID
+}
+```
+
+Join `LineUpData.getTeamId()` to `Formation.getParticipantId()` and the participants;
+the API may return the away formation first. `getFormations()` returns an unmodifiable
+list, null for an absent/null relation, and an empty list for an empty relation.
+All `Formation` getters are nullable. Kotlin callers can use safe calls such as
+`match.formations?.firstOrNull()?.formation` and `player.formationField?.split(":")`.
+
+The library preserves `formation_field` literally, including unfamiliar formats.
+`formation_position` is an order, not a jersey number or metric coordinate; position
+IDs describe roles. Starters (`type_id=11`) and substitutes (`type_id=12`) retain API
+order in the existing helpers. Drawing coordinates and home/away orientation belong
+to the consuming app; these fields describe the initial lineup, not live tracking.
+Keep `lineups.details` for captain detection; add `lineups.player` for optional player
+photos/display names.
+
 ### Filtering fixture includes (3.3.0+)
 
 Fixtures, livescores, rounds and stages accept an additional overload with an explicit

@@ -1,0 +1,25 @@
+{
+  "data": {
+    "id": 1001,
+    "participants": [
+      {"id": 20, "meta": {"location": "away"}},
+      {"id": 10, "meta": {"location": "home"}}
+    ],
+    "formations": [
+      {"id": 2002, "fixture_id": 1001, "participant_id": 20, "formation": "4-4-2", "location": "away"},
+      {"id": 2001, "fixture_id": 1001, "participant_id": 10, "formation": "4-2-3-1", "location": "home"}
+    ],
+    "lineups": [
+      {"id": 3001, "fixture_id": 1001, "team_id": 10, "player_id": 4001, "type_id": 11,
+       "position_id": 25, "detailed_position_id": 154, "formation_field": "2:4", "formation_position": 5,
+       "jersey_number": 3, "details": [{"type_id": 40, "data": {"value": true}}]},
+      {"id": 3002, "team_id": 20, "type_id": 12,
+       "detailed_position_id": null, "formation_field": null, "formation_position": null},
+      {"id": 3003, "team_id": 10, "type_id": 12},
+      {"id": 3004, "team_id": 20, "type_id": 11,
+       "formation_field": "unexpected/raw:slot?", "formation_position": 1},
+      {"id": 3005, "team_id": 10, "type_id": 11,
+       "formation_field": "1:1", "formation_position": 1}
+    ]
+  }
+}

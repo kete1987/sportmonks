@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
+import org.jetbrains.annotations.Nullable;
 
 public class MatchDetail extends Match {
     private Venue venue;
     private State state;
     private List<LineUpData> lineups;
+    @Nullable
+    private List<Formation> formations;
     private List<EventData> events;
     private List<StatisticsData> statistics;
     private List<Period> periods;
@@ -48,6 +51,16 @@ public class MatchDetail extends Match {
 
     public List<LineUpData> getLineups() {
         return ModelCollections.unmodifiable(lineups);
+    }
+
+    /**
+     * @return unmodifiable formations in API order, null when absent or explicitly null,
+     *         or an empty list when the API returns an empty relation.
+     *         Match {@link Formation#getParticipantId()} to {@link LineUpData#getTeamId()}.
+     */
+    @Nullable
+    public List<Formation> getFormations() {
+        return ModelCollections.unmodifiable(formations);
     }
 
     public List<LineUpData> getLineupLocalTeam() {
