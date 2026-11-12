@@ -14,7 +14,7 @@ mvn clean package        # compile + tests + jar
 mvn clean deploy         # publish to Maven Central (requires GPG key + credentials)
 ```
 
-CI (`.github/workflows/ci.yml`) runs `mvn test` on every branch and pull request, publishes the JUnit report, and analyses the build with SonarCloud.
+CI (`.github/workflows/ci.yml`) runs `mvn test` on pushes to master and on pull requests, publishes the JUnit report, and analyses the build with SonarCloud.
 
 ## Tests
 
