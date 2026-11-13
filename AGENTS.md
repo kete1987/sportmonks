@@ -18,7 +18,7 @@ CI (`.github/workflows/ci.yml`) runs `mvn test` on pushes to master and on pull 
 
 ## Tests
 
-JUnit 5 + OkHttp `MockWebServer`. Every test extends `BaseApiTest`, which starts a mock server and points all four base URLs at it, so no test touches the network. Responses are JSON fixtures under `src/test/resources/fixtures/`, enqueued with `enqueue("name.json")`.
+JUnit 5 + OkHttp `MockWebServer`. Every test extends `BaseApiTest`, which starts a mock server and points all five base URLs at it (the odds and odds-catalogue ones under `/v3/football/odds/` and `/v3/odds/` of the mock server, so tests assert the full paths), so no test touches the network. Responses are JSON fixtures under `src/test/resources/fixtures/`, enqueued with `enqueue("name.json")`.
 
 ```java
 class VenueApiTest extends BaseApiTest {
@@ -54,7 +54,7 @@ src/main/java/es/com/kete1987/sportmonks/library/
 ├── common/
 │   ├── model/                 # pagination, ratelimit, subscription
 │   └── util/
-│       ├── Constants.java     # the four v3 base URLs
+│       ├── Constants.java     # the five v3 base URLs (football, odds, odds catalogue, core, my)
 │       ├── ApiLocale.java     # locale codes accepted by the API
 │       ├── SportMonksException.java
 │       ├── ModelCollections.java             # unmodifiable views for model getters
@@ -78,6 +78,8 @@ FootballApi football = api.getFootball();   // or new FootballApi("YOUR_API_KEY"
 ```
 
 The optional `locale` and `timezone` are appended to every request built by that instance.
+
+Odds live under two different roots: the bookmaker and market catalogue (`getAllBookmakers`, `getAllMarkets`, ...) is under `/v3/odds/` (`Constants.BASE_URL_ODDS_CATALOG`), while fixture odds (pre-match, inplay, premium) are under `/v3/football/odds/` (`Constants.BASE_URL_ODDS`). `OddsApi` builds catalogue URLs with `catalogUrl(path)` and fixture-odds URLs with `oddsUrl(path)`; using the wrong one returns 404.
 
 The API token travels in the `Authorization` header, injected by an OkHttp interceptor in `buildHttpClient()` — never as an `api_token` query parameter.
 
@@ -133,7 +135,8 @@ Never build a `Gson` instance directly — call `gson()` from `SportMonksApiBase
 
 | Artifact | Version | Scope |
 |---|---|---|
-| `com.squareup.okhttp3:okhttp-jvm` | 5.4.0 | compile |
-| `com.google.code.gson:gson` | 2.14.0 | compile |
+| `org.jetbrains:annotations` | 26.1.0 | compile |
+| `com.squareup.okhttp3:okhttp-jvm` | 5.5.1 | compile |
+| `com.google.code.gson:gson` | 2.15.0 | compile |
 | `org.junit.jupiter:junit-jupiter` | 5.11.0 | test |
-| `com.squareup.okhttp3:mockwebserver` | 5.4.0 | test |
+| `com.squareup.okhttp3:mockwebserver` | 5.5.1 | test |
