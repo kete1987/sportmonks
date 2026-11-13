@@ -123,16 +123,31 @@ public class SportMonksAPI {
 
     SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase,
                   String locale, String timezone) {
-        this(client, footballBase, oddsBase, oddsBase, coreBase, myBase, locale, timezone);
+        this(client, new BaseUrls(footballBase, oddsBase, oddsBase, coreBase, myBase), locale, timezone);
     }
 
-    SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String catalogBase,
-                  String coreBase, String myBase, String locale, String timezone) {
+    SportMonksAPI(OkHttpClient client, BaseUrls bases, String locale, String timezone) {
         this.tracker = new RateLimitTracker();
-        this.football = new FootballApi(client, footballBase, locale, timezone, tracker);
-        this.odds = new OddsApi(client, oddsBase, catalogBase, locale, timezone, tracker);
-        this.predictions = new PredictionsApi(client, footballBase, locale, timezone, tracker);
-        this.core = new CoreApi(client, coreBase, myBase, locale, timezone, tracker);
+        this.football = new FootballApi(client, bases.football, locale, timezone, tracker);
+        this.odds = new OddsApi(client, bases.odds, bases.catalog, locale, timezone, tracker);
+        this.predictions = new PredictionsApi(client, bases.football, locale, timezone, tracker);
+        this.core = new CoreApi(client, bases.core, bases.my, locale, timezone, tracker);
+    }
+
+    static final class BaseUrls {
+        private final String football;
+        private final String odds;
+        private final String catalog;
+        private final String core;
+        private final String my;
+
+        BaseUrls(String football, String odds, String catalog, String core, String my) {
+            this.football = football;
+            this.odds = odds;
+            this.catalog = catalog;
+            this.core = core;
+            this.my = my;
+        }
     }
 
     public FootballApi getFootball() { return football; }

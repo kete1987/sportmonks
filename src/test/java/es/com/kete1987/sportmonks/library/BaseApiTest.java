@@ -22,8 +22,9 @@ public abstract class BaseApiTest {
 
         String base = server.url("/").toString();
         OkHttpClient client = new OkHttpClient();
-        api = new SportMonksAPI(client, base, base + "v3/football/odds/", base + "v3/odds/",
-                base, base, null, null);
+        SportMonksAPI.BaseUrls bases = new SportMonksAPI.BaseUrls(base,
+                base + "v3/football/odds/", base + "v3/odds/", base, base);
+        api = new SportMonksAPI(client, bases, null, null);
     }
 
     @AfterEach
