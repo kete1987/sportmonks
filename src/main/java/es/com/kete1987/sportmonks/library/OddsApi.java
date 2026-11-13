@@ -28,6 +28,7 @@ import java.util.List;
 public class OddsApi extends SportMonksApiBase {
 
     private final String oddsBase;
+    private final String catalogBase;
 
     public OddsApi(String apiToken) {
         this(apiToken, null);
@@ -38,16 +39,22 @@ public class OddsApi extends SportMonksApiBase {
     }
 
     public OddsApi(String apiToken, String locale, String timezone) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_ODDS, locale, timezone, new RateLimitTracker());
+        this(buildHttpClient(apiToken), Constants.BASE_URL_ODDS, Constants.BASE_URL_ODDS_CATALOG,
+                locale, timezone, new RateLimitTracker());
     }
 
-    OddsApi(OkHttpClient client, String oddsBase, String locale, String timezone, RateLimitTracker tracker) {
+    OddsApi(OkHttpClient client, String oddsBase, String catalogBase, String locale, String timezone, RateLimitTracker tracker) {
         super(client, locale, timezone, tracker);
         this.oddsBase = oddsBase;
+        this.catalogBase = catalogBase;
     }
 
     private HttpUrl.Builder oddsUrl(String path) {
         return timezoneUrl(localeUrl(HttpUrl.parse(oddsBase + path).newBuilder()));
+    }
+
+    private HttpUrl.Builder catalogUrl(String path) {
+        return timezoneUrl(localeUrl(HttpUrl.parse(catalogBase + path).newBuilder()));
     }
 
     private List<Odd> oddsData(OddsResponse resp) {
@@ -78,18 +85,18 @@ public class OddsApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<Market> getAllMarkets() throws IOException, SportMonksException {
-        HttpUrl base = oddsUrl("markets").build();
+        HttpUrl base = catalogUrl("markets").build();
         return fetchPaged(base, MarketsResponse.class, MarketsResponse::getData, MarketsResponse::getPagination, 0);
     }
 
     public Market getMarketById(long marketId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("markets/" + marketId).build();
+        HttpUrl url = catalogUrl("markets/" + marketId).build();
         MarketResponse resp = gson().fromJson(execute(url), MarketResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
     public List<Market> searchMarkets(String query) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("markets/search/" + query).build();
+        HttpUrl url = catalogUrl("markets/search/" + query).build();
         MarketsResponse resp = gson().fromJson(execute(url), MarketsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
@@ -99,24 +106,24 @@ public class OddsApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<Bookmaker> getAllBookmakers() throws IOException, SportMonksException {
-        HttpUrl base = oddsUrl("bookmakers").build();
+        HttpUrl base = catalogUrl("bookmakers").build();
         return fetchPaged(base, BookmakersResponse.class, BookmakersResponse::getData, BookmakersResponse::getPagination, 0);
     }
 
     public Bookmaker getBookmakerById(long bookmakerId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("bookmakers/" + bookmakerId).build();
+        HttpUrl url = catalogUrl("bookmakers/" + bookmakerId).build();
         BookmakerResponse resp = gson().fromJson(execute(url), BookmakerResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
     public List<Bookmaker> searchBookmakers(String query) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("bookmakers/search/" + query).build();
+        HttpUrl url = catalogUrl("bookmakers/search/" + query).build();
         BookmakersResponse resp = gson().fromJson(execute(url), BookmakersResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     public List<BookmakerMapping> getBookmakerMappingsByFixture(long fixtureId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("bookmakers/mapping/fixtures/" + fixtureId).build();
+        HttpUrl url = catalogUrl("bookmakers/fixtures/" + fixtureId + "/mapping").build();
         BookmakerMappingsResponse resp = gson().fromJson(execute(url), BookmakerMappingsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }

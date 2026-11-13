@@ -19,7 +19,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getPremiumPreMatchOddsByFixture(1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("pre-match/fixtures/1/premium"));
+        assertEquals("/v3/football/odds/pre-match/fixtures/1/premium", request.getRequestUrl().encodedPath());
         assertFalse(request.getPath().contains("bookmakers"));
         assertFalse(request.getPath().contains("markets"));
     }
@@ -40,7 +40,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getPremiumPreMatchOddsByFixtureAndBookmaker(1L, 2L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("pre-match/fixtures/1/bookmakers/2/premium"));
+        assertEquals("/v3/football/odds/pre-match/fixtures/1/bookmakers/2/premium", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -50,7 +50,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getPremiumPreMatchOddsByFixtureAndMarket(1L, 3L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("pre-match/fixtures/1/markets/3/premium"));
+        assertEquals("/v3/football/odds/pre-match/fixtures/1/markets/3/premium", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -60,7 +60,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getLastUpdatedPremiumPreMatchOdds();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("pre-match/lastupdated/premium"));
+        assertEquals("/v3/football/odds/pre-match/lastupdated/premium", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -70,7 +70,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getPremiumInplayOddsByFixture(1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/fixtures/1/premium"));
+        assertEquals("/v3/football/odds/inplay/fixtures/1/premium", request.getRequestUrl().encodedPath());
         assertFalse(request.getPath().contains("bookmakers"));
         assertFalse(request.getPath().contains("markets"));
     }
@@ -82,7 +82,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getPremiumInplayOddsByFixtureAndBookmaker(1L, 2L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/fixtures/1/bookmakers/2/premium"));
+        assertEquals("/v3/football/odds/inplay/fixtures/1/bookmakers/2/premium", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -92,7 +92,7 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getPremiumInplayOddsByFixtureAndMarket(1L, 3L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/fixtures/1/markets/3/premium"));
+        assertEquals("/v3/football/odds/inplay/fixtures/1/markets/3/premium", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -102,6 +102,6 @@ class PremiumOddsApiTest extends BaseApiTest {
         api.getLastUpdatedPremiumInplayOdds();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/lastupdated/premium"));
+        assertEquals("/v3/football/odds/inplay/lastupdated/premium", request.getRequestUrl().encodedPath());
     }
 }
