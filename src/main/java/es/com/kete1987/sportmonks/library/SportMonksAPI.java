@@ -112,7 +112,7 @@ public class SportMonksAPI {
         OkHttpClient client = SportMonksApiBase.buildHttpClient(apiToken);
         this.tracker = new RateLimitTracker();
         this.football = new FootballApi(client, Constants.BASE_URL_FOOTBALL, locale, timezone, tracker);
-        this.odds = new OddsApi(client, Constants.BASE_URL_ODDS, locale, timezone, tracker);
+        this.odds = new OddsApi(client, Constants.BASE_URL_ODDS, Constants.BASE_URL_ODDS_CATALOG, locale, timezone, tracker);
         this.predictions = new PredictionsApi(client, Constants.BASE_URL_FOOTBALL, locale, timezone, tracker);
         this.core = new CoreApi(client, Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, tracker);
     }
@@ -123,9 +123,14 @@ public class SportMonksAPI {
 
     SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase,
                   String locale, String timezone) {
+        this(client, footballBase, oddsBase, oddsBase, coreBase, myBase, locale, timezone);
+    }
+
+    SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String catalogBase,
+                  String coreBase, String myBase, String locale, String timezone) {
         this.tracker = new RateLimitTracker();
         this.football = new FootballApi(client, footballBase, locale, timezone, tracker);
-        this.odds = new OddsApi(client, oddsBase, locale, timezone, tracker);
+        this.odds = new OddsApi(client, oddsBase, catalogBase, locale, timezone, tracker);
         this.predictions = new PredictionsApi(client, footballBase, locale, timezone, tracker);
         this.core = new CoreApi(client, coreBase, myBase, locale, timezone, tracker);
     }

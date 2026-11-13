@@ -19,7 +19,7 @@ class MarketApiTest extends BaseApiTest {
         api.getAllMarkets();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("markets"));
+        assertEquals("/v3/odds/markets", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -43,7 +43,7 @@ class MarketApiTest extends BaseApiTest {
         api.getMarketById(1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("markets/1"));
+        assertEquals("/v3/odds/markets/1", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -64,7 +64,7 @@ class MarketApiTest extends BaseApiTest {
         api.searchMarkets("Result");
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("markets/search/Result"));
+        assertEquals("/v3/odds/markets/search/Result", request.getRequestUrl().encodedPath());
     }
 
     @Test

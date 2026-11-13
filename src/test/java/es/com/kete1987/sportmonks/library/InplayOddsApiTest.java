@@ -19,7 +19,7 @@ class InplayOddsApiTest extends BaseApiTest {
         api.getInplayOddsByFixture(1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/fixtures/1"));
+        assertEquals("/v3/football/odds/inplay/fixtures/1", request.getRequestUrl().encodedPath());
         assertFalse(request.getPath().contains("bookmakers"));
         assertFalse(request.getPath().contains("markets"));
     }
@@ -40,7 +40,7 @@ class InplayOddsApiTest extends BaseApiTest {
         api.getInplayOddsByFixtureAndBookmaker(1L, 2L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/fixtures/1/bookmakers/2"));
+        assertEquals("/v3/football/odds/inplay/fixtures/1/bookmakers/2", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -50,7 +50,7 @@ class InplayOddsApiTest extends BaseApiTest {
         api.getInplayOddsByFixtureAndMarket(1L, 3L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/fixtures/1/markets/3"));
+        assertEquals("/v3/football/odds/inplay/fixtures/1/markets/3", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -60,6 +60,6 @@ class InplayOddsApiTest extends BaseApiTest {
         api.getLastUpdatedInplayOdds();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("inplay/lastupdated"));
+        assertEquals("/v3/football/odds/inplay/lastupdated", request.getRequestUrl().encodedPath());
     }
 }

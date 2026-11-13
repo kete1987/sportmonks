@@ -33,8 +33,7 @@ class OddsApiTest extends BaseApiTest {
         api.getMatchOdds("1");
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("pre-match/fixtures/1"),
-                "Expected odds URL path, got: " + request.getPath());
+        assertEquals("/v3/football/odds/pre-match/fixtures/1", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -44,8 +43,7 @@ class OddsApiTest extends BaseApiTest {
         api.getMatchOddsByBookmaker("1", "5");
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("fixtures/1/bookmakers/5"),
-                "Expected bookmaker URL path, got: " + request.getPath());
+        assertEquals("/v3/football/odds/pre-match/fixtures/1/bookmakers/5", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -55,7 +53,6 @@ class OddsApiTest extends BaseApiTest {
         api.getMatchOddsByMarket("1", "1");
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("fixtures/1/markets/1"),
-                "Expected market URL path, got: " + request.getPath());
+        assertEquals("/v3/football/odds/pre-match/fixtures/1/markets/1", request.getRequestUrl().encodedPath());
     }
 }

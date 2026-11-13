@@ -20,7 +20,7 @@ class BookmakerApiTest extends BaseApiTest {
         api.getAllBookmakers();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("bookmakers"));
+        assertEquals("/v3/odds/bookmakers", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -45,7 +45,7 @@ class BookmakerApiTest extends BaseApiTest {
         api.getBookmakerById(1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("bookmakers/1"));
+        assertEquals("/v3/odds/bookmakers/1", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -66,7 +66,7 @@ class BookmakerApiTest extends BaseApiTest {
         api.searchBookmakers("Bet");
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("bookmakers/search/Bet"));
+        assertEquals("/v3/odds/bookmakers/search/Bet", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -85,7 +85,7 @@ class BookmakerApiTest extends BaseApiTest {
         api.getBookmakerMappingsByFixture(100L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("bookmakers/mapping/fixtures/100"));
+        assertEquals("/v3/odds/bookmakers/fixtures/100/mapping", request.getRequestUrl().encodedPath());
     }
 
     @Test
