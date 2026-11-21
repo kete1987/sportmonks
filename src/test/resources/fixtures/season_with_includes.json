@@ -1,0 +1,114 @@
+{
+  "data": {
+    "id": 23614,
+    "sport_id": 1,
+    "league_id": 8,
+    "tie_breaker_rule_id": 171,
+    "name": "2024/2025",
+    "finished": true,
+    "pending": false,
+    "is_current": false,
+    "starting_at": "2024-08-16",
+    "ending_at": "2025-05-25",
+    "standings_recalculated_at": "2026-02-15 10:56:11",
+    "games_in_current_week": false,
+    "currentstage": null,
+    "groups": [],
+    "league": {
+      "id": 8,
+      "sport_id": 1,
+      "country_id": 462,
+      "name": "Premier League",
+      "active": true,
+      "short_code": "UK PL",
+      "image_path": "https://cdn.sportmonks.com/images/soccer/leagues/8/8.png",
+      "type": "league",
+      "sub_type": "domestic",
+      "last_played_at": "2026-11-08 16:30:00",
+      "category": 1,
+      "has_jerseys": false
+    },
+    "statistics": [
+      {
+        "id": 325020,
+        "model_id": 23614,
+        "type_id": 34,
+        "relation_id": 9,
+        "value": {
+          "count": 253,
+          "percentage": 6.54,
+          "avg_per_match": 10.19,
+          "team_most_corners_id": 9,
+          "team_most_corners_name": "Manchester City"
+        },
+        "type": "array"
+      },
+      {
+        "id": 325017,
+        "model_id": 23614,
+        "type_id": 43,
+        "relation_id": null,
+        "value": {
+          "count": 70746,
+          "average": 186.17
+        },
+        "type": "array"
+      }
+    ],
+    "teams": [
+      {
+        "id": 1,
+        "sport_id": 1,
+        "country_id": 462,
+        "venue_id": 214,
+        "gender": "male",
+        "name": "West Ham United",
+        "short_code": "WHU",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/1/1.png",
+        "founded": 1895,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-07 15:00:00"
+      },
+      {
+        "id": 6,
+        "sport_id": 1,
+        "country_id": 462,
+        "venue_id": 281313,
+        "gender": "male",
+        "name": "Tottenham Hotspur",
+        "short_code": "TOT",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/6/6.png",
+        "founded": 1882,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-07 12:30:00"
+      }
+    ],
+    "topscorers": [
+      {
+        "id": 162792544,
+        "season_id": 23614,
+        "player_id": 165,
+        "type_id": 83,
+        "position": 44,
+        "total": 1,
+        "participant_id": 13
+      },
+      {
+        "id": 167763870,
+        "season_id": 23614,
+        "player_id": 165,
+        "type_id": 84,
+        "position": 48,
+        "total": 7,
+        "participant_id": 13
+      }
+    ],
+    "sport": {
+      "id": 1,
+      "name": "Football",
+      "code": "football"
+    }
+  }
+}

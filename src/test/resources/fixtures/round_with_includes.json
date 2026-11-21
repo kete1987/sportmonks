@@ -1,0 +1,84 @@
+{
+  "data": {
+    "id": 274719,
+    "sport_id": 1,
+    "league_id": 501,
+    "season_id": 19735,
+    "stage_id": 77457866,
+    "name": "6",
+    "finished": true,
+    "is_current": false,
+    "starting_at": "2022-09-03",
+    "ending_at": "2022-09-03",
+    "games_in_current_week": false,
+    "league": {
+      "id": 501,
+      "sport_id": 1,
+      "country_id": 1161,
+      "name": "Premiership",
+      "active": true,
+      "short_code": "SCO P",
+      "image_path": "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
+      "type": "league",
+      "sub_type": "domestic",
+      "last_played_at": "2026-11-08 16:00:00",
+      "category": 2,
+      "has_jerseys": false
+    },
+    "season": {
+      "id": 19735,
+      "sport_id": 1,
+      "league_id": 501,
+      "tie_breaker_rule_id": 171,
+      "name": "2022/2023",
+      "finished": true,
+      "pending": false,
+      "is_current": false,
+      "starting_at": "2022-07-30",
+      "ending_at": "2023-05-28",
+      "standings_recalculated_at": "2023-11-30 15:41:02",
+      "games_in_current_week": false
+    },
+    "stage": {
+      "id": 77457866,
+      "sport_id": 1,
+      "league_id": 501,
+      "season_id": 19735,
+      "type_id": 223,
+      "name": "1st Phase",
+      "sort_order": 1,
+      "finished": true,
+      "is_current": false,
+      "starting_at": "2022-07-30",
+      "ending_at": "2023-04-23",
+      "games_in_current_week": false,
+      "tie_breaker_rule_id": 171
+    },
+    "statistics": [
+      {
+        "id": 425032,
+        "model_id": 274719,
+        "type_id": 34,
+        "relation_id": 273,
+        "value": {
+          "count": 13,
+          "percentage": 22.41,
+          "avg_per_match": 9.67,
+          "team_most_corners_id": 273,
+          "team_most_corners_name": "Aberdeen"
+        }
+      },
+      {
+        "id": 425038,
+        "model_id": 274719,
+        "type_id": 52,
+        "relation_id": null,
+        "value": {
+          "overall": 11,
+          "home": 10,
+          "away": 1
+        }
+      }
+    ]
+  }
+}

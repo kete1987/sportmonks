@@ -1,0 +1,130 @@
+{
+  "data": [
+    {
+      "id": 1281178,
+      "transfer_id": null,
+      "player_id": 37598766,
+      "team_id": 83,
+      "position_id": 27,
+      "detailed_position_id": 156,
+      "start": "2025-07-14",
+      "end": "2029-06-30",
+      "captain": false,
+      "jersey_number": 19,
+      "player": {
+        "id": 37598766,
+        "sport_id": 1,
+        "country_id": 21462,
+        "nationality_id": 47,
+        "city_id": null,
+        "position_id": 27,
+        "detailed_position_id": 156,
+        "type_id": 26,
+        "common_name": "R. Bardghji",
+        "firstname": "Roony",
+        "lastname": "Bardghji",
+        "name": "Roony Bardghji",
+        "display_name": "Roony Bardghji",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/players/14/37598766.png",
+        "height": 173,
+        "weight": 73,
+        "date_of_birth": "2005-11-15",
+        "gender": "male"
+      },
+      "position": {
+        "id": 27,
+        "name": "Attacker",
+        "code": "attacker",
+        "developer_name": "ATTACKER",
+        "model_type": "position",
+        "stat_group": null
+      },
+      "detailedposition": {
+        "id": 156,
+        "name": "Right Wing",
+        "code": "right-wing",
+        "developer_name": "RIGHT_WING",
+        "model_type": "position",
+        "stat_group": null
+      },
+      "team": {
+        "id": 83,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 9236,
+        "gender": "male",
+        "name": "FC Barcelona",
+        "short_code": "BAR",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+        "founded": 1899,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-08 20:00:00"
+      },
+      "transfer": null
+    },
+    {
+      "id": 1039872,
+      "transfer_id": null,
+      "player_id": 805,
+      "team_id": 83,
+      "position_id": 24,
+      "detailed_position_id": 24,
+      "start": "2024-10-02",
+      "end": "2027-06-30",
+      "captain": false,
+      "jersey_number": 13,
+      "player": {
+        "id": 805,
+        "sport_id": 1,
+        "country_id": 2,
+        "nationality_id": 2,
+        "city_id": null,
+        "position_id": 24,
+        "detailed_position_id": 24,
+        "type_id": 24,
+        "common_name": "W. Szczęsny",
+        "firstname": "Wojciech",
+        "lastname": "Szczęsny",
+        "name": "Wojciech Szczęsny",
+        "display_name": "Wojciech Szczesny",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/players/5/805.png",
+        "height": 195,
+        "weight": 96,
+        "date_of_birth": "1990-04-18",
+        "gender": "male"
+      },
+      "position": {
+        "id": 24,
+        "name": "Goalkeeper",
+        "code": "goalkeeper",
+        "developer_name": "GOALKEEPER",
+        "model_type": "position",
+        "stat_group": null
+      },
+      "detailedposition": {
+        "id": 24,
+        "name": "Goalkeeper",
+        "code": "goalkeeper",
+        "developer_name": "GOALKEEPER",
+        "model_type": "position",
+        "stat_group": null
+      },
+      "team": {
+        "id": 83,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 9236,
+        "gender": "male",
+        "name": "FC Barcelona",
+        "short_code": "BAR",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+        "founded": 1899,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-08 20:00:00"
+      },
+      "transfer": null
+    }
+  ]
+}

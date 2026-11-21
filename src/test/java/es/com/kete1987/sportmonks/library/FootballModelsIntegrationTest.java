@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,6 +74,23 @@ class FootballModelsIntegrationTest {
         League league = api.getLeagueById(8);
 
         assertNotNull(league.getLastPlayerdAt(), "last_played_at must be read (typo in @SerializedName)");
+    }
+
+    @Test
+    void leagueLastPlayedAtIsReadThroughTheNewGetter() throws IOException, SportMonksException {
+        League league = api.getLeagueById(8);
+
+        assertNotNull(league.getLastPlayedAt());
+        assertEquals(league.getLastPlayedAt(), league.getLastPlayerdAt());
+    }
+
+    @Test
+    void squadWithPlayerIncludeCarriesThePlayer() throws IOException, SportMonksException {
+        List<SquadPlayer> squad = api.getSquadByTeam(83, "player");
+
+        assertFalse(squad.isEmpty());
+        assertTrue(squad.stream().allMatch(s -> s.getPlayer() != null), "every squad entry has its player");
+        assertTrue(squad.stream().allMatch(s -> s.getId() != null && s.getDetailedPositionId() != null));
     }
 
     @Test

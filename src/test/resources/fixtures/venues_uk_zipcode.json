@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "id": 270,
+      "country_id": 462,
+      "city_id": 20708,
+      "name": "The Coventry Building Society Arena",
+      "address": "Phoenix Way, Rowleys Green",
+      "zipcode": "CV6 6GE",
+      "latitude": "52.44836",
+      "longitude": "-1.49664",
+      "capacity": 32609,
+      "image_path": "https://cdn.sportmonks.com/images/core/venues/14/270.png",
+      "city_name": "Coventry",
+      "surface": "grass",
+      "national_team": false
+    },
+    {
+      "id": 338817,
+      "country_id": 462,
+      "city_id": 11961,
+      "name": "Gtech Community Stadium",
+      "address": "166 Lionel Rd N",
+      "zipcode": "TW8 9QT",
+      "latitude": "51.49081",
+      "longitude": "-0.28883",
+      "capacity": 17250,
+      "image_path": "https://cdn.sportmonks.com/images/core/venues/1/338817.png",
+      "city_name": "Brentford",
+      "surface": "grass",
+      "national_team": false
+    },
+    {
+      "id": 9999001,
+      "country_id": 32,
+      "city_id": 1,
+      "name": "Numeric zipcode venue (hand-made: JSON number instead of string)",
+      "address": "Calle Falsa 123",
+      "zipcode": 28036,
+      "capacity": 1000,
+      "city_name": "Madrid"
+    }
+  ]
+}

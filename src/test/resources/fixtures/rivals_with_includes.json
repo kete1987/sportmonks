@@ -1,0 +1,72 @@
+{
+  "data": [
+    {
+      "sport_id": 1,
+      "team_id": 83,
+      "rival_id": 7980,
+      "id": 123,
+      "rival": {
+        "id": 7980,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 140808,
+        "gender": "male",
+        "name": "Atlético de Madrid",
+        "short_code": "ATM",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/12/7980.png",
+        "founded": 1903,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-08 20:00:00"
+      },
+      "team": {
+        "id": 83,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 9236,
+        "gender": "male",
+        "name": "FC Barcelona",
+        "short_code": "BAR",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+        "founded": 1899,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-08 20:00:00"
+      }
+    },
+    {
+      "sport_id": 1,
+      "team_id": 83,
+      "rival_id": 3468,
+      "id": 833,
+      "rival": {
+        "id": 3468,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 2020,
+        "gender": "male",
+        "name": "Real Madrid",
+        "short_code": "RMA",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/12/3468.png",
+        "founded": 1902,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2022-01-16 18:30:00"
+      },
+      "team": {
+        "id": 83,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 9236,
+        "gender": "male",
+        "name": "FC Barcelona",
+        "short_code": "BAR",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+        "founded": 1899,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-08 20:00:00"
+      }
+    }
+  ]
+}
