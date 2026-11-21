@@ -1,0 +1,83 @@
+name: Release dry run
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-app:
+    if: github.ref == 'refs/heads/master' && github.actor == 'kete1987' && github.triggering_actor == 'kete1987'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: maven-central
+    steps:
+      - name: Verify the release app installation
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+  build-bundle:
+    if: github.ref == 'refs/heads/master' && github.actor == 'kete1987' && github.triggering_actor == 'kete1987'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6
+        with:
+          distribution: temurin
+          java-version: '11'
+          server-id: central
+          server-username-env-var: DRY_RUN_USERNAME
+          server-password-env-var: DRY_RUN_PASSWORD
+
+      - name: Build and verify the signed bundle
+        env:
+          DRY_RUN_USERNAME: dry-run
+          DRY_RUN_PASSWORD: dry-run
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          pom = Path("pom.xml")
+          original = pom.read_text(encoding="utf-8")
+          modified, changes = re.subn(
+              r"(?m)^    <version>([0-9]+\.[0-9]+\.[0-9]+)-SNAPSHOT</version>$",
+              r"    <version>\1-dry-run</version>",
+              original,
+              count=1,
+          )
+          if changes != 1:
+              raise SystemExit("Expected the project version to end in -SNAPSHOT")
+          pom.write_text(modified, encoding="utf-8")
+          PY
+
+          export GNUPGHOME
+          GNUPGHOME="$(mktemp -d)"
+          trap 'gpgconf --kill gpg-agent; rm -rf -- "$GNUPGHOME"' EXIT
+          gpg --batch --pinentry-mode loopback --passphrase '' \
+            --quick-generate-key 'Release Dry Run <release-dry-run@example.invalid>' rsa2048 sign 1d
+          export MAVEN_GPG_KEY
+          MAVEN_GPG_KEY="$(gpg --batch --armor --export-secret-keys release-dry-run@example.invalid)"
+
+          mvn --batch-mode --no-transfer-progress clean deploy \
+            -Dgpg.signer=bc -Dmaven.install.skip=true \
+            -DskipUpload=true -DcentralBaseUrl=http://127.0.0.1:1 \
+            -DcentralSnapshotsUrl=http://127.0.0.1:1
+
+          test -s target/central-publishing/central-bundle.zip
+          unzip -q target/central-publishing/central-bundle.zip -d target/bundle-verification
+          mapfile -d '' signatures < <(find target/bundle-verification -name '*.asc' -print0)
+          test "${#signatures[@]}" -eq 4
+          for signature in "${signatures[@]}"; do
+            gpg --batch --verify "$signature" "${signature%.asc}"
+          done
+          printf '%s\n' 'Built the Maven Central bundle and verified all four signatures.' >> "$GITHUB_STEP_SUMMARY"
