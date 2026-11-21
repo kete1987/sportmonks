@@ -17,10 +17,11 @@ import zipfile
 
 BASE = "master"
 BOT = "imoralesalo-bot[bot]"
-VERSION_RE = r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
-POM_VERSION = re.compile(r"(?m)^(    <version>)([^<]+)(</version>)$")
+VERSION = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)", re.ASCII)
+POM_VERSION = re.compile(r"(?m)^( {4}<version>)([^<]+)(</version>)$")
 STATE_MARKER = re.compile(r"(?m)^<!-- maven-release: (.+) -->$")
 BUNDLE = Path("candidate/target/central-publishing/central-bundle.zip")
+JSON = "application/json"
 
 
 class ReleaseError(Exception):
@@ -28,15 +29,15 @@ class ReleaseError(Exception):
 
 
 def run(*args):
-    return subprocess.check_output(args, text=True).strip()
+    return subprocess.check_output(args, encoding="utf-8").strip()
 
 
-def request(host, method, path, token, body=None, content_type="application/json", statuses=(200,)):
+def request(host, method, path, token, body=None, content_type=JSON, statuses=(200,)):
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": content_type,
         "User-Agent": "Maven library release (GitHub Actions)",
-        "Accept": "application/json",
+        "Accept": JSON,
     }
     if host == "api.github.com":
         headers["X-GitHub-Api-Version"] = "2022-11-28"
@@ -61,7 +62,7 @@ def github(path, method="GET", payload=None, statuses=(200,)):
     return None if status == 404 else json.loads(data)
 
 
-def central(path, method="GET", body=None, content_type="application/json", statuses=(200,)):
+def central(path, method="GET", body=None, content_type=JSON, statuses=(200,)):
     username = os.environ["MAVEN_CENTRAL_USERNAME"]
     password = os.environ["MAVEN_CENTRAL_PASSWORD"]
     if not username or not password:
@@ -103,7 +104,7 @@ def release_files(parent, old, new, update_readme):
     group, artifact, actual = coordinates(pom)
     if old is None:
         planned = actual.removesuffix("-SNAPSHOT")
-        if not actual.endswith("-SNAPSHOT") or not re.fullmatch(VERSION_RE, planned):
+        if not actual.endswith("-SNAPSHOT") or not VERSION.fullmatch(planned):
             raise ReleaseError(f"The POM must have a development SNAPSHOT version; found {actual}")
         if tuple(map(int, new.split("."))) < tuple(map(int, planned.split("."))):
             raise ReleaseError(f"Release {new} is older than the planned version {planned}")
@@ -174,46 +175,37 @@ def push(ref):
         "push", "origin", ref)
 
 
-def ensure_pull(branch, title, state, old, new, update_readme=False):
-    pull = find_pull(branch, state)
-    if pull and pull["merged_at"]:
-        return pull
-    if pull:
-        head = pull["head"]["sha"]
-    else:
-        ref = f"refs/heads/{branch}"
-        head = remote_heads(ref).get(ref)
-    if head:
-        run("git", "fetch", "origin", head)
-        parent = run("git", "rev-parse", f"{head}^")
-        expected = release_files(parent, old, new, update_readme)
-        changed = run("git", "diff", "--name-only", parent, head).splitlines()
-        if set(changed) != set(expected) or any(
-            run("git", "show", f"{head}:{name}") != content.strip()
-            for name, content in expected.items()
-        ):
-            raise ReleaseError(f"{branch} has unexpected changes. Check the branch and PR.")
-    else:
-        parent = refresh_base()
-        expected = release_files(parent, old, new, update_readme)
-        workflow_sha = run("git", "rev-parse", "HEAD")
-        run("git", "switch", "--detach", parent)
-        try:
-            for name, content in expected.items():
-                Path(name).write_text(content, encoding="utf-8")
-            run("git", "add", "--", *expected)
-            run("git", "-c", f"user.name={BOT}", "-c", f"user.email={BOT}@users.noreply.github.com",
-                "commit", "-m", title)
-            head = run("git", "rev-parse", "HEAD")
-            push(f"{head}:refs/heads/{branch}")
-        finally:
-            run("git", "switch", "--detach", workflow_sha)
-    if not pull:
-        pull = github(
-            "pulls", "POST", {"head": branch, "base": BASE, "title": title, "body": body(state)},
-            statuses=(201,),
-        )
-        read_state(pull, state)
+def check_branch(branch, head, old, new, update_readme):
+    run("git", "fetch", "origin", head)
+    parent = run("git", "rev-parse", f"{head}^")
+    expected = release_files(parent, old, new, update_readme)
+    changed = run("git", "diff", "--name-only", parent, head).splitlines()
+    if set(changed) != set(expected) or any(
+        run("git", "show", f"{head}:{name}") != content.strip()
+        for name, content in expected.items()
+    ):
+        raise ReleaseError(f"{branch} has unexpected changes. Check the branch and PR.")
+
+
+def push_version(ref, title, old, new, update_readme):
+    parent = refresh_base()
+    expected = release_files(parent, old, new, update_readme)
+    workflow_sha = run("git", "rev-parse", "HEAD")
+    run("git", "switch", "--detach", parent)
+    try:
+        for name, content in expected.items():
+            Path(name).write_text(content, encoding="utf-8")
+        run("git", "add", "--", *expected)
+        run("git", "-c", f"user.name={BOT}", "-c", f"user.email={BOT}@users.noreply.github.com",
+            "commit", "-m", title)
+        head = run("git", "rev-parse", "HEAD")
+        push(f"{head}:{ref}")
+        return head
+    finally:
+        run("git", "switch", "--detach", workflow_sha)
+
+
+def wait_for_merge(pull, head):
     number = pull["number"]
     print(f"Waiting for the required checks and auto-merge of {pull['html_url']}", flush=True)
     try:
@@ -232,6 +224,25 @@ def ensure_pull(branch, title, state, old, new, update_readme=False):
             raise ReleaseError(f"PR #{number} was closed without merging")
         time.sleep(10)
     raise ReleaseError(f"PR #{number} has not merged; check build, conflicts and auto-merge before retrying")
+
+
+def ensure_pull(branch, title, state, old, new, update_readme=False):
+    pull = find_pull(branch, state)
+    if pull and pull["merged_at"]:
+        return pull
+    ref = f"refs/heads/{branch}"
+    head = pull["head"]["sha"] if pull else remote_heads(ref).get(ref)
+    if head:
+        check_branch(branch, head, old, new, update_readme)
+    else:
+        head = push_version(ref, title, old, new, update_readme)
+    if not pull:
+        pull = github(
+            "pulls", "POST", {"head": branch, "base": BASE, "title": title, "body": body(state)},
+            statuses=(201,),
+        )
+        read_state(pull, state)
+    return wait_for_merge(pull, head)
 
 
 def output(**values):
@@ -262,41 +273,33 @@ def upload(bundle, name):
     return str(uuid.UUID(data.decode().strip()))
 
 
-def ensure_published(pull, state, group, artifact, version, sha, recovery_id, retry_upload):
-    number = pull["number"]
-    name = f"{group}:{artifact}:{version} @ {sha}"
-    purl = f"pkg:maven/{group}/{artifact}@{version}"
-    deployment_id = state.get("deployment")
-    if recovery_id and deployment_id and recovery_id != deployment_id:
-        raise ReleaseError(f"PR #{number} already records deployment {deployment_id}")
-    deployment_id = deployment_id or recovery_id
+def check_bundle(group, artifact, version):
+    with zipfile.ZipFile(BUNDLE) as bundle:
+        artifact_path = f"{group.replace('.', '/')}/{artifact}/{version}/{artifact}-{version}"
+        for extension in (".pom", ".jar", "-sources.jar", "-javadoc.jar"):
+            bundle.getinfo(artifact_path + extension)
+            bundle.getinfo(artifact_path + extension + ".asc")
+
+
+def select_deployment(pull, state, name, recovery_id, retry_upload):
+    recorded = state.get("deployment")
+    if recovery_id and recorded and recovery_id != recorded:
+        raise ReleaseError(f"PR #{pull['number']} already records deployment {recorded}")
+    deployment_id = recorded or recovery_id
     status = deployment_state(deployment_id, name) if deployment_id else None
     if retry_upload:
         failed = status and status["deploymentState"] == "FAILED"
         unrecorded = not deployment_id and state.get("upload_started")
         if not (failed or unrecorded):
             raise ReleaseError("retry_upload is only for failed or unrecorded uploads")
-        deployment_id = None
-        status = None
-    if not deployment_id:
-        if published(group, artifact, version):
-            raise ReleaseError("This version already exists in Central. Recover the original deployment ID.")
-        if state.get("upload_started") and not retry_upload:
-            raise ReleaseError("Previous upload has no recorded ID. Inspect the Portal and see docs/releasing.md.")
-        with zipfile.ZipFile(BUNDLE) as bundle:
-            artifact_path = f"{group.replace('.', '/')}/{artifact}/{version}/{artifact}-{version}"
-            for extension in (".pom", ".jar", "-sources.jar", "-javadoc.jar"):
-                bundle.getinfo(artifact_path + extension)
-                bundle.getinfo(artifact_path + extension + ".asc")
-        state["upload_started"] = True
-        state.pop("deployment", None)
-        github(f"pulls/{number}", "PATCH", {"body": body(state)})
-        print(f"Uploading deployment named {name}", flush=True)
-        deployment_id = upload(BUNDLE, name)
-    state["deployment"] = deployment_id
-    print(f"Sonatype deployment ID: {deployment_id}", flush=True)
-    github(f"pulls/{number}", "PATCH", {"body": body(state)})
+        return None
+    if state.get("upload_started") and not deployment_id:
+        raise ReleaseError("Previous upload has no recorded ID. Inspect the Portal and see docs/releasing.md.")
+    return deployment_id
 
+
+def wait_for_publication(deployment_id, name, group, artifact, version):
+    purl = f"pkg:maven/{group}/{artifact}@{version}"
     publish_requested = False
     deadline = time.monotonic() + 25 * 60
     while time.monotonic() < deadline:
@@ -305,79 +308,39 @@ def ensure_published(pull, state, group, artifact, version, sha, recovery_id, re
         print(f"Sonatype: {phase}", flush=True)
         if phase == "FAILED":
             raise ReleaseError(f"Sonatype validation failed for {deployment_id}. See the Portal for errors.")
-        if phase in {"VALIDATED", "PUBLISHED"}:
-            if set(status.get("purls") or []) != {purl}:
-                raise ReleaseError(f"Unexpected coordinates in Sonatype deployment {deployment_id}")
-            if phase == "PUBLISHED":
-                if published(group, artifact, version):
-                    return
-            elif not publish_requested:
-                central(f"deployment/{deployment_id}", "POST", statuses=(204,))
-                publish_requested = True
-        elif phase not in {"PENDING", "VALIDATING", "PUBLISHING"}:
+        if phase in {"VALIDATED", "PUBLISHED"} and set(status.get("purls") or []) != {purl}:
+            raise ReleaseError(f"Unexpected coordinates in Sonatype deployment {deployment_id}")
+        if phase == "PUBLISHED" and published(group, artifact, version):
+            return
+        if phase == "VALIDATED" and not publish_requested:
+            central(f"deployment/{deployment_id}", "POST", statuses=(204,))
+            publish_requested = True
+        if phase not in {"PENDING", "VALIDATING", "PUBLISHING", "VALIDATED", "PUBLISHED"}:
             raise ReleaseError(f"Unknown deployment state {phase}")
         time.sleep(10)
     raise ReleaseError(f"Timed out waiting for deployment {deployment_id}. Retry the same release to resume.")
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("phase", choices=("check", "prepare", "publish", "finish"))
-    options = parser.parse_args()
-    if options.phase != "check" and os.environ.get("RELEASE_MODE") != "publish":
-        raise ReleaseError("Release changes require publish mode")
-    version = os.environ["RELEASE_VERSION"]
-    next_version = os.environ["NEXT_VERSION"]
-    if not all(re.fullmatch(VERSION_RE, value) for value in (version, next_version)):
-        raise ReleaseError("version and next_version must use X.Y.Z without a v or -SNAPSHOT")
-    if tuple(map(int, next_version.split("."))) <= tuple(map(int, version.split("."))):
-        raise ReleaseError("next_version must be higher than version")
-    release_branch = f"release/v{version}"
-    expected = {"version": version, "next_version": next_version}
-    recovery_id = os.environ.get("RECOVERY_DEPLOYMENT_ID") or None
-    retry_upload = os.environ.get("RETRY_UPLOAD") == "true"
-    if recovery_id:
-        recovery_id = str(uuid.UUID(recovery_id))
-    if recovery_id and retry_upload:
-        raise ReleaseError("Choose either deployment_id or retry_upload")
-    base = refresh_base()
-    pull = find_pull(release_branch, expected)
-    state = read_state(pull, expected) if pull else expected.copy()
+def ensure_published(pull, state, group, artifact, version, sha, recovery_id, retry_upload):
+    number = pull["number"]
+    name = f"{group}:{artifact}:{version} @ {sha}"
+    deployment_id = select_deployment(pull, state, name, recovery_id, retry_upload)
+    if not deployment_id:
+        if published(group, artifact, version):
+            raise ReleaseError("This version already exists in Central. Recover the original deployment ID.")
+        check_bundle(group, artifact, version)
+        state["upload_started"] = True
+        state.pop("deployment", None)
+        github(f"pulls/{number}", "PATCH", {"body": body(state)})
+        print(f"Uploading deployment named {name}", flush=True)
+        deployment_id = upload(BUNDLE, name)
+    state["deployment"] = deployment_id
+    print(f"Sonatype deployment ID: {deployment_id}", flush=True)
+    github(f"pulls/{number}", "PATCH", {"body": body(state)})
+    wait_for_publication(deployment_id, name, group, artifact, version)
 
-    if options.phase == "check":
-        current = coordinates(pom_at(base))[2]
-        if pull and pull["merged_at"]:
-            sha = pull["merge_commit_sha"]
-            run("git", "merge-base", "--is-ancestor", sha, base)
-            group, artifact, actual = coordinates(pom_at(sha))
-            if actual != version:
-                raise ReleaseError(f"Release commit {sha} has version {actual}, expected {version}")
-        else:
-            if recovery_id or retry_upload:
-                raise ReleaseError("Upload recovery requires the original merged release PR")
-            group, artifact, _ = coordinates(pom_at(base))
-            release_files(base, None, version, True)
-        if state.get("upload_started") and not state.get("deployment") and not recovery_id and not retry_upload:
-            raise ReleaseError("Previous upload has no recorded ID. Inspect the Portal and see docs/releasing.md.")
-        if published(group, artifact, version) and not state.get("deployment") and not recovery_id:
-            raise ReleaseError("This version already exists in Central without a recorded deployment")
-        tag_ref = f"refs/tags/v{version}"
-        tag_heads = remote_heads(tag_ref)
-        tagged = tag_heads.get(f"{tag_ref}^{{}}") or tag_heads.get(tag_ref)
-        if tagged and (not pull or not pull["merged_at"] or tagged != pull["merge_commit_sha"]):
-            raise ReleaseError(f"Tag v{version} already exists on a different commit")
-        print(f"Checked {group}:{artifact}:{version}; {BASE} is {current}; next is {next_version}-SNAPSHOT")
-        return
 
-    if options.phase == "prepare":
-        pull = ensure_pull(release_branch, f"Release {version}", expected, None, version, True)
-        state = read_state(pull, expected)
-        output(
-            sha=pull["merge_commit_sha"],
-            bundle=str(retry_upload or not (recovery_id or state.get("deployment"))).lower(),
-        )
-        return
-
+def merged_candidate(pull, base, version):
     if not pull or not pull["merged_at"]:
         raise ReleaseError("The release PR must merge before publishing")
     sha = pull["merge_commit_sha"]
@@ -385,18 +348,42 @@ def main():
     group, artifact, actual = coordinates(pom_at(sha))
     if actual != version:
         raise ReleaseError(f"Release commit {sha} has version {actual}, expected {version}")
-    if options.phase == "publish":
-        ensure_published(pull, state, group, artifact, version, sha, recovery_id, retry_upload)
-        return
+    return sha, group, artifact
 
-    tag = f"v{version}"
+
+def tag_target(tag):
     ref = f"refs/tags/{tag}"
     heads = remote_heads(ref)
-    tagged = heads.get(f"{ref}^{{}}") or heads.get(ref)
+    return heads.get(f"{ref}^{{}}") or heads.get(ref)
+
+
+def check_release(base, pull, state, version, next_version, recovery_id, retry_upload):
+    group, artifact, current = coordinates(pom_at(base))
+    sha = None
+    if pull and pull["merged_at"]:
+        sha, group, artifact = merged_candidate(pull, base, version)
+    else:
+        if recovery_id or retry_upload:
+            raise ReleaseError("Upload recovery requires the original merged release PR")
+        release_files(base, None, version, True)
+    if state.get("upload_started") and not state.get("deployment") and not recovery_id and not retry_upload:
+        raise ReleaseError("Previous upload has no recorded ID. Inspect the Portal and see docs/releasing.md.")
+    if published(group, artifact, version) and not state.get("deployment") and not recovery_id:
+        raise ReleaseError("This version already exists in Central without a recorded deployment")
+    tag = f"v{version}"
+    tagged = tag_target(tag)
+    if tagged and tagged != sha:
+        raise ReleaseError(f"Tag {tag} already exists on a different commit")
+    print(f"Checked {group}:{artifact}:{version}; {BASE} is {current}; next is {next_version}-SNAPSHOT")
+
+
+def finish_release(sha, version, next_version, expected):
+    tag = f"v{version}"
+    tagged = tag_target(tag)
     if tagged and tagged != sha:
         raise ReleaseError(f"Tag {tag} points to another commit")
     if not tagged:
-        push(f"{sha}:{ref}")
+        push(f"{sha}:refs/tags/{tag}")
     release = github(f"releases/tags/{tag}", statuses=(200, 404))
     if release is None:
         run("gh", "release", "create", tag, "--repo", os.environ["GITHUB_REPOSITORY"],
@@ -413,6 +400,50 @@ def main():
     if snapshot_version != f"{next_version}-SNAPSHOT":
         raise ReleaseError(f"Snapshot PR merged with unexpected version {snapshot_version}")
     print(f"Release {tag} published. Development continues at {snapshot_version}.")
+
+
+def release_inputs(phase):
+    if phase != "check" and os.environ.get("RELEASE_MODE") != "publish":
+        raise ReleaseError("Release changes require publish mode")
+    version = os.environ["RELEASE_VERSION"]
+    next_version = os.environ["NEXT_VERSION"]
+    if not all(VERSION.fullmatch(value) for value in (version, next_version)):
+        raise ReleaseError("version and next_version must use X.Y.Z without a v or -SNAPSHOT")
+    if tuple(map(int, next_version.split("."))) <= tuple(map(int, version.split("."))):
+        raise ReleaseError("next_version must be higher than version")
+    recovery_id = os.environ.get("RECOVERY_DEPLOYMENT_ID") or None
+    retry_upload = os.environ.get("RETRY_UPLOAD") == "true"
+    if recovery_id and retry_upload:
+        raise ReleaseError("Choose either deployment_id or retry_upload")
+    return version, next_version, str(uuid.UUID(recovery_id)) if recovery_id else None, retry_upload
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("phase", choices=("check", "prepare", "publish", "finish"))
+    phase = parser.parse_args().phase
+    version, next_version, recovery_id, retry_upload = release_inputs(phase)
+    release_branch = f"release/v{version}"
+    expected = {"version": version, "next_version": next_version}
+    base = refresh_base()
+    pull = find_pull(release_branch, expected)
+    state = read_state(pull, expected) if pull else expected.copy()
+
+    if phase == "check":
+        check_release(base, pull, state, version, next_version, recovery_id, retry_upload)
+    elif phase == "prepare":
+        pull = ensure_pull(release_branch, f"Release {version}", expected, None, version, True)
+        state = read_state(pull, expected)
+        output(
+            sha=pull["merge_commit_sha"],
+            bundle=str(retry_upload or not (recovery_id or state.get("deployment"))).lower(),
+        )
+    else:
+        sha, group, artifact = merged_candidate(pull, base, version)
+        if phase == "publish":
+            ensure_published(pull, state, group, artifact, version, sha, recovery_id, retry_upload)
+        else:
+            finish_release(sha, version, next_version, expected)
 
 
 if __name__ == "__main__":
