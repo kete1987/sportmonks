@@ -6,7 +6,16 @@ public class StatisticsDataValue {
     public StatisticsDataValue() {
     }
 
+    /**
+     * Valor truncado a entero. Devuelve {@code null} si la API no envía valor.
+     * Para estadísticas con decimales (xG, porcentajes) usa {@link #getDoubleValue()}.
+     */
     public Long getValue() {
-        return value.longValue();
+        return value == null ? null : value.longValue();
+    }
+
+    /** Valor sin pérdida de decimales, o {@code null} si la API no envía valor. */
+    public Double getDoubleValue() {
+        return value;
     }
 }

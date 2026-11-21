@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": 19732648,
+    "name": "FC Barcelona vs Real Madrid",
+    "statistics": [
+      { "id": 1, "fixture_id": 19732648, "type_id": 42, "participant_id": 9, "data": { "value": 14 }, "location": "home" },
+      { "id": 2, "fixture_id": 19732648, "type_id": 5304, "participant_id": 9, "data": { "value": 2.37 }, "location": "home" },
+      { "id": 3, "fixture_id": 19732648, "type_id": 5305, "participant_id": 10, "data": { "value": null }, "location": "away" },
+      { "id": 4, "fixture_id": 19732648, "type_id": 45, "participant_id": 10, "data": {}, "location": "away" }
+    ]
+  }
+}
