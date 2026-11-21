@@ -381,9 +381,6 @@ public class SportMonksAPI {
     public List<SeasonStatistic> getSeasonStatistics(SeasonStatisticEntity entity, long id, String... includes) throws IOException, SportMonksException { return football.getSeasonStatistics(entity, id, includes); }
     /** @see FootballApi#getSeasonStatistics(SeasonStatisticEntity, long, int, String...) */
     public List<SeasonStatistic> getSeasonStatistics(SeasonStatisticEntity entity, long id, int limit, String... includes) throws IOException, SportMonksException { return football.getSeasonStatistics(entity, id, limit, includes); }
-    /** @deprecated see {@link FootballApi#getSeasonStatsByParticipant(long, String...)}; use {@link #getSeasonStatistics(SeasonStatisticEntity, long, String...)}. */
-    @Deprecated(since = "3.5.0", forRemoval = true)
-    public List<Statistic> getSeasonStatsByParticipant(long participantId, String... includes) throws IOException, SportMonksException { return football.getSeasonStatsByParticipant(participantId, includes); }
     public List<Statistic> getStatsByStage(long stageId, String... includes) throws IOException, SportMonksException { return football.getStatsByStage(stageId, includes); }
     /** Stage statistics capped at {@code limit}. */
     public List<Statistic> getStatsByStage(long stageId, int limit, String... includes) throws IOException, SportMonksException { return football.getStatsByStage(stageId, limit, includes); }

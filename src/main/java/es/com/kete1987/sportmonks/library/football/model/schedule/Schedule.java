@@ -36,8 +36,6 @@ public class Schedule {
     private Boolean gamesInCurrentWeek;
     @SerializedName("tie_breaker_rule_id")
     private Long tieBreakerRuleId;
-    @SerializedName("team_id")
-    private Long teamId;
     private List<StageAggregate> aggregates;
     private List<Round> rounds;
 
@@ -96,16 +94,6 @@ public class Schedule {
 
     public Long getTieBreakerRuleId() {
         return tieBreakerRuleId;
-    }
-
-    /**
-     * @deprecated the {@code schedules/*} endpoints return stages, which carry no {@code team_id}:
-     * this is always {@code null} against the real API. The team is the one you requested; each
-     * fixture lists its participants.
-     */
-    @Deprecated(since = "3.5.0", forRemoval = true)
-    public Long getTeamId() {
-        return teamId;
     }
 
     /** Aggregates of the stage (two-legged ties); empty or {@code null} for league stages. */

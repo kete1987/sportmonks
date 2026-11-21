@@ -45,14 +45,6 @@ class ScheduleApiTest extends BaseApiTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    void getSchedulesBySeason_teamIdIsNotSentByTheApi() throws IOException, SportMonksException {
-        enqueue("schedules.json");
-
-        assertNull(api.getSchedulesBySeason(27965L).get(0).getTeamId());
-    }
-
-    @Test
     void getSchedulesBySeason_roundsAreParsed() throws IOException, SportMonksException {
         enqueue("schedules.json");
 

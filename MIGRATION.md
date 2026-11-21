@@ -1,6 +1,6 @@
 # Migration Guide
 
-## Unreleased: FootballApi routes, pagination and models (#82)
+## 3.5.0 (unreleased): FootballApi routes, pagination and models (#82)
 
 **Season statistics.** `getSeasonStatsByParticipant(id)` called
 `statistics/seasons/participants/{id}`, which the API always rejected with 422, so it never
@@ -18,9 +18,9 @@ List<SeasonStatistic> seasons = api.getSeasonStatistics(SeasonStatisticEntity.TE
 Statistic corners = seasons.get(0).getDetailByTypeId(34);
 ```
 
-`getSeasonStatsByParticipant` is kept, deprecated for removal: it now reads the season
-statistics of the **team** with that id and returns all their details flattened, so only
-`id`, `typeId` and `value` are set and the season of each value is lost.
+**Breaking: `getSeasonStatsByParticipant` is removed.** It never returned data (the route it
+called always answered 422), so no working caller can depend on it; use
+`getSeasonStatistics(SeasonStatisticEntity.TEAMS, id)` instead.
 
 **`Statistic`** gains `getModelId()` and `getRelationId()` (`statistics/stages|rounds/{id}`).
 No getter was removed.

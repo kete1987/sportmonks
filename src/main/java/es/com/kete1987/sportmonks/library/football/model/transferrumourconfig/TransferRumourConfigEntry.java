@@ -14,9 +14,6 @@ public class TransferRumourConfigEntry {
     @SerializedName("stat_group")
     private String statGroup;
 
-    public TransferRumourConfigEntry() {
-    }
-
     public Long getId() {
         return id;
     }

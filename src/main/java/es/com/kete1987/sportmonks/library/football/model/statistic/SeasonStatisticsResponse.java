@@ -16,9 +16,6 @@ public class SeasonStatisticsResponse {
     private RateLimit rateLimit;
     private String timezone;
 
-    public SeasonStatisticsResponse() {
-    }
-
     public List<SeasonStatistic> getData() {
         return ModelCollections.unmodifiable(data);
     }

@@ -643,23 +643,6 @@ public class FootballApi extends SportMonksApiBase {
         return fetchPaged(url, SeasonStatisticsResponse.class, SeasonStatisticsResponse::getData, SeasonStatisticsResponse::getPagination, limit);
     }
 
-    /**
-     * @deprecated called {@code statistics/seasons/participants/{id}}, which the API rejects with
-     * 422. It now reads the season statistics of the <em>team</em> {@code participantId} and
-     * returns their {@link SeasonStatistic#getDetails() details} flattened into one list, so only
-     * {@code id}, {@code typeId} and {@code value} are set and the season of each value is lost.
-     * Use {@link #getSeasonStatistics(SeasonStatisticEntity, long, String...)}, which also covers
-     * players, coaches and referees.
-     */
-    @Deprecated(since = "3.5.0", forRemoval = true)
-    public List<Statistic> getSeasonStatsByParticipant(long participantId, String... includes) throws IOException, SportMonksException {
-        List<Statistic> details = new ArrayList<>();
-        for (SeasonStatistic season : getSeasonStatistics(SeasonStatisticEntity.TEAMS, participantId, includes)) {
-            details.addAll(dataOrEmpty(season, SeasonStatistic::getDetails));
-        }
-        return details;
-    }
-
     public List<Statistic> getStatsByStage(long stageId, String... includes) throws IOException, SportMonksException {
         return getStatsByStage(stageId, 0, includes);
     }

@@ -85,21 +85,6 @@ class StatisticsApiTest extends BaseApiTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    void getSeasonStatsByParticipant_readsTeamStatisticsAndFlattensTheDetails() throws IOException, SportMonksException, InterruptedException {
-        enqueue("season_statistics_teams.json");
-        enqueue("season_statistics_teams_page2.json");
-
-        List<Statistic> stats = api.getSeasonStatsByParticipant(676L);
-
-        assertEquals("/statistics/seasons/teams/676", server.takeRequest().getRequestUrl().encodedPath());
-        assertEquals(3, stats.size());
-        assertEquals(34L, stats.get(0).getTypeId());
-        assertNotNull(stats.get(0).getValue());
-        assertEquals(52L, stats.get(2).getTypeId());
-    }
-
-    @Test
     void getStatsByStage_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("statistics.json");
 

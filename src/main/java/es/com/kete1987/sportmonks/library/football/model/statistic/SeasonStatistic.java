@@ -32,9 +32,6 @@ public class SeasonStatistic {
     private Integer jerseyNumber;
     private List<Statistic> details;
 
-    public SeasonStatistic() {
-    }
-
     public Long getId() {
         return id;
     }

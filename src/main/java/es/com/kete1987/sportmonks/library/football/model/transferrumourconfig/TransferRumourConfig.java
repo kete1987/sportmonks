@@ -14,9 +14,6 @@ public class TransferRumourConfig {
     private List<TransferRumourConfigEntry> transfers;
     private List<TransferRumourConfigEntry> statuses;
 
-    public TransferRumourConfig() {
-    }
-
     public List<TransferRumourConfigEntry> getFee() {
         return ModelCollections.unmodifiable(fee);
     }

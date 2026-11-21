@@ -9,6 +9,12 @@ import es.com.kete1987.sportmonks.library.football.model.schedule.Schedule;
 import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatistic;
 import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatisticEntity;
 import es.com.kete1987.sportmonks.library.football.model.statistic.Statistic;
+import es.com.kete1987.sportmonks.library.football.model.team.Team;
+import es.com.kete1987.sportmonks.library.football.model.referee.Referee;
+import es.com.kete1987.sportmonks.library.football.model.coach.Coach;
+import es.com.kete1987.sportmonks.library.football.model.rival.Rival;
+import es.com.kete1987.sportmonks.library.football.model.comments.Comment;
+import es.com.kete1987.sportmonks.library.football.model.player.Player;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +24,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -129,19 +134,6 @@ class FootballApiIntegrationTest {
     // -------------------------------------------------------------------------
 
     @Test
-    @SuppressWarnings("deprecation")
-    void getSeasonStatsByParticipant_hitsAValidRouteAndKeepsTheValues() throws IOException, SportMonksException {
-        AtomicReference<List<Statistic>> holder = new AtomicReference<>();
-        assertRouteExists("statistics/seasons/participants", () -> holder.set(api.getSeasonStatsByParticipant(TEAM_ID)));
-
-        List<Statistic> stats = holder.get();
-        assertNotNull(stats, "no statistics returned");
-        assertFalse(stats.isEmpty());
-        assertNotNull(stats.get(0).getTypeId(), "type_id lost by the model");
-        assertNotNull(stats.get(0).getValue(), "value lost by the model");
-    }
-
-    @Test
     void getSeasonStatistics_ofATeam_keepsSeasonAndDetails() throws IOException, SportMonksException {
         List<SeasonStatistic> seasons = api.getSeasonStatistics(SeasonStatisticEntity.TEAMS, TEAM_ID, 3);
 
@@ -248,37 +240,37 @@ class FootballApiIntegrationTest {
 
     @Test
     void getTeamsByCountry_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.getTeamsByCountry(SPAIN_ID, ACROSS_PAGES), t -> t.getId());
+        assertFillsLimitAcrossPages(api.getTeamsByCountry(SPAIN_ID, ACROSS_PAGES), Team::getId);
     }
 
     @Test
     void getRefereesByCountry_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.getRefereesByCountry(SPAIN_ID, ACROSS_PAGES), r -> r.getId());
+        assertFillsLimitAcrossPages(api.getRefereesByCountry(SPAIN_ID, ACROSS_PAGES), Referee::getId);
     }
 
     @Test
     void getCoachesByCountry_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.getCoachesByCountry(SPAIN_ID, ACROSS_PAGES), c -> c.getId());
+        assertFillsLimitAcrossPages(api.getCoachesByCountry(SPAIN_ID, ACROSS_PAGES), Coach::getId);
     }
 
     @Test
     void getAllVenues_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(venuesOrSkip(() -> api.getAllVenues(ACROSS_PAGES)), v -> v.getId());
+        assertFillsLimitAcrossPages(venuesOrSkip(() -> api.getAllVenues(ACROSS_PAGES)), Venue::getId);
     }
 
     @Test
     void searchVenues_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(venuesOrSkip(() -> api.searchVenues("Estadio", ACROSS_PAGES)), v -> v.getId());
+        assertFillsLimitAcrossPages(venuesOrSkip(() -> api.searchVenues("Estadio", ACROSS_PAGES)), Venue::getId);
     }
 
     @Test
     void getAllRivals_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.getAllRivals(ACROSS_PAGES), r -> r.getId());
+        assertFillsLimitAcrossPages(api.getAllRivals(ACROSS_PAGES), Rival::getId);
     }
 
     @Test
     void getAllCommentaries_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.getAllCommentaries(ACROSS_PAGES), c -> c.getId());
+        assertFillsLimitAcrossPages(api.getAllCommentaries(ACROSS_PAGES), Comment::getId);
     }
 
     @Test
@@ -298,27 +290,27 @@ class FootballApiIntegrationTest {
 
     @Test
     void searchTeams_withoutLimit_walksEveryPage() throws IOException, SportMonksException {
-        assertMoreThanOnePage(api.searchTeams("united"), t -> t.getId());
+        assertMoreThanOnePage(api.searchTeams("united"), Team::getId);
     }
 
     @Test
     void searchPlayers_withoutLimit_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.searchPlayers("silva", ACROSS_PAGES), p -> p.getId());
+        assertFillsLimitAcrossPages(api.searchPlayers("silva", ACROSS_PAGES), Player::getId);
     }
 
     @Test
     void searchCoaches_walksEveryPage() throws IOException, SportMonksException {
-        assertMoreThanOnePage(api.searchCoaches("garcia"), c -> c.getId());
+        assertMoreThanOnePage(api.searchCoaches("garcia"), Coach::getId);
     }
 
     @Test
     void searchReferees_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.searchReferees("garcia", ACROSS_PAGES), r -> r.getId());
+        assertFillsLimitAcrossPages(api.searchReferees("garcia", ACROSS_PAGES), Referee::getId);
     }
 
     @Test
     void getRefereesBySeason_walksEveryPage() throws IOException, SportMonksException {
-        assertFillsLimitAcrossPages(api.getRefereesBySeason(SEASON_ID, ACROSS_PAGES), r -> r.getId());
+        assertFillsLimitAcrossPages(api.getRefereesBySeason(SEASON_ID, ACROSS_PAGES), Referee::getId);
     }
 
     @Test
