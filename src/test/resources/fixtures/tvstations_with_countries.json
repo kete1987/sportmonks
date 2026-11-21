@@ -1,0 +1,85 @@
+{
+  "data": [
+    {
+      "id": 33,
+      "name": "Star+",
+      "url": "https://www.starplus.com/",
+      "image_path": "https://cdn.sportmonks.com/images/core/tvstations/1/33.png",
+      "type": "tv",
+      "related_id": null,
+      "countries": [
+        {
+          "id": 5,
+          "continent_id": 7,
+          "name": "Brazil",
+          "official_name": "Federative Republic of Brazil",
+          "fifa_name": "BRA",
+          "iso2": "BR",
+          "iso3": "BRA",
+          "latitude": "-10.81045150756836",
+          "longitude": "-52.97311782836914",
+          "borders": [
+            "ARG",
+            "BOL"
+          ],
+          "image_path": "https://cdn.sportmonks.com/images/countries/png/short/br.png"
+        },
+        {
+          "id": 44,
+          "continent_id": 7,
+          "name": "Argentina",
+          "official_name": "Argentine Republic",
+          "fifa_name": "ARG",
+          "iso2": "AR",
+          "iso3": "ARG",
+          "latitude": "-37.071964263916016",
+          "longitude": "-64.85450744628906",
+          "borders": [
+            "BOL",
+            "BRA"
+          ],
+          "image_path": "https://cdn.sportmonks.com/images/countries/png/short/ar.png"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Viaplay",
+      "url": "https://www.viaplay.com",
+      "image_path": "https://cdn.sportmonks.com/images/core/tvstations/2/34.png",
+      "type": "tv",
+      "related_id": null,
+      "countries": [
+        {
+          "id": 38,
+          "continent_id": 1,
+          "name": "Netherlands",
+          "official_name": "Netherlands",
+          "fifa_name": "NED",
+          "iso2": "NL",
+          "iso3": "NLD",
+          "latitude": "52.34225845336914",
+          "longitude": "5.5281572341918945",
+          "borders": [
+            "BEL",
+            "DEU"
+          ],
+          "image_path": "https://cdn.sportmonks.com/images/countries/png/short/nl.png"
+        },
+        {
+          "id": 1796,
+          "continent_id": 1,
+          "name": "Iceland",
+          "official_name": "Iceland",
+          "fifa_name": "ISL",
+          "iso2": "IS",
+          "iso3": "ISL",
+          "latitude": "64.9285659790039",
+          "longitude": "-18.961700439453125",
+          "borders": [],
+          "image_path": "https://cdn.sportmonks.com/images/countries/png/short/is.png"
+        }
+      ]
+    }
+  ]
+}

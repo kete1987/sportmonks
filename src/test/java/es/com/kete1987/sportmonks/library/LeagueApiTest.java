@@ -44,7 +44,7 @@ class LeagueApiTest extends BaseApiTest {
         assertEquals("domestic", first.getSubType());
         // fields not in fixture — should be null
         assertNull(first.getImagePath());
-        assertNull(first.getLastPlayerdAt());
+        assertNull(first.getLastPlayedAt());
         assertNull(first.getHasJerseys());
         assertNull(first.getSeasons());
         assertNull(first.getCurrentseason());

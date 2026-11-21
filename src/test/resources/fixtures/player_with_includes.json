@@ -1,0 +1,201 @@
+{
+  "data": {
+    "id": 580,
+    "sport_id": 1,
+    "country_id": 20,
+    "nationality_id": 20,
+    "city_id": 30532,
+    "position_id": 27,
+    "detailed_position_id": 151,
+    "type_id": 27,
+    "common_name": "C. Ronaldo",
+    "firstname": "Cristiano Ronaldo",
+    "lastname": "dos Santos Aveiro",
+    "name": "Cristiano Ronaldo dos Santos Aveiro",
+    "display_name": "Cristiano Ronaldo",
+    "image_path": "https://cdn.sportmonks.com/images/soccer/players/4/580.png",
+    "height": 185,
+    "weight": 83,
+    "date_of_birth": "1985-02-05",
+    "gender": "male",
+    "city": {
+      "id": 30532,
+      "country_id": 20,
+      "region_id": 1682,
+      "name": "Funchal",
+      "latitude": "32.633333",
+      "longitude": "-16.9"
+    },
+    "country": {
+      "id": 20,
+      "continent_id": 1,
+      "name": "Portugal",
+      "official_name": "Portuguese Republic",
+      "fifa_name": "POR",
+      "iso2": "PT",
+      "iso3": "PRT",
+      "latitude": "39.64200973510742",
+      "longitude": "-8.009422302246094",
+      "borders": [
+        "ESP"
+      ],
+      "image_path": "https://cdn.sportmonks.com/images/countries/png/short/pt.png"
+    },
+    "nationality": {
+      "id": 20,
+      "continent_id": 1,
+      "name": "Portugal",
+      "official_name": "Portuguese Republic",
+      "fifa_name": "POR",
+      "iso2": "PT",
+      "iso3": "PRT",
+      "latitude": "39.64200973510742",
+      "longitude": "-8.009422302246094",
+      "borders": [
+        "ESP"
+      ],
+      "image_path": "https://cdn.sportmonks.com/images/countries/png/short/pt.png"
+    },
+    "position": {
+      "id": 27,
+      "name": "Attacker",
+      "code": "attacker",
+      "developer_name": "ATTACKER",
+      "model_type": "position",
+      "stat_group": null
+    },
+    "detailedposition": {
+      "id": 151,
+      "name": "Centre Forward",
+      "code": "centre-forward",
+      "developer_name": "CENTRE_FORWARD",
+      "model_type": "position",
+      "stat_group": null
+    },
+    "teams": [
+      {
+        "id": 497617,
+        "transfer_id": null,
+        "player_id": 580,
+        "team_id": 2506,
+        "position_id": 27,
+        "detailed_position_id": 151,
+        "start": "2023-01-01",
+        "end": "2027-06-30",
+        "captain": true,
+        "jersey_number": 7
+      }
+    ],
+    "transfers": [
+      {
+        "id": 63539,
+        "sport_id": 1,
+        "player_id": 580,
+        "type_id": 219,
+        "from_team_id": 58,
+        "to_team_id": 14,
+        "position_id": 27,
+        "detailed_position_id": null,
+        "date": "2003-08-12",
+        "career_ended": false,
+        "completed": true,
+        "amount": 19000000
+      },
+      {
+        "id": 63538,
+        "sport_id": 1,
+        "player_id": 580,
+        "type_id": 219,
+        "from_team_id": 14,
+        "to_team_id": 3468,
+        "position_id": 27,
+        "detailed_position_id": null,
+        "date": "2009-07-06",
+        "career_ended": false,
+        "completed": true,
+        "amount": 94000000
+      }
+    ],
+    "pendingtransfers": [],
+    "statistics": [
+      {
+        "id": 27259756,
+        "player_id": 580,
+        "team_id": 14,
+        "season_id": 6,
+        "has_values": true,
+        "position_id": 27,
+        "jersey_number": 7
+      },
+      {
+        "id": 27260799,
+        "player_id": 580,
+        "team_id": 14,
+        "season_id": 8,
+        "has_values": true,
+        "position_id": 27,
+        "jersey_number": 7
+      }
+    ],
+    "latest": [
+      {
+        "id": 14675165945,
+        "sport_id": 1,
+        "fixture_id": 19778769,
+        "player_id": 580,
+        "team_id": 2506,
+        "position_id": 27,
+        "formation_field": "5:1",
+        "type_id": 11,
+        "formation_position": 11,
+        "player_name": "Cristiano Ronaldo",
+        "jersey_number": 7
+      },
+      {
+        "id": 14675084452,
+        "sport_id": 1,
+        "fixture_id": 19778759,
+        "player_id": 580,
+        "team_id": 2506,
+        "position_id": 27,
+        "formation_field": "5:1",
+        "type_id": 11,
+        "formation_position": 11,
+        "player_name": "Cristiano Ronaldo",
+        "jersey_number": 7
+      }
+    ],
+    "metadata": [
+      {
+        "id": 145194,
+        "metadatable_id": 580,
+        "type_id": 229,
+        "value_type": "string",
+        "values": "right"
+      }
+    ],
+    "trophies": [
+      {
+        "id": 79870,
+        "participant_id": 580,
+        "team_id": 14,
+        "league_id": 8,
+        "season_id": 6,
+        "trophy_id": 1
+      },
+      {
+        "id": 79989,
+        "participant_id": 580,
+        "team_id": 14,
+        "league_id": 8,
+        "season_id": 8,
+        "trophy_id": 1
+      }
+    ],
+    "sport": {
+      "id": 1,
+      "name": "Football",
+      "code": "football"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "data": [
+    {
+      "id": 455361,
+      "player_id": 455361,
+      "sport_id": 1,
+      "country_id": 32,
+      "nationality_id": 32,
+      "city_id": null,
+      "common_name": "Josep Guardiola",
+      "firstname": "Josep",
+      "lastname": "Guardiola i Sala",
+      "name": "Josep Guardiola i Sala",
+      "display_name": "Pep Guardiola",
+      "image_path": "https://cdn.sportmonks.com/images/soccer/players/1/455361.png",
+      "height": 180,
+      "weight": 70,
+      "date_of_birth": "1971-01-18",
+      "gender": "male",
+      "country": {
+        "id": 32,
+        "continent_id": 1,
+        "name": "Spain",
+        "official_name": "Kingdom of Spain",
+        "fifa_name": "ESP",
+        "iso2": "ES",
+        "iso3": "ESP",
+        "latitude": "40.396026611328125",
+        "longitude": "-3.550692558288574",
+        "borders": [
+          "AND"
+        ],
+        "image_path": "https://cdn.sportmonks.com/images/countries/png/short/es.png"
+      },
+      "nationality": {
+        "id": 32,
+        "continent_id": 1,
+        "name": "Spain",
+        "official_name": "Kingdom of Spain",
+        "fifa_name": "ESP",
+        "iso2": "ES",
+        "iso3": "ESP",
+        "latitude": "40.396026611328125",
+        "longitude": "-3.550692558288574",
+        "borders": [
+          "AND"
+        ],
+        "image_path": "https://cdn.sportmonks.com/images/countries/png/short/es.png"
+      },
+      "teams": [
+        {
+          "id": 23053,
+          "team_id": 9,
+          "coach_id": 455361,
+          "position_id": 221,
+          "active": false,
+          "start": "2016-07-01",
+          "end": "2026-06-30",
+          "temporary": false
+        }
+      ],
+      "statistics": [
+        {
+          "id": 219000,
+          "coach_id": 455361,
+          "team_id": 9,
+          "season_id": 9
+        }
+      ]
+    }
+  ]
+}

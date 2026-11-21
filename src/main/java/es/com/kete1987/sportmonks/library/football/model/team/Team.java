@@ -1,6 +1,11 @@
 package es.com.kete1987.sportmonks.library.football.model.team;
 
+import es.com.kete1987.sportmonks.library.football.model.league.Country;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
+import es.com.kete1987.sportmonks.library.football.model.seasonstats.ParticipantSeasonStats;
+import es.com.kete1987.sportmonks.library.football.model.sport.Sport;
+import es.com.kete1987.sportmonks.library.football.model.trophy.Trophy;
+import org.jetbrains.annotations.Nullable;
 import es.com.kete1987.sportmonks.library.football.model.player.Sidelined;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
@@ -36,6 +41,14 @@ public class Team {
     private List<SeasonData> activeseasons;
     private List<Sidelined> sidelined;
     private List<Sidelined> sidelinedhistory;
+    private List<TeamCoach> coaches;
+    private Country country;
+    private List<TeamRankingEntry> rankings;
+    private List<Team> rivals;
+    private List<TeamSocial> socials;
+    private Sport sport;
+    private List<ParticipantSeasonStats> statistics;
+    private List<Trophy> trophies;
 
     private TeamMeta meta;
 
@@ -124,5 +137,53 @@ public class Team {
 
     public List<Sidelined> getSidelinedhistory() {
         return ModelCollections.unmodifiable(sidelinedhistory);
+    }
+
+    /** @return the coaching spells, or null if the {@code coaches} include is absent. */
+    @Nullable
+    public List<TeamCoach> getCoaches() {
+        return ModelCollections.unmodifiable(coaches);
+    }
+
+    /** @return the country, or null if the {@code country} include is absent. */
+    @Nullable
+    public Country getCountry() {
+        return country;
+    }
+
+    /** @return the rankings, or null if the {@code rankings} include is absent. */
+    @Nullable
+    public List<TeamRankingEntry> getRankings() {
+        return ModelCollections.unmodifiable(rankings);
+    }
+
+    /** @return the rival teams, or null if the {@code rivals} include is absent. */
+    @Nullable
+    public List<Team> getRivals() {
+        return ModelCollections.unmodifiable(rivals);
+    }
+
+    /** @return the social accounts, or null if the {@code socials} include is absent. */
+    @Nullable
+    public List<TeamSocial> getSocials() {
+        return ModelCollections.unmodifiable(socials);
+    }
+
+    /** @return the sport, or null if the {@code sport} include is absent. */
+    @Nullable
+    public Sport getSport() {
+        return sport;
+    }
+
+    /** @return the seasons that have statistics, or null if the {@code statistics} include is absent. */
+    @Nullable
+    public List<ParticipantSeasonStats> getStatistics() {
+        return ModelCollections.unmodifiable(statistics);
+    }
+
+    /** @return the trophies, or null if the {@code trophies} include is absent. */
+    @Nullable
+    public List<Trophy> getTrophies() {
+        return ModelCollections.unmodifiable(trophies);
     }
 }

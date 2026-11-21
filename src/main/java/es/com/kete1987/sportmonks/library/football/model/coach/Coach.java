@@ -1,6 +1,12 @@
 package es.com.kete1987.sportmonks.library.football.model.coach;
 
 import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
+import es.com.kete1987.sportmonks.library.football.model.league.Country;
+import es.com.kete1987.sportmonks.library.football.model.seasonstats.ParticipantSeasonStats;
+import es.com.kete1987.sportmonks.library.football.model.team.TeamCoach;
+
+import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 public class Coach {
@@ -26,6 +32,16 @@ public class Coach {
     private String commonName;
     @Nullable
     private CoachMeta meta;
+    @SerializedName("player_id")
+    private Long playerId;
+    @SerializedName("city_id")
+    private Long cityId;
+    private Long height;
+    private Long weight;
+    private Country country;
+    private Country nationality;
+    private List<TeamCoach> teams;
+    private List<ParticipantSeasonStats> statistics;
 
     public Coach() {
     }
@@ -87,5 +103,52 @@ public class Coach {
 
     public String getGender() {
         return gender;
+    }
+
+    /** @return the id of the coach as a player (the same person's player profile), or null. */
+    @Nullable
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    @Nullable
+    public Long getCityId() {
+        return cityId;
+    }
+
+    /** @return the height in centimetres, or null. */
+    @Nullable
+    public Long getHeight() {
+        return height;
+    }
+
+    /** @return the weight in kilograms, or null. */
+    @Nullable
+    public Long getWeight() {
+        return weight;
+    }
+
+    /** @return the country, or null if the {@code country} include is absent. */
+    @Nullable
+    public Country getCountry() {
+        return country;
+    }
+
+    /** @return the nationality, or null if the {@code nationality} include is absent. */
+    @Nullable
+    public Country getNationality() {
+        return nationality;
+    }
+
+    /** @return the teams the coach has led, or null if the {@code teams} include is absent. */
+    @Nullable
+    public List<TeamCoach> getTeams() {
+        return ModelCollections.unmodifiable(teams);
+    }
+
+    /** @return the seasons that have statistics, or null if the {@code statistics} include is absent. */
+    @Nullable
+    public List<ParticipantSeasonStats> getStatistics() {
+        return ModelCollections.unmodifiable(statistics);
     }
 }
