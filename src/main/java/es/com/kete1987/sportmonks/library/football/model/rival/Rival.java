@@ -12,7 +12,8 @@ public class Rival {
     private Long teamId;
     @SerializedName("rival_id")
     private Long rivalId;
-    private Team rival;
+    @SerializedName("rival")
+    private Team rivalTeam;
     private Team team;
 
     public Rival() {
@@ -37,7 +38,7 @@ public class Rival {
     /** @return the rival team, or null if the {@code rival} include is absent. */
     @Nullable
     public Team getRival() {
-        return rival;
+        return rivalTeam;
     }
 
     /** @return the team the rivalry belongs to, or null if the {@code team} include is absent. */

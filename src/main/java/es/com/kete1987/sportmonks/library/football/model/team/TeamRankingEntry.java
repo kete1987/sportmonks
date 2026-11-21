@@ -13,9 +13,6 @@ public class TeamRankingEntry {
     private Long points;
     private String type;
 
-    public TeamRankingEntry() {
-    }
-
     public Long getId() {
         return id;
     }

@@ -27,9 +27,6 @@ public class ParticipantSeasonStats {
     @SerializedName("jersey_number")
     private Long jerseyNumber;
 
-    public ParticipantSeasonStats() {
-    }
-
     public Long getId() {
         return id;
     }

@@ -6,9 +6,6 @@ public class Sport {
     private String name;
     private String code;
 
-    public Sport() {
-    }
-
     public Long getId() {
         return id;
     }

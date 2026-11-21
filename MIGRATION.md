@@ -1,6 +1,6 @@
 # Migration Guide
 
-## Next release (unreleased): football model fixes (#81)
+## 3.5.0 (unreleased): football model fixes (#81)
 
 **Breaking: `Venue.getZipcode()` now returns `String`** (it was `Long`). The API sends alphanumeric
 postal codes (`"CV6 6GE"`, `"1234 AB"`), so with a `Long` field `getVenues(seasonId)` and every request
@@ -11,9 +11,11 @@ venues. Callers that used the number must parse the string themselves.
 String zip = venue.getZipcode();   // was: Long zip = venue.getZipcode();
 ```
 
-Compatible changes: `League.getLastPlayedAt()` replaces `getLastPlayerdAt()` (typo in the old name,
-which always returned `null` because the API sends `last_played_at`); the old getter is deprecated and
-delegates to the new one. `Stage.getGamesInCurrentWeek()` keeps returning a `String` but
+**Breaking: `League.getLastPlayerdAt()` is removed.** The name had a typo and the getter always returned
+`null` because the API sends `last_played_at`; use `League.getLastPlayedAt()`, which now carries the real
+value. The two changes are why this release bumps the minor version.
+
+Compatible changes: `Stage.getGamesInCurrentWeek()` keeps returning a `String` but
 `Stage.isGamesInCurrentWeek()` gives the boolean the API actually sends. Many models gained fields and
 includes that were silently dropped before (see the issue for the list).
 

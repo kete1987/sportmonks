@@ -20,9 +20,6 @@ public class ModelStatistic {
     private JsonElement value;
     private String type;
 
-    public ModelStatistic() {
-    }
-
     public Long getId() {
         return id;
     }

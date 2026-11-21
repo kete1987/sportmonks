@@ -66,22 +66,14 @@ class FootballModelsIntegrationTest {
 
         assertFalse(venues.isEmpty());
         assertTrue(venues.stream().anyMatch(v -> v.getZipcode() != null
-                && String.valueOf(v.getZipcode()).matches(".*[A-Za-z].*")), "some UK venue has a letter in its zipcode");
+                && v.getZipcode().chars().anyMatch(Character::isLetter)), "some UK venue has a letter in its zipcode");
     }
 
     @Test
     void leagueLastPlayedDateArrives() throws IOException, SportMonksException {
         League league = api.getLeagueById(8);
 
-        assertNotNull(league.getLastPlayerdAt(), "last_played_at must be read (typo in @SerializedName)");
-    }
-
-    @Test
-    void leagueLastPlayedAtIsReadThroughTheNewGetter() throws IOException, SportMonksException {
-        League league = api.getLeagueById(8);
-
-        assertNotNull(league.getLastPlayedAt());
-        assertEquals(league.getLastPlayedAt(), league.getLastPlayerdAt());
+        assertNotNull(league.getLastPlayedAt(), "last_played_at must be read");
     }
 
     @Test

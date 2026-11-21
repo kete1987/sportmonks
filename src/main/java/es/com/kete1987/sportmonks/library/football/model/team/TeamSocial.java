@@ -11,9 +11,6 @@ public class TeamSocial {
     private Long socialChannelId;
     private String value;
 
-    public TeamSocial() {
-    }
-
     public Long getId() {
         return id;
     }

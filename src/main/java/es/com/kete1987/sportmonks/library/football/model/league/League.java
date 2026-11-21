@@ -83,15 +83,6 @@ public class League {
         return lastPlayedAt;
     }
 
-    /**
-     * @return the same value as {@link #getLastPlayedAt()}
-     * @deprecated misspelt name kept for compatibility; use {@link #getLastPlayedAt()}
-     */
-    @Deprecated
-    public String getLastPlayerdAt() {
-        return getLastPlayedAt();
-    }
-
     /** @return the league category (1 is the top one), or null. */
     @Nullable
     public Long getCategory() {

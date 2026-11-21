@@ -65,7 +65,6 @@ class FootballModelFieldsApiTest extends BaseApiTest {
         League league = api.getLeagueById(8);
 
         assertEquals("2026-11-08 16:30:00", league.getLastPlayedAt());
-        assertEquals(league.getLastPlayedAt(), league.getLastPlayerdAt());
         assertEquals(Long.valueOf(1), league.getCategory());
     }
 

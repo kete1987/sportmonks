@@ -1,7 +1,6 @@
 package es.com.kete1987.sportmonks.library.football.model.transfer;
 
 import com.google.gson.annotations.SerializedName;
-import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;

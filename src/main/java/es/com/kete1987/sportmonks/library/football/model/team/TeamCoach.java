@@ -16,9 +16,6 @@ public class TeamCoach {
     private String end;
     private Boolean temporary;
 
-    public TeamCoach() {
-    }
-
     public Long getId() {
         return id;
     }

@@ -17,9 +17,6 @@ public class Trophy {
     @SerializedName("trophy_id")
     private Long trophyId;
 
-    public Trophy() {
-    }
-
     public Long getId() {
         return id;
     }
