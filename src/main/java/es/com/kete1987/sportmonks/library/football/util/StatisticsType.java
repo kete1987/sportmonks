@@ -66,6 +66,7 @@ public class StatisticsType {
     public static final int TOTAL_DUELS = 105;
     public static final int DUELS_WON = 106;
     public static final int AERIALS_WON = 107;
+    // En core/types se llama DRIBBLED_ATTEMPTS; se mantiene este nombre por compatibilidad.
     public static final int DRIBBLE_ATTEMPTS = 108;
     public static final int SUCCESSFUL_DRIBBLES = 109;
     public static final int DRIBBLED_PAST = 110;
@@ -154,4 +155,56 @@ public class StatisticsType {
     public static final int DUELS_WON_PERCENTAGE = 27276;
     public static final int ERROR_LEAD_TO_SHOT = 48997;
     public static final int CUMULATIVE_MINUTES_PLAYED = 117172;
+
+    // Expected (xG y derivados)
+    public static final int EXPECTED_POINTS = 7939;
+    public static final int EXPECTED_GOALS_PENALTIES = 7940;
+    public static final int EXPECTED_GOALS_FREE_KICKS = 7941;
+    public static final int EXPECTED_GOALS_CORNERS = 7942;
+    public static final int EXPECTED_NON_PENALTY_GOALS = 7943;
+    public static final int EXPECTED_GOALS_SET_PLAY = 7944;
+    public static final int EXPECTED_GOALS_OPEN_PLAY = 7945;
+    public static final int EXPECTED_GOALS_DIFFERENCE = 9684;
+    public static final int SHOOTING_PERFORMANCE = 9685;
+    public static final int EXPECTED_GOALS_PREVENTED = 9686;
+    public static final int EXPECTED_GOALS_AGAINST = 9687;
+
+    // Equipo y plantilla
+    public static final int AVERAGE_PLAYER_HEIGHT = 9672;
+    public static final int AVERAGE_PLAYER_AGE = 9673;
+    public static final int AMOUNT_OF_FOREIGNERS = 9674;
+    public static final int PLAYERS_FOOTING = 9675;
+    public static final int AVERAGE_POINTS_PER_GAME = 9676;
+    public static final int APPEARING_PLAYERS = 9677;
+    public static final int MOST_SUBSTITUTED_PLAYERS = 9678;
+    public static final int MOST_INJURED_PLAYERS = 9679;
+
+    // Ratios
+    public static final int PENALTY_CONVERSION_RATE = 9680;
+    public static final int SHOT_CONVERSION_RATE = 9681;
+    public static final int SHOT_ON_TARGET_PERCENTAGE = 9682;
+    public static final int FOULS_PER_CARD = 9683;
+
+    // Otros
+    public static final int YELLOWCARDS_OVERTIME = 74;
+    public static final int CLEARANCES_OFFLINE = 2271;
+
+    // Sin grupo en la API (stat_group = null)
+    public static final int SCORING_FREQUENCY = 27248;
+    public static final int TOTAL_MINUTES_PLAYED = 27249;
+    public static final int MOST_SCORED_HALF = 27250;
+    public static final int MOST_FREQUENT_SCORING_MINUTE = 27251;
+    public static final int INTERCEPTION_STATS = 27252;
+    public static final int PASS_STATS = 27253;
+    public static final int ASSIST_STATS = 27254;
+    public static final int CROSSES_BLOCKED = 27255;
+    public static final int HALF_RESULTS = 27256;
+    public static final int TEAM_OF_THE_WEEK = 27257;
+    public static final int NATIONAL_TEAM_PLAYERS = 27258;
+    public static final int HATTRICKS = 27259;
+    public static final int INJURY_TIME_GOALS = 27260;
+    public static final int GOAL_RESULTS = 27261;
+    public static final int TRANSFER_MONEY = 27262;
+    public static final int GAMES_PLAYED = 27263;
+    public static final int PLAYER_SHOT_CONVERSION = 28036;
 }
