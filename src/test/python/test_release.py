@@ -208,7 +208,7 @@ class WorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             origin = str(Path(directory) / "origin.git")
             checkout = Path(directory) / "checkout"
-            release.run("git", "clone", "--bare", repository, origin)
+            release.run("git", "clone", "--bare", "--no-tags", repository, origin)
             release.run("git", "--git-dir", origin, "update-ref", "refs/heads/master", tested_commit)
             release.run("git", "--git-dir", origin, "symbolic-ref", "HEAD", "refs/heads/master")
             release.run("git", "clone", origin, str(checkout))
