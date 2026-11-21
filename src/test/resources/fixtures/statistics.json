@@ -1,22 +1,9 @@
 {
   "data": [
-    {
-      "id": 1001,
-      "type_id": 52,
-      "participant_id": 1,
-      "participant_type": "App\\Models\\Football\\Team",
-      "value": 12,
-      "season_id": 19686,
-      "stage_id": null
-    },
-    {
-      "id": 1002,
-      "type_id": 53,
-      "participant_id": 1,
-      "participant_type": "App\\Models\\Football\\Team",
-      "value": 45,
-      "season_id": 19686,
-      "stage_id": null
-    }
-  ]
+    {"id": 4355657, "model_id": 151251, "type_id": 1677, "relation_id": null,
+     "value": {"total": 252, "on_target": 82, "off_target": 114, "average": 25.2}},
+    {"id": 4050806, "model_id": 151251, "type_id": 34, "relation_id": 106,
+     "value": {"count": 9, "percentage": 9.68, "team_most_corners_id": 106, "team_most_corners_name": "Getafe"}}
+  ],
+  "pagination": {"count": 2, "per_page": 25, "current_page": 1, "has_more": false, "next_page": null, "next_cursor": null}
 }

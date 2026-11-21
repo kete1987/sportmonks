@@ -1,0 +1,8 @@
+{
+  "fee": [{"id": 90301, "name": "Undisclosed", "code": "fee-undisclosed", "developer_name": "FEE_UNDISCLOSED", "model_type": "rumour-fee", "stat_group": null}],
+  "transfers": [{"id": 90310, "name": "Loan", "code": "loan", "developer_name": "LOAN", "model_type": "rumour-transfer", "stat_group": null}],
+  "statuses": [
+    {"id": 90319, "name": "Confirmed Rumour", "code": "rumour-confirmed", "developer_name": "RUMOUR_CONFIRMED", "model_type": "rumour-status", "stat_group": null},
+    {"id": 90320, "name": "Denied Rumour", "code": "rumour-denied", "developer_name": "RUMOUR_DENIED", "model_type": "rumour-status", "stat_group": null}
+  ]
+}

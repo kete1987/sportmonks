@@ -1,5 +1,9 @@
 package es.com.kete1987.sportmonks.library;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.football.model.comments.Comment;
@@ -45,6 +49,9 @@ import es.com.kete1987.sportmonks.library.football.model.stage.StageResponse;
 import es.com.kete1987.sportmonks.library.football.model.stage.StagesResponse;
 import es.com.kete1987.sportmonks.library.football.model.standings.Standings;
 import es.com.kete1987.sportmonks.library.football.model.standings.StandingsResponse;
+import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatistic;
+import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatisticEntity;
+import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatisticsResponse;
 import es.com.kete1987.sportmonks.library.football.model.statistic.Statistic;
 import es.com.kete1987.sportmonks.library.football.model.statistic.StatisticsResponse;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
@@ -62,6 +69,7 @@ import es.com.kete1987.sportmonks.library.football.model.transfer.TransferRumour
 import es.com.kete1987.sportmonks.library.football.model.transfer.TransferRumourResponse;
 import es.com.kete1987.sportmonks.library.football.model.transfer.TransferRumoursResponse;
 import es.com.kete1987.sportmonks.library.football.model.transfer.TransfersResponse;
+import es.com.kete1987.sportmonks.library.football.model.transferrumourconfig.TransferRumourConfig;
 import es.com.kete1987.sportmonks.library.football.model.tvstation.TvStation;
 import es.com.kete1987.sportmonks.library.football.model.tvstation.TvStationResponse;
 import es.com.kete1987.sportmonks.library.football.model.tvstation.TvStationsResponse;
@@ -75,6 +83,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 /**
  * Football sub-API: fixtures, leagues, seasons, teams, standings, statistics, transfers,
@@ -127,6 +136,38 @@ public class FootballApi extends SportMonksApiBase {
     /** Like {@link #fetchTopScoresList(HttpUrl)} but caps the result at {@code limit} elements. */
     private List<TopScoresPlayer> fetchTopScoresList(HttpUrl url, int limit) throws IOException, SportMonksException {
         return fetchPaged(url, TopScorersResponse.class, TopScorersResponse::getData, TopScorersResponse::getPagination, limit);
+    }
+
+    /** {@code data} of a response, or an empty list when the body is empty or carries no {@code data}. */
+    private static <R, T> List<T> dataOrEmpty(R resp, Function<R, List<T>> dataFn) {
+        List<T> data = resp != null ? dataFn.apply(resp) : null;
+        return data != null ? data : new ArrayList<>();
+    }
+
+    /**
+     * Page envelope for list endpoints whose public {@code *Response} class has no
+     * {@code pagination} field; only {@code data} and {@code pagination} are read.
+     */
+    private static class Page<T> {
+        private List<T> data;
+        private Pagination pagination;
+
+        List<T> getData() {
+            return data;
+        }
+
+        Pagination getPagination() {
+            return pagination;
+        }
+    }
+
+    private static final class VenuePage extends Page<Venue> {
+    }
+
+    private static final class RivalPage extends Page<Rival> {
+    }
+
+    private static final class CommentPage extends Page<Comment> {
     }
 
     // -------------------------------------------------------------------------
@@ -205,7 +246,28 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<MatchDetail> getLiveMatches(String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("livescores/inplay"), includes), filters).build();
-        return gson().fromJson(execute(url), MatchsResponse.class).getData();
+        return dataOrEmpty(gson().fromJson(execute(url), MatchsResponse.class), MatchsResponse::getData);
+    }
+
+    /**
+     * All fixtures ({@code GET /fixtures}), oldest first, capped at {@code limit}. The catalogue
+     * holds every fixture Sportmonks knows, so always pass a positive limit or a filter: a
+     * non-positive {@code limit} walks every page.
+     */
+    public List<MatchDetail> getAllFixtures(int limit, String... includes) throws IOException, SportMonksException {
+        return getAllFixtures(limit, includes, null);
+    }
+
+    /**
+     * Applies Sportmonks filters to the requested resource and its includes.
+     * @param limit maximum number of fixtures; non-positive walks every page
+     * @param includes explicit includes; null or empty omits the include parameter
+     * @param filters unencoded filter expression (e.g. {@code fixtureLeagues:564});
+     *                separate multiple filters with semicolons; null or blank omits filters
+     */
+    public List<MatchDetail> getAllFixtures(int limit, String[] includes, String filters) throws IOException, SportMonksException {
+        HttpUrl url = withFilters(withIncludes(footballUrl("fixtures"), includes), filters).build();
+        return fetchMatchList(url, limit);
     }
 
     public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException {
@@ -284,7 +346,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<MatchDetail> getLatestUpdatedLivescores(String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("livescores/latest"), includes), filters).build();
-        return gson().fromJson(execute(url), MatchsResponse.class).getData();
+        return dataOrEmpty(gson().fromJson(execute(url), MatchsResponse.class), MatchsResponse::getData);
     }
 
     public List<MatchDetail> getFixturesByHeadToHead(long team1Id, long team2Id, String... includes) throws IOException, SportMonksException {
@@ -345,7 +407,7 @@ public class FootballApi extends SportMonksApiBase {
      */
     public List<MatchDetail> getLatestUpdatedFixtures(String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/latest"), includes), filters).build();
-        return gson().fromJson(execute(url), MatchsResponse.class).getData();
+        return dataOrEmpty(gson().fromJson(execute(url), MatchsResponse.class), MatchsResponse::getData);
     }
 
     public List<MatchDetail> getUpcomingFixturesByMarket(long marketId, String... includes) throws IOException, SportMonksException {
@@ -409,7 +471,8 @@ public class FootballApi extends SportMonksApiBase {
      */
     public MatchDetail getMatchDetail(String matchId, String[] includes, String filters) throws IOException, SportMonksException {
         HttpUrl url = withFilters(withIncludes(footballUrl("fixtures/" + matchId), includes), filters).build();
-        return gson().fromJson(execute(url), MatchData.class).getMatchDetail();
+        MatchData resp = gson().fromJson(execute(url), MatchData.class);
+        return resp != null ? resp.getMatchDetail() : null;
     }
 
     // -------------------------------------------------------------------------
@@ -526,10 +589,15 @@ public class FootballApi extends SportMonksApiBase {
         return map;
     }
 
+    /** Every standing row of every season. Huge: prefer {@link #getAllStandings(int, String...)}. */
     public List<Standings> getAllStandings(String... includes) throws IOException, SportMonksException {
+        return getAllStandings(0, includes);
+    }
+
+    /** All standings capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Standings> getAllStandings(int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("standings"), includes).build();
-        StandingsResponse resp = gson().fromJson(execute(url), StandingsResponse.class);
-        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, StandingsResponse.class, StandingsResponse::getData, StandingsResponse::getPagination, limit);
     }
 
     public List<Standings> getStandingsByRound(long roundId, String... includes) throws IOException, SportMonksException {
@@ -560,22 +628,51 @@ public class FootballApi extends SportMonksApiBase {
     // Statistics
     // -------------------------------------------------------------------------
 
+    /**
+     * Season statistics of a player, team, coach or referee: one {@link SeasonStatistic} per
+     * season (and team, for players and coaches), each with its values in
+     * {@link SeasonStatistic#getDetails()}. Calls {@code statistics/seasons/{entity}/{id}}.
+     */
+    public List<SeasonStatistic> getSeasonStatistics(SeasonStatisticEntity entity, long id, String... includes) throws IOException, SportMonksException {
+        return getSeasonStatistics(entity, id, 0, includes);
+    }
+
+    /** Like {@link #getSeasonStatistics(SeasonStatisticEntity, long, String...)}, capped at {@code limit} seasons. */
+    public List<SeasonStatistic> getSeasonStatistics(SeasonStatisticEntity entity, long id, int limit, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("statistics/seasons/" + entity.getPath() + "/" + id), includes).build();
+        return fetchPaged(url, SeasonStatisticsResponse.class, SeasonStatisticsResponse::getData, SeasonStatisticsResponse::getPagination, limit);
+    }
+
+    /**
+     * @deprecated called {@code statistics/seasons/participants/{id}}, which the API rejects with
+     * 422. It now reads the season statistics of the <em>team</em> {@code participantId} and
+     * returns their {@link SeasonStatistic#getDetails() details} flattened into one list, so only
+     * {@code id}, {@code typeId} and {@code value} are set and the season of each value is lost.
+     * Use {@link #getSeasonStatistics(SeasonStatisticEntity, long, String...)}, which also covers
+     * players, coaches and referees.
+     */
+    @Deprecated(since = "3.5.0", forRemoval = true)
     public List<Statistic> getSeasonStatsByParticipant(long participantId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("statistics/seasons/participants/" + participantId), includes).build();
-        StatisticsResponse resp = gson().fromJson(execute(url), StatisticsResponse.class);
-        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+        List<Statistic> details = new ArrayList<>();
+        for (SeasonStatistic season : getSeasonStatistics(SeasonStatisticEntity.TEAMS, participantId, includes)) {
+            details.addAll(dataOrEmpty(season, SeasonStatistic::getDetails));
+        }
+        return details;
     }
 
     public List<Statistic> getStatsByStage(long stageId, String... includes) throws IOException, SportMonksException {
+        return getStatsByStage(stageId, 0, includes);
+    }
+
+    /** Stage statistics capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Statistic> getStatsByStage(long stageId, int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("statistics/stages/" + stageId), includes).build();
-        StatisticsResponse resp = gson().fromJson(execute(url), StatisticsResponse.class);
-        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, StatisticsResponse.class, StatisticsResponse::getData, StatisticsResponse::getPagination, limit);
     }
 
     public List<Statistic> getStatsByRound(long roundId, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("statistics/rounds/" + roundId), includes).build();
-        StatisticsResponse resp = gson().fromJson(execute(url), StatisticsResponse.class);
-        return resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, StatisticsResponse.class, StatisticsResponse::getData, StatisticsResponse::getPagination, 0);
     }
 
     // -------------------------------------------------------------------------
@@ -621,15 +718,30 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Transfer> getLatestTransfers(String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("transfers/latest"), includes).build();
-        TransfersResponse resp = gson().fromJson(execute(url), TransfersResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return getLatestTransfers(0, includes);
     }
 
+    /** Latest transfers capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Transfer> getLatestTransfers(int limit, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("transfers/latest"), includes).build();
+        return fetchPaged(url, TransfersResponse.class, TransfersResponse::getData, TransfersResponse::getPagination, limit);
+    }
+
+    /**
+     * Transfers between two dates ({@code yyyy-MM-dd}). The API rejects ranges longer than
+     * 31 days with a 422, surfaced as {@link SportMonksException}; split longer periods.
+     */
     public List<Transfer> getTransfersByDateRange(String startDate, String endDate, String... includes) throws IOException, SportMonksException {
+        return getTransfersByDateRange(startDate, endDate, 0, includes);
+    }
+
+    /**
+     * Like {@link #getTransfersByDateRange(String, String, String...)} (31 days at most),
+     * capped at {@code limit} (no cap when {@code limit <= 0}).
+     */
+    public List<Transfer> getTransfersByDateRange(String startDate, String endDate, int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("transfers/between/" + startDate + "/" + endDate), includes).build();
-        TransfersResponse resp = gson().fromJson(execute(url), TransfersResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, TransfersResponse.class, TransfersResponse::getData, TransfersResponse::getPagination, limit);
     }
 
     public List<Transfer> getTransfersByTeam(long teamId, String... includes) throws IOException, SportMonksException {
@@ -668,6 +780,20 @@ public class FootballApi extends SportMonksApiBase {
         return resp != null ? resp.getData() : null;
     }
 
+    /**
+     * Catalogue of fee bands, transfer types and rumour statuses the transfer rumours refer to
+     * ({@code transfer-rumours/config}), or {@code null} when the response is empty. Requires the
+     * Transfer Rumours add-on.
+     */
+    public TransferRumourConfig getTransferRumoursConfig() throws IOException, SportMonksException {
+        JsonElement root = JsonParser.parseString(execute(footballUrl("transfer-rumours/config").build()));
+        if (!root.isJsonObject()) return null;
+        // The documented example has the catalogue at the top level; accept a "data" wrapper too.
+        JsonObject body = root.getAsJsonObject();
+        JsonElement data = body.get("data");
+        return gson().fromJson(data != null && data.isJsonObject() ? data : body, TransferRumourConfig.class);
+    }
+
     public List<TransferRumour> getTransferRumoursByDateRange(String startDate, String endDate, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("transfer-rumours/between/" + startDate + "/" + endDate), includes).build();
         TransferRumoursResponse resp = gson().fromJson(execute(url), TransferRumoursResponse.class);
@@ -691,9 +817,13 @@ public class FootballApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<Rival> getAllRivals(String... includes) throws IOException, SportMonksException {
+        return getAllRivals(0, includes);
+    }
+
+    /** All rivalries capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Rival> getAllRivals(int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("rivals"), includes).build();
-        RivalsResponse resp = gson().fromJson(execute(url), RivalsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, RivalPage.class, RivalPage::getData, RivalPage::getPagination, limit);
     }
 
     public List<Rival> getRivalsByTeam(long teamId, String... includes) throws IOException, SportMonksException {
@@ -706,10 +836,15 @@ public class FootballApi extends SportMonksApiBase {
     // Commentaries
     // -------------------------------------------------------------------------
 
+    /** Every commentary of every fixture. Huge: prefer {@link #getAllCommentaries(int, String...)}. */
     public List<Comment> getAllCommentaries(String... includes) throws IOException, SportMonksException {
+        return getAllCommentaries(0, includes);
+    }
+
+    /** All commentaries capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Comment> getAllCommentaries(int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("commentaries"), includes).build();
-        CommentsResponse resp = gson().fromJson(execute(url), CommentsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, CommentPage.class, CommentPage::getData, CommentPage::getPagination, limit);
     }
 
     public List<Comment> getCommentaryByFixture(long fixtureId, String... includes) throws IOException, SportMonksException {
@@ -749,15 +884,23 @@ public class FootballApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<Venue> getVenues(String seasonId) throws IOException, SportMonksException {
-        HttpUrl url = footballUrl("venues/seasons/" + seasonId).build();
-        VenueResponse resp = gson().fromJson(execute(url), VenueResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return getVenues(seasonId, new String[0]);
+    }
+
+    /** Venues of a season with the given includes (e.g. {@code "city"}, {@code "country"}). */
+    public List<Venue> getVenues(String seasonId, String... includes) throws IOException, SportMonksException {
+        HttpUrl url = withIncludes(footballUrl("venues/seasons/" + seasonId), includes).build();
+        return dataOrEmpty(gson().fromJson(execute(url), VenueResponse.class), VenueResponse::getData);
     }
 
     public List<Venue> getAllVenues(String... includes) throws IOException, SportMonksException {
+        return getAllVenues(0, includes);
+    }
+
+    /** All venues capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Venue> getAllVenues(int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("venues"), includes).build();
-        VenueResponse resp = gson().fromJson(execute(url), VenueResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, VenuePage.class, VenuePage::getData, VenuePage::getPagination, limit);
     }
 
     public Venue getVenueById(long id, String... includes) throws IOException, SportMonksException {
@@ -767,9 +910,13 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Venue> searchVenues(String name, String... includes) throws IOException, SportMonksException {
+        return searchVenues(name, 0, includes);
+    }
+
+    /** Venue search capped at {@code limit} results (no cap when {@code limit <= 0}). */
+    public List<Venue> searchVenues(String name, int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("venues/search/" + name), includes).build();
-        VenueResponse resp = gson().fromJson(execute(url), VenueResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, VenuePage.class, VenuePage::getData, VenuePage::getPagination, limit);
     }
 
     // -------------------------------------------------------------------------
@@ -786,16 +933,19 @@ public class FootballApi extends SportMonksApiBase {
         return fetchPaged(base, MatchFactsResponse.class, MatchFactsResponse::getData, MatchFactsResponse::getPagination, limit);
     }
 
+    /** Match facts of a fixture ({@code match-facts/{fixtureId}}). Requires the Match Facts add-on. */
     public List<MatchFact> getMatchFactsByFixture(long fixtureId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("match-facts/fixtures/" + fixtureId), includes).build();
-        MatchFactsResponse resp = gson().fromJson(execute(url), MatchFactsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        HttpUrl url = withIncludes(footballUrl("match-facts/" + fixtureId), includes).build();
+        return fetchPaged(url, MatchFactsResponse.class, MatchFactsResponse::getData, MatchFactsResponse::getPagination, 0);
     }
 
+    /**
+     * Match facts of the fixtures between two dates ({@code match-facts/fixtures/between/{start}/{end}}).
+     * Requires the Match Facts add-on.
+     */
     public List<MatchFact> getMatchFactsByDateRange(String startDate, String endDate, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("match-facts/between/" + startDate + "/" + endDate), includes).build();
-        MatchFactsResponse resp = gson().fromJson(execute(url), MatchFactsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        HttpUrl url = withIncludes(footballUrl("match-facts/fixtures/between/" + startDate + "/" + endDate), includes).build();
+        return fetchPaged(url, MatchFactsResponse.class, MatchFactsResponse::getData, MatchFactsResponse::getPagination, 0);
     }
 
     public List<MatchFact> getMatchFactsByLeague(long leagueId, String... includes) throws IOException, SportMonksException {
@@ -893,9 +1043,13 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Team> getTeamsByCountry(long countryId, String... includes) throws IOException, SportMonksException {
+        return getTeamsByCountry(countryId, 0, includes);
+    }
+
+    /** Teams of a country capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Team> getTeamsByCountry(long countryId, int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("teams/countries/" + countryId), includes).build();
-        TeamsResponse resp = gson().fromJson(execute(url), TeamsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, TeamsResponse.class, TeamsResponse::getData, TeamsResponse::getPagination, limit);
     }
 
     public Team getTeamById(long id, String... includes) throws IOException, SportMonksException {
@@ -905,9 +1059,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Team> searchTeams(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("teams/search/" + name), includes).build();
-        TeamsResponse resp = gson().fromJson(execute(url), TeamsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return searchTeams(name, 0, includes);
     }
 
     /** Team search capped at {@code limit} results. */
@@ -1107,12 +1259,13 @@ public class FootballApi extends SportMonksApiBase {
 
     public List<State> getAllStates() throws IOException, SportMonksException {
         HttpUrl url = footballUrl("states").build();
-        return gson().fromJson(execute(url), StatesResponse.class).getData();
+        return dataOrEmpty(gson().fromJson(execute(url), StatesResponse.class), StatesResponse::getData);
     }
 
     public State getStateById(long id) throws IOException, SportMonksException {
         HttpUrl url = footballUrl("states/" + id).build();
-        return gson().fromJson(execute(url), StateResponse.class).getData();
+        StateResponse resp = gson().fromJson(execute(url), StateResponse.class);
+        return resp != null ? resp.getData() : null;
     }
 
     // -------------------------------------------------------------------------
@@ -1168,9 +1321,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Player> searchPlayers(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("players/search/" + name), includes).build();
-        PlayersResponse resp = gson().fromJson(execute(url), PlayersResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return searchPlayers(name, 0, includes);
     }
 
     /** Player search capped at {@code limit} results. */
@@ -1201,15 +1352,23 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Coach> getCoachesByCountry(long countryId, String... includes) throws IOException, SportMonksException {
+        return getCoachesByCountry(countryId, 0, includes);
+    }
+
+    /** Coaches of a country capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Coach> getCoachesByCountry(long countryId, int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("coaches/countries/" + countryId), includes).build();
-        CoachesResponse resp = gson().fromJson(execute(url), CoachesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, CoachesResponse.class, CoachesResponse::getData, CoachesResponse::getPagination, limit);
     }
 
     public List<Coach> searchCoaches(String name, String... includes) throws IOException, SportMonksException {
+        return searchCoaches(name, 0, includes);
+    }
+
+    /** Coach search capped at {@code limit} results (no cap when {@code limit <= 0}). */
+    public List<Coach> searchCoaches(String name, int limit, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("coaches/search/" + name), includes).build();
-        CoachesResponse resp = gson().fromJson(execute(url), CoachesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return fetchPaged(url, CoachesResponse.class, CoachesResponse::getData, CoachesResponse::getPagination, limit);
     }
 
     public List<Coach> getLatestUpdatedCoaches(String... includes) throws IOException, SportMonksException {
@@ -1234,20 +1393,33 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Referee> getRefereesByCountry(long countryId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("referees/countries/" + countryId), includes).build();
-        RefereesResponse resp = gson().fromJson(execute(url), RefereesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return getRefereesByCountry(countryId, 0, includes);
+    }
+
+    /** Referees of a country capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Referee> getRefereesByCountry(long countryId, int limit, String... includes) throws IOException, SportMonksException {
+        return fetchReferees(withIncludes(footballUrl("referees/countries/" + countryId), includes).build(), limit);
     }
 
     public List<Referee> getRefereesBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("referees/seasons/" + seasonId), includes).build();
-        RefereesResponse resp = gson().fromJson(execute(url), RefereesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return getRefereesBySeason(seasonId, 0, includes);
+    }
+
+    /** Referees of a season capped at {@code limit} (no cap when {@code limit <= 0}). */
+    public List<Referee> getRefereesBySeason(long seasonId, int limit, String... includes) throws IOException, SportMonksException {
+        return fetchReferees(withIncludes(footballUrl("referees/seasons/" + seasonId), includes).build(), limit);
     }
 
     public List<Referee> searchReferees(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("referees/search/" + name), includes).build();
-        RefereesResponse resp = gson().fromJson(execute(url), RefereesResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return searchReferees(name, 0, includes);
+    }
+
+    /** Referee search capped at {@code limit} results (no cap when {@code limit <= 0}). */
+    public List<Referee> searchReferees(String name, int limit, String... includes) throws IOException, SportMonksException {
+        return fetchReferees(withIncludes(footballUrl("referees/search/" + name), includes).build(), limit);
+    }
+
+    private List<Referee> fetchReferees(HttpUrl url, int limit) throws IOException, SportMonksException {
+        return fetchPaged(url, RefereesResponse.class, RefereesResponse::getData, RefereesResponse::getPagination, limit);
     }
 }

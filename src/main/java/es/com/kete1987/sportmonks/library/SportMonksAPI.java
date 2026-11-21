@@ -34,6 +34,8 @@ import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
 import es.com.kete1987.sportmonks.library.football.model.squad.SquadPlayer;
 import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
 import es.com.kete1987.sportmonks.library.football.model.standings.Standings;
+import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatistic;
+import es.com.kete1987.sportmonks.library.football.model.statistic.SeasonStatisticEntity;
 import es.com.kete1987.sportmonks.library.football.model.statistic.Statistic;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
 import es.com.kete1987.sportmonks.library.football.model.teamranking.TeamRanking;
@@ -41,6 +43,7 @@ import es.com.kete1987.sportmonks.library.football.model.topscorers.TopScoresPla
 import es.com.kete1987.sportmonks.library.football.model.totw.TeamOfTheWeek;
 import es.com.kete1987.sportmonks.library.football.model.transfer.Transfer;
 import es.com.kete1987.sportmonks.library.football.model.transfer.TransferRumour;
+import es.com.kete1987.sportmonks.library.football.model.transferrumourconfig.TransferRumourConfig;
 import es.com.kete1987.sportmonks.library.football.model.tvstation.TvStation;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
 import es.com.kete1987.sportmonks.library.odds.model.Bookmaker;
@@ -194,6 +197,10 @@ public class SportMonksAPI {
     /** @see FootballApi#getLiveMatches(String[], String) */
     public List<MatchDetail> getLiveMatches(String[] includes, String filters) throws IOException, SportMonksException { return football.getLiveMatches(includes, filters); }
     public List<MatchDetail> getMatchesByDate(String date, String... includes) throws IOException, SportMonksException { return football.getMatchesByDate(date, includes); }
+    /** @see FootballApi#getAllFixtures(int, String...) */
+    public List<MatchDetail> getAllFixtures(int limit, String... includes) throws IOException, SportMonksException { return football.getAllFixtures(limit, includes); }
+    /** @see FootballApi#getAllFixtures(int, String[], String) */
+    public List<MatchDetail> getAllFixtures(int limit, String[] includes, String filters) throws IOException, SportMonksException { return football.getAllFixtures(limit, includes, filters); }
     /** @see FootballApi#getMatchesByDate(String, String[], String) */
     public List<MatchDetail> getMatchesByDate(String date, String[] includes, String filters) throws IOException, SportMonksException { return football.getMatchesByDate(date, includes, filters); }
     /** Fetches fixtures in a date range with default include: {@code participants}. */
@@ -359,6 +366,8 @@ public class SportMonksAPI {
      */
     public TreeMap<String, List<Standings>> getStandingsCup(String seasonId, String... includes) throws IOException, SportMonksException { return football.getStandingsCup(seasonId, includes); }
     public List<Standings> getAllStandings(String... includes) throws IOException, SportMonksException { return football.getAllStandings(includes); }
+    /** All standings capped at {@code limit}. */
+    public List<Standings> getAllStandings(int limit, String... includes) throws IOException, SportMonksException { return football.getAllStandings(limit, includes); }
     public List<Standings> getStandingsByRound(long roundId, String... includes) throws IOException, SportMonksException { return football.getStandingsByRound(roundId, includes); }
     public List<Standings> getStandingCorrectionsBySeason(long seasonId, String... includes) throws IOException, SportMonksException { return football.getStandingCorrectionsBySeason(seasonId, includes); }
     public List<Standings> getLiveStandingsByLeague(long leagueId, String... includes) throws IOException, SportMonksException { return football.getLiveStandingsByLeague(leagueId, includes); }
@@ -368,8 +377,16 @@ public class SportMonksAPI {
     // Statistics
     // -------------------------------------------------------------------------
 
+    /** @see FootballApi#getSeasonStatistics(SeasonStatisticEntity, long, String...) */
+    public List<SeasonStatistic> getSeasonStatistics(SeasonStatisticEntity entity, long id, String... includes) throws IOException, SportMonksException { return football.getSeasonStatistics(entity, id, includes); }
+    /** @see FootballApi#getSeasonStatistics(SeasonStatisticEntity, long, int, String...) */
+    public List<SeasonStatistic> getSeasonStatistics(SeasonStatisticEntity entity, long id, int limit, String... includes) throws IOException, SportMonksException { return football.getSeasonStatistics(entity, id, limit, includes); }
+    /** @deprecated see {@link FootballApi#getSeasonStatsByParticipant(long, String...)}; use {@link #getSeasonStatistics(SeasonStatisticEntity, long, String...)}. */
+    @Deprecated(since = "3.5.0", forRemoval = true)
     public List<Statistic> getSeasonStatsByParticipant(long participantId, String... includes) throws IOException, SportMonksException { return football.getSeasonStatsByParticipant(participantId, includes); }
     public List<Statistic> getStatsByStage(long stageId, String... includes) throws IOException, SportMonksException { return football.getStatsByStage(stageId, includes); }
+    /** Stage statistics capped at {@code limit}. */
+    public List<Statistic> getStatsByStage(long stageId, int limit, String... includes) throws IOException, SportMonksException { return football.getStatsByStage(stageId, limit, includes); }
     public List<Statistic> getStatsByRound(long roundId, String... includes) throws IOException, SportMonksException { return football.getStatsByRound(roundId, includes); }
 
     // -------------------------------------------------------------------------
@@ -389,7 +406,11 @@ public class SportMonksAPI {
     public List<Transfer> getAllTransfers(int limit, String... includes) throws IOException, SportMonksException { return football.getAllTransfers(limit, includes); }
     public Transfer getTransferById(long id, String... includes) throws IOException, SportMonksException { return football.getTransferById(id, includes); }
     public List<Transfer> getLatestTransfers(String... includes) throws IOException, SportMonksException { return football.getLatestTransfers(includes); }
+    /** Latest transfers capped at {@code limit}. */
+    public List<Transfer> getLatestTransfers(int limit, String... includes) throws IOException, SportMonksException { return football.getLatestTransfers(limit, includes); }
     public List<Transfer> getTransfersByDateRange(String startDate, String endDate, String... includes) throws IOException, SportMonksException { return football.getTransfersByDateRange(startDate, endDate, includes); }
+    /** @see FootballApi#getTransfersByDateRange(String, String, int, String...) */
+    public List<Transfer> getTransfersByDateRange(String startDate, String endDate, int limit, String... includes) throws IOException, SportMonksException { return football.getTransfersByDateRange(startDate, endDate, limit, includes); }
     public List<Transfer> getTransfersByTeam(long teamId, String... includes) throws IOException, SportMonksException { return football.getTransfersByTeam(teamId, includes); }
     /** Transfers of a team capped at {@code limit}. */
     public List<Transfer> getTransfersByTeam(long teamId, int limit, String... includes) throws IOException, SportMonksException { return football.getTransfersByTeam(teamId, limit, includes); }
@@ -404,6 +425,8 @@ public class SportMonksAPI {
     public List<TransferRumour> getAllTransferRumours(int limit, String... includes) throws IOException, SportMonksException { return football.getAllTransferRumours(limit, includes); }
     public TransferRumour getTransferRumourById(long id, String... includes) throws IOException, SportMonksException { return football.getTransferRumourById(id, includes); }
     public List<TransferRumour> getTransferRumoursByDateRange(String startDate, String endDate, String... includes) throws IOException, SportMonksException { return football.getTransferRumoursByDateRange(startDate, endDate, includes); }
+    /** @see FootballApi#getTransferRumoursConfig() */
+    public TransferRumourConfig getTransferRumoursConfig() throws IOException, SportMonksException { return football.getTransferRumoursConfig(); }
     public List<TransferRumour> getTransferRumoursByTeam(long teamId, String... includes) throws IOException, SportMonksException { return football.getTransferRumoursByTeam(teamId, includes); }
     public List<TransferRumour> getTransferRumoursByPlayer(long playerId, String... includes) throws IOException, SportMonksException { return football.getTransferRumoursByPlayer(playerId, includes); }
 
@@ -412,6 +435,8 @@ public class SportMonksAPI {
     // -------------------------------------------------------------------------
 
     public List<Rival> getAllRivals(String... includes) throws IOException, SportMonksException { return football.getAllRivals(includes); }
+    /** All rivalries capped at {@code limit}. */
+    public List<Rival> getAllRivals(int limit, String... includes) throws IOException, SportMonksException { return football.getAllRivals(limit, includes); }
     public List<Rival> getRivalsByTeam(long teamId, String... includes) throws IOException, SportMonksException { return football.getRivalsByTeam(teamId, includes); }
 
     // -------------------------------------------------------------------------
@@ -419,6 +444,8 @@ public class SportMonksAPI {
     // -------------------------------------------------------------------------
 
     public List<Comment> getAllCommentaries(String... includes) throws IOException, SportMonksException { return football.getAllCommentaries(includes); }
+    /** All commentaries capped at {@code limit}. */
+    public List<Comment> getAllCommentaries(int limit, String... includes) throws IOException, SportMonksException { return football.getAllCommentaries(limit, includes); }
     public List<Comment> getCommentaryByFixture(long fixtureId, String... includes) throws IOException, SportMonksException { return football.getCommentaryByFixture(fixtureId, includes); }
 
     // -------------------------------------------------------------------------
@@ -436,9 +463,15 @@ public class SportMonksAPI {
     // -------------------------------------------------------------------------
 
     public List<Venue> getVenues(String seasonId) throws IOException, SportMonksException { return football.getVenues(seasonId); }
+    /** @see FootballApi#getVenues(String, String...) */
+    public List<Venue> getVenues(String seasonId, String... includes) throws IOException, SportMonksException { return football.getVenues(seasonId, includes); }
     public List<Venue> getAllVenues(String... includes) throws IOException, SportMonksException { return football.getAllVenues(includes); }
+    /** All venues capped at {@code limit}. */
+    public List<Venue> getAllVenues(int limit, String... includes) throws IOException, SportMonksException { return football.getAllVenues(limit, includes); }
     public Venue getVenueById(long id, String... includes) throws IOException, SportMonksException { return football.getVenueById(id, includes); }
     public List<Venue> searchVenues(String name, String... includes) throws IOException, SportMonksException { return football.searchVenues(name, includes); }
+    /** Venue search capped at {@code limit} results. */
+    public List<Venue> searchVenues(String name, int limit, String... includes) throws IOException, SportMonksException { return football.searchVenues(name, limit, includes); }
 
     // -------------------------------------------------------------------------
     // Match Facts (beta)
@@ -487,6 +520,8 @@ public class SportMonksAPI {
     public List<Team> getAllTeams(int limit, String... includes) throws IOException, SportMonksException { return football.getAllTeams(limit, includes); }
     public List<Team> getTeamsBySeasonId(long seasonId, String... includes) throws IOException, SportMonksException { return football.getTeamsBySeasonId(seasonId, includes); }
     public List<Team> getTeamsByCountry(long countryId, String... includes) throws IOException, SportMonksException { return football.getTeamsByCountry(countryId, includes); }
+    /** Teams of a country capped at {@code limit}. */
+    public List<Team> getTeamsByCountry(long countryId, int limit, String... includes) throws IOException, SportMonksException { return football.getTeamsByCountry(countryId, limit, includes); }
     public Team getTeamById(long id, String... includes) throws IOException, SportMonksException { return football.getTeamById(id, includes); }
     public List<Team> searchTeams(String name, String... includes) throws IOException, SportMonksException { return football.searchTeams(name, includes); }
     /** Team search capped at {@code limit} results. */
@@ -581,7 +616,11 @@ public class SportMonksAPI {
     public List<Coach> getAllCoaches(String... includes) throws IOException, SportMonksException { return football.getAllCoaches(includes); }
     public Coach getCoachById(long id, String... includes) throws IOException, SportMonksException { return football.getCoachById(id, includes); }
     public List<Coach> getCoachesByCountry(long countryId, String... includes) throws IOException, SportMonksException { return football.getCoachesByCountry(countryId, includes); }
+    /** Coaches of a country capped at {@code limit}. */
+    public List<Coach> getCoachesByCountry(long countryId, int limit, String... includes) throws IOException, SportMonksException { return football.getCoachesByCountry(countryId, limit, includes); }
     public List<Coach> searchCoaches(String name, String... includes) throws IOException, SportMonksException { return football.searchCoaches(name, includes); }
+    /** Coach search capped at {@code limit} results. */
+    public List<Coach> searchCoaches(String name, int limit, String... includes) throws IOException, SportMonksException { return football.searchCoaches(name, limit, includes); }
     public List<Coach> getLatestUpdatedCoaches(String... includes) throws IOException, SportMonksException { return football.getLatestUpdatedCoaches(includes); }
 
     // -------------------------------------------------------------------------
@@ -591,8 +630,14 @@ public class SportMonksAPI {
     public List<Referee> getAllReferees(String... includes) throws IOException, SportMonksException { return football.getAllReferees(includes); }
     public Referee getRefereeById(long id, String... includes) throws IOException, SportMonksException { return football.getRefereeById(id, includes); }
     public List<Referee> getRefereesByCountry(long countryId, String... includes) throws IOException, SportMonksException { return football.getRefereesByCountry(countryId, includes); }
+    /** Referees of a country capped at {@code limit}. */
+    public List<Referee> getRefereesByCountry(long countryId, int limit, String... includes) throws IOException, SportMonksException { return football.getRefereesByCountry(countryId, limit, includes); }
     public List<Referee> getRefereesBySeason(long seasonId, String... includes) throws IOException, SportMonksException { return football.getRefereesBySeason(seasonId, includes); }
+    /** Referees of a season capped at {@code limit}. */
+    public List<Referee> getRefereesBySeason(long seasonId, int limit, String... includes) throws IOException, SportMonksException { return football.getRefereesBySeason(seasonId, limit, includes); }
     public List<Referee> searchReferees(String name, String... includes) throws IOException, SportMonksException { return football.searchReferees(name, includes); }
+    /** Referee search capped at {@code limit} results. */
+    public List<Referee> searchReferees(String name, int limit, String... includes) throws IOException, SportMonksException { return football.searchReferees(name, limit, includes); }
 
     // -------------------------------------------------------------------------
     // Core — Continents

@@ -19,31 +19,49 @@ class ScheduleApiTest extends BaseApiTest {
         api.getSchedulesBySeason(19686L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("schedules/seasons/19686"));
-        assertFalse(request.getPath().contains("/teams/"));
+        assertEquals("/schedules/seasons/19686", request.getRequestUrl().encodedPath());
     }
 
     @Test
-    void getSchedulesBySeason_returnsParsedList() throws IOException, SportMonksException {
+    void getSchedulesBySeason_parsesTheStage() throws IOException, SportMonksException {
         enqueue("schedules.json");
 
-        List<Schedule> schedules = api.getSchedulesBySeason(19686L);
+        Schedule stage = api.getSchedulesBySeason(27965L).get(0);
 
-        assertEquals(1, schedules.size());
-        assertEquals(19686L, schedules.get(0).getSeasonId());
-        assertEquals(1L, schedules.get(0).getTeamId());
+        assertEquals(77482690L, stage.getId());
+        assertEquals(1L, stage.getSportId());
+        assertEquals(564L, stage.getLeagueId());
+        assertEquals(27965L, stage.getSeasonId());
+        assertEquals(223L, stage.getTypeId());
+        assertEquals("Regular Season", stage.getName());
+        assertEquals(1L, stage.getSortOrder());
+        assertFalse(stage.getFinished());
+        assertTrue(stage.getIsCurrent());
+        assertEquals("2026-08-15", stage.getStartingAt());
+        assertEquals("2027-05-30", stage.getEndingAt());
+        assertTrue(stage.getGamesInCurrentWeek());
+        assertNull(stage.getTieBreakerRuleId());
+        assertTrue(stage.getAggregates().isEmpty());
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void getSchedulesBySeason_teamIdIsNotSentByTheApi() throws IOException, SportMonksException {
+        enqueue("schedules.json");
+
+        assertNull(api.getSchedulesBySeason(27965L).get(0).getTeamId());
     }
 
     @Test
     void getSchedulesBySeason_roundsAreParsed() throws IOException, SportMonksException {
         enqueue("schedules.json");
 
-        List<Schedule> schedules = api.getSchedulesBySeason(19686L);
+        List<Schedule> schedules = api.getSchedulesBySeason(27965L);
 
-        assertNotNull(schedules.get(0).getRounds());
         assertEquals(1, schedules.get(0).getRounds().size());
-        assertEquals(88L, schedules.get(0).getRounds().get(0).getId());
-        assertEquals("1", schedules.get(0).getRounds().get(0).getName());
+        assertEquals(408959L, schedules.get(0).getRounds().get(0).getId());
+        assertEquals(77482690L, schedules.get(0).getRounds().get(0).getStageId());
+        assertEquals(1, schedules.get(0).getRounds().get(0).getFixtures().size());
     }
 
     @Test
@@ -53,7 +71,7 @@ class ScheduleApiTest extends BaseApiTest {
         api.getSchedulesByTeam(1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("schedules/teams/1"));
+        assertEquals("/schedules/teams/1", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -72,7 +90,7 @@ class ScheduleApiTest extends BaseApiTest {
         api.getSchedulesBySeasonAndTeam(19686L, 1L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("schedules/seasons/19686/teams/1"));
+        assertEquals("/schedules/seasons/19686/teams/1", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -81,7 +99,6 @@ class ScheduleApiTest extends BaseApiTest {
 
         List<Schedule> schedules = api.getSchedulesBySeasonAndTeam(19686L, 1L);
 
-        assertFalse(schedules.isEmpty());
-        assertEquals(1L, schedules.get(0).getTeamId());
+        assertEquals(77482690L, schedules.get(0).getId());
     }
 }
