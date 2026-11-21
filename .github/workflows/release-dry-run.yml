@@ -27,7 +27,11 @@ jobs:
     timeout-minutes: 5
     environment: maven-central
     steps:
-      - name: Check the Sonatype token with a read-only request
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Check the Sonatype token for this component
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
@@ -35,22 +39,35 @@ jobs:
           python3 - <<'PY'
           import base64
           import http.client
+          import json
           import os
+          import urllib.parse
+          import xml.etree.ElementTree as ET
 
           username = os.environ["MAVEN_CENTRAL_USERNAME"]
           password = os.environ["MAVEN_CENTRAL_PASSWORD"]
           if not username or not password:
               raise SystemExit("Maven Central credentials are missing")
           token = base64.b64encode(f"{username}:{password}".encode()).decode()
+          pom = ET.parse("pom.xml")
+          coordinates = urllib.parse.urlencode({
+              "namespace": pom.findtext("{*}groupId"),
+              "name": pom.findtext("{*}artifactId"),
+              "version": pom.findtext("{*}version").removesuffix("-SNAPSHOT"),
+          })
           portal = http.client.HTTPSConnection("central.sonatype.com", timeout=20)
           try:
-              portal.request("GET", "/api/v1/publisher/deployments", headers={"Authorization": f"Bearer {token}"})
-              status = portal.getresponse().status
+              path = "/api/v1/publisher/published?" + coordinates
+              portal.request("GET", path, headers={"Authorization": f"Bearer {token}"})
+              response = portal.getresponse()
+              if response.status != 200:
+                  raise SystemExit(f"Sonatype component check returned HTTP {response.status}")
+              result = json.load(response)
           finally:
               portal.close()
-          if status != 200:
-              raise SystemExit(f"Sonatype deployment listing returned HTTP {status}")
-          print("Sonatype accepted the token for the deployment listing (HTTP 200).")
+          if type(result.get("published")) is not bool:
+              raise SystemExit("Sonatype did not report whether the component was published")
+          print(f"Sonatype accepted the token for this component. Already published: {result['published']}.")
           PY
 
   build-bundle:
