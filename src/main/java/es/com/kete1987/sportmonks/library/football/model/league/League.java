@@ -1,6 +1,9 @@
 package es.com.kete1987.sportmonks.library.football.model.league;
 
+import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
+import es.com.kete1987.sportmonks.library.football.model.sport.Sport;
+import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
@@ -22,13 +25,18 @@ public class League {
     private String type;
     @SerializedName("sub_type")
     private String subType;
-    @SerializedName("last_playerd_at")
-    private String lastPlayerdAt;
+    @SerializedName(value = "last_played_at", alternate = {"last_playerd_at"})
+    private String lastPlayedAt;
+    private Long category;
     @SerializedName("has_jerseys")
     private Boolean hasJerseys;
     private List<SeasonData> seasons;
     private SeasonData currentseason;
     private Country country;
+    private List<MatchDetail> latest;
+    private List<MatchDetail> upcoming;
+    private List<Stage> stages;
+    private Sport sport;
 
     public League() {
     }
@@ -69,8 +77,25 @@ public class League {
         return subType;
     }
 
+    /** @return when the league last had a match ({@code yyyy-MM-dd HH:mm:ss}), or null. */
+    @Nullable
+    public String getLastPlayedAt() {
+        return lastPlayedAt;
+    }
+
+    /**
+     * @return the same value as {@link #getLastPlayedAt()}
+     * @deprecated misspelt name kept for compatibility; use {@link #getLastPlayedAt()}
+     */
+    @Deprecated
     public String getLastPlayerdAt() {
-        return lastPlayerdAt;
+        return getLastPlayedAt();
+    }
+
+    /** @return the league category (1 is the top one), or null. */
+    @Nullable
+    public Long getCategory() {
+        return category;
     }
 
     public Boolean getHasJerseys() {
@@ -91,5 +116,29 @@ public class League {
     @Nullable
     public Country getCountry() {
         return country;
+    }
+
+    /** @return the latest fixtures, or null if the {@code latest} include is absent. */
+    @Nullable
+    public List<MatchDetail> getLatest() {
+        return ModelCollections.unmodifiable(latest);
+    }
+
+    /** @return the upcoming fixtures, or null if the {@code upcoming} include is absent. */
+    @Nullable
+    public List<MatchDetail> getUpcoming() {
+        return ModelCollections.unmodifiable(upcoming);
+    }
+
+    /** @return the stages, or null if the {@code stages} include is absent. */
+    @Nullable
+    public List<Stage> getStages() {
+        return ModelCollections.unmodifiable(stages);
+    }
+
+    /** @return the sport, or null if the {@code sport} include is absent. */
+    @Nullable
+    public Sport getSport() {
+        return sport;
     }
 }
