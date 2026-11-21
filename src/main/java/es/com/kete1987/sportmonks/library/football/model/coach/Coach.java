@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.football.model.coach;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 
 public class Coach {
     private Long id;
@@ -20,8 +21,28 @@ public class Coach {
     @SerializedName("date_of_birth")
     private String dateOfBirth;
     private String gender;
+    @Nullable
+    @SerializedName("common_name")
+    private String commonName;
+    @Nullable
+    private CoachMeta meta;
 
     public Coach() {
+    }
+
+    /** @return the short common name (e.g. {@code "H. Flick"}), or null when unavailable. */
+    @Nullable
+    public String getCommonName() {
+        return commonName;
+    }
+
+    /**
+     * @return the fixture pivot (team the coach led), present when the coach comes from the
+     *         fixture {@code coaches} include; null otherwise.
+     */
+    @Nullable
+    public CoachMeta getMeta() {
+        return meta;
     }
 
     public Long getId() {

@@ -1,5 +1,7 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
+import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.football.model.coach.Coach;
 import es.com.kete1987.sportmonks.library.football.model.comments.Comment;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
@@ -25,6 +27,20 @@ public class MatchDetail extends Match {
     private List<Scores> scores;
 
     private List<Comment> comments;
+
+    @Nullable
+    private List<FixtureMetadata> metadata;
+    @Nullable
+    private List<FixtureSidelined> sidelined;
+    @Nullable
+    private List<FixtureReferee> referees;
+    @Nullable
+    private List<Coach> coaches;
+    @Nullable
+    private List<EventData> timeline;
+    @Nullable
+    @SerializedName(value = "weatherreport", alternate = {"weatherReport", "weather_report"})
+    private WeatherReport weatherReport;
 
     public MatchDetail() {
     }
@@ -174,6 +190,98 @@ public class MatchDetail extends Match {
 
     public List<Comment> getComments() {
         return ModelCollections.unmodifiable(comments);
+    }
+
+    /**
+     * @return unmodifiable metadata entries (include {@code metadata}), null when the include was
+     *         not requested or is null, or an empty list when the API returns an empty relation.
+     */
+    @Nullable
+    public List<FixtureMetadata> getMetadata() {
+        return ModelCollections.unmodifiable(metadata);
+    }
+
+    /**
+     * @param typeId metadata type ID (e.g. 159 for formations)
+     * @return the first metadata entry of that type, or null when absent or not included
+     */
+    @Nullable
+    public FixtureMetadata getMetadataByTypeId(long typeId) {
+        if (metadata == null) {
+            return null;
+        }
+        for (FixtureMetadata entry : metadata) {
+            if (entry != null && entry.getTypeId() != null && entry.getTypeId() == typeId) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return unmodifiable sidelined players (include {@code sidelined}), null when the include was
+     *         not requested or is null, or an empty list when the API returns an empty relation.
+     */
+    @Nullable
+    public List<FixtureSidelined> getSidelined() {
+        return ModelCollections.unmodifiable(sidelined);
+    }
+
+    /**
+     * @return unmodifiable match officials (include {@code referees}), null when the include was
+     *         not requested or is null, or an empty list when the API returns an empty relation.
+     *         Use {@link FixtureReferee#getTypeId()} with
+     *         {@link es.com.kete1987.sportmonks.library.football.util.RefereeType} to tell roles apart.
+     */
+    @Nullable
+    public List<FixtureReferee> getReferees() {
+        return ModelCollections.unmodifiable(referees);
+    }
+
+    /**
+     * @return the main referee assignment, or null when absent or {@code referees} was not included
+     */
+    @Nullable
+    public FixtureReferee getMainReferee() {
+        if (referees == null) {
+            return null;
+        }
+        for (FixtureReferee referee : referees) {
+            if (referee != null && referee.isMainReferee()) {
+                return referee;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return unmodifiable coaches (include {@code coaches}), null when the include was not
+     *         requested or is null, or an empty list when the API returns an empty relation.
+     *         {@link Coach#getMeta()} links each coach to its team.
+     */
+    @Nullable
+    public List<Coach> getCoaches() {
+        return ModelCollections.unmodifiable(coaches);
+    }
+
+    /**
+     * @return unmodifiable timeline events in API order (include {@code timeline}), null when the
+     *         include was not requested or is null, or an empty list when the API returns an empty
+     *         relation. Same shape as {@link #getEvents()}, with {@code section} {@code "timeline"}.
+     */
+    @Nullable
+    public List<EventData> getTimeline() {
+        return ModelCollections.unmodifiable(timeline);
+    }
+
+    /**
+     * @return the weather report (include {@code weatherReport}), or null when the include was not
+     *         requested or the API has no report for this fixture. See {@link WeatherReport} for
+     *         the verification status of its shape.
+     */
+    @Nullable
+    public WeatherReport getWeatherReport() {
+        return weatherReport;
     }
 
     public int getCurrentLocalTeamGoals() {

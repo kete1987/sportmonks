@@ -5,6 +5,9 @@ import es.com.kete1987.sportmonks.library.core.model.continent.Continent;
 import es.com.kete1987.sportmonks.library.core.model.country.Country;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
 import es.com.kete1987.sportmonks.library.football.model.league.League;
+import es.com.kete1987.sportmonks.library.football.model.coach.Coach;
+import es.com.kete1987.sportmonks.library.football.model.match.FixtureMetadata;
+import es.com.kete1987.sportmonks.library.football.model.match.FixtureReferee;
 import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.match.StatisticsData;
 import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
@@ -32,6 +35,7 @@ class SportMonksIntegrationTest {
     private static final String SEASON_ID       = "13133";
     private static final String MATCH_ID_STATS  = "18545372";
     private static final String MATCH_ID_ODDS   = "19439629";
+    private static final String MATCH_ID_EXTRA_INCLUDES = "19732648";
     private static final long   LEAGUE_ID       = 564L;
     private static final long   STAGE_SEASON_ID = 12950L;
     private static final long   ROUND_ID        = 151251L;
@@ -198,6 +202,42 @@ class SportMonksIntegrationTest {
         assertNotNull(result.getScores());
         assertNotNull(result.getHomeTeam());
         assertNotNull(result.getAwayTeam());
+    }
+
+    /** Includes of issue #71, checked against the Barcelona - Real Madrid of 2026-10-25. */
+    @Test
+    void getMatchDetail_withExtraIncludes_deserializesThem() throws IOException, SportMonksException {
+        String[] includes = {"metadata", "sidelined", "referees.referee", "coaches", "timeline", "weatherReport"};
+        MatchDetail result = api.getMatchDetail(MATCH_ID_EXTRA_INCLUDES, includes);
+
+        assertNotNull(result);
+        assertFalse(result.getMetadata().isEmpty());
+        FixtureMetadata formations = result.getMetadataByTypeId(159);
+        assertNotNull(formations);
+        assertNotNull(formations.getValueAsString("home"));
+
+        assertFalse(result.getSidelined().isEmpty());
+        assertNotNull(result.getSidelined().get(0).getPlayerId());
+
+        assertFalse(result.getReferees().isEmpty());
+        FixtureReferee main = result.getMainReferee();
+        assertNotNull(main);
+        assertNotNull(main.getReferee());
+        assertEquals(main.getRefereeId(), main.getReferee().getId());
+
+        assertEquals(2, result.getCoaches().size());
+        for (Coach coach : result.getCoaches()) {
+            assertNotNull(coach.getDisplayName());
+            assertNotNull(coach.getMeta());
+            assertNotNull(coach.getMeta().getParticipantId());
+        }
+
+        assertFalse(result.getTimeline().isEmpty());
+        assertNotNull(result.getTimeline().get(0).getTypeId());
+        // weatherReport may legitimately be null for a fixture: only check its shape when present
+        if (result.getWeatherReport() != null) {
+            assertEquals(Long.parseLong(MATCH_ID_EXTRA_INCLUDES), result.getWeatherReport().getFixtureId());
+        }
     }
 
     @Test

@@ -1,0 +1,66 @@
+{
+  "data": {
+    "id": 19732648,
+    "sport_id": 1,
+    "league_id": 564,
+    "state_id": 5,
+    "venue_id": 9236,
+    "name": "FC Barcelona vs Real Madrid",
+    "starting_at": "2026-10-25 15:15:00",
+    "metadata": [
+      {"id": 10106163, "metadatable_id": 19732648, "type_id": 35, "value_type": "object", "values": {"neutral": false}},
+      {"id": 10864230, "metadatable_id": 19732648, "type_id": 36, "value_type": "object", "values": {"kickOff": "home"}},
+      {"id": 10864229, "metadatable_id": 19732648, "type_id": 159, "value_type": "object", "values": {"home": "4-3-3", "away": "4-2-3-1"}},
+      {"id": 10914670, "metadatable_id": 19732648, "type_id": 578, "value_type": "object", "values": {"attendance": 62065}},
+      {"id": 10859514, "metadatable_id": 19732648, "type_id": 613, "value_type": "string", "values": "#BARRMA"}
+    ],
+    "sidelined": [
+      {"id": 8038692, "fixture_id": 19732648, "sideline_id": 772482, "participant_id": 3468, "player_id": 7346228, "type_id": 557,
+       "sideline": {"id": 772482, "player_id": 7346228, "type_id": 1918, "category": "injury", "team_id": 3468, "season_id": null,
+                    "start_date": "2026-03-03", "end_date": "2026-12-31", "games_missed": 37, "completed": false},
+       "player": {"id": 7346228, "sport_id": 1, "country_id": 5, "common_name": "R. Silva de Goes", "display_name": "Rodrygo"}},
+      {"id": 8038690, "fixture_id": 19732648, "sideline_id": 788925, "participant_id": 3468, "player_id": 98903, "type_id": 2036}
+    ],
+    "referees": [
+      {"id": 6089839, "fixture_id": 19732648, "referee_id": 15712, "type_id": 6,
+       "referee": {"id": 15712, "sport_id": 1, "country_id": 32, "city_id": null, "common_name": "J. Martínez Munuera",
+                   "name": "Juan Martínez Munuera", "display_name": "Juan Martínez Munuera",
+                   "image_path": "https://cdn.sportmonks.com/images/soccer/placeholder.png", "date_of_birth": null, "gender": null}},
+      {"id": 6089840, "fixture_id": 19732648, "referee_id": 15276, "type_id": 7},
+      {"id": 6089841, "fixture_id": 19732648, "referee_id": 16863, "type_id": 8},
+      {"id": 6089842, "fixture_id": 19732648, "referee_id": 1070308, "type_id": 9}
+    ],
+    "coaches": [
+      {"id": 37352367, "player_id": 37352367, "sport_id": 1, "country_id": 11, "nationality_id": 11, "city_id": null,
+       "common_name": "H. Flick", "firstname": "Hans-Dieter", "lastname": "Flick", "name": "Hans-Dieter Flick",
+       "display_name": "Hans-Dieter Flick", "image_path": "https://cdn.sportmonks.com/images/soccer/coaches/15/37352367.png",
+       "height": null, "weight": null, "date_of_birth": "1965-02-24", "gender": "male",
+       "meta": {"fixture_id": 19732648, "coach_id": 37352367, "participant_id": 83}},
+      {"id": 455375, "player_id": 455375, "sport_id": 1, "country_id": 20, "nationality_id": 20, "city_id": null,
+       "common_name": "José Mourinho", "firstname": "José Mario Felix", "lastname": "dos Santos Mourinho",
+       "name": "José Mario Felix dos Santos Mourinho", "display_name": "José Mourinho",
+       "image_path": "https://cdn.sportmonks.com/images/soccer/players/15/455375.png",
+       "height": null, "weight": null, "date_of_birth": "1963-01-26", "gender": "male",
+       "meta": {"fixture_id": 19732648, "coach_id": 455375, "participant_id": 3468}}
+    ],
+    "timeline": [
+      {"id": 158410500, "fixture_id": 19732648, "period_id": 7194899, "participant_id": 3468, "type_id": 126, "section": "timeline",
+       "player_id": null, "related_player_id": null, "player_name": null, "related_player_name": null, "result": null, "info": null,
+       "addition": "1st Corner", "minute": 19, "extra_minute": null, "injured": null, "on_bench": false, "coach_id": null,
+       "sub_type_id": null, "detailed_period_id": 7194899, "rescinded": null, "sort_order": 1},
+      {"id": 158410509, "fixture_id": 19732648, "period_id": 7194899, "participant_id": 3468, "type_id": 126, "section": "timeline",
+       "player_id": null, "related_player_id": null, "player_name": null, "related_player_name": null, "result": null, "info": null,
+       "addition": "2nd Corner", "minute": 20, "extra_minute": null, "injured": null, "on_bench": false, "coach_id": null,
+       "sub_type_id": null, "detailed_period_id": 7194899, "rescinded": null, "sort_order": 2}
+    ],
+    "weatherreport": {
+      "id": 810646, "fixture_id": 19732648, "venue_id": 9236,
+      "temperature": {"current": 17.04}, "feels_like": {"current": 16.39},
+      "wind": {"speed": 3.6, "direction": 330},
+      "humidity": "61%", "pressure": 1020, "clouds": "0%", "description": "clear sky",
+      "icon": "https://cdn.sportmonks.com/images/weather/01n.png", "type": "actual", "metric": "celcius",
+      "current": {"temp": 17.04, "wind": 3.6, "clouds": "0%", "humidity": "61%", "pressure": 1020, "direction": 330,
+                  "feels_like": 16.39, "description": "clear sky"}
+    }
+  }
+}
