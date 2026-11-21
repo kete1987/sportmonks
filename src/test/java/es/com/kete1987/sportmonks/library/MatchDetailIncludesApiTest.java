@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,11 +69,12 @@ class MatchDetailIncludesApiTest extends BaseApiTest {
         // returned JSON is a copy: mutating it does not alter the model
         formation.getValues().getAsJsonObject().addProperty("home", "changed");
         assertEquals("4-3-3", formation.getValueAsString("home"));
-        assertThrows(UnsupportedOperationException.class, () -> metadata.add(new FixtureMetadata()));
+        FixtureMetadata extra = new FixtureMetadata();
+        assertThrows(UnsupportedOperationException.class, () -> metadata.add(extra));
     }
 
     @Test
-    void getMatchDetail_parsesSidelinedRefereesAndCoaches() throws IOException, SportMonksException {
+    void getMatchDetail_parsesSidelined() throws IOException, SportMonksException {
         enqueue("fixture_detail_extra_includes.json");
 
         MatchDetail match = api.getMatchDetail("19732648", INCLUDES);
@@ -91,6 +93,13 @@ class MatchDetailIncludesApiTest extends BaseApiTest {
         assertEquals("Rodrygo", rodrygo.getPlayer().getDisplayName());
         assertNull(sidelined.get(1).getSideline());
         assertNull(sidelined.get(1).getPlayer());
+    }
+
+    @Test
+    void getMatchDetail_parsesReferees() throws IOException, SportMonksException {
+        enqueue("fixture_detail_extra_includes.json");
+
+        MatchDetail match = api.getMatchDetail("19732648", INCLUDES);
 
         List<FixtureReferee> referees = match.getReferees();
         assertEquals(4, referees.size());
@@ -104,6 +113,13 @@ class MatchDetailIncludesApiTest extends BaseApiTest {
         assertEquals("Juan Martínez Munuera", main.getReferee().getName());
         assertNull(referees.get(3).getReferee());
         assertFalse(referees.get(3).isMainReferee());
+    }
+
+    @Test
+    void getMatchDetail_parsesCoaches() throws IOException, SportMonksException {
+        enqueue("fixture_detail_extra_includes.json");
+
+        MatchDetail match = api.getMatchDetail("19732648", INCLUDES);
 
         List<Coach> coaches = match.getCoaches();
         assertEquals(2, coaches.size());
@@ -116,11 +132,12 @@ class MatchDetailIncludesApiTest extends BaseApiTest {
         assertEquals(19732648L, flick.getMeta().getFixtureId());
         assertEquals(37352367L, flick.getMeta().getCoachId());
         assertEquals(3468L, coaches.get(1).getMeta().getParticipantId());
-        assertThrows(UnsupportedOperationException.class, () -> coaches.add(new Coach()));
+        Coach extra = new Coach();
+        assertThrows(UnsupportedOperationException.class, () -> coaches.add(extra));
     }
 
     @Test
-    void getMatchDetail_parsesTimelineAndWeatherReport() throws IOException, SportMonksException {
+    void getMatchDetail_parsesTimeline() throws IOException, SportMonksException {
         enqueue("fixture_detail_extra_includes.json");
 
         MatchDetail match = api.getMatchDetail("19732648", INCLUDES);
@@ -134,6 +151,13 @@ class MatchDetailIncludesApiTest extends BaseApiTest {
         assertEquals(1L, timeline.get(0).getSortOrder());
         assertNull(timeline.get(0).getPlayerId());
         assertNull(match.getEvents());
+    }
+
+    @Test
+    void getMatchDetail_parsesWeatherReport() throws IOException, SportMonksException {
+        enqueue("fixture_detail_extra_includes.json");
+
+        MatchDetail match = api.getMatchDetail("19732648", INCLUDES);
 
         WeatherReport weather = match.getWeatherReport();
         assertEquals(810646L, weather.getId());
@@ -159,7 +183,8 @@ class MatchDetailIncludesApiTest extends BaseApiTest {
         assertEquals(330.0, current.getDirection());
         assertEquals(16.39, current.getFeelsLike());
         assertEquals("clear sky", current.getDescription());
-        assertThrows(UnsupportedOperationException.class, () -> weather.getTemperature().put("day", 1.0));
+        Map<String, Double> temperature = weather.getTemperature();
+        assertThrows(UnsupportedOperationException.class, () -> temperature.put("day", 1.0));
     }
 
     @ParameterizedTest
