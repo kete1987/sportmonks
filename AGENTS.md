@@ -125,11 +125,7 @@ Never build a `Gson` instance directly — call `gson()` from `SportMonksApiBase
 
 ## Publishing a new version
 
-1. Update `<version>` in `pom.xml`.
-2. Run `mvn clean deploy` from IntelliJ (Maven panel → Lifecycle → deploy) or terminal.
-3. Enter GPG passphrase when prompted (stored in 1Password).
-4. Wait 5–15 minutes for `BUILD SUCCESS` — the plugin polls Maven Central until the artifact is published.
-5. Published at: https://central.sonatype.com/artifact/es.com.kete1987/sportmonks.library
+Use **Actions → Maven release** for a normal release. Start in `check` mode and use **Release dry run** to verify the signed bundle without uploading. The [release guide](docs/releasing.md) covers credentials, publication and how to resume a failed run.
 
 ## Dependencies
 
