@@ -141,6 +141,11 @@ class FootballModelsIntegrationTest {
     }
 
     @Test
+    void seasonGroupsOfACupModelEveryField() throws IOException, InterruptedException {
+        assertCovered("football/seasons/26618?include=groups", SeasonData.class);
+    }
+
+    @Test
     void stageModelsEveryFieldAndInclude() throws IOException, InterruptedException {
         assertCovered("football/stages/77457866?include=type;rounds;currentRound;league;season", Stage.class);
     }
