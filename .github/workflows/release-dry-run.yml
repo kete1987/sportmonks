@@ -21,10 +21,45 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
 
+  verify-central:
+    if: github.ref == 'refs/heads/master' && github.actor == 'kete1987' && github.triggering_actor == 'kete1987'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: maven-central
+    steps:
+      - name: Check the Sonatype token with a read-only request
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import base64
+          import http.client
+          import os
+
+          username = os.environ["MAVEN_CENTRAL_USERNAME"]
+          password = os.environ["MAVEN_CENTRAL_PASSWORD"]
+          if not username or not password:
+              raise SystemExit("Maven Central credentials are missing")
+          token = base64.b64encode(f"{username}:{password}".encode()).decode()
+          portal = http.client.HTTPSConnection("central.sonatype.com", timeout=20)
+          try:
+              portal.request("GET", "/api/v1/publisher/deployments", headers={"Authorization": f"Bearer {token}"})
+              status = portal.getresponse().status
+          finally:
+              portal.close()
+          if status != 200:
+              raise SystemExit(f"Sonatype deployment listing returned HTTP {status}")
+          print("Sonatype accepted the token for the deployment listing (HTTP 200).")
+          PY
+
   build-bundle:
     if: github.ref == 'refs/heads/master' && github.actor == 'kete1987' && github.triggering_actor == 'kete1987'
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    environment: maven-central
+    env:
+      SIGNING_FINGERPRINT: '9DFD461DE07A17E2BC7EABB9F5471BBC816471A5'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -39,7 +74,10 @@ jobs:
           server-password-env-var: DRY_RUN_PASSWORD
 
       - name: Build and verify the signed bundle
+        shell: bash
         env:
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           DRY_RUN_USERNAME: dry-run
           DRY_RUN_PASSWORD: dry-run
         run: |
@@ -62,14 +100,15 @@ jobs:
 
           export GNUPGHOME
           GNUPGHOME="$(mktemp -d)"
-          trap 'gpgconf --kill gpg-agent; rm -rf -- "$GNUPGHOME"' EXIT
-          gpg --batch --pinentry-mode loopback --passphrase '' \
-            --quick-generate-key 'Release Dry Run <release-dry-run@example.invalid>' rsa2048 sign 1d
-          export MAVEN_GPG_KEY
-          MAVEN_GPG_KEY="$(gpg --batch --armor --export-secret-keys release-dry-run@example.invalid)"
+          trap 'rm -rf -- "$GNUPGHOME"' EXIT
+          test -n "$MAVEN_GPG_KEY"
+          test -n "$MAVEN_GPG_PASSPHRASE"
+          curl --silent --show-error --fail --max-time 20 --retry 2 \
+            "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x$SIGNING_FINGERPRINT" \
+            | gpg --batch --import
 
           mvn --batch-mode --no-transfer-progress clean deploy \
-            -Dgpg.signer=bc -Dmaven.install.skip=true \
+            -Dgpg.signer=bc -Dgpg.bestPractices=true -Dmaven.install.skip=true \
             -DskipUpload=true -DcentralBaseUrl=http://127.0.0.1:1 \
             -DcentralSnapshotsUrl=http://127.0.0.1:1
 
@@ -78,6 +117,10 @@ jobs:
           mapfile -d '' signatures < <(find target/bundle-verification -name '*.asc' -print0)
           test "${#signatures[@]}" -eq 4
           for signature in "${signatures[@]}"; do
-            gpg --batch --verify "$signature" "${signature%.asc}"
+            artifact="${signature%.asc}"
+            gpg --batch --status-fd 1 --verify "$signature" "$artifact" \
+              | grep -F "[GNUPG:] VALIDSIG $SIGNING_FINGERPRINT " >/dev/null
+            hash="$(sha256sum "$artifact")"
+            test "${hash%% *}" = "$(cat "$artifact.sha256")"
           done
-          printf '%s\n' 'Built the Maven Central bundle and verified all four signatures.' >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' 'Built the Maven Central bundle and verified all four release-key signatures and SHA-256 checksums.' >> "$GITHUB_STEP_SUMMARY"
