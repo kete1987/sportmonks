@@ -19,6 +19,7 @@ public class TeamPlayer {
     private Long jerseyNumber;
     private String start;
     private String end;
+    private Boolean captain;
     private Player player;
 
     public TeamPlayer() {
@@ -58,6 +59,11 @@ public class TeamPlayer {
 
     public String getEnd() {
         return end;
+    }
+
+    /** @return true if the player is the team captain in that spell, or null when the API omits it. */
+    public Boolean getCaptain() {
+        return captain;
     }
 
     /**

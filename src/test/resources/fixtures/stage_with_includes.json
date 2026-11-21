@@ -1,0 +1,82 @@
+{
+  "data": {
+    "id": 77457866,
+    "sport_id": 1,
+    "league_id": 501,
+    "season_id": 19735,
+    "type_id": 223,
+    "name": "1st Phase",
+    "sort_order": 1,
+    "finished": true,
+    "is_current": false,
+    "starting_at": "2022-07-30",
+    "ending_at": "2023-04-23",
+    "games_in_current_week": false,
+    "tie_breaker_rule_id": 171,
+    "type": {
+      "id": 223,
+      "name": "Group Stage",
+      "code": "group-stage",
+      "developer_name": "GROUP_STAGE",
+      "model_type": "stage_type",
+      "stat_group": null
+    },
+    "rounds": [
+      {
+        "id": 274716,
+        "sport_id": 1,
+        "league_id": 501,
+        "season_id": 19735,
+        "stage_id": 77457866,
+        "name": "3",
+        "finished": true,
+        "is_current": false,
+        "starting_at": "2022-08-13",
+        "ending_at": "2022-08-14",
+        "games_in_current_week": false
+      },
+      {
+        "id": 274714,
+        "sport_id": 1,
+        "league_id": 501,
+        "season_id": 19735,
+        "stage_id": 77457866,
+        "name": "1",
+        "finished": true,
+        "is_current": false,
+        "starting_at": "2022-07-30",
+        "ending_at": "2022-07-31",
+        "games_in_current_week": false
+      }
+    ],
+    "currentround": null,
+    "league": {
+      "id": 501,
+      "sport_id": 1,
+      "country_id": 1161,
+      "name": "Premiership",
+      "active": true,
+      "short_code": "SCO P",
+      "image_path": "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
+      "type": "league",
+      "sub_type": "domestic",
+      "last_played_at": "2026-11-08 16:00:00",
+      "category": 2,
+      "has_jerseys": false
+    },
+    "season": {
+      "id": 19735,
+      "sport_id": 1,
+      "league_id": 501,
+      "tie_breaker_rule_id": 171,
+      "name": "2022/2023",
+      "finished": true,
+      "pending": false,
+      "is_current": false,
+      "starting_at": "2022-07-30",
+      "ending_at": "2023-05-28",
+      "standings_recalculated_at": "2023-11-30 15:41:02",
+      "games_in_current_week": false
+    }
+  }
+}

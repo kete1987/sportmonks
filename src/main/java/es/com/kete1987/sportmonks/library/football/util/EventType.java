@@ -12,6 +12,16 @@ public class EventType {
     public static final int YELLOWREDCARD = 21;
     public static final int PENALTY_SHOOTOUT_MISS = 22;
     public static final int PENALTY_SHOOTOUT_GOAL = 23;
+    /** Corner kick (timeline event). */
+    public static final int CORNER = 126;
+    /** Offside (timeline event); the same developer name also exists as sub-event {@link #OFFSIDE_SUB_EVENT}. */
+    public static final int OFFSIDE = 568;
+    /** Offside as a sub-event of another event. */
+    public static final int OFFSIDE_SUB_EVENT = 1514;
+    public static final int SHOT_ON_TARGET = 569;
+    public static final int SHOT_OFF_TARGET = 570;
+    /** Ball hit the post or the crossbar. */
+    public static final int WOODWORK = 48995;
     public static final int HIGHLIGHT = 1675;
     public static final int VAR_CARD = 1697;
     public static final int DELAY_START = 132791;

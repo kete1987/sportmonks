@@ -1,0 +1,165 @@
+{
+  "data": {
+    "id": 83,
+    "sport_id": 1,
+    "country_id": 32,
+    "venue_id": 9236,
+    "gender": "male",
+    "name": "FC Barcelona",
+    "short_code": "BAR",
+    "image_path": "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+    "founded": 1899,
+    "type": "domestic",
+    "placeholder": false,
+    "last_played_at": "2026-11-08 20:00:00",
+    "coaches": [
+      {
+        "id": 23072,
+        "team_id": 83,
+        "coach_id": 184942,
+        "position_id": 221,
+        "active": false,
+        "start": "2021-11-06",
+        "end": "2024-06-30",
+        "temporary": false
+      },
+      {
+        "id": 4369503,
+        "team_id": 83,
+        "coach_id": 37352367,
+        "position_id": 221,
+        "active": true,
+        "start": "2024-07-01",
+        "end": "2028-06-30",
+        "temporary": false
+      }
+    ],
+    "country": {
+      "id": 32,
+      "continent_id": 1,
+      "name": "Spain",
+      "official_name": "Kingdom of Spain",
+      "fifa_name": "ESP",
+      "iso2": "ES",
+      "iso3": "ESP",
+      "latitude": "40.396026611328125",
+      "longitude": "-3.550692558288574",
+      "borders": [
+        "AND",
+        "FRA"
+      ],
+      "image_path": "https://cdn.sportmonks.com/images/countries/png/short/es.png"
+    },
+    "rankings": [
+      {
+        "id": 36,
+        "position": 11,
+        "participant_id": 83,
+        "points": 85000,
+        "sport_id": 1,
+        "type": "UEFA"
+      }
+    ],
+    "rivals": [
+      {
+        "id": 7980,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 140808,
+        "gender": "male",
+        "name": "Atlético de Madrid",
+        "short_code": "ATM",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/12/7980.png",
+        "founded": 1903,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2026-11-08 20:00:00"
+      },
+      {
+        "id": 3468,
+        "sport_id": 1,
+        "country_id": 32,
+        "venue_id": 2020,
+        "gender": "male",
+        "name": "Real Madrid",
+        "short_code": "RMA",
+        "image_path": "https://cdn.sportmonks.com/images/soccer/teams/12/3468.png",
+        "founded": 1902,
+        "type": "domestic",
+        "placeholder": false,
+        "last_played_at": "2022-01-16 18:30:00"
+      }
+    ],
+    "socials": [
+      {
+        "id": 64,
+        "social_id": 83,
+        "social_channel_id": 2,
+        "value": "@FCBarcelona"
+      }
+    ],
+    "sport": {
+      "id": 1,
+      "name": "Football",
+      "code": "football"
+    },
+    "statistics": [
+      {
+        "id": 38088,
+        "team_id": 83,
+        "season_id": 718,
+        "has_values": true
+      },
+      {
+        "id": 42751,
+        "team_id": 83,
+        "season_id": 846,
+        "has_values": true
+      }
+    ],
+    "trophies": [
+      {
+        "id": 630,
+        "participant_id": 83,
+        "team_id": null,
+        "league_id": 570,
+        "season_id": 846,
+        "trophy_id": 1
+      },
+      {
+        "id": 16343228,
+        "participant_id": 83,
+        "team_id": null,
+        "league_id": 1251,
+        "season_id": 1168,
+        "trophy_id": 1
+      }
+    ],
+    "players": [
+      {
+        "id": 1281178,
+        "transfer_id": null,
+        "player_id": 37598766,
+        "team_id": 83,
+        "position_id": 27,
+        "detailed_position_id": 156,
+        "start": "2025-07-14",
+        "end": "2029-06-30",
+        "captain": false,
+        "jersey_number": 19
+      },
+      {
+        "id": 1039872,
+        "transfer_id": null,
+        "player_id": 805,
+        "team_id": 83,
+        "position_id": 24,
+        "detailed_position_id": 24,
+        "start": "2024-10-02",
+        "end": "2027-06-30",
+        "captain": false,
+        "jersey_number": 13
+      }
+    ]
+  }
+}

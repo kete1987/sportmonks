@@ -1,0 +1,46 @@
+{
+  "data": {
+    "id": 26618,
+    "sport_id": 1,
+    "league_id": 732,
+    "tie_breaker_rule_id": 138867,
+    "name": "2026",
+    "finished": true,
+    "pending": false,
+    "is_current": false,
+    "starting_at": "2026-06-11",
+    "ending_at": "2026-07-19",
+    "standings_recalculated_at": "2026-07-16 15:25:22",
+    "games_in_current_week": false,
+    "groups": [
+      {
+        "id": 253019,
+        "sport_id": 1,
+        "league_id": 732,
+        "season_id": 26618,
+        "stage_id": 77478590,
+        "name": "Group A",
+        "starting_at": "2026-06-11",
+        "ending_at": "2026-06-25",
+        "games_in_current_week": false,
+        "is_current": false,
+        "finished": true,
+        "pending": false
+      },
+      {
+        "id": 253020,
+        "sport_id": 1,
+        "league_id": 732,
+        "season_id": 26618,
+        "stage_id": 77478590,
+        "name": "Group B",
+        "starting_at": "2026-06-12",
+        "ending_at": "2026-06-24",
+        "games_in_current_week": false,
+        "is_current": false,
+        "finished": true,
+        "pending": false
+      }
+    ]
+  }
+}

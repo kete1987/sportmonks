@@ -21,7 +21,7 @@ public class StandingsGroup {
     private Boolean gamesInCurrentWeek;
     @SerializedName("is_current")
     private Boolean isCurrent;
-    @SerializedName("is_finished")
+    @SerializedName(value = "is_finished", alternate = {"finished"})
     private Boolean isFinished;
     private Boolean pending;
 

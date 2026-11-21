@@ -1,5 +1,24 @@
 # Migration Guide
 
+## 3.5.0 (unreleased): football model fixes (#81)
+
+**Breaking: `Venue.getZipcode()` now returns `String`** (it was `Long`). The API sends alphanumeric
+postal codes (`"CV6 6GE"`, `"1234 AB"`), so with a `Long` field `getVenues(seasonId)` and every request
+with the `venue` include threw `JsonSyntaxException: Expected a long but was CV6 6GE` for UK or Dutch
+venues. Callers that used the number must parse the string themselves.
+
+```java
+String zip = venue.getZipcode();   // was: Long zip = venue.getZipcode();
+```
+
+**Breaking: `League.getLastPlayerdAt()` is removed.** The name had a typo and the getter always returned
+`null` because the API sends `last_played_at`; use `League.getLastPlayedAt()`, which now carries the real
+value. The two changes are why this release bumps the minor version.
+
+Compatible changes: `Stage.getGamesInCurrentWeek()` keeps returning a `String` but
+`Stage.isGamesInCurrentWeek()` gives the boolean the API actually sends. Many models gained fields and
+includes that were silently dropped before (see the issue for the list).
+
 ## 3.3.0 (unreleased): null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name
