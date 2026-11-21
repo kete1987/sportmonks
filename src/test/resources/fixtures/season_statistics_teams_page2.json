@@ -1,0 +1,9 @@
+{
+  "data": [
+    {"id": 470015, "team_id": 676, "season_id": 27965, "has_values": true,
+     "details": [
+       {"id": 7061999, "team_statistic_id": 470015, "type_id": 52, "value": {"all": {"count": 3, "average": 3}}}
+     ]}
+  ],
+  "pagination": {"count": 1, "per_page": 25, "current_page": 2, "has_more": false, "next_page": null, "next_cursor": null}
+}

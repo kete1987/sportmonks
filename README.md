@@ -249,8 +249,10 @@ List<ExpectedGoal> xgPlayer = api.getExpectedGoalsByPlayer();
 ### Statistics & Schedules
 
 ```java
-List<Statistic> stats    = api.getSeasonStatsByParticipant(676L);
-List<Schedule>  schedule = api.getSchedulesBySeason(13133L);
+// one entry per season; the values are in getDetails() (type id + value)
+List<SeasonStatistic> stats = api.getSeasonStatistics(SeasonStatisticEntity.TEAMS, 676L);
+// one entry per stage, with its rounds and their fixtures
+List<Schedule> schedule     = api.getSchedulesBySeason(13133L);
 ```
 
 ### Transfers
@@ -314,7 +316,7 @@ odds     = api.getOdds();
 
 ### Fixtures / Livescores
 `getTodayMatches` · `getTodayMatchesFiltered` · `getLiveMatches` · `getLatestUpdatedLivescores` ·
-`getMatchesByDate` · `getMatchesByDateRange` · `getMatchesByDateRangeForTeam` · `getMatchesByMultipleIDs` ·
+`getAllFixtures` · `getMatchesByDate` · `getMatchesByDateRange` · `getMatchesByDateRangeForTeam` · `getMatchesByMultipleIDs` ·
 `getFixturesByHeadToHead` · `searchFixtures` · `getLatestUpdatedFixtures` ·
 `getUpcomingFixturesByMarket` · `getUpcomingFixturesByTvStation` · `getPastFixturesByTvStation` · `getMatchDetail`
 
@@ -357,7 +359,7 @@ odds     = api.getOdds();
 `getTopScores` · `getTopScoresFiltered` · `getTopScoresByStage`
 
 ### Statistics
-`getSeasonStatsByParticipant` · `getStatsByStage` · `getStatsByRound`
+`getSeasonStatistics` · `getStatsByStage` · `getStatsByRound`
 
 ### Schedules
 `getSchedulesBySeason` · `getSchedulesByTeam` · `getSchedulesBySeasonAndTeam`
@@ -368,7 +370,7 @@ odds     = api.getOdds();
 
 ### Transfer Rumours
 `getAllTransferRumours` · `getTransferRumourById` · `getTransferRumoursByDateRange` ·
-`getTransferRumoursByTeam` · `getTransferRumoursByPlayer`
+`getTransferRumoursByTeam` · `getTransferRumoursByPlayer` · `getTransferRumoursConfig`
 
 ### Rivals
 `getAllRivals` · `getRivalsByTeam`

@@ -1,0 +1,6 @@
+{
+  "data": [{"id": 1}, {"id": 2}],
+  "pagination": {"count": 2, "per_page": 2, "current_page": 1, "has_more": true,
+    "next_page": "https://api.sportmonks.com/v3/football/any?page=2",
+    "next_cursor": "https://api.sportmonks.com/v3/football/any?cursor=NEXT"}
+}

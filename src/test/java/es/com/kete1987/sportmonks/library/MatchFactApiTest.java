@@ -43,7 +43,7 @@ class MatchFactApiTest extends BaseApiTest {
         api.getMatchFactsByFixture(1001L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("match-facts/fixtures/1001"));
+        assertEquals("/match-facts/1001", request.getRequestUrl().encodedPath());
     }
 
     @Test
@@ -53,7 +53,7 @@ class MatchFactApiTest extends BaseApiTest {
         api.getMatchFactsByDateRange("2023-10-01", "2023-10-31");
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("match-facts/between/2023-10-01/2023-10-31"));
+        assertEquals("/match-facts/fixtures/between/2023-10-01/2023-10-31", request.getRequestUrl().encodedPath());
     }
 
     @Test

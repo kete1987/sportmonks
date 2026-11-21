@@ -1,0 +1,10 @@
+{
+  "data": [
+    {"id": 1879282337, "player_id": 580, "team_id": 18701, "season_id": 27797, "has_values": true,
+     "position_id": 27, "jersey_number": 7,
+     "details": [
+       {"id": 53592954, "player_statistic_id": 1879282337, "type_id": 40, "value": {"total": 1}},
+       {"id": 53593121, "player_statistic_id": 1879282337, "type_id": 118, "value": {"average": 6.75, "highest": 6.75, "lowest": 6.75}}
+     ]}
+  ]
+}

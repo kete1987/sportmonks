@@ -1,0 +1,12 @@
+{
+  "data": [
+    {"id": 470014, "team_id": 676, "season_id": 28138, "has_values": true,
+     "details": [
+       {"id": 7061928, "team_statistic_id": 470014, "type_id": 34, "value": {"count": 9, "average": 9}},
+       {"id": 7061922, "team_statistic_id": 470014, "type_id": 118, "value": {"value": "7.20"}}
+     ]}
+  ],
+  "pagination": {"count": 1, "per_page": 25, "current_page": 1, "has_more": true,
+    "next_page": "https://api.sportmonks.com/v3/football/statistics/seasons/teams/676?page=2",
+    "next_cursor": "https://api.sportmonks.com/v3/football/statistics/seasons/teams/676?cursor=SEASON2"}
+}

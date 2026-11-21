@@ -1,6 +1,10 @@
 # Migration Guide
 
-## 3.5.0 (unreleased): football model fixes (#81)
+## 3.5.0 (unreleased)
+
+This release bumps the minor version because of the breaking changes below: `Venue.getZipcode()` now returns `String` and `League.getLastPlayerdAt()`, `getSeasonStatsByParticipant` and `Schedule.getTeamId()` are removed.
+
+### Football model fixes (#81)
 
 **Breaking: `Venue.getZipcode()` now returns `String`** (it was `Long`). The API sends alphanumeric
 postal codes (`"CV6 6GE"`, `"1234 AB"`), so with a `Long` field `getVenues(seasonId)` and every request
@@ -18,6 +22,59 @@ value. The two changes are why this release bumps the minor version.
 Compatible changes: `Stage.getGamesInCurrentWeek()` keeps returning a `String` but
 `Stage.isGamesInCurrentWeek()` gives the boolean the API actually sends. Many models gained fields and
 includes that were silently dropped before (see the issue for the list).
+
+### FootballApi routes, pagination and models (#82)
+
+**Season statistics.** `getSeasonStatsByParticipant(id)` called
+`statistics/seasons/participants/{id}`, which the API always rejected with 422, so it never
+returned data. Use the new `getSeasonStatistics(SeasonStatisticEntity, id)`, which calls
+`statistics/seasons/{players|teams|coaches|referees}/{id}` and returns one `SeasonStatistic`
+per season (`id`, `teamId`/`playerId`/`coachId`/`refereeId`, `seasonId`, `hasValues`,
+`positionId`, `jerseyNumber`) with the values in `getDetails()`, a list of `Statistic`
+(`typeId` + `value`).
+
+```java
+// before (always failed with 422)
+List<Statistic> stats = api.getSeasonStatsByParticipant(676L);
+// after
+List<SeasonStatistic> seasons = api.getSeasonStatistics(SeasonStatisticEntity.TEAMS, 676L);
+Statistic corners = seasons.get(0).getDetailByTypeId(34);
+```
+
+**Breaking: `getSeasonStatsByParticipant` is removed.** It never returned data (the route it
+called always answered 422), so no working caller can depend on it; use
+`getSeasonStatistics(SeasonStatisticEntity.TEAMS, id)` instead.
+
+**`Statistic`** gains `getModelId()` and `getRelationId()` (`statistics/stages|rounds/{id}`).
+No getter was removed.
+
+**`Schedule`** now models what `schedules/*` really returns: a stage. New getters `getId()`
+(stage id), `getSportId()`, `getLeagueId()`, `getTypeId()`, `getName()`, `getSortOrder()`,
+`getFinished()`, `getIsCurrent()`, `getStartingAt()`, `getEndingAt()`,
+`getGamesInCurrentWeek()`, `getTieBreakerRuleId()` and `getAggregates()`. `getTeamId()` is removed (**breaking**): the API does not send `team_id`, so it was always `null`.
+
+**Pagination.** These methods used to return only the first 25 rows and now walk every page,
+so a single call may fire several requests (and, for catalogue-wide endpoints such as
+`getAllCommentaries`, `getAllStandings` or `getAllVenues`, a great many):
+`getTeamsByCountry`, `getRefereesByCountry`, `getCoachesByCountry`, `getAllVenues`,
+`searchVenues`, `getAllRivals`, `getAllCommentaries`, `getStatsByStage`, `getStatsByRound`,
+`getLatestTransfers`, `getTransfersByDateRange`, `searchTeams(name)`, `searchPlayers(name)`,
+`searchCoaches`, `searchReferees`, `getRefereesBySeason`, `getAllStandings`,
+`getMatchFactsByFixture` and `getMatchFactsByDateRange`. Each one except `getStatsByRound`
+and the match facts has a new overload with an `int limit` after its ids (e.g.
+`getAllVenues(100)`, `getTeamsByCountry(32L, 100)`) to cap the walk.
+
+**Fixed routes.** `getMatchFactsByFixture` now calls `match-facts/{id}` and
+`getMatchFactsByDateRange` calls `match-facts/fixtures/between/{start}/{end}`; the old routes
+returned 404.
+
+**New methods.** `getAllFixtures(limit, ...)` (`GET /fixtures`, with includes and filters),
+`getTransferRumoursConfig()` and `getVenues(seasonId, includes...)`.
+
+**Null safety.** `getLiveMatches`, `getLatestUpdatedLivescores`, `getLatestUpdatedFixtures`
+and `getAllStates` return an empty list instead of `null` (or a `NullPointerException` on an
+empty body) when the response carries no `data`; `getStateById` and `getMatchDetail` return
+`null` instead of throwing.
 
 ## 3.3.0 (unreleased): null safety
 

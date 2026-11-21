@@ -1,20 +1,14 @@
 {
   "data": [
-    {
-      "season_id": 19686,
-      "team_id": 1,
-      "rounds": [
-        {
-          "id": 88,
-          "sport_id": 1,
-          "league_id": 501,
-          "season_id": 19686,
-          "stage_id": 1,
-          "name": "1",
-          "finished": true,
-          "is_current": false
-        }
-      ]
-    }
+    {"id": 77482690, "sport_id": 1, "league_id": 564, "season_id": 27965, "type_id": 223,
+     "name": "Regular Season", "sort_order": 1, "finished": false, "is_current": true,
+     "starting_at": "2026-08-15", "ending_at": "2027-05-30", "games_in_current_week": true,
+     "tie_breaker_rule_id": null, "aggregates": [],
+     "rounds": [
+       {"id": 408959, "sport_id": 1, "league_id": 564, "season_id": 27965, "stage_id": 77482690,
+        "name": "2", "finished": true, "is_current": false, "starting_at": "2026-08-20",
+        "ending_at": "2026-08-24", "games_in_current_week": false,
+        "fixtures": [{"id": 19732732, "league_id": 564, "season_id": 27965, "name": "Athletic Club vs Sevilla"}]}
+     ]}
   ]
 }
