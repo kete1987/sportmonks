@@ -7,8 +7,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Ids de las constantes añadidas en #75, tomados de {@code GET /core/types}. La coherencia de
- * todo {@link StatisticsType} con el catálogo real la comprueba {@code StatisticsTypeCatalogIntegrationTest}.
+ * Ids de las constantes añadidas en #75, tomados de {@code GET /core/types}. La coherencia del
+ * conjunto de {@link StatisticsType} con el catálogo real la comprueba {@code StatisticsTypeCatalogIntegrationTest}.
  */
 class StatisticsTypeTest {
 

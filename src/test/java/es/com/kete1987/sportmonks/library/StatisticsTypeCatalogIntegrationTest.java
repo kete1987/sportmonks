@@ -114,5 +114,8 @@ class StatisticsTypeCatalogIntegrationTest {
         // Informativo: no hace fallar el build, para que Sportmonks pueda añadir tipos.
         System.out.println(statistics + " tipos de estadistica en el catalogo; sin constante en StatisticsType ("
                 + missing.size() + "): " + missing);
+
+        // Única comprobación dura: que el catálogo realmente traiga tipos de estadística.
+        assertTrue(statistics > 0, "core/types no devolvió ningún tipo de estadística");
     }
 }
