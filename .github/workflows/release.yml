@@ -90,8 +90,8 @@ jobs:
           distribution: temurin
           java-version: '11'
           server-id: central
-          server-username-env-var: BUNDLE_USERNAME
-          server-password-env-var: BUNDLE_PASSWORD
+          server-username-env-var: BUNDLE_PLACEHOLDER
+          server-password-env-var: BUNDLE_PLACEHOLDER
 
       - name: Test and sign the exact release commit
         if: steps.candidate.outputs.bundle == 'true'
@@ -99,8 +99,7 @@ jobs:
         env:
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-          BUNDLE_USERNAME: local-bundle
-          BUNDLE_PASSWORD: local-bundle
+          BUNDLE_PLACEHOLDER: local-bundle
         run: |
           test -n "$MAVEN_GPG_KEY"
           test -n "$MAVEN_GPG_PASSPHRASE"

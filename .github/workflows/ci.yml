@@ -30,6 +30,13 @@ jobs:
       - name: Build and test
         run: mvn test --batch-mode
 
+      - name: Test release automation
+        run: |
+          python3 -m venv "$RUNNER_TEMP/release-tests"
+          "$RUNNER_TEMP/release-tests/bin/python" -m pip --disable-pip-version-check install "coverage==7.17.4"
+          "$RUNNER_TEMP/release-tests/bin/python" -m coverage run --branch --include='.github/scripts/release.py' -m unittest discover -s src/test/python
+          "$RUNNER_TEMP/release-tests/bin/python" -m coverage xml -o target/release-coverage.xml
+
       - name: Publish test results
         uses: dorny/test-reporter@v3
         if: always()
@@ -47,3 +54,5 @@ jobs:
           -Dsonar.projectKey=kete1987_sportmonks
           -Dsonar.organization=kete1987
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+          -Dsonar.tests=src/test/java,src/test/python
+          -Dsonar.python.coverage.reportPaths=target/release-coverage.xml
