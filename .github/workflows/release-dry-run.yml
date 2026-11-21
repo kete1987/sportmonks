@@ -58,7 +58,7 @@ jobs:
           portal = http.client.HTTPSConnection("central.sonatype.com", timeout=20)
           try:
               path = "/api/v1/publisher/published?" + coordinates
-              portal.request("GET", path, headers={"Authorization": f"Bearer {token}"})
+              portal.request("GET", path, headers={"Authorization": f"Bearer {token}", "User-Agent": "Maven release dry run (GitHub Actions)"})
               response = portal.getresponse()
               if response.status != 200:
                   raise SystemExit(f"Sonatype component check returned HTTP {response.status}")
