@@ -6,6 +6,11 @@ import es.com.kete1987.sportmonks.library.football.model.standings.StandingsGrou
 import java.util.List;
 import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.core.model.type.Type;
+import es.com.kete1987.sportmonks.library.football.model.league.League;
+import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
+import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
+import org.jetbrains.annotations.Nullable;
 import es.com.kete1987.sportmonks.library.common.util.ModelCollections;
 
 public class Stage implements Comparable<Stage> {
@@ -33,6 +38,13 @@ public class Stage implements Comparable<Stage> {
     private List<MatchDetail> fixtures;
     private List<StageAggregate> aggregates;
     private List<StandingsGroup> groups;
+    @SerializedName("tie_breaker_rule_id")
+    private Long tieBreakerRuleId;
+    private Type type;
+    private List<Round> rounds;
+    private Round currentround;
+    private League league;
+    private SeasonData season;
 
     public Stage() {
     }
@@ -132,5 +144,50 @@ public class Stage implements Comparable<Stage> {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    /**
+     * @return {@link #getGamesInCurrentWeek()} as the boolean the API actually sends, or null when
+     *         the field is absent
+     */
+    @Nullable
+    public Boolean isGamesInCurrentWeek() {
+        return gamesInCurrentWeek == null ? null : Boolean.valueOf(gamesInCurrentWeek);
+    }
+
+    /** @return the id of the rule used to break ties in the standings, or null. */
+    @Nullable
+    public Long getTieBreakerRuleId() {
+        return tieBreakerRuleId;
+    }
+
+    /** @return the stage type (group stage, knock-out, ...), or null if the {@code type} include is absent. */
+    @Nullable
+    public Type getType() {
+        return type;
+    }
+
+    /** @return the rounds, or null if the {@code rounds} include is absent. */
+    @Nullable
+    public List<Round> getRounds() {
+        return ModelCollections.unmodifiable(rounds);
+    }
+
+    /** @return the current round, or null if there is none or the {@code currentRound} include is absent. */
+    @Nullable
+    public Round getCurrentRound() {
+        return currentround;
+    }
+
+    /** @return the league, or null if the {@code league} include is absent. */
+    @Nullable
+    public League getLeague() {
+        return league;
+    }
+
+    /** @return the season, or null if the {@code season} include is absent. */
+    @Nullable
+    public SeasonData getSeason() {
+        return season;
     }
 }

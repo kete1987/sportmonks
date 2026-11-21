@@ -1,6 +1,9 @@
 package es.com.kete1987.sportmonks.library.football.model.comments;
 
 import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
+import es.com.kete1987.sportmonks.library.football.model.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -17,6 +20,9 @@ public class Comment implements Comparable<Comment> {
     @SerializedName("is_important")
     private Boolean isImportant;
     private Long order;
+    private MatchDetail fixture;
+    private Player player;
+    private Player relatedplayer;
 
     public Comment() {
     }
@@ -74,5 +80,23 @@ public class Comment implements Comparable<Comment> {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    /** @return the fixture, or null if the {@code fixture} include is absent. */
+    @Nullable
+    public MatchDetail getFixture() {
+        return fixture;
+    }
+
+    /** @return the player the comment is about, or null if there is none or the include is absent. */
+    @Nullable
+    public Player getPlayer() {
+        return player;
+    }
+
+    /** @return the second player involved (for example the one replaced), or null. */
+    @Nullable
+    public Player getRelatedPlayer() {
+        return relatedplayer;
     }
 }
