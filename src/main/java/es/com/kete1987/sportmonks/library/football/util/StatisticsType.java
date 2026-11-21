@@ -28,6 +28,7 @@ public class StatisticsType {
     public static final int HIT_WOODWORK = 64;
     public static final int SUCCESSFUL_HEADERS = 65;
     public static final int SUCCESSFUL_INTERCEPTIONS = 66;
+    // Duplicado de SUCCESSFUL_CENTER (73): se mantienen ambos por compatibilidad.
     public static final int SUCCESSFUL_CENTERS = 67;
     public static final int SUBSTITUTIONS_OVERTIME = 68;
     public static final int OFFSIDES_OVERTIME = 69;
@@ -122,6 +123,7 @@ public class StatisticsType {
     public static final int CLEARANCE_OFFLINE = 582;
     public static final int LAST_MAN_TACKLE = 583;
     public static final int GOOD_HIGH_CLAIM = 584;
+    // Casi duplicado de SUCCESSFUL_PASSES_PERCENTAGE (82) y ACCURATE_PASSES_PERCENTAGE (1584).
     public static final int ACCURATE_PASS_PERCENTAGE = 1488;
     public static final int TREATMENTS = 1489;
     public static final int MAN_OF_MATCH = 1490;
@@ -134,5 +136,22 @@ public class StatisticsType {
     public static final int MISSED_PENALTY_TOPSCORER = 1601;
     public static final int SUCCESSFUL_DRIBBLES_PERCENTAGE = 1605;
     public static final int SHOTS = 1677;
+    public static final int EXPECTED_GOALS = 5304;
+    public static final int EXPECTED_GOALS_ON_TARGET = 5305;
+    public static final int CHANCES_CREATED = 9706;
+    public static final int SUCCESSFUL_LONG_PASSES = 27264;
+    public static final int SUCCESSFUL_LONG_PASSES_PERCENTAGE = 27265;
+    public static final int AERIALS_LOST = 27266;
+    public static final int TACKLES_WON = 27267;
+    public static final int TACKLES_WON_PERCENTAGE = 27268;
+    public static final int PASSES_IN_FINAL_THIRD = 27269;
+    public static final int LONG_BALLS_WON_PERCENTAGE = 27270;
+    public static final int BALL_RECOVERY = 27271;
+    public static final int BACKWARD_PASSES = 27272;
+    public static final int POSSESSION_LOST = 27273;
+    public static final int AERIALS = 27274;
+    public static final int AERIALS_WON_PERCENTAGE = 27275;
+    public static final int DUELS_WON_PERCENTAGE = 27276;
+    public static final int ERROR_LEAD_TO_SHOT = 48997;
     public static final int CUMULATIVE_MINUTES_PLAYED = 117172;
 }
