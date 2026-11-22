@@ -2,7 +2,7 @@
 
 ## 3.5.0 (unreleased)
 
-This release bumps the minor version because of the breaking changes below: `Venue.getZipcode()` now returns `String` and `League.getLastPlayerdAt()`, `getSeasonStatsByParticipant` and `Schedule.getTeamId()` are removed.
+This release bumps the minor version because of the breaking changes below: `Venue.getZipcode()` now returns `String` and `League.getLastPlayerdAt()`, `getSeasonStatsByParticipant`, `Schedule.getTeamId()` and `TopScoresPlayer.getStage()` are removed, and a response body that cannot be parsed now throws `SportMonksException` instead of `JsonSyntaxException`.
 
 ### Football model fixes (#81)
 
