@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"id": 2819440001, "endpoint": "api.sports.fixtures.index", "count": 3, "entity": "fixture", "remaining_requests": 2850, "period_start": 1795358100, "period_end": 1795358400}
+  ],
+  "pagination": {"count": 1, "per_page": 2, "has_more": false, "current_page": 2},
+  "timezone": "UTC"
+}

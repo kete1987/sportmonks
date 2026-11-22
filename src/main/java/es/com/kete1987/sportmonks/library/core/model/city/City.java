@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.core.model.city;
 
 import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.core.model.region.Region;
 
 public class City {
     private Long id;
@@ -11,8 +12,14 @@ public class City {
     private String name;
     private String latitude;
     private String longitude;
+    private Region region;
 
     public City() {
+    }
+
+    /** Needs {@code include=region}. */
+    public Region getRegion() {
+        return region;
     }
 
     public Long getId() {

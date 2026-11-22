@@ -12,8 +12,7 @@ import es.com.kete1987.sportmonks.library.core.model.country.CountriesResponse;
 import es.com.kete1987.sportmonks.library.core.model.country.Country;
 import es.com.kete1987.sportmonks.library.core.model.country.CountryResponse;
 import es.com.kete1987.sportmonks.library.core.model.filter.FiltersResponse;
-import es.com.kete1987.sportmonks.library.core.model.my.MyApi;
-import es.com.kete1987.sportmonks.library.core.model.my.MyApiResponse;
+import es.com.kete1987.sportmonks.library.core.model.my.MyEnrichment;
 import es.com.kete1987.sportmonks.library.core.model.my.MyEnrichmentsResponse;
 import es.com.kete1987.sportmonks.library.core.model.my.MyLeague;
 import es.com.kete1987.sportmonks.library.core.model.my.MyLeaguesResponse;
@@ -26,12 +25,15 @@ import es.com.kete1987.sportmonks.library.core.model.region.RegionResponse;
 import es.com.kete1987.sportmonks.library.core.model.region.RegionsResponse;
 import es.com.kete1987.sportmonks.library.core.model.timezone.TimezonesResponse;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
+import es.com.kete1987.sportmonks.library.core.model.type.TypeEntitiesResponse;
+import es.com.kete1987.sportmonks.library.core.model.type.TypeEntity;
 import es.com.kete1987.sportmonks.library.core.model.type.TypeResponse;
 import es.com.kete1987.sportmonks.library.core.model.type.TypesResponse;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -166,9 +168,28 @@ public class CoreApi extends SportMonksApiBase {
         return get(url, TypeResponse.class).getData();
     }
 
+    /**
+     * The types of every entity ({@code core/types/entities}), keyed by entity name
+     * ({@code Event}, {@code Lineup}, ...). Empty when the response carries no data.
+     */
+    public Map<String, TypeEntity> getAllTypeEntities() throws IOException, SportMonksException {
+        HttpUrl url = coreUrl("types/entities").build();
+        TypeEntitiesResponse response = get(url, TypeEntitiesResponse.class);
+        Map<String, TypeEntity> data = response == null ? null : response.getData();
+        return data == null ? Collections.emptyMap() : data;
+    }
+
+    /**
+     * The types of one entity, taken from {@link #getAllTypeEntities()} (the API has no route per
+     * entity). The name is matched ignoring case; an unknown entity gives an empty list.
+     */
     public List<Type> getTypesByEntity(String entity) throws IOException, SportMonksException {
-        HttpUrl url = coreUrl("types/entities", entity).build();
-        return get(url, TypesResponse.class).getData();
+        for (Map.Entry<String, TypeEntity> entry : getAllTypeEntities().entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(entity) && entry.getValue().getTypes() != null) {
+                return entry.getValue().getTypes();
+            }
+        }
+        return Collections.emptyList();
     }
 
     // -------------------------------------------------------------------------
@@ -193,17 +214,12 @@ public class CoreApi extends SportMonksApiBase {
     // MySportmonks
     // -------------------------------------------------------------------------
 
-    public MyApi getMyApi() throws IOException, SportMonksException {
-        HttpUrl url = myUrl("api").build();
-        return get(url, MyApiResponse.class).getData();
-    }
-
     public List<MyLeague> getMyLeagues(String... includes) throws IOException, SportMonksException {
         HttpUrl base = withIncludes(myUrl("leagues"), includes).build();
         return fetchPaged(base, MyLeaguesResponse.class, MyLeaguesResponse::getData, MyLeaguesResponse::getPagination, 0);
     }
 
-    public List<String> getMyEnrichments() throws IOException, SportMonksException {
+    public List<MyEnrichment> getMyEnrichments() throws IOException, SportMonksException {
         HttpUrl url = myUrl("enrichments").build();
         return get(url, MyEnrichmentsResponse.class).getData();
     }
@@ -213,8 +229,14 @@ public class CoreApi extends SportMonksApiBase {
         return get(url, MyResourcesResponse.class).getData();
     }
 
+    /** Every usage row of the account: walks all pages, which can be many requests. */
     public List<MyUsage> getMyUsage() throws IOException, SportMonksException {
-        HttpUrl url = myUrl("usage").build();
-        return get(url, MyUsagesResponse.class).getData();
+        return getMyUsage(0);
+    }
+
+    /** The newest {@code limit} usage rows; a non-positive {@code limit} means all of them. */
+    public List<MyUsage> getMyUsage(int limit) throws IOException, SportMonksException {
+        HttpUrl base = myUrl("usage").build();
+        return fetchPaged(base, MyUsagesResponse.class, MyUsagesResponse::getData, MyUsagesResponse::getPagination, limit);
     }
 }

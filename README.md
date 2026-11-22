@@ -306,7 +306,6 @@ List<City>      cities     = api.searchCities("Madrid");
 ### MySportmonks
 
 ```java
-MyApi           account = api.getMyApi();
 List<MyLeague>  leagues = api.getMyLeagues();
 List<MyUsage>   usage   = api.getMyUsage();
 ```
@@ -447,10 +446,10 @@ odds     = api.getOdds();
 `getAllRegions` · `getRegionById` · `searchRegions` · `getAllCities` · `getCityById` · `searchCities`
 
 ### Core — Metadata
-`getAllTypes` · `getTypeById` · `getTypesByEntity` · `getAllTimezones` · `getAllEntityFilters`
+`getAllTypes` · `getTypeById` · `getTypesByEntity` · `getAllTypeEntities` · `getAllTimezones` · `getAllEntityFilters`
 
 ### MySportmonks
-`getMyApi` · `getMyLeagues` · `getMyResources` · `getMyEnrichments` · `getMyUsage`
+`getMyLeagues` · `getMyResources` · `getMyEnrichments` · `getMyUsage`
 
 ---
 

@@ -1,0 +1,18 @@
+{
+  "data": {
+    "Event": {
+      "updated_at": "2026-11-20T20:01:25.000000Z",
+      "types": [
+        {"id": 1, "name": "1st Half", "code": "1st-half", "developer_name": "1ST_HALF", "model_type": "period", "stat_group": null},
+        {"id": 2, "name": "2nd Half", "code": "2nd-half", "developer_name": "2ND_HALF", "model_type": "period", "stat_group": null}
+      ]
+    },
+    "CoachStatisticDetail": {
+      "updated_at": "2026-11-20T20:01:25.000000Z",
+      "types": [
+        {"id": 59, "name": "Substitutions", "code": "substitutions", "developer_name": "SUBSTITUTIONS", "model_type": "statistic", "stat_group": "overall"}
+      ]
+    }
+  },
+  "timezone": "UTC"
+}

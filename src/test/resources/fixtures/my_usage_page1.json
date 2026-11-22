@@ -1,0 +1,8 @@
+{
+  "data": [
+    {"id": 2819442181, "endpoint": "api.sports.standings.season", "count": 5, "entity": "standing", "remaining_requests": 2992, "period_start": 1795358400, "period_end": 1795358700},
+    {"id": 2819441190, "endpoint": "api.sports.rounds.show", "count": 7, "entity": "round", "remaining_requests": 2858, "period_start": 1795358400, "period_end": 1795358700}
+  ],
+  "pagination": {"count": 2, "per_page": 2, "has_more": true, "current_page": 1, "next_page": "https://api.sportmonks.com/v3/my/usage?per_page=2&page=2"},
+  "timezone": "UTC"
+}

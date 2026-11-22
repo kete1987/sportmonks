@@ -6,12 +6,13 @@ import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.core.model.city.City;
 import es.com.kete1987.sportmonks.library.core.model.continent.Continent;
 import es.com.kete1987.sportmonks.library.core.model.country.Country;
-import es.com.kete1987.sportmonks.library.core.model.my.MyApi;
+import es.com.kete1987.sportmonks.library.core.model.my.MyEnrichment;
 import es.com.kete1987.sportmonks.library.core.model.my.MyLeague;
 import es.com.kete1987.sportmonks.library.core.model.my.MyResource;
 import es.com.kete1987.sportmonks.library.core.model.my.MyUsage;
 import es.com.kete1987.sportmonks.library.core.model.region.Region;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
+import es.com.kete1987.sportmonks.library.core.model.type.TypeEntity;
 import es.com.kete1987.sportmonks.library.football.model.comments.Comment;
 import es.com.kete1987.sportmonks.library.football.model.expectedgoal.ExpectedGoal;
 import es.com.kete1987.sportmonks.library.football.model.expectedlineup.ExpectedLineup;
@@ -684,6 +685,7 @@ public class SportMonksAPI {
 
     public List<Type> getAllTypes(String... includes) throws IOException, SportMonksException { return core.getAllTypes(includes); }
     public Type getTypeById(long id) throws IOException, SportMonksException { return core.getTypeById(id); }
+    public Map<String, TypeEntity> getAllTypeEntities() throws IOException, SportMonksException { return core.getAllTypeEntities(); }
     public List<Type> getTypesByEntity(String entity) throws IOException, SportMonksException { return core.getTypesByEntity(entity); }
 
     // -------------------------------------------------------------------------
@@ -702,9 +704,9 @@ public class SportMonksAPI {
     // MySportmonks
     // -------------------------------------------------------------------------
 
-    public MyApi getMyApi() throws IOException, SportMonksException { return core.getMyApi(); }
     public List<MyLeague> getMyLeagues(String... includes) throws IOException, SportMonksException { return core.getMyLeagues(includes); }
-    public List<String> getMyEnrichments() throws IOException, SportMonksException { return core.getMyEnrichments(); }
+    public List<MyEnrichment> getMyEnrichments() throws IOException, SportMonksException { return core.getMyEnrichments(); }
     public List<MyResource> getMyResources() throws IOException, SportMonksException { return core.getMyResources(); }
     public List<MyUsage> getMyUsage() throws IOException, SportMonksException { return core.getMyUsage(); }
+    public List<MyUsage> getMyUsage(int limit) throws IOException, SportMonksException { return core.getMyUsage(limit); }
 }
