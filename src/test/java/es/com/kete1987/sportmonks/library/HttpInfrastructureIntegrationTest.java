@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -47,6 +49,27 @@ class HttpInfrastructureIntegrationTest {
         List<Team> teams = api.searchTeams("Inter#1", 5);
 
         assertEveryNameContains(teams, "Inter#1");
+    }
+
+    /**
+     * The API decodes {@code %2F} before routing, so a slash in the searched text cannot be
+     * expressed: the route does not exist (404). The library now encodes it and reports the
+     * status code instead of an opaque message.
+     */
+    @Test
+    void searchTeams_slashIsRejectedByTheApiWithAStatusCode() {
+        SportMonksException e = assertThrows(SportMonksException.class, () -> api.searchTeams("AC/DC", 5));
+
+        assertEquals(404, e.getStatusCode());
+    }
+
+    @Test
+    void endpointOutsideTheSubscription_exceptionCarriesStatusAndErrorCode() {
+        SportMonksException e = assertThrows(SportMonksException.class, () -> api.getMatchFactsByLeague(8L));
+
+        assertEquals(403, e.getStatusCode());
+        assertEquals(Integer.valueOf(5007), e.getErrorCode());
+        assertTrue(e.getMessage().startsWith("403 - "), e.getMessage());
     }
 
     @Test
