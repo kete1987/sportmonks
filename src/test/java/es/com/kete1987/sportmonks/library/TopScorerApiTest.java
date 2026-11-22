@@ -86,4 +86,14 @@ class TopScorerApiTest extends BaseApiTest {
                 || request.getPath().contains("filters=seasontopscorerTypes:208"), request.getPath());
         assertTrue(request.getPath().contains("per_page=2"), request.getPath());
     }
+
+    /**
+     * Issue #81: the API has no {@code stage} include on Topscorer (404, code 5013), so
+     * {@code TopScoresPlayer.stage} could never be filled and is removed.
+     */
+    @Test
+    void topScoresPlayer_hasNoStage() {
+        assertThrows(NoSuchFieldException.class, () -> TopScoresPlayer.class.getDeclaredField("stage"));
+        assertThrows(NoSuchMethodException.class, () -> TopScoresPlayer.class.getMethod("getStage"));
+    }
 }
