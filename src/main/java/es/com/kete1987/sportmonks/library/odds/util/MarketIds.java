@@ -9,7 +9,11 @@ package es.com.kete1987.sportmonks.library.odds.util;
  * {@code developer_name} ({@code 1ST_HALF_GOALS}) is not a valid Java identifier. The catalogue has
  * more than two hundred markets; use {@code getAllMarkets()} or {@code searchMarkets(...)} for the rest.
  */
-public class MarketIds {
+public final class MarketIds {
+    private MarketIds() {
+        // Constants only: not meant to be instantiated.
+    }
+
     public static final long FULLTIME_RESULT = 1L;
     public static final long DOUBLE_CHANCE = 2L;
     public static final long MATCH_GOALS = 4L;

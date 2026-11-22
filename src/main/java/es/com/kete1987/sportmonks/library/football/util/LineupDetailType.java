@@ -10,7 +10,11 @@ package es.com.kete1987.sportmonks.library.football.util;
  * details should read from this class. The catalogue has more types than these: only those a
  * real lineup carries are listed.
  */
-public class LineupDetailType {
+public final class LineupDetailType {
+    private LineupDetailType() {
+        // Constants only: not meant to be instantiated.
+    }
+
     public static final int CAPTAIN = 40;
     public static final int SHOTS_OFF_TARGET = 41;
     public static final int SHOTS_TOTAL = 42;
