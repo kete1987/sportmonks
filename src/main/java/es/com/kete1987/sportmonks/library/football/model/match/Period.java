@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.football.model.match;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 
 public class Period {
     private Long id;
@@ -22,6 +23,9 @@ public class Period {
     private Long periodLength;
     private Long minutes;
     private Long seconds;
+    @Nullable
+    @SerializedName("has_timer")
+    private Boolean hasTimer;
 
     public Period() {
     }
@@ -76,5 +80,11 @@ public class Period {
 
     public Long getSeconds() {
         return seconds;
+    }
+
+    /** @return whether the period has a running timer, or null when the API does not send it. */
+    @Nullable
+    public Boolean getHasTimer() {
+        return hasTimer;
     }
 }

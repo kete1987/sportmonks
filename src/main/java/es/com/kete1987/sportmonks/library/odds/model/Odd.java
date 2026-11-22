@@ -32,6 +32,8 @@ public class Odd {
     private String originalLabel;
     @SerializedName("latest_bookmaker_update")
     private String latestBookmakerUpdate;
+    @SerializedName("sort_order")
+    private Long sortOrder;
     private Bookmaker bookmaker;
 
     public Odd() {
@@ -65,6 +67,11 @@ public class Odd {
 
     public String getName() {
         return name;
+    }
+
+    /** @return the position of the selection inside its market, or null when the API does not send it. */
+    public Long getSortOrder() {
+        return sortOrder;
     }
 
     public String getMarketDescription() {

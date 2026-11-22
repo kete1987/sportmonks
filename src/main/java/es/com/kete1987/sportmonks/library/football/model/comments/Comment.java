@@ -5,7 +5,6 @@ import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 
 public class Comment implements Comparable<Comment> {
     private Long id;
@@ -59,27 +58,41 @@ public class Comment implements Comparable<Comment> {
         return order;
     }
 
+    /**
+     * Total order: {@code order} ascending with a null order first (as it always was), then
+     * {@code id} ascending with a null id last. Two comments with an id compare as 0 only when they
+     * are equal, so a {@code TreeSet} does not drop distinct comments.
+     */
     @Override
     public int compareTo(Comment other) {
-        if (getOrder() != null && other.getOrder() != null) {
-            return Long.compare(getOrder(), other.getOrder());
-        } else if (getOrder() == null) {
-            return -1;
+        if (order == null || other.order == null) {
+            int byNull = Boolean.compare(other.order == null, order == null);
+            if (byNull != 0) {
+                return byNull;
+            }
         } else {
-            return 1;
+            int byOrder = Long.compare(order, other.order);
+            if (byOrder != 0) {
+                return byOrder;
+            }
         }
+        if (id == null || other.id == null) {
+            return Boolean.compare(id == null, other.id == null);
+        }
+        return Long.compare(id, other.id);
     }
 
+    /** Comments are equal when they have the same non-null id; a comment without id is only equal to itself. */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Comment)) return false;
-        return Objects.equals(id, ((Comment) o).id);
+        return id != null && id.equals(((Comment) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return id != null ? id.hashCode() : System.identityHashCode(this);
     }
 
     /** @return the fixture, or null if the {@code fixture} include is absent. */

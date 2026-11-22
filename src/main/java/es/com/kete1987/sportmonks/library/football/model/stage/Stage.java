@@ -4,7 +4,6 @@ import es.com.kete1987.sportmonks.library.football.model.match.MatchDetail;
 import es.com.kete1987.sportmonks.library.football.model.standings.StandingsGroup;
 
 import java.util.List;
-import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
 import es.com.kete1987.sportmonks.library.football.model.league.League;
@@ -109,41 +108,42 @@ public class Stage implements Comparable<Stage> {
         return ModelCollections.unmodifiable(groups);
     }
 
+    /**
+     * Total order: {@code sort_order} ascending, then {@code ending_at} ascending, then {@code id}
+     * ascending; a null key always sorts last. Two stages with an id compare as 0 only when they are
+     * equal, so a {@code TreeSet} does not drop distinct stages.
+     */
     @Override
     public int compareTo(Stage other) {
-        // Null-safe comparison of sortOrder (nulls sorted last)
-        Long thisSortOrder = this.getSortOrder();
-        Long otherSortOrder = other.getSortOrder();
-        if (thisSortOrder == null && otherSortOrder == null) {
-            // fall through to endingAt comparison
-        } else if (thisSortOrder == null) {
-            return 1;
-        } else if (otherSortOrder == null) {
-            return -1;
-        } else {
-            int cmp = Long.compare(thisSortOrder, otherSortOrder);
-            if (cmp != 0) return cmp;
+        int bySortOrder = compareNullsLast(sortOrder, other.sortOrder);
+        if (bySortOrder != 0) {
+            return bySortOrder;
         }
-
-        // Desempatar por endingAt (nulls al final)
-        String thisEnd = this.getEndingAt();
-        String otherEnd = other.getEndingAt();
-
-        if (thisEnd == null) return 1;
-        if (otherEnd == null) return -1;
-        return thisEnd.compareTo(otherEnd);
+        int byEnd = compareNullsLast(endingAt, other.endingAt);
+        if (byEnd != 0) {
+            return byEnd;
+        }
+        return compareNullsLast(id, other.id);
     }
 
+    private static <T extends Comparable<T>> int compareNullsLast(T a, T b) {
+        if (a == null || b == null) {
+            return Boolean.compare(a == null, b == null);
+        }
+        return a.compareTo(b);
+    }
+
+    /** Stages are equal when they have the same non-null id; a stage without id is only equal to itself. */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Stage)) return false;
-        return Objects.equals(id, ((Stage) o).id);
+        return id != null && id.equals(((Stage) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return id != null ? id.hashCode() : System.identityHashCode(this);
     }
 
     /**
