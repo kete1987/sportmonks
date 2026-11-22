@@ -38,20 +38,20 @@ class PredictionsRoutesApiTest extends BaseApiTest {
     }
 
     @Test
-    void expectedGoalsOldTeamMethod_usesTheFixturesRoute() throws IOException, SportMonksException, InterruptedException {
+    void expectedGoalsByFixture_usesTheFixturesRoute() throws IOException, SportMonksException, InterruptedException {
         enqueue("expected_goals.json");
 
-        api.getExpectedGoalsByTeam();
+        api.getExpectedGoalsByFixture();
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("/expected/fixtures"), request.getPath());
     }
 
     @Test
-    void expectedGoalsOldPlayerMethod_usesTheLineupsRoute() throws IOException, SportMonksException, InterruptedException {
+    void expectedGoalsByLineup_usesTheLineupsRoute() throws IOException, SportMonksException, InterruptedException {
         enqueue("expected_goals.json");
 
-        api.getExpectedGoalsByPlayer();
+        api.getExpectedGoalsByLineup();
 
         RecordedRequest request = server.takeRequest();
         assertTrue(request.getPath().contains("/expected/lineups"), request.getPath());
@@ -64,8 +64,8 @@ class PredictionsRoutesApiTest extends BaseApiTest {
                 call("getProbabilitiesByFixture", a -> a.getProbabilitiesByFixture(1L)),
                 call("getAllValueBets", a -> a.getAllValueBets()),
                 call("getValueBetsByFixture", a -> a.getValueBetsByFixture(1L)),
-                call("getExpectedGoalsByTeam", a -> a.getExpectedGoalsByTeam()),
-                call("getExpectedGoalsByPlayer", a -> a.getExpectedGoalsByPlayer()),
+                call("getExpectedGoalsByFixture", a -> a.getExpectedGoalsByFixture()),
+                call("getExpectedGoalsByLineup", a -> a.getExpectedGoalsByLineup()),
                 call("getAllPreMatchNews", a -> a.getAllPreMatchNews()),
                 call("getPreMatchNewsBySeason", a -> a.getPreMatchNewsBySeason(1L)),
                 call("getPreMatchNewsForUpcoming", a -> a.getPreMatchNewsForUpcoming()),
