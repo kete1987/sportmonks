@@ -88,7 +88,7 @@ jobs:
           java-version: '11'
           server-id: central
           server-username-env-var: DRY_RUN_USERNAME
-          server-password-env-var: DRY_RUN_PASSWORD
+          server-password-env-var: DRY_RUN_SECRET
 
       - name: Build and verify the signed bundle
         shell: bash
@@ -96,7 +96,7 @@ jobs:
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           DRY_RUN_USERNAME: dry-run
-          DRY_RUN_PASSWORD: dry-run
+          DRY_RUN_SECRET: dry-run
         run: |
           python3 - <<'PY'
           from pathlib import Path

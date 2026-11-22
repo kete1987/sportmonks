@@ -148,7 +148,7 @@ abstract class SportMonksApiBase {
         try (Response response = httpClient.newCall(request).execute()) {
             rateLimitTracker.total = response.header("X-RateLimit-Limit");
             rateLimitTracker.remaining = response.header("X-RateLimit-Remaining");
-            String body = response.body() != null ? response.body().string() : "";
+            String body = response.body().string();
             if (!response.isSuccessful()) {
                 throw httpError(response.code(), body);
             }

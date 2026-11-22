@@ -127,7 +127,7 @@ public class Standings {
 
     public StandingsDetail getDetails(int type) {
         for (StandingsDetail sd : getDetails()) {
-            if (sd.getTypeId().intValue() == type)
+            if (sd.getTypeId() != null && sd.getTypeId().intValue() == type)
                 return sd;
         }
         return null;
