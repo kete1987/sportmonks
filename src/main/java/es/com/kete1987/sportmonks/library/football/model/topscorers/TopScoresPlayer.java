@@ -2,7 +2,6 @@ package es.com.kete1987.sportmonks.library.football.model.topscorers;
 
 import es.com.kete1987.sportmonks.library.football.model.player.Player;
 import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
-import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +18,6 @@ public class TopScoresPlayer {
     @SerializedName("participant_id")
     private Long participantId;
     private SeasonData season;
-    private Stage stage;
     private Player player;
     private Team participant;
     private TopScoresType type;
@@ -57,10 +55,6 @@ public class TopScoresPlayer {
 
     public SeasonData getSeason() {
         return season;
-    }
-
-    public Stage getStage() {
-        return stage;
     }
 
     public Player getPlayer() {
