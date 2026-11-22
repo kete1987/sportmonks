@@ -3,6 +3,7 @@ package es.com.kete1987.sportmonks.library;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -25,6 +26,7 @@ final class RetryInterceptor implements Interceptor {
     private static final long MAX_ERROR_BODY_BYTES = 64 * 1024L;
     private static final int MAX_BACKOFF_SHIFT = 20;
     private static final long GIVE_UP = -1;
+    private static final long SLEEP_SLICE_MILLIS = 50;
 
     private final int maxRetries;
     private final long maxWaitMillis;
@@ -46,7 +48,7 @@ final class RetryInterceptor implements Interceptor {
                 return response;
             }
             response.close();
-            pause(wait);
+            pause(wait, chain.call());
             response = chain.proceed(request);
         }
         return response;
@@ -86,12 +88,27 @@ final class RetryInterceptor implements Interceptor {
         }
     }
 
-    private static void pause(long millis) throws InterruptedIOException {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new InterruptedIOException("interrupted while waiting to retry");
+    /**
+     * Waits {@code millis} in short slices, giving up as soon as the call is cancelled. OkHttp
+     * enforces {@code callTimeout} by cancelling the call, which does not interrupt a sleeping
+     * thread, so a single long sleep would outlive the timeout.
+     */
+    private static void pause(long millis, Call call) throws IOException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(millis);
+        while (true) {
+            if (call.isCanceled()) {
+                throw new IOException("Canceled");
+            }
+            long remainingMillis = TimeUnit.NANOSECONDS.toMillis(deadline - System.nanoTime());
+            if (remainingMillis <= 0) {
+                return;
+            }
+            try {
+                Thread.sleep(Math.min(remainingMillis, SLEEP_SLICE_MILLIS));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new InterruptedIOException("interrupted while waiting to retry");
+            }
         }
     }
 }

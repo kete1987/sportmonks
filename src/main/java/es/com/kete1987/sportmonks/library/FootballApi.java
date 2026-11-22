@@ -92,6 +92,9 @@ import java.util.function.Function;
  */
 public class FootballApi extends SportMonksApiBase {
 
+    private static final String SEASONS = "seasons";
+    private static final String TEAMS = "teams";
+
     private final String footballBase;
 
     public FootballApi(String apiToken) {
@@ -460,12 +463,12 @@ public class FootballApi extends SportMonksApiBase {
     // -------------------------------------------------------------------------
 
     public List<SeasonData> getSeasons() throws IOException, SportMonksException {
-        HttpUrl base = footballUrl("seasons").build();
+        HttpUrl base = footballUrl(SEASONS).build();
         return fetchPaged(base, SeasonsResponse.class, SeasonsResponse::getData, SeasonsResponse::getPagination, 0);
     }
 
     public SeasonData getSeasonById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("seasons", id), includes).build();
+        HttpUrl url = withIncludes(footballUrl(SEASONS, id), includes).build();
         SeasonDataResponse resp = get(url, SeasonDataResponse.class);
         return resp != null ? resp.getSeasonData() : null;
     }
@@ -486,7 +489,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public KnockoutBracket getBracketsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("seasons", seasonId, "brackets"), includes).build();
+        HttpUrl url = withIncludes(footballUrl(SEASONS, seasonId, "brackets"), includes).build();
         BracketsResponse resp = get(url, BracketsResponse.class);
         return resp != null ? resp.getData() : null;
     }
@@ -657,7 +660,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<Schedule> getSchedulesBySeasonAndTeam(long seasonId, long teamId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("schedules/seasons", seasonId, "teams", teamId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("schedules/seasons", seasonId, TEAMS, teamId), includes).build();
         SchedulesResponse resp = get(url, SchedulesResponse.class);
         return resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
@@ -998,7 +1001,7 @@ public class FootballApi extends SportMonksApiBase {
 
     /** All teams capped at {@code limit}, without crawling the whole catalogue. */
     public List<Team> getAllTeams(int limit, String... includes) throws IOException, SportMonksException {
-        HttpUrl base = withIncludes(footballUrl("teams"), includes).build();
+        HttpUrl base = withIncludes(footballUrl(TEAMS), includes).build();
         return fetchPaged(base, TeamsResponse.class, TeamsResponse::getData, TeamsResponse::getPagination, limit);
     }
 
@@ -1019,7 +1022,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public Team getTeamById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("teams", id), includes).build();
+        HttpUrl url = withIncludes(footballUrl(TEAMS, id), includes).build();
         TeamResponse resp = get(url, TeamResponse.class);
         return resp != null ? resp.getData() : null;
     }
@@ -1251,7 +1254,7 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     public List<SquadPlayer> getSquadBySeasonAndTeam(long seasonId, long teamId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("squads/seasons", seasonId, "teams", teamId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("squads/seasons", seasonId, TEAMS, teamId), includes).build();
         SquadPlayersResponse resp = get(url, SquadPlayersResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
