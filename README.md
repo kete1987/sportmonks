@@ -34,7 +34,21 @@ The `timezone` is sent as the `timezone` query parameter on every request, so da
 fields in the response are expressed in that zone. Accepted values are the identifiers
 returned by `getAllTimezones()`.
 
-All methods throw `IOException` and `SportMonksException`.
+All methods throw `IOException` and `SportMonksException`. `SportMonksException` covers both
+non-2xx responses and bodies that cannot be parsed; `getStatusCode()`, `getErrorCode()` (the
+Sportmonks `code`, e.g. 5007) and `getRateLimit()` give its details, and `getMessage()` keeps the
+`"code - body"` format.
+
+Timeouts, an `OkHttpClient` of your own and opt-in retries for 429 and 5xx are set with
+`ClientOptions` (retries are off by default):
+
+```java
+ClientOptions options = ClientOptions.builder()
+        .callTimeout(Duration.ofMinutes(2))
+        .maxRetries(3)
+        .build();
+SportMonksAPI api = new SportMonksAPI("YOUR_API_KEY", null, null, options);
+```
 
 ## Rate Limiting
 

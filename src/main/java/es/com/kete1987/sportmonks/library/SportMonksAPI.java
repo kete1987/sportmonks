@@ -112,12 +112,23 @@ public class SportMonksAPI {
      *                 pass {@code null} for the default (UTC)
      */
     public SportMonksAPI(String apiToken, String locale, String timezone) {
-        OkHttpClient client = SportMonksApiBase.buildHttpClient(apiToken);
-        this.tracker = new RateLimitTracker();
-        this.football = new FootballApi(client, Constants.BASE_URL_FOOTBALL, locale, timezone, tracker);
-        this.odds = new OddsApi(client, Constants.BASE_URL_ODDS, Constants.BASE_URL_ODDS_CATALOG, locale, timezone, tracker);
-        this.predictions = new PredictionsApi(client, Constants.BASE_URL_FOOTBALL, locale, timezone, tracker);
-        this.core = new CoreApi(client, Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, tracker);
+        this(apiToken, locale, timezone, ClientOptions.defaults());
+    }
+
+    /**
+     * Creates an API client with custom HTTP settings: connect, read and call timeouts, or an
+     * {@code OkHttpClient} of your own to start from. See {@link ClientOptions}.
+     *
+     * @param apiToken your Sportmonks API key
+     * @param locale   language tag accepted by Sportmonks, or {@code null} for the default
+     * @param timezone IANA timezone identifier, or {@code null} for the default (UTC)
+     * @param options  HTTP settings; {@link ClientOptions#defaults()} behaves like the other constructors
+     */
+    public SportMonksAPI(String apiToken, String locale, String timezone, ClientOptions options) {
+        this(SportMonksApiBase.buildHttpClient(apiToken, options),
+                new BaseUrls(Constants.BASE_URL_FOOTBALL, Constants.BASE_URL_ODDS, Constants.BASE_URL_ODDS_CATALOG,
+                        Constants.BASE_URL_CORE, Constants.BASE_URL_MY),
+                locale, timezone);
     }
 
     SportMonksAPI(OkHttpClient client, String footballBase, String oddsBase, String coreBase, String myBase) {

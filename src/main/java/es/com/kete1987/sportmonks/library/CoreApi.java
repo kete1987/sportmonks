@@ -56,7 +56,15 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public CoreApi(String apiToken, String locale, String timezone) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, new RateLimitTracker());
+        this(apiToken, locale, timezone, ClientOptions.defaults());
+    }
+
+    /**
+     * Creates the client with custom HTTP settings (timeouts, an own {@code OkHttpClient}).
+     * Pass {@code null} for the default locale or timezone.
+     */
+    public CoreApi(String apiToken, String locale, String timezone, ClientOptions options) {
+        this(buildHttpClient(apiToken, options), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, new RateLimitTracker());
     }
 
     CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, String timezone, RateLimitTracker tracker) {
@@ -65,12 +73,12 @@ public class CoreApi extends SportMonksApiBase {
         this.myBase = myBase;
     }
 
-    private HttpUrl.Builder coreUrl(String path) {
-        return timezoneUrl(localeUrl(HttpUrl.parse(coreBase + path).newBuilder()));
+    private HttpUrl.Builder coreUrl(String path, Object... segments) {
+        return apiUrl(coreBase, path, segments);
     }
 
-    private HttpUrl.Builder myUrl(String path) {
-        return timezoneUrl(localeUrl(HttpUrl.parse(myBase + path).newBuilder()));
+    private HttpUrl.Builder myUrl(String path, Object... segments) {
+        return apiUrl(myBase, path, segments);
     }
 
     // -------------------------------------------------------------------------
@@ -83,8 +91,8 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public Continent getContinentById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(coreUrl("continents/" + id), includes).build();
-        return gson().fromJson(execute(url), ContinentResponse.class).getData();
+        HttpUrl url = withIncludes(coreUrl("continents", id), includes).build();
+        return get(url, ContinentResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -97,12 +105,12 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public Country getCountryById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(coreUrl("countries/" + id), includes).build();
-        return gson().fromJson(execute(url), CountryResponse.class).getData();
+        HttpUrl url = withIncludes(coreUrl("countries", id), includes).build();
+        return get(url, CountryResponse.class).getData();
     }
 
     public List<Country> searchCountries(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl base = withIncludes(coreUrl("countries/search/" + name), includes).build();
+        HttpUrl base = withIncludes(coreUrl("countries/search", name), includes).build();
         return fetchPaged(base, CountriesResponse.class, CountriesResponse::getData, CountriesResponse::getPagination, 0);
     }
 
@@ -116,12 +124,12 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public Region getRegionById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(coreUrl("regions/" + id), includes).build();
-        return gson().fromJson(execute(url), RegionResponse.class).getData();
+        HttpUrl url = withIncludes(coreUrl("regions", id), includes).build();
+        return get(url, RegionResponse.class).getData();
     }
 
     public List<Region> searchRegions(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl base = withIncludes(coreUrl("regions/search/" + name), includes).build();
+        HttpUrl base = withIncludes(coreUrl("regions/search", name), includes).build();
         return fetchPaged(base, RegionsResponse.class, RegionsResponse::getData, RegionsResponse::getPagination, 0);
     }
 
@@ -135,12 +143,12 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public City getCityById(long id, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(coreUrl("cities/" + id), includes).build();
-        return gson().fromJson(execute(url), CityResponse.class).getData();
+        HttpUrl url = withIncludes(coreUrl("cities", id), includes).build();
+        return get(url, CityResponse.class).getData();
     }
 
     public List<City> searchCities(String name, String... includes) throws IOException, SportMonksException {
-        HttpUrl base = withIncludes(coreUrl("cities/search/" + name), includes).build();
+        HttpUrl base = withIncludes(coreUrl("cities/search", name), includes).build();
         return fetchPaged(base, CitiesResponse.class, CitiesResponse::getData, CitiesResponse::getPagination, 0);
     }
 
@@ -154,13 +162,13 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public Type getTypeById(long id) throws IOException, SportMonksException {
-        HttpUrl url = coreUrl("types/" + id).build();
-        return gson().fromJson(execute(url), TypeResponse.class).getData();
+        HttpUrl url = coreUrl("types", id).build();
+        return get(url, TypeResponse.class).getData();
     }
 
     public List<Type> getTypesByEntity(String entity) throws IOException, SportMonksException {
-        HttpUrl url = coreUrl("types/entities/" + entity).build();
-        return gson().fromJson(execute(url), TypesResponse.class).getData();
+        HttpUrl url = coreUrl("types/entities", entity).build();
+        return get(url, TypesResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -169,7 +177,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<String> getAllTimezones() throws IOException, SportMonksException {
         HttpUrl url = coreUrl("timezones").build();
-        return gson().fromJson(execute(url), TimezonesResponse.class).getData();
+        return get(url, TimezonesResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -178,7 +186,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public Map<String, List<String>> getAllEntityFilters() throws IOException, SportMonksException {
         HttpUrl url = myUrl("filters/entity").build();
-        return gson().fromJson(execute(url), FiltersResponse.class).getData();
+        return get(url, FiltersResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -187,7 +195,7 @@ public class CoreApi extends SportMonksApiBase {
 
     public MyApi getMyApi() throws IOException, SportMonksException {
         HttpUrl url = myUrl("api").build();
-        return gson().fromJson(execute(url), MyApiResponse.class).getData();
+        return get(url, MyApiResponse.class).getData();
     }
 
     public List<MyLeague> getMyLeagues(String... includes) throws IOException, SportMonksException {
@@ -197,16 +205,16 @@ public class CoreApi extends SportMonksApiBase {
 
     public List<String> getMyEnrichments() throws IOException, SportMonksException {
         HttpUrl url = myUrl("enrichments").build();
-        return gson().fromJson(execute(url), MyEnrichmentsResponse.class).getData();
+        return get(url, MyEnrichmentsResponse.class).getData();
     }
 
     public List<MyResource> getMyResources() throws IOException, SportMonksException {
         HttpUrl url = myUrl("resources").build();
-        return gson().fromJson(execute(url), MyResourcesResponse.class).getData();
+        return get(url, MyResourcesResponse.class).getData();
     }
 
     public List<MyUsage> getMyUsage() throws IOException, SportMonksException {
         HttpUrl url = myUrl("usage").build();
-        return gson().fromJson(execute(url), MyUsagesResponse.class).getData();
+        return get(url, MyUsagesResponse.class).getData();
     }
 }

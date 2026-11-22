@@ -38,7 +38,15 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public PredictionsApi(String apiToken, String locale, String timezone) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_FOOTBALL, locale, timezone, new RateLimitTracker());
+        this(apiToken, locale, timezone, ClientOptions.defaults());
+    }
+
+    /**
+     * Creates the client with custom HTTP settings (timeouts, an own {@code OkHttpClient}).
+     * Pass {@code null} for the default locale or timezone.
+     */
+    public PredictionsApi(String apiToken, String locale, String timezone, ClientOptions options) {
+        this(buildHttpClient(apiToken, options), Constants.BASE_URL_FOOTBALL, locale, timezone, new RateLimitTracker());
     }
 
     PredictionsApi(OkHttpClient client, String footballBase, String locale, String timezone, RateLimitTracker tracker) {
@@ -46,8 +54,8 @@ public class PredictionsApi extends SportMonksApiBase {
         this.footballBase = footballBase;
     }
 
-    private HttpUrl.Builder footballUrl(String path) {
-        return timezoneUrl(localeUrl(HttpUrl.parse(footballBase + path).newBuilder()));
+    private HttpUrl.Builder footballUrl(String path, Object... segments) {
+        return apiUrl(footballBase, path, segments);
     }
 
     // -------------------------------------------------------------------------
@@ -56,27 +64,27 @@ public class PredictionsApi extends SportMonksApiBase {
 
     public List<Probability> getAllProbabilities(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("predictions/probabilities"), includes).build();
-        return gson().fromJson(execute(url), ProbabilitiesResponse.class).getData();
+        return get(url, ProbabilitiesResponse.class).getData();
     }
 
     public List<Predictability> getPredictabilityByLeague(long leagueId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/leagues/" + leagueId), includes).build();
-        return gson().fromJson(execute(url), PredictabilityResponse.class).getData();
+        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/leagues", leagueId), includes).build();
+        return get(url, PredictabilityResponse.class).getData();
     }
 
     public List<Probability> getProbabilitiesByFixture(long fixtureId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/fixtures/" + fixtureId), includes).build();
-        return gson().fromJson(execute(url), ProbabilitiesResponse.class).getData();
+        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/fixtures", fixtureId), includes).build();
+        return get(url, ProbabilitiesResponse.class).getData();
     }
 
     public List<ValueBet> getAllValueBets(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("predictions/value-bets"), includes).build();
-        return gson().fromJson(execute(url), ValueBetsResponse.class).getData();
+        return get(url, ValueBetsResponse.class).getData();
     }
 
     public List<ValueBet> getValueBetsByFixture(long fixtureId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("predictions/value-bets/fixtures/" + fixtureId), includes).build();
-        return gson().fromJson(execute(url), ValueBetsResponse.class).getData();
+        HttpUrl url = withIncludes(footballUrl("predictions/value-bets/fixtures", fixtureId), includes).build();
+        return get(url, ValueBetsResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -85,12 +93,12 @@ public class PredictionsApi extends SportMonksApiBase {
 
     public List<ExpectedGoal> getExpectedGoalsByTeam(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("expected/teams"), includes).build();
-        return gson().fromJson(execute(url), ExpectedGoalsResponse.class).getData();
+        return get(url, ExpectedGoalsResponse.class).getData();
     }
 
     public List<ExpectedGoal> getExpectedGoalsByPlayer(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("expected/players"), includes).build();
-        return gson().fromJson(execute(url), ExpectedGoalsResponse.class).getData();
+        return get(url, ExpectedGoalsResponse.class).getData();
     }
 
     // -------------------------------------------------------------------------
@@ -99,26 +107,26 @@ public class PredictionsApi extends SportMonksApiBase {
 
     public List<NewsArticle> getAllPreMatchNews(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("news/pre-match"), includes).build();
-        return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
+        return get(url, NewsArticlesResponse.class).getData();
     }
 
     public List<NewsArticle> getPreMatchNewsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("news/pre-match/seasons/" + seasonId), includes).build();
-        return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
+        HttpUrl url = withIncludes(footballUrl("news/pre-match/seasons", seasonId), includes).build();
+        return get(url, NewsArticlesResponse.class).getData();
     }
 
     public List<NewsArticle> getPreMatchNewsForUpcoming(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("news/pre-match/upcoming"), includes).build();
-        return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
+        return get(url, NewsArticlesResponse.class).getData();
     }
 
     public List<NewsArticle> getAllPostMatchNews(String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(footballUrl("news/post-match"), includes).build();
-        return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
+        return get(url, NewsArticlesResponse.class).getData();
     }
 
     public List<NewsArticle> getPostMatchNewsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("news/post-match/seasons/" + seasonId), includes).build();
-        return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
+        HttpUrl url = withIncludes(footballUrl("news/post-match/seasons", seasonId), includes).build();
+        return get(url, NewsArticlesResponse.class).getData();
     }
 }

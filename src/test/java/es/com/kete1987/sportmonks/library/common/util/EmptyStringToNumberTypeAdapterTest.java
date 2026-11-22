@@ -15,10 +15,15 @@ class EmptyStringToNumberTypeAdapterTest {
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
             .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+            .registerTypeAdapter(Long.class, EmptyStringToNumberTypeAdapter.forLong())
             .create();
 
     private static class IntHolder {
         Integer value;
+    }
+
+    private static class LongHolder {
+        Long value;
     }
 
     static Stream<Arguments> integerParsingCases() {
@@ -35,6 +40,23 @@ class EmptyStringToNumberTypeAdapterTest {
     @MethodSource("integerParsingCases")
     void parsesIntegerField(String json, Integer expected) {
         IntHolder result = gson.fromJson(json, IntHolder.class);
+        assertEquals(expected, result.value);
+    }
+
+    static Stream<Arguments> longParsingCases() {
+        return Stream.of(
+                Arguments.of("{\"value\": \"\"}", null),
+                Arguments.of("{\"value\": null}", null),
+                Arguments.of("{\"value\": 9000000000}", 9_000_000_000L),
+                Arguments.of("{\"value\": \"9000000000\"}", 9_000_000_000L),
+                Arguments.of("{\"value\": 12.0}", 12L)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("longParsingCases")
+    void parsesLongField(String json, Long expected) {
+        LongHolder result = gson.fromJson(json, LongHolder.class);
         assertEquals(expected, result.value);
     }
 }
