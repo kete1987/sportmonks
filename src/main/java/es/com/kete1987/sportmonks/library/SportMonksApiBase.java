@@ -255,14 +255,16 @@ abstract class SportMonksApiBase {
         }
 
         /**
-         * Extracts the opaque {@code cursor} value from a {@code next_cursor} URL. The API returns
-         * it as a full URL but strips the API token from it, and it also drops any {@code include}
-         * or filter of the original request — so only the cursor is reused, on top of our URL.
+         * Extracts the opaque {@code cursor} value from {@code next_cursor}. The API returns it
+         * today as a full URL, stripped of the API token and of any {@code include} or filter of
+         * the original request, so only its {@code cursor} parameter is reused, on top of our URL.
+         * The changelog documents it as a bare token instead; a value that is not a URL is taken
+         * as that token, so a change of format keeps the walk on the cursor.
          */
         private static String cursorOf(String nextCursor) {
-            if (nextCursor == null || nextCursor.isEmpty()) return null;
+            if (nextCursor == null || nextCursor.isBlank()) return null;
             HttpUrl url = HttpUrl.parse(nextCursor);
-            String cursor = url != null ? url.queryParameter("cursor") : null;
+            String cursor = url != null ? url.queryParameter("cursor") : nextCursor.trim();
             return cursor != null && !cursor.isEmpty() ? cursor : null;
         }
 
