@@ -74,11 +74,30 @@ abstract class SportMonksApiBase {
             rateLimitTracker.remaining = response.header("X-RateLimit-Remaining");
             String body = response.body() != null ? response.body().string() : "";
             if (!response.isSuccessful()) {
-                throw new SportMonksException(response.code() + " - " + body);
+                throw httpError(response.code(), body);
             }
             recordRateLimit(body);
             return body;
         }
+    }
+
+    /** Builds the exception of a non-2xx response, reading {@code code} and {@code rate_limit} when the body is JSON. */
+    private SportMonksException httpError(int status, String body) {
+        ErrorEnvelope envelope = null;
+        try {
+            envelope = gson().fromJson(body, ErrorEnvelope.class);
+        } catch (RuntimeException ignored) {
+            // an error body that is not JSON (e.g. a proxy's HTML page) only loses the extra fields
+        }
+        return envelope != null
+                ? new SportMonksException(status, body, envelope.code, envelope.rateLimit)
+                : new SportMonksException(status, body, null, null);
+    }
+
+    private static final class ErrorEnvelope {
+        Integer code;
+        @SerializedName("rate_limit")
+        RateLimit rateLimit;
     }
 
     private void recordRateLimit(String body) {
