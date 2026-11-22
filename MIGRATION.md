@@ -256,6 +256,64 @@ is a plain field.
 constructor (`new SportMonksAPI(key, ApiLocale.SPANISH)` returns `"1ª Mitad"`); core types have no
 includes, so none were added. `getAllStates()`/`getStateById()` belong to the football API and are
 not changed here.
+
+### OddsApi and constants (#78, #86)
+
+**Routes that never worked, now fixed.** The API answered 404 for these, and 403 (route exists, plan
+without access) for the right ones:
+
+| Method | Before | Now |
+|---|---|---|
+| `getLastUpdatedInplayOdds()` | `inplay/lastupdated` | `inplay/latest` |
+| `getPremiumPreMatchOddsByFixture(id)` | `pre-match/fixtures/{id}/premium` | `premium/fixtures/{id}` |
+| `getPremiumPreMatchOddsByFixtureAndBookmaker(id, b)` | `pre-match/fixtures/{id}/bookmakers/{b}/premium` | `premium/fixtures/{id}/bookmakers/{b}` |
+| `getPremiumPreMatchOddsByFixtureAndMarket(id, m)` | `pre-match/fixtures/{id}/markets/{m}/premium` | `premium/fixtures/{id}/markets/{m}` |
+
+**Breaking: premium inplay methods are removed.** `getPremiumInplayOddsByFixture`,
+`getPremiumInplayOddsByFixtureAndBookmaker`, `getPremiumInplayOddsByFixtureAndMarket` and
+`getLastUpdatedPremiumInplayOdds` (in `OddsApi` and in the `SportMonksAPI` facade) called routes the
+API does not have (always 404), so no working caller can depend on them. Use the inplay methods.
+
+**Breaking: `getLastUpdatedPremiumPreMatchOdds()` now takes a range.** The no-argument route
+(`pre-match/lastupdated/premium`) never existed. The real feed is
+`premium/updated/between/{from}/{to}`: `getLastUpdatedPremiumPreMatchOdds(long from, long to)`, with
+Unix timestamps in seconds and a range of at most five minutes (the API answers 422 otherwise).
+
+**Breaking: `BookmakerMapping.getFixtureIdentifier()` is removed.** The API has no `fixture_identifier`,
+so it was always `null`. The mapping now has `getBookmakerName()`, `getBookmakerEventId()` and
+`getBookmakerEventUrl()` (null when the bookmaker has no link).
+
+**Includes and filters.** Every odds method gained an overload with `String[] includes`
+(`market`, `bookmaker`, `fixture`) and `String filters`, as the fixture methods have. Filters are
+separated by semicolons and take comma separated ids: `markets:1,2`, `bookmakers:2,13`, and
+`WinningOdds` for the winning selections only. Checked against the API: they reduce the rows it
+returns (the odds of one fixture are over a thousand rows, about 600 KB, without them).
+`getMatchOddsByBookmaker` and `getMatchOddsByMarket` also take `String... includes`.
+
+```java
+List<Odd> odds = api.getMatchOdds("19722082", new String[]{"market", "bookmaker"},
+        "markets:" + MarketIds.FULLTIME_RESULT + ";bookmakers:2");
+List<Odd> winners = api.getMatchOdds("18538184", new String[0], "WinningOdds");
+```
+
+**New endpoints.** `getAllPreMatchOdds(...)` (`/odds/pre-match`, paged, use a `limit`),
+`getLatestPreMatchOdds(...)` (`/odds/pre-match/latest`: not paged, ignores `per_page`, and from tens of
+kilobytes up to about 3 MB, so filter it), `getBookmakersByFixture(id)`, `getPremiumBookmakers()`,
+`getPremiumMarkets()`, `getAllInplayOdds(...)`, `getAllPremiumOdds(...)`, `getPremiumOddsHistory(...)`,
+`getLastUpdatedPremiumOddsHistory(from, to)`. The last four answer 403 with a plan without premium or
+inplay odds, which proves the route exists; their response could not be checked against real data.
+
+**Models.** `Market.getLegacyId()`, `Odd.getMarket()` and `Odd.getFixture()` (with the `market` and
+`fixture` includes) and `OddsResponse.getTimestamp()` (the `latest` feeds) are new.
+`searchMarkets(query)` and `searchBookmakers(query)` used to return only the first page of results; they
+now walk every page, and have an overload with `int limit`.
+
+**Constants (#86).** `LineupDetailType` (`football.util`) lists the ids of the types found in
+`lineups.details`, for the `lineupdetailTypes` filter (`LineupDetailType.CAPTAIN` is 40), and `MarketIds`
+(`odds.util`) the most used markets (`FULLTIME_RESULT` 1, `CORRECT_SCORE` 57, `GOALS_OVER_UNDER` 80, ...).
+Both are compared with the real catalogues (`core/types` and `odds/markets`) by
+`ConstantsCatalogIntegrationTest`.
+
 ## 3.3.0: null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name

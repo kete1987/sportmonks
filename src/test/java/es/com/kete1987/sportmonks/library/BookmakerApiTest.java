@@ -97,6 +97,6 @@ class BookmakerApiTest extends BaseApiTest {
         assertEquals(2, mappings.size());
         assertEquals(100L, mappings.get(0).getFixtureId());
         assertEquals(1L, mappings.get(0).getBookmakerId());
-        assertEquals("BET365_FIXTURE_100", mappings.get(0).getFixtureIdentifier());
+        assertEquals("bet365", mappings.get(0).getBookmakerName());
     }
 }

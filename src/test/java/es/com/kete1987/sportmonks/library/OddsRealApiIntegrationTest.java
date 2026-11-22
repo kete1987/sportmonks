@@ -46,7 +46,7 @@ class OddsRealApiIntegrationTest {
 
     @Test
     void lastUpdatedInplayOdds_routeExists() {
-        assertRouteExistsWithoutAccess(() -> api.getLastUpdatedInplayOdds());
+        assertRouteExistsWithoutAccess(api::getLastUpdatedInplayOdds);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package es.com.kete1987.sportmonks.library.odds.model;
 
 import com.google.gson.annotations.SerializedName;
+import es.com.kete1987.sportmonks.library.football.model.match.Match;
 
 public class Odd {
     private Long id;
@@ -35,6 +36,8 @@ public class Odd {
     @SerializedName("sort_order")
     private Long sortOrder;
     private Bookmaker bookmaker;
+    private Market market;
+    private Match fixture;
 
     public Odd() {
     }
@@ -56,6 +59,16 @@ public class Odd {
     }
 
     public Bookmaker getBookmaker() { return bookmaker; }
+
+    /** @return the market, only with {@code include=market}. */
+    public Market getMarket() {
+        return market;
+    }
+
+    /** @return the fixture, only with {@code include=fixture}. */
+    public Match getFixture() {
+        return fixture;
+    }
 
     public String getLabel() {
         return label;

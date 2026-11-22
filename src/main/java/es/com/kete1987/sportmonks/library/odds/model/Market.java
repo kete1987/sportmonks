@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Market {
     private Long id;
+    @SerializedName("legacy_id")
+    private Long legacyId;
     private String name;
     @SerializedName("display_name")
     private String displayName;
@@ -17,6 +19,11 @@ public class Market {
 
     public Long getId() {
         return id;
+    }
+
+    /** @return the id of the market in the API v2, or null when it has none. */
+    public Long getLegacyId() {
+        return legacyId;
     }
 
     public String getName() {

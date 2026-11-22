@@ -16,6 +16,7 @@ public class OddsResponse {
     @SerializedName("rate_limit")
     private RateLimit rateLimit;
     private String timezone;
+    private Long timestamp;
 
     public OddsResponse() {
     }
@@ -38,5 +39,10 @@ public class OddsResponse {
 
     public String getTimezone() {
         return timezone;
+    }
+
+    /** @return the moment of the data, sent by the {@code latest} feeds only. */
+    public Long getTimestamp() {
+        return timestamp;
     }
 }
