@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
@@ -64,12 +65,18 @@ abstract class SportMonksApiBase {
                 .build();
     }
 
+    /**
+     * The one {@code Gson} of the library. {@code Gson} is immutable and thread-safe, so every
+     * sub-API and every request shares it instead of building a {@code GsonBuilder} per call.
+     */
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+            .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+            .registerTypeAdapter(SubscriptionMeta.class, new SubscriptionMetaDeserializer())
+            .create();
+
     Gson gson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
-                .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
-                .registerTypeAdapter(SubscriptionMeta.class, new SubscriptionMetaDeserializer())
-                .create();
+        return GSON;
     }
 
     /**
@@ -78,14 +85,21 @@ abstract class SportMonksApiBase {
      * (malformed JSON or a value of the wrong type), which carries the status code, the URL
      * (it never holds the API token, which travels in a header) and the Gson error as cause.
      * An empty body yields {@code null}.
+     *
+     * <p>The body text is parsed once, into a tree: the {@code rate_limit} object is read from
+     * that tree and the same tree is then mapped to {@code type}, so a multi-megabyte odds
+     * response is not tokenised twice.
      */
     <R> R get(HttpUrl url, Class<R> type) throws IOException, SportMonksException {
         HttpBody body = execute(url);
+        JsonElement tree;
         try {
-            return gson().fromJson(body.text, type);
+            tree = JsonParser.parseString(body.text);
         } catch (JsonParseException e) {
             throw unparseable(body.status, url, e);
         }
+        recordRateLimit(tree);
+        return convert(body.status, url, tree, type);
     }
 
     /**
@@ -93,10 +107,14 @@ abstract class SportMonksApiBase {
      * to {@code type}, with the same error handling as {@link #get}.
      */
     <R> R convert(HttpUrl url, JsonElement json, Class<R> type) throws SportMonksException {
+        return convert(HTTP_OK, url, json, type);
+    }
+
+    private static <R> R convert(int status, HttpUrl url, JsonElement json, Class<R> type) throws SportMonksException {
         try {
-            return gson().fromJson(json, type);
+            return GSON.fromJson(json, type);
         } catch (JsonParseException e) {
-            throw unparseable(HTTP_OK, url, e);
+            throw unparseable(status, url, e);
         }
     }
 
@@ -113,7 +131,6 @@ abstract class SportMonksApiBase {
             if (!response.isSuccessful()) {
                 throw httpError(response.code(), body);
             }
-            recordRateLimit(body);
             return new HttpBody(response.code(), body);
         }
     }
@@ -129,10 +146,10 @@ abstract class SportMonksApiBase {
     }
 
     /** Builds the exception of a non-2xx response, reading {@code code} and {@code rate_limit} when the body is JSON. */
-    private SportMonksException httpError(int status, String body) {
+    private static SportMonksException httpError(int status, String body) {
         ErrorEnvelope envelope = null;
         try {
-            envelope = gson().fromJson(body, ErrorEnvelope.class);
+            envelope = GSON.fromJson(body, ErrorEnvelope.class);
         } catch (RuntimeException ignored) {
             // an error body that is not JSON (e.g. a proxy's HTML page) only loses the extra fields
         }
@@ -147,21 +164,16 @@ abstract class SportMonksApiBase {
         RateLimit rateLimit;
     }
 
-    private void recordRateLimit(String body) {
-        if (body.isEmpty()) return;
+    /** Tracks the {@code rate_limit} object of an already parsed body, if it has one. */
+    private void recordRateLimit(JsonElement tree) {
+        if (!tree.isJsonObject()) return;
+        JsonElement rateLimit = tree.getAsJsonObject().get("rate_limit");
+        if (rateLimit == null || !rateLimit.isJsonObject()) return;
         try {
-            RateLimitEnvelope envelope = gson().fromJson(body, RateLimitEnvelope.class);
-            if (envelope != null) {
-                rateLimitTracker.track(envelope.rateLimit);
-            }
-        } catch (RuntimeException ignored) {
+            rateLimitTracker.track(GSON.fromJson(rateLimit, RateLimit.class));
+        } catch (JsonParseException ignored) {
             // rate_limit is best-effort metadata; never fail a request over a parse hiccup.
         }
-    }
-
-    private static final class RateLimitEnvelope {
-        @SerializedName("rate_limit")
-        RateLimit rateLimit;
     }
 
     /**
