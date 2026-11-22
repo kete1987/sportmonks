@@ -188,10 +188,13 @@ abstract class SportMonksApiBase {
      * to offset the walk stops at {@link #MAX_OFFSET_ROWS} rows instead of letting the API reject
      * the request, so a huge dataset returns a truncated list rather than throwing.
      *
-     * <p>When {@code limit > 0} it shrinks {@code per_page} (capped at {@link #MAX_PER_PAGE}) so
-     * the first page already carries enough rows, stops as soon as {@code limit} is reached, and
-     * trims any overflow — avoiding crawling every page just to keep the first N. A non-positive
-     * {@code limit} means "no limit". The {@code dataFn}/{@code pagFn} extract the {@code data}
+     * <p>The first request always sets {@code per_page}: {@link #MAX_PER_PAGE} for a full walk
+     * (half the requests of the API default of 25), or, when {@code limit > 0}, the limit capped
+     * at {@link #MAX_PER_PAGE}, so the first page already carries enough rows; the walk then stops
+     * as soon as {@code limit} is reached and trims any overflow. Cursor requests drop
+     * {@code per_page} (the size travels inside the cursor and the API rejects both together),
+     * while offset requests keep it so the pages stay aligned. A non-positive {@code limit} means
+     * "no limit". The {@code dataFn}/{@code pagFn} extract the {@code data}
      * and {@code pagination} of each response so the same loop serves every {@code *Response} type.
      *
      * <p>An empty body, or one carrying no {@code data} at all, ends the walk and returns whatever
@@ -202,9 +205,8 @@ abstract class SportMonksApiBase {
     <T, R> List<T> fetchPaged(HttpUrl base, Class<R> type,
                               Function<R, List<T>> dataFn, Function<R, Pagination> pagFn,
                               int limit) throws IOException, SportMonksException {
-        HttpUrl first = limit > 0
-                ? base.newBuilder().setQueryParameter("per_page", String.valueOf(Math.min(limit, MAX_PER_PAGE))).build()
-                : base;
+        int perPage = limit > 0 ? Math.min(limit, MAX_PER_PAGE) : MAX_PER_PAGE;
+        HttpUrl first = base.newBuilder().setQueryParameter("per_page", String.valueOf(perPage)).build();
         PageWalk walk = new PageWalk();
         List<T> all = new ArrayList<>();
         R resp = get(first, type);
