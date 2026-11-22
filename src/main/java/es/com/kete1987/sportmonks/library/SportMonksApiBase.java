@@ -153,7 +153,7 @@ abstract class SportMonksApiBase {
         ErrorEnvelope envelope = null;
         try {
             envelope = GSON.fromJson(body, ErrorEnvelope.class);
-        } catch (RuntimeException ignored) {
+        } catch (JsonParseException ignored) {
             // an error body that is not JSON (e.g. a proxy's HTML page) only loses the extra fields
         }
         return envelope != null

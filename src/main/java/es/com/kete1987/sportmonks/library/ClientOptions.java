@@ -77,10 +77,18 @@ public final class ClientOptions {
                     .connectTimeout(DEFAULT_TIMEOUT)
                     .readTimeout(DEFAULT_TIMEOUT);
         }
-        if (connectTimeout != null) builder.connectTimeout(connectTimeout);
-        if (readTimeout != null) builder.readTimeout(readTimeout);
-        if (callTimeout != null) builder.callTimeout(callTimeout);
-        if (maxRetries > 0) builder.addInterceptor(new RetryInterceptor(maxRetries, maxRetryWait, retryBackoff));
+        if (connectTimeout != null) {
+            builder.connectTimeout(connectTimeout);
+        }
+        if (readTimeout != null) {
+            builder.readTimeout(readTimeout);
+        }
+        if (callTimeout != null) {
+            builder.callTimeout(callTimeout);
+        }
+        if (maxRetries > 0) {
+            builder.addInterceptor(new RetryInterceptor(maxRetries, maxRetryWait, retryBackoff));
+        }
         return builder;
     }
 

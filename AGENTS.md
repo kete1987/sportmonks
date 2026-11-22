@@ -51,6 +51,8 @@ src/main/java/es/com/kete1987/sportmonks/library/
 ├── OddsApi.java               # pre-match / inplay / premium odds, markets, bookmakers
 ├── PredictionsApi.java        # predictions and probabilities
 ├── RateLimitTracker.java      # rate-limit state, per entity
+├── ClientOptions.java         # timeouts, own OkHttpClient, opt-in retries
+├── RetryInterceptor.java      # 429/5xx retries (only with ClientOptions.maxRetries > 0)
 ├── common/
 │   ├── model/                 # pagination, ratelimit, subscription
 │   └── util/
@@ -91,7 +93,9 @@ api.getLastRateLimit();          // rate_limit object of the last response
 api.getRateLimitsByEntity();     // latest rate_limit seen per requested_entity
 ```
 
-All methods throw `IOException` and `SportMonksException`. `SportMonksException` wraps non-2xx HTTP responses with the status code and response body.
+All methods throw `IOException` and `SportMonksException`. `SportMonksException` wraps non-2xx HTTP responses and 2xx bodies that cannot be parsed (Gson errors never escape unchecked). Its message stays `"code - body"` (consumers parse it); `getStatusCode()`, `getErrorCode()` (Sportmonks `code`, e.g. 5007) and `getRateLimit()` expose the details.
+
+HTTP settings go through `ClientOptions` (constructors `(apiToken, locale, timezone, ClientOptions)`): timeouts, an own `OkHttpClient`, and opt-in retries for 429/5xx (`RetryInterceptor`, off by default). Without options the client keeps 30 s connect/read timeouts and no retries.
 
 ## Pagination
 
@@ -106,21 +110,23 @@ Everything goes through one helper, `SportMonksApiBase.fetchPaged()`. Never writ
 
 **Offset depth limit.** Since 2026-06-23 the API rejects offset pagination past 20.000 rows (page 801 with `per_page=25`, page 401 with `per_page=50`). When walking by offset, `fetchPaged` stops right before crossing it and returns what it has gathered, rather than letting the request 4xx. The result is silently truncated in that case — endpoints large enough to hit it should be paginated by cursor, which has no such limit.
 
-**`limit`.** A positive `limit` shrinks `per_page` (capped at 50) so the first page already carries enough rows, stops as soon as `limit` is reached, and trims the overflow. It works the same on both cursor and offset walks. A non-positive `limit` means "fetch everything".
+**`limit`.** A positive `limit` shrinks `per_page` (capped at 50) so the first page already carries enough rows, stops as soon as `limit` is reached, and trims the overflow. It works the same on both cursor and offset walks. A non-positive `limit` means "fetch everything", and its first request sends `per_page=50` (half the requests of the API default of 25). In both cases `per_page` goes only on the first request and on offset pages, never alongside a `cursor`.
+
+**Cursor format.** `next_cursor` is read both as a URL (what the API sends today) and as a bare token (what the changelog documents).
 
 ## Gson / type adapters
 
-Never build a `Gson` instance directly — call `gson()` from `SportMonksApiBase`, which registers:
+Never build a `Gson` instance directly — call `gson()` from `SportMonksApiBase`, which returns the one shared, immutable instance. It registers:
 
-- `EmptyStringToNumberTypeAdapter` for `int` and `Integer` — the API occasionally returns `""` where an int is expected.
+- `EmptyStringToNumberTypeAdapter` for `int`/`Integer` and, via `forLong()`, for `long`/`Long` — the API occasionally returns `""` where a number is expected.
 - `SubscriptionMetaDeserializer` for `SubscriptionMeta`.
 
 ## Adding new endpoints
 
 1. Add model POJOs under `core/model/`, `football/model/` or `odds/model/` mirroring the JSON structure. List getters return `ModelCollections.unmodifiable(...)`.
 2. Add the method to the sub-API that owns the domain (`FootballApi`, `CoreApi`, `OddsApi`, `PredictionsApi`), then delegate to it from `SportMonksAPI` so the facade stays complete.
-3. Build the URL with the sub-API's private `*Url(path)` helper (it applies locale and timezone) and add includes with `withIncludes(...)`.
-4. For a single resource, `gson().fromJson(execute(url), XResponse.class)`. For a list, call `fetchPaged(...)` — see "Pagination".
+3. Build the URL with the sub-API's private `*Url(path, segments...)` helper (it applies locale and timezone) and add includes with `withIncludes(...)`. `path` is the fixed route (`"teams/search"`); every id or user text goes as its own argument (`footballUrl("teams/search", name)`, `oddsUrl("pre-match/fixtures", id, "markets", marketId)`), which percent-encodes it as one segment. Never concatenate values into the path.
+4. For a single resource, `get(url, XResponse.class)` (parses once, tracks `rate_limit`, wraps parse errors) and null-check the result: an empty body yields `null`. For a list, call `fetchPaged(...)` — see "Pagination".
 5. Add a test extending `BaseApiTest` with a fixture under `src/test/resources/fixtures/`.
 
 ## Publishing a new version

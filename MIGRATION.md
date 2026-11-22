@@ -125,6 +125,68 @@ top-flight fixture, so ask for it explicitly. The includes `premiumOdds`, `inpla
 `trends`, `pressure`, `ballCoordinates` and `expectedLineups` are still not modelled in
 `MatchDetail`: the test subscription answers 403 for them, so their shape could not be checked.
 
+### HTTP infrastructure and paths (#83, #85)
+
+**Breaking: `TopScoresPlayer.getStage()` is removed** (#81). The API has no `stage` include on
+Topscorer (it answers 404, code 5013), so the field was always `null`. Use the `stageId` you
+queried with, or fetch the stage with `getStageById`.
+
+**Breaking: unparseable responses throw `SportMonksException`.** A 2xx body that cannot be
+parsed (malformed JSON, or a value of the wrong type) used to escape as an unchecked
+`JsonSyntaxException`; it is now a `SportMonksException` whose message reads
+`"<status> - unparseable response from <url>: <detail>"` and whose cause is the Gson error.
+Code that already catches `IOException | SportMonksException` handles it without changes; code
+that caught `JsonSyntaxException` must catch `SportMonksException` instead. List methods no
+longer document a partial result on such a page: they throw, as any other request does.
+
+**`SportMonksException`** keeps the `"code - body"` message and adds `getStatusCode()` (e.g.
+404, 403, 429; 0 when there is no HTTP response), `getErrorCode()` (the Sportmonks `code` of the
+error body, e.g. 5007 for an endpoint outside the subscription) and `getRateLimit()` (the
+`rate_limit` of the error body, when present).
+
+```java
+try {
+    api.getMatchFactsByLeague(8L);
+} catch (SportMonksException e) {
+    if (e.getStatusCode() == 403 && Integer.valueOf(5007).equals(e.getErrorCode())) { /* no access */ }
+}
+```
+
+**Path segments are percent-encoded** (#85). Search texts and `String` ids now travel as one
+encoded path segment: `searchTeams("Real?x")` searches for `Real?x` (it used to search for
+`Real`), and `#`, spaces and accents are encoded too. A `/` is sent as `%2F`, but the API
+decodes it before routing, so a search text with a slash still answers 404; the exception now
+carries `getStatusCode() == 404`.
+
+**Full list walks ask for 50 rows per page.** Without a `limit`, the first request sends
+`per_page=50` (it used to rely on the API default of 25), so a walk takes half the requests.
+Cursor requests still never send `per_page`.
+
+**Client options.** New constructors `(apiToken, locale, timezone, ClientOptions)` on
+`SportMonksAPI`, `FootballApi`, `OddsApi`, `PredictionsApi` and `CoreApi` accept connect, read and
+call timeouts or an `OkHttpClient` of your own; the existing constructors are unchanged. Retries
+are opt-in and off by default:
+
+```java
+ClientOptions options = ClientOptions.builder()
+        .readTimeout(Duration.ofSeconds(20))
+        .callTimeout(Duration.ofMinutes(2))
+        .maxRetries(3)                       // 429 and 5xx; default 0 (off)
+        .maxRetryWait(Duration.ofSeconds(30)) // cap per wait; default 60 s
+        .build();
+SportMonksAPI api = new SportMonksAPI("YOUR_API_KEY", null, null, options);
+```
+
+A 429 is retried after the `rate_limit.resets_in_seconds` of its body only when that wait fits
+in `maxRetryWait` (otherwise it throws at once); a 5xx is retried with exponential backoff
+(`retryBackoff`, 1 s by default). Other 4xx are never retried.
+
+**Other changes.** A `""` in a `long`/`Long` field is read as `null`, as it already was for
+`int`/`Integer`. A `next_cursor` sent as a bare token (the format the changelog documents) is
+followed as a cursor, like the URL form the API sends today. `VenueResponse`, `RivalsResponse`
+and `CommentsResponse` gain `getPagination()`, and `getSeasonById`/`getBracketsBySeason` return
+`null` instead of throwing on an empty response (#82).
+
 ## 3.3.0 (unreleased): null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name
