@@ -72,6 +72,8 @@ abstract class SportMonksApiBase {
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
             .registerTypeAdapter(Integer.class, new EmptyStringToNumberTypeAdapter())
+            .registerTypeAdapter(long.class, EmptyStringToNumberTypeAdapter.forLong())
+            .registerTypeAdapter(Long.class, EmptyStringToNumberTypeAdapter.forLong())
             .registerTypeAdapter(SubscriptionMeta.class, new SubscriptionMetaDeserializer())
             .create();
 
