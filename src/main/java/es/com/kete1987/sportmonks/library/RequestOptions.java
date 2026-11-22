@@ -69,10 +69,10 @@ public final class RequestOptions {
         }
     }
 
-    static final String SELECT = "select";
-    static final String ORDER = "order";
-    static final String SORT_BY = "sortBy";
-    static final String FILTERS = "filters";
+    static final String PARAM_SELECT = "select";
+    static final String PARAM_ORDER = "order";
+    static final String PARAM_SORT_BY = "sortBy";
+    static final String PARAM_FILTERS = "filters";
 
     /** Separator Sportmonks uses between several filters. */
     static final String FILTER_SEPARATOR = ";";
@@ -140,10 +140,10 @@ public final class RequestOptions {
     HttpUrl applyTo(HttpUrl url) {
         if (isEmpty()) return url;
         HttpUrl.Builder builder = url.newBuilder();
-        if (!select.isEmpty()) builder.setQueryParameter(SELECT, String.join(",", select));
-        if (order != null) builder.setQueryParameter(ORDER, order.value());
-        if (sortBy != null) builder.setQueryParameter(SORT_BY, sortBy);
-        if (filters != null) builder.setQueryParameter(FILTERS, combineFilters(url.queryParameter(FILTERS)));
+        if (!select.isEmpty()) builder.setQueryParameter(PARAM_SELECT, String.join(",", select));
+        if (order != null) builder.setQueryParameter(PARAM_ORDER, order.value());
+        if (sortBy != null) builder.setQueryParameter(PARAM_SORT_BY, sortBy);
+        if (filters != null) builder.setQueryParameter(PARAM_FILTERS, combineFilters(url.queryParameter(PARAM_FILTERS)));
         return builder.build();
     }
 

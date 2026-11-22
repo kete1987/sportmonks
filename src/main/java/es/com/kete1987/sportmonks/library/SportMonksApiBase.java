@@ -333,7 +333,7 @@ abstract class SportMonksApiBase {
 
     HttpUrl.Builder withFilters(HttpUrl.Builder builder, String filters) {
         if (filters != null && !filters.isBlank()) {
-            builder.addQueryParameter(RequestOptions.FILTERS, filters);
+            builder.addQueryParameter(RequestOptions.PARAM_FILTERS, filters);
         }
         return builder;
     }
