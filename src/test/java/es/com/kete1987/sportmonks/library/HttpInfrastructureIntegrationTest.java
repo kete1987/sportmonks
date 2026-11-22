@@ -1,13 +1,18 @@
 package es.com.kete1987.sportmonks.library;
 
+import es.com.kete1987.sportmonks.library.common.util.Constants;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
+import es.com.kete1987.sportmonks.library.core.model.country.Country;
+import es.com.kete1987.sportmonks.library.football.model.league.League;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,7 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class HttpInfrastructureIntegrationTest {
 
+    private static final AtomicInteger REQUESTS = new AtomicInteger();
+
     private static SportMonksAPI api;
+    /** Same client, but every request is counted in {@link #REQUESTS}. */
+    private static SportMonksAPI counted;
 
     @BeforeAll
     static void setUp() {
@@ -28,6 +37,40 @@ class HttpInfrastructureIntegrationTest {
         Assumptions.assumeTrue(apiKey != null && !apiKey.isEmpty(),
                 "SPORTMONKS_API_KEY not set - skipping integration tests");
         api = new SportMonksAPI(apiKey);
+        OkHttpClient counting = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    REQUESTS.incrementAndGet();
+                    return chain.proceed(chain.request());
+                })
+                .build();
+        ClientOptions options = ClientOptions.builder().httpClient(counting).build();
+        counted = new SportMonksAPI(SportMonksApiBase.buildHttpClient(apiKey, options),
+                new SportMonksAPI.BaseUrls(Constants.BASE_URL_FOOTBALL, Constants.BASE_URL_ODDS,
+                        Constants.BASE_URL_ODDS_CATALOG, Constants.BASE_URL_CORE, Constants.BASE_URL_MY),
+                null, null);
+    }
+
+    /** The 38 leagues of the subscription fit in one page of 50: one request instead of two. */
+    @Test
+    void fullWalk_leaguesFitInOneRequest() throws IOException, SportMonksException {
+        REQUESTS.set(0);
+
+        List<League> leagues = counted.getAllLeagues();
+
+        assertTrue(leagues.size() > 25 && leagues.size() <= 50, "leagues: " + leagues.size());
+        assertEquals(1, REQUESTS.get());
+    }
+
+    /** A walk across several pages at 50 rows per page, without per_page on cursor requests (400). */
+    @Test
+    void fullWalk_countriesUseFiftyRowPages() throws IOException, SportMonksException {
+        REQUESTS.set(0);
+
+        List<Country> countries = counted.getAllCountries();
+
+        int pages = (countries.size() + 49) / 50;
+        assertTrue(pages > 1, "countries: " + countries.size());
+        assertEquals(pages, REQUESTS.get(), "countries: " + countries.size());
     }
 
     private static void assertEveryNameContains(List<Team> teams, String text) {
