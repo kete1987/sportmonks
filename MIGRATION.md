@@ -1,8 +1,22 @@
 # Migration Guide
 
-## 3.5.0 (unreleased)
+## 3.5.0
 
-This release bumps the minor version because of the breaking changes below: `Venue.getZipcode()` now returns `String` and `League.getLastPlayerdAt()`, `getSeasonStatsByParticipant`, `Schedule.getTeamId()` and `TopScoresPlayer.getStage()` are removed, and a response body that cannot be parsed now throws `SportMonksException` instead of `JsonSyntaxException`.
+This release bumps the minor version because of the breaking changes below. Removed (they called routes the API does not have, or were always `null`): `getSeasonStatsByParticipant`, `getMyApi` (with the `MyApi` and `MyApiResponse` models), `getExpectedGoalsByTeam`, `getExpectedGoalsByPlayer`, the four premium inplay methods of `OddsApi` and the facade (`getPremiumInplayOddsByFixture`, `getPremiumInplayOddsByFixtureAndBookmaker`, `getPremiumInplayOddsByFixtureAndMarket`, `getLastUpdatedPremiumInplayOdds`) and the getters `League.getLastPlayerdAt()`, `Schedule.getTeamId()`, `TopScoresPlayer.getStage()`, `BookmakerMapping.getFixtureIdentifier()`, `MyLeague.getLeagueId()`, `MyResource.getName()`/`getEndpoint()`/`getSportId()` and `MyUsage.getSportId()`/`getRequests()`/`getDate()`. Types and signatures changed: `Venue.getZipcode()` returns `String`, `TeamMeta.getWinner()` returns `Boolean`, `getMyEnrichments()` returns `List<MyEnrichment>`, `getLastUpdatedPremiumPreMatchOdds` takes `(long from, long to)` and `EventData` implements `Comparable<EventData>`. Behaviour changed: a response body that cannot be parsed throws `SportMonksException` instead of `JsonSyntaxException`, the order and `equals` of `Match`, `Comment`, `Stage` and `EventData` are redefined, and several list methods now walk every page (more requests per call).
+
+**What to do when updating**, ordered by how likely it is to affect you (details in the sections below):
+
+| Likely impact | If your code... | Do this |
+|---|---|---|
+| High | catches `JsonSyntaxException` around API calls | Catch `SportMonksException` (see "HTTP infrastructure and paths") |
+| High | calls `getZipcode()` or `getWinner()` | Treat the zip code as `String`; use the `Boolean` or `isWinner()` (see #81, #80) |
+| High | sorts or compares `Match`, `Comment`, `Stage` or `EventData`, or relies on `equals` of id-less ones | Re-check the ordering: finished matches now go by kick-off time (see #80) |
+| Medium | calls the `My*` getters or `getMyEnrichments()` | Move to the new getters (see #77) |
+| Medium | calls `getLastUpdatedPremiumPreMatchOdds()` | Pass a range: `(from, to)` in Unix seconds, at most five minutes (see #78) |
+| Medium | uses paged list methods (`getAllVenues`, `searchTeams`, `getAllCommentaries`, ...) | Expect several requests per call and pass a `limit` to cap them (see #82) |
+| Low | uses `League.getLastPlayerdAt`, `Schedule.getTeamId`, `TopScoresPlayer.getStage` or `BookmakerMapping.getFixtureIdentifier` | Use `getLastPlayedAt` or the `stageId` you queried with; the others were always `null`, drop them |
+| Low | uses `getSeasonStatsByParticipant`, `getMyApi`, `getExpectedGoalsBy*` or the premium inplay methods | They never worked: use `getSeasonStatistics`, `getLastRateLimit()`, `getExpectedGoalsByFixture`/`getExpectedGoalsByLineup` or the inplay methods |
+| Low | names the raw type `Comparable<Object>` for `EventData` | Use `Comparable<EventData>` |
 
 ### Football model fixes (#81)
 
