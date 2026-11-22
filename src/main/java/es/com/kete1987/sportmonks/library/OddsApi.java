@@ -39,7 +39,15 @@ public class OddsApi extends SportMonksApiBase {
     }
 
     public OddsApi(String apiToken, String locale, String timezone) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_ODDS, Constants.BASE_URL_ODDS_CATALOG,
+        this(apiToken, locale, timezone, ClientOptions.defaults());
+    }
+
+    /**
+     * Creates the client with custom HTTP settings (timeouts, an own {@code OkHttpClient}).
+     * Pass {@code null} for the default locale or timezone.
+     */
+    public OddsApi(String apiToken, String locale, String timezone, ClientOptions options) {
+        this(buildHttpClient(apiToken, options), Constants.BASE_URL_ODDS, Constants.BASE_URL_ODDS_CATALOG,
                 locale, timezone, new RateLimitTracker());
     }
 

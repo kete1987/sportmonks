@@ -56,7 +56,15 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     public CoreApi(String apiToken, String locale, String timezone) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, new RateLimitTracker());
+        this(apiToken, locale, timezone, ClientOptions.defaults());
+    }
+
+    /**
+     * Creates the client with custom HTTP settings (timeouts, an own {@code OkHttpClient}).
+     * Pass {@code null} for the default locale or timezone.
+     */
+    public CoreApi(String apiToken, String locale, String timezone, ClientOptions options) {
+        this(buildHttpClient(apiToken, options), Constants.BASE_URL_CORE, Constants.BASE_URL_MY, locale, timezone, new RateLimitTracker());
     }
 
     CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, String timezone, RateLimitTracker tracker) {

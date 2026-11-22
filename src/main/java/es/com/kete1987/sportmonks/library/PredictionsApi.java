@@ -38,7 +38,15 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public PredictionsApi(String apiToken, String locale, String timezone) {
-        this(buildHttpClient(apiToken), Constants.BASE_URL_FOOTBALL, locale, timezone, new RateLimitTracker());
+        this(apiToken, locale, timezone, ClientOptions.defaults());
+    }
+
+    /**
+     * Creates the client with custom HTTP settings (timeouts, an own {@code OkHttpClient}).
+     * Pass {@code null} for the default locale or timezone.
+     */
+    public PredictionsApi(String apiToken, String locale, String timezone, ClientOptions options) {
+        this(buildHttpClient(apiToken, options), Constants.BASE_URL_FOOTBALL, locale, timezone, new RateLimitTracker());
     }
 
     PredictionsApi(OkHttpClient client, String footballBase, String locale, String timezone, RateLimitTracker tracker) {

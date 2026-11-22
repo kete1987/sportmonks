@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 abstract class SportMonksApiBase {
@@ -55,13 +54,15 @@ abstract class SportMonksApiBase {
     }
 
     static OkHttpClient buildHttpClient(String apiToken) {
-        return new OkHttpClient.Builder()
+        return buildHttpClient(apiToken, ClientOptions.defaults());
+    }
+
+    static OkHttpClient buildHttpClient(String apiToken, ClientOptions options) {
+        return options.newClientBuilder()
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
                                 .header("Authorization", apiToken)
                                 .build()))
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
 
