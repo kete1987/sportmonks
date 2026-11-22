@@ -117,13 +117,13 @@ class CoreModelsIntegrationTest {
     }
 
     @Test
-    void regionModelsEveryField() throws IOException, InterruptedException {
-        assertCovered("core/regions/1", Region.class);
+    void regionModelsEveryFieldAndInclude() throws IOException, InterruptedException {
+        assertCovered("core/regions/1?include=cities;country", Region.class);
     }
 
     @Test
-    void continentModelsEveryField() throws IOException, InterruptedException {
-        assertCovered("core/continents/1", Continent.class);
+    void continentModelsEveryFieldAndInclude() throws IOException, InterruptedException {
+        assertCovered("core/continents/1?include=countries", Continent.class);
     }
 
     @Test
