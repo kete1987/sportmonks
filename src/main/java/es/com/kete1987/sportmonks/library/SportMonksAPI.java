@@ -334,8 +334,8 @@ public class SportMonksAPI {
     // Expected Goals (XG)
     // -------------------------------------------------------------------------
 
-    public List<ExpectedGoal> getExpectedGoalsByTeam(String... includes) throws IOException, SportMonksException { return predictions.getExpectedGoalsByTeam(includes); }
-    public List<ExpectedGoal> getExpectedGoalsByPlayer(String... includes) throws IOException, SportMonksException { return predictions.getExpectedGoalsByPlayer(includes); }
+    public List<ExpectedGoal> getExpectedGoalsByFixture(String... includes) throws IOException, SportMonksException { return predictions.getExpectedGoalsByFixture(includes); }
+    public List<ExpectedGoal> getExpectedGoalsByLineup(String... includes) throws IOException, SportMonksException { return predictions.getExpectedGoalsByLineup(includes); }
 
     // -------------------------------------------------------------------------
     // News

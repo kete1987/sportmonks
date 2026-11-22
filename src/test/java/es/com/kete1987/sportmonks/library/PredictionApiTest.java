@@ -47,7 +47,7 @@ class PredictionApiTest extends BaseApiTest {
         api.getPredictabilityByLeague(271L);
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("predictions/probabilities/leagues/271"));
+        assertTrue(request.getPath().contains("predictions/predictability/leagues/271"));
     }
 
     @Test

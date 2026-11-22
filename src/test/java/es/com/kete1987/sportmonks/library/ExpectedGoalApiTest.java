@@ -13,20 +13,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpectedGoalApiTest extends BaseApiTest {
 
     @Test
-    void getExpectedGoalsByTeam_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
+    void getExpectedGoalsByFixture_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("expected_goals.json");
 
-        api.getExpectedGoalsByTeam();
+        api.getExpectedGoalsByFixture();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("expected/teams"));
+        assertTrue(request.getPath().contains("expected/fixtures"));
     }
 
     @Test
-    void getExpectedGoalsByTeam_returnsParsedList() throws IOException, SportMonksException {
+    void getExpectedGoalsByFixture_returnsParsedList() throws IOException, SportMonksException {
         enqueue("expected_goals.json");
 
-        List<ExpectedGoal> goals = api.getExpectedGoalsByTeam();
+        List<ExpectedGoal> goals = api.getExpectedGoalsByFixture();
 
         assertEquals(1, goals.size());
         assertEquals(3001L, goals.get(0).getId());
@@ -38,20 +38,20 @@ class ExpectedGoalApiTest extends BaseApiTest {
     }
 
     @Test
-    void getExpectedGoalsByPlayer_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
+    void getExpectedGoalsByLineup_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
         enqueue("expected_goals.json");
 
-        api.getExpectedGoalsByPlayer();
+        api.getExpectedGoalsByLineup();
 
         RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("expected/players"));
+        assertTrue(request.getPath().contains("expected/lineups"));
     }
 
     @Test
-    void getExpectedGoalsByPlayer_returnsParsedList() throws IOException, SportMonksException {
+    void getExpectedGoalsByLineup_returnsParsedList() throws IOException, SportMonksException {
         enqueue("expected_goals.json");
 
-        List<ExpectedGoal> goals = api.getExpectedGoalsByPlayer();
+        List<ExpectedGoal> goals = api.getExpectedGoalsByLineup();
 
         assertFalse(goals.isEmpty());
     }

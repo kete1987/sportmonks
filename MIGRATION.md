@@ -187,6 +187,34 @@ followed as a cursor, like the URL form the API sends today. `VenueResponse`, `R
 and `CommentsResponse` gain `getPagination()`, and `getSeasonById`/`getBracketsBySeason` return
 `null` instead of throwing on an empty response (#82).
 
+### PredictionsApi (#79)
+
+**Breaking.** `getExpectedGoalsByTeam` (`expected/teams`) and `getExpectedGoalsByPlayer`
+(`expected/players`) always answered 404: those routes do not exist. They are removed, from
+`PredictionsApi` and from the `SportMonksAPI` facade, and replaced by methods named after the
+real routes:
+
+| 3.4.x | 3.5.0 | Route |
+|---|---|---|
+| `getExpectedGoalsByTeam(includes...)` | `getExpectedGoalsByFixture(includes...)` | `expected/fixtures` |
+| `getExpectedGoalsByPlayer(includes...)` | `getExpectedGoalsByLineup(includes...)` | `expected/lineups` |
+
+**Fixed route.** `getPredictabilityByLeague` called `predictions/probabilities/leagues/{id}` (404)
+and now calls `predictions/predictability/leagues/{id}`.
+
+**Null safety.** Every list method of `PredictionsApi` returns an empty list instead of throwing a
+`NullPointerException` (empty body) or returning `null` (body without `data`).
+
+**Not validated.** The test subscription answers 403 on almost all of `predictions/*`,
+`expected/*` and `news/*`: the routes were checked by the 404 (missing) versus 403 (exists)
+difference, but the models could not be compared with real JSON. The documentation describes
+`Expected` as `id, fixture_id, type_id, value` (plus `player_id` for lineups), unlike the current
+`ExpectedGoal` model, and nests the probabilities under `predictions`; both models are unchanged.
+`predictions/live/probabilities` and `predictions/live/probabilities/fixtures/{id}` exist (403) but
+are not wrapped: the documented entity (`period_id`, `minute`, `predictions`, cursor pagination)
+is not the one `Probability` models. The lists are not paginated because the documented
+`pagination` object could not be confirmed.
+
 ## 3.3.0 (unreleased): null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name
