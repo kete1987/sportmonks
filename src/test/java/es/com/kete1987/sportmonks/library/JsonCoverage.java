@@ -40,6 +40,11 @@ final class JsonCoverage {
 
     /** Fetches {@code path} (relative to {@code /v3/}) and returns the {@code data} element. */
     static JsonElement fetchData(String key, String path) throws IOException, InterruptedException {
+        return fetchMember(key, path, "data");
+    }
+
+    /** Fetches {@code path} (relative to {@code /v3/}) and returns one top-level member, e.g. {@code subscription}. */
+    static JsonElement fetchMember(String key, String path, String member) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder(URI.create(BASE + path))
                 .header("Authorization", key)
                 .GET()
@@ -49,7 +54,7 @@ final class JsonCoverage {
         if (response.statusCode() != 200) {
             throw new IOException("HTTP " + response.statusCode() + " for " + path);
         }
-        return JsonParser.parseString(response.body()).getAsJsonObject().get("data");
+        return JsonParser.parseString(response.body()).getAsJsonObject().get(member);
     }
 
     /** Returns the JSON paths present in {@code json} that {@code model} (or a nested class) lacks. */
