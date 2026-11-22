@@ -26,13 +26,21 @@ class RequestOptionsApiTest extends BaseApiTest {
     private static final String PER_PAGE = "per_page";
     private static final String CURSOR = "cursor";
     private static final String STARTING_AT = "starting_at";
+    private static final String SELECTED = "name,image_path";
+    private static final String NAME = "name";
+    private static final String COUNTRY_FILTER = "leagueCountries:462";
+    private static final String DESC = "desc";
+    private static final String LAST_OFFSET_PAGE = "paged_list_page2.json";
+    private static final String FIRST_CURSOR_PAGE = "cursor_page1.json";
+    private static final String LAST_CURSOR_PAGE = "cursor_page3.json";
+    private static final String EMPTY_LIST = "{\"data\":[]}";
     private static final String TEAM_SELECT = "team_select.json";
 
     private static final RequestOptions FULL = RequestOptions.builder()
-            .select("name", "image_path")
+            .select(NAME, "image_path")
             .order(RequestOptions.Order.DESC)
-            .sortBy("name")
-            .filters("leagueCountries:462")
+            .sortBy(NAME)
+            .filters(COUNTRY_FILTER)
             .build();
 
     private HttpUrl takeUrl() throws InterruptedException {
@@ -52,10 +60,10 @@ class RequestOptionsApiTest extends BaseApiTest {
     void select_reachesSingleResourceAndLeavesOtherFieldsNull() throws IOException, SportMonksException, InterruptedException {
         enqueue(TEAM_SELECT);
 
-        Team team = api.withOptions(RequestOptions.builder().select("name", "image_path").build())
+        Team team = api.withOptions(RequestOptions.builder().select(NAME, "image_path").build())
                 .getTeamById(53);
 
-        assertEquals("name,image_path", takeUrl().queryParameter(SELECT));
+        assertEquals(SELECTED, takeUrl().queryParameter(SELECT));
         assertEquals("Celtic", team.getName());
         assertNotNull(team.getImagePath());
         assertNull(team.getShortCode());
@@ -64,20 +72,20 @@ class RequestOptionsApiTest extends BaseApiTest {
 
     @Test
     void allOptions_reachTheFirstRequest() throws IOException, SportMonksException, InterruptedException {
-        enqueue("paged_list_page2.json");
+        enqueue(LAST_OFFSET_PAGE);
 
         api.withOptions(FULL).getAllLeagues();
 
         HttpUrl url = takeUrl();
-        assertEquals("name,image_path", url.queryParameter(SELECT));
-        assertEquals("desc", url.queryParameter(ORDER));
-        assertEquals("name", url.queryParameter(SORT_BY));
-        assertEquals("leagueCountries:462", url.queryParameter(FILTERS));
+        assertEquals(SELECTED, url.queryParameter(SELECT));
+        assertEquals(DESC, url.queryParameter(ORDER));
+        assertEquals(NAME, url.queryParameter(SORT_BY));
+        assertEquals(COUNTRY_FILTER, url.queryParameter(FILTERS));
     }
 
     @Test
     void sortByWithoutOrder_sendsOnlySortBy() throws IOException, SportMonksException, InterruptedException {
-        enqueue("paged_list_page2.json");
+        enqueue(LAST_OFFSET_PAGE);
 
         api.withOptions(RequestOptions.builder().sortBy(STARTING_AT).build()).getAllFixtures(5);
 
@@ -93,25 +101,25 @@ class RequestOptionsApiTest extends BaseApiTest {
     @Test
     void offsetWalk_carriesOptionsOnEveryPage() throws IOException, SportMonksException, InterruptedException {
         enqueue("paged_list_page1.json");
-        enqueue("paged_list_page2.json");
+        enqueue(LAST_OFFSET_PAGE);
 
         assertEquals(4, api.withOptions(FULL).getAllLeagues().size());
 
         takeUrl();
         HttpUrl second = takeUrl();
         assertEquals("2", second.queryParameter("page"));
-        assertEquals("name,image_path", second.queryParameter(SELECT));
-        assertEquals("desc", second.queryParameter(ORDER));
-        assertEquals("name", second.queryParameter(SORT_BY));
-        assertEquals("leagueCountries:462", second.queryParameter(FILTERS));
+        assertEquals(SELECTED, second.queryParameter(SELECT));
+        assertEquals(DESC, second.queryParameter(ORDER));
+        assertEquals(NAME, second.queryParameter(SORT_BY));
+        assertEquals(COUNTRY_FILTER, second.queryParameter(FILTERS));
         assertNotNull(second.queryParameter(PER_PAGE));
     }
 
     /** The API answers 400 "The cursor is not valid for this request" if order/sortBy/select are dropped. */
     @Test
     void cursorWalk_carriesOptionsButNeverPerPage() throws IOException, SportMonksException, InterruptedException {
-        enqueue("cursor_page1.json");
-        enqueue("cursor_page3.json");
+        enqueue(FIRST_CURSOR_PAGE);
+        enqueue(LAST_CURSOR_PAGE);
 
         api.withOptions(FULL).getAllTransfers();
 
@@ -119,17 +127,17 @@ class RequestOptionsApiTest extends BaseApiTest {
         HttpUrl second = takeUrl();
         assertNotNull(second.queryParameter(CURSOR));
         assertNull(second.queryParameter(PER_PAGE));
-        assertEquals("name,image_path", second.queryParameter(SELECT));
-        assertEquals("desc", second.queryParameter(ORDER));
-        assertEquals("name", second.queryParameter(SORT_BY));
-        assertEquals("leagueCountries:462", second.queryParameter(FILTERS));
+        assertEquals(SELECTED, second.queryParameter(SELECT));
+        assertEquals(DESC, second.queryParameter(ORDER));
+        assertEquals(NAME, second.queryParameter(SORT_BY));
+        assertEquals(COUNTRY_FILTER, second.queryParameter(FILTERS));
     }
 
     @Test
     void cursorWalk_doesNotRepeatOptionFiltersPageAfterPage() throws IOException, SportMonksException, InterruptedException {
-        enqueue("cursor_page1.json");
+        enqueue(FIRST_CURSOR_PAGE);
         enqueue("cursor_page2.json");
-        enqueue("cursor_page3.json");
+        enqueue(LAST_CURSOR_PAGE);
 
         api.withOptions(FULL).getAllTransfers();
 
@@ -137,7 +145,7 @@ class RequestOptionsApiTest extends BaseApiTest {
         takeUrl();
         HttpUrl third = takeUrl();
         assertEquals(1, third.queryParameterValues(FILTERS).size());
-        assertEquals("leagueCountries:462", third.queryParameter(FILTERS));
+        assertEquals(COUNTRY_FILTER, third.queryParameter(FILTERS));
         assertEquals(1, third.queryParameterValues(ORDER).size());
     }
 
@@ -157,7 +165,7 @@ class RequestOptionsApiTest extends BaseApiTest {
 
     @Test
     void topScoresFiltered_combinesFixedTypeFilterWithOptions() throws IOException, SportMonksException, InterruptedException {
-        enqueue("paged_list_page2.json");
+        enqueue(LAST_OFFSET_PAGE);
 
         api.withOptions(RequestOptions.builder().filters("seasontopscorerPlayers:460810").build())
                 .getTopScoresFiltered("19735", 208, 5);
@@ -167,14 +175,14 @@ class RequestOptionsApiTest extends BaseApiTest {
 
     @Test
     void oddsFilters_combineWithOptionFilters() throws IOException, SportMonksException, InterruptedException {
-        enqueueJson("{\"data\":[]}");
+        enqueueJson(EMPTY_LIST);
 
         api.withOptions(RequestOptions.builder().filters("WinningOdds").order(RequestOptions.Order.DESC).build())
                 .getMatchOdds("18545372", new String[0], "markets:1");
 
         HttpUrl url = takeUrl();
         assertEquals("markets:1;WinningOdds", url.queryParameter(FILTERS));
-        assertEquals("desc", url.queryParameter(ORDER));
+        assertEquals(DESC, url.queryParameter(ORDER));
     }
 
     // --- no options, immutability, shared state ---
@@ -192,10 +200,10 @@ class RequestOptionsApiTest extends BaseApiTest {
 
     @Test
     void viewWithoutOptions_pagesExactlyAsBefore() throws IOException, SportMonksException, InterruptedException {
-        enqueue("cursor_page1.json");
-        enqueue("cursor_page3.json");
-        enqueue("cursor_page1.json");
-        enqueue("cursor_page3.json");
+        enqueue(FIRST_CURSOR_PAGE);
+        enqueue(LAST_CURSOR_PAGE);
+        enqueue(FIRST_CURSOR_PAGE);
+        enqueue(LAST_CURSOR_PAGE);
 
         api.getAllTransfers();
         api.withOptions(RequestOptions.builder().build()).getAllTransfers();
@@ -247,31 +255,31 @@ class RequestOptionsApiTest extends BaseApiTest {
 
     @Test
     void coreView_appliesOptions() throws IOException, SportMonksException, InterruptedException {
-        enqueueJson("{\"data\":[]}");
+        enqueueJson(EMPTY_LIST);
 
         api.getCore().withOptions(FULL).getAllCountries();
 
-        assertEquals("desc", takeUrl().queryParameter(ORDER));
+        assertEquals(DESC, takeUrl().queryParameter(ORDER));
     }
 
     @Test
     void oddsView_appliesOptionsToTheCatalogue() throws IOException, SportMonksException, InterruptedException {
-        enqueueJson("{\"data\":[]}");
+        enqueueJson(EMPTY_LIST);
 
         api.getOdds().withOptions(FULL).getAllMarkets();
 
         HttpUrl url = takeUrl();
         assertTrue(url.encodedPath().startsWith("/v3/odds/markets"), url.encodedPath());
-        assertEquals("name,image_path", url.queryParameter(SELECT));
+        assertEquals(SELECTED, url.queryParameter(SELECT));
     }
 
     @Test
     void predictionsView_appliesOptions() throws IOException, SportMonksException, InterruptedException {
-        enqueueJson("{\"data\":[]}");
+        enqueueJson(EMPTY_LIST);
 
         api.getPredictions().withOptions(FULL).getValueBetsByFixture(1L);
 
-        assertEquals("name", takeUrl().queryParameter(SORT_BY));
+        assertEquals(NAME, takeUrl().queryParameter(SORT_BY));
     }
 
     @Test

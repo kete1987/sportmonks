@@ -70,9 +70,23 @@ public class CoreApi extends SportMonksApiBase {
     }
 
     CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, String timezone, RateLimitTracker tracker) {
-        super(client, locale, timezone, tracker);
+        this(client, coreBase, myBase, locale, timezone, tracker, RequestOptions.none());
+    }
+
+    private CoreApi(OkHttpClient client, String coreBase, String myBase, String locale, String timezone,
+                    RateLimitTracker tracker, RequestOptions options) {
+        super(client, locale, timezone, tracker, options);
         this.coreBase = coreBase;
         this.myBase = myBase;
+    }
+
+    /**
+     * A view of this client that adds {@code options} to every request; see
+     * {@link FootballApi#withOptions(RequestOptions)}. The MySportmonks endpoints ({@code my/...})
+     * ignore {@code select}.
+     */
+    public CoreApi withOptions(RequestOptions options) {
+        return new CoreApi(httpClient, coreBase, myBase, locale, timezone, rateLimitTracker, options);
     }
 
     private HttpUrl.Builder coreUrl(String path, Object... segments) {

@@ -75,9 +75,23 @@ public class OddsApi extends SportMonksApiBase {
     }
 
     OddsApi(OkHttpClient client, String oddsBase, String catalogBase, String locale, String timezone, RateLimitTracker tracker) {
-        super(client, locale, timezone, tracker);
+        this(client, oddsBase, catalogBase, locale, timezone, tracker, RequestOptions.none());
+    }
+
+    private OddsApi(OkHttpClient client, String oddsBase, String catalogBase, String locale, String timezone,
+                    RateLimitTracker tracker, RequestOptions options) {
+        super(client, locale, timezone, tracker, options);
         this.oddsBase = oddsBase;
         this.catalogBase = catalogBase;
+    }
+
+    /**
+     * A view of this client that adds {@code options} to every request; see
+     * {@link FootballApi#withOptions(RequestOptions)}. The {@code filters} of the options are
+     * appended with {@code ;} to the ones passed to a method (e.g. {@code markets:1;WinningOdds}).
+     */
+    public OddsApi withOptions(RequestOptions options) {
+        return new OddsApi(httpClient, oddsBase, catalogBase, locale, timezone, rateLimitTracker, options);
     }
 
     private HttpUrl.Builder oddsUrl(String path, Object... segments) {

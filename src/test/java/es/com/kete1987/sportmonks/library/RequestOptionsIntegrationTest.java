@@ -30,6 +30,7 @@ class RequestOptionsIntegrationTest {
     private static final String SEASON = "19735";
     private static final String STATISTICS = "statistics";
     private static final RequestOptions DESC = RequestOptions.builder().order(RequestOptions.Order.DESC).build();
+    private static final RequestOptions LATEST_FIRST = DESC.toBuilder().sortBy("starting_at").build();
 
     private static SportMonksAPI api;
 
@@ -61,27 +62,29 @@ class RequestOptionsIntegrationTest {
         assertTrue(isStrictlyDescending(descending), descending.toString());
     }
 
-    /** More than one page: the cursor is only valid together with the order it was created with. */
-    @Test
-    void orderDesc_survivesTheCursorWalk() throws IOException, SportMonksException {
-        List<Long> descending = ids(api.withOptions(DESC).getAllLeagues(60));
-
-        assertEquals(60, descending.size());
-        assertTrue(isStrictlyDescending(descending), descending.toString());
-    }
-
     @Test
     void sortByStartingAtDesc_ordersFixtures() throws IOException, SportMonksException {
-        RequestOptions latestFirst = DESC.toBuilder().sortBy("starting_at").build();
-
-        List<String> starts = api.withOptions(latestFirst).getAllFixtures(5).stream()
-                .map(MatchDetail::getStartingAt).collect(Collectors.toList());
+        List<String> starts = startsOf(api.withOptions(LATEST_FIRST).getAllFixtures(5));
         String firstByDefault = api.getAllFixtures(1).get(0).getStartingAt();
 
         assertEquals(5, starts.size());
-        List<String> sorted = starts.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-        assertEquals(sorted, starts);
+        assertEquals(starts.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()), starts);
         assertTrue(starts.get(0).compareTo(firstByDefault) > 0, starts.get(0) + " vs " + firstByDefault);
+    }
+
+    /**
+     * More than one page (50 + 10 fixtures, the second by cursor): the cursor is only valid
+     * together with the {@code sortBy}/{@code order} it was created with, so the second page
+     * answers 400 unless the options travel with it.
+     */
+    @Test
+    void sortByAndOrder_surviveTheCursorWalk() throws IOException, SportMonksException {
+        List<MatchDetail> fixtures = api.withOptions(LATEST_FIRST).getAllFixtures(60);
+        List<String> starts = startsOf(fixtures);
+
+        assertEquals(60, fixtures.size());
+        assertEquals(60, fixtures.stream().map(MatchDetail::getId).distinct().count());
+        assertEquals(starts.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()), starts);
     }
 
     @Test
@@ -115,6 +118,10 @@ class RequestOptionsIntegrationTest {
 
         SportMonksException e = assertThrows(SportMonksException.class, () -> byPoints.getStandings(SEASON));
         assertEquals(400, e.getStatusCode());
+    }
+
+    private static List<String> startsOf(List<MatchDetail> fixtures) {
+        return fixtures.stream().map(MatchDetail::getStartingAt).collect(Collectors.toList());
     }
 
     private static List<Long> ids(List<League> leagues) {
