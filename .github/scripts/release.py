@@ -308,7 +308,7 @@ def wait_for_publication(deployment_id, name, group, artifact, version):
         print(f"Sonatype: {phase}", flush=True)
         if phase == "FAILED":
             raise ReleaseError(f"Sonatype validation failed for {deployment_id}. See the Portal for errors.")
-        if phase in {"VALIDATED", "PUBLISHED"} and set(status.get("purls") or []) != {purl}:
+        if phase == "VALIDATED" and set(status.get("purls") or []) != {purl}:
             raise ReleaseError(f"Unexpected coordinates in Sonatype deployment {deployment_id}")
         if phase == "PUBLISHED" and published(group, artifact, version):
             return
