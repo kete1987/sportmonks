@@ -11,7 +11,6 @@ import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
@@ -26,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * keys mixed in, because {@code sorted()}, {@code TreeSet} and {@code Collections.sort} rely on it.
  */
 class ModelOrderingTest {
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new FootballApi("test-token").gson();
     private static final Long[] STATES = {null, (long) MatchStatus.NOT_STARTED, (long) MatchStatus.INPLAY_1ST_HALF,
             (long) MatchStatus.HT, (long) MatchStatus.FT, (long) MatchStatus.POSTPONED};
     private static final Long[] STAMPS = {null, 100L, 200L, 300L};
@@ -120,7 +119,7 @@ class ModelOrderingTest {
         Match other = match(4L, (long) MatchStatus.POSTPONED, 100L);
 
         List<Match> sorted = new ArrayList<>(List.of(other, finished, notStarted, live));
-        Collections.sort(sorted);
+        sorted.sort(null);
 
         assertEquals(List.of(live, notStarted, finished, other), sorted);
     }
@@ -146,7 +145,7 @@ class ModelOrderingTest {
         Match noId = match(null, (long) MatchStatus.FT, 100L);
 
         List<Match> sorted = new ArrayList<>(List.of(noStamp, noId, late, early, sameStampLowId));
-        Collections.sort(sorted);
+        sorted.sort(null);
 
         assertEquals(List.of(sameStampLowId, early, noId, late, noStamp), sorted);
     }
@@ -171,7 +170,7 @@ class ModelOrderingTest {
         for (int round = 0; round < 200; round++) {
             List<Match> list = randomMatches(random, 120);
 
-            Collections.sort(list);
+            list.sort(null);
 
             assertTrue(list.get(0).compareTo(list.get(list.size() - 1)) <= 0);
         }
@@ -302,7 +301,7 @@ class ModelOrderingTest {
         EventData noMinute = event(4L, (long) EventType.GOAL, null, null);
 
         List<EventData> sorted = new ArrayList<>(List.of(shootout, noMinute, stoppage, halfEnd, early));
-        Collections.sort(sorted);
+        sorted.sort(null);
 
         assertEquals(List.of(early, halfEnd, stoppage, noMinute, shootout), sorted);
     }
