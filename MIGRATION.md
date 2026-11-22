@@ -328,6 +328,31 @@ now walk every page, and have an overload with `int limit`.
 Both are compared with the real catalogues (`core/types` and `odds/markets`) by
 `ConstantsCatalogIntegrationTest`.
 
+### Request options (#84)
+
+Additive, nothing to migrate: no existing signature or default changes. `RequestOptions` (built with
+`RequestOptions.builder()`) carries `select`, `order`, `sortBy` and `filters`, and `withOptions(options)` on
+`SportMonksAPI`, `FootballApi`, `CoreApi`, `OddsApi` and `PredictionsApi` returns a view that sends them on
+every request, every page of a list included (by offset or by cursor). The view shares the HTTP client
+and the rate-limit state, and the original instance keeps sending exactly what it sent before;
+`getRequestOptions()` tells which options an instance applies.
+
+```java
+SportMonksAPI latestFirst = api.withOptions(RequestOptions.builder()
+        .sortBy("starting_at").order(RequestOptions.Order.DESC).build());
+List<MatchDetail> fixtures = latestFirst.getAllFixtures(10);
+```
+
+- **`select`** trims the fields of the main entity; the API always adds `id` and the relation keys, and
+  every other field of the model is `null`. Unknown fields answer 400; `my/...` ignores it.
+- **`order` / `sortBy`**: `sortBy` only takes the fields each entity supports (`starting_at` on fixtures,
+  `name` on leagues); others, and any value on standings, answer 400.
+- **`filters`** now reaches endpoints without a filters parameter (players, leagues, seasons, teams,
+  standings, ...). When a method already sends filters, its own go first and the options are appended with
+  `;`, so `getTopScoresFiltered` (fixed `seasontopscorerTypes`) can now be narrowed further, e.g. with
+  `seasontopscorerPlayers:{id}`.
+- `per_page` is not an option: it stays derived from each method's `limit`.
+
 ## 3.3.0: null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name

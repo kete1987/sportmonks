@@ -118,8 +118,25 @@ public class FootballApi extends SportMonksApiBase {
     }
 
     FootballApi(OkHttpClient client, String footballBase, String locale, String timezone, RateLimitTracker tracker) {
-        super(client, locale, timezone, tracker);
+        this(client, footballBase, locale, timezone, tracker, RequestOptions.none());
+    }
+
+    private FootballApi(OkHttpClient client, String footballBase, String locale, String timezone,
+                        RateLimitTracker tracker, RequestOptions options) {
+        super(client, locale, timezone, tracker, options);
         this.footballBase = footballBase;
+    }
+
+    /**
+     * A view of this client that adds {@code options} ({@code select}, {@code order},
+     * {@code sortBy}, {@code filters}) to every request, every page included. It shares the HTTP
+     * client, the rate-limit state, locale and timezone; this instance is left untouched. The
+     * options replace those of this instance, if any: derive them with
+     * {@code getRequestOptions().toBuilder()} to extend them. See {@link RequestOptions} for what
+     * the API accepts and how they combine with the {@code filters} of a method.
+     */
+    public FootballApi withOptions(RequestOptions options) {
+        return new FootballApi(httpClient, footballBase, locale, timezone, rateLimitTracker, options);
     }
 
     private HttpUrl.Builder footballUrl(String path, Object... segments) {

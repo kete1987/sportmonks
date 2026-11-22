@@ -140,6 +140,8 @@ Never build a `Gson` instance directly — call `gson()` from `SportMonksApiBase
 4. For a single resource, `get(url, XResponse.class)` (parses once, tracks `rate_limit`, wraps parse errors) and null-check the result: an empty body yields `null`. For a list, call `fetchPaged(...)` — see "Pagination".
 5. Add a test extending `BaseApiTest` with a fixture under `src/test/resources/fixtures/`.
 
+**Request options (`select`, `order`, `sortBy`, `filters`).** Never add them per method. Each sub-API holds an immutable `RequestOptions` (`RequestOptions.none()` by default; `withOptions(...)` returns a copy sharing client, tracker, locale and timezone), and `get()` applies it with `RequestOptions.applyTo(url)` to every URL right before executing it. So a method only builds its own URL (`*Url`, `withIncludes`, `withFilters`); the options reach the first request and every page of `fetchPaged`, whose pages are rebuilt from that option-free URL, so the option filters are appended (with `;`, after the method's `filters`) once per request and never pile up. The API requires `order`/`sortBy`/`select` alongside a `cursor` (400 "The cursor is not valid for this request" without them), while `per_page` must never travel with a cursor and is not an option.
+
 ## Publishing a new version
 
 Use **Actions → Maven release** for a normal release. Start in `check` mode and use **Release dry run** to verify the signed bundle without uploading. The [release guide](docs/releasing.md) covers credentials, publication and how to resume a failed run.

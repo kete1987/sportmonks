@@ -65,8 +65,22 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     PredictionsApi(OkHttpClient client, String footballBase, String locale, String timezone, RateLimitTracker tracker) {
-        super(client, locale, timezone, tracker);
+        this(client, footballBase, locale, timezone, tracker, RequestOptions.none());
+    }
+
+    private PredictionsApi(OkHttpClient client, String footballBase, String locale, String timezone,
+                           RateLimitTracker tracker, RequestOptions options) {
+        super(client, locale, timezone, tracker, options);
         this.footballBase = footballBase;
+    }
+
+    /**
+     * A view of this client that adds {@code options} to every request; see
+     * {@link FootballApi#withOptions(RequestOptions)}. Not checked against these routes, which the
+     * test subscription cannot reach (403).
+     */
+    public PredictionsApi withOptions(RequestOptions options) {
+        return new PredictionsApi(httpClient, footballBase, locale, timezone, rateLimitTracker, options);
     }
 
     private HttpUrl.Builder footballUrl(String path, Object... segments) {
