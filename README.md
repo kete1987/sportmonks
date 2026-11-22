@@ -13,7 +13,7 @@ Java library (Java 11+) to access the [Sportmonks](https://sportmonks.com) footb
 <dependency>
     <groupId>es.com.kete1987</groupId>
     <artifactId>sportmonks.library</artifactId>
-    <version>3.4.1</version>
+    <version>3.5.0</version>
 </dependency>
 ```
 
@@ -221,7 +221,7 @@ Round       round  = api.getRoundById(151251L);
 ### Top Scorers
 
 ```java
-// Default includes: season, stage, player, type, participant
+// Default includes: season, player, type, participant
 List<TopScoresPlayer> scorers = api.getTopScores("13133");
 List<TopScoresPlayer> goals   = api.getTopScoresFiltered("13133", 52); // typeId 52 = goals
 ```
@@ -256,8 +256,8 @@ List<Predictability> pred   = api.getPredictabilityByLeague(564L);
 ### Expected Goals (XG)
 
 ```java
-List<ExpectedGoal> xgTeam   = api.getExpectedGoalsByTeam();
-List<ExpectedGoal> xgPlayer = api.getExpectedGoalsByPlayer();
+List<ExpectedGoal> xgFixture = api.getExpectedGoalsByFixture();  // expected/fixtures
+List<ExpectedGoal> xgLineup  = api.getExpectedGoalsByLineup();   // expected/lineups
 ```
 
 ### Statistics & Schedules
@@ -307,7 +307,7 @@ List<City>      cities     = api.searchCities("Madrid");
 
 ```java
 List<MyLeague>  leagues = api.getMyLeagues();
-List<MyUsage>   usage   = api.getMyUsage();
+List<MyUsage>   usage   = api.getMyUsage(100);   // newest 100 rows; getMyUsage() reads every page
 ```
 
 ## Advanced: Sub-API Access
@@ -436,7 +436,7 @@ and `LineupDetailType` (the `lineupdetailTypes` filter).
 `getAllValueBets` · `getValueBetsByFixture`
 
 ### Expected Goals (XG)
-`getExpectedGoalsByTeam` · `getExpectedGoalsByPlayer`
+`getExpectedGoalsByFixture` · `getExpectedGoalsByLineup`
 
 ### News
 `getAllPreMatchNews` · `getPreMatchNewsBySeason` · `getPreMatchNewsForUpcoming` ·

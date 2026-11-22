@@ -40,6 +40,10 @@ class VenueApiTest extends BaseApiTest {
 SPORTMONKS_API_KEY=... mvn test -Pintegration
 ```
 
+The `*IntegrationTest` classes compare real responses with the models through `JsonCoverage` (Gson drops unknown JSON keys silently, so this is how a missing field shows up).
+
+**Not validated against real responses** (the test subscription has no access, so routes exist but models and fields were never compared with real JSON; do not treat them as tested): inplay and premium odds, predictions and probabilities, expected goals per fixture and lineup, news, match facts, rankings, team of the week, and the includes `xGFixture`, `trends`, `pressure`, `ballCoordinates`, `expectedLineups`, `predictedLineups`, `premiumOdds`, `inplayOdds` and `AIOverviews`.
+
 ## Key structure
 
 ```
@@ -63,8 +67,15 @@ src/main/java/es/com/kete1987/sportmonks/library/
 │       └── EmptyStringToNumberTypeAdapter.java  # Gson fix: API sometimes returns "" for ints
 ├── core/model/                # Gson POJOs for the core endpoints
 ├── football/model/            # Gson POJOs for the football endpoints
-├── football/util/             # type-id constants (EventType, StatisticsType, ...)
-└── odds/model/                # Gson POJOs for the odds endpoints
+├── football/util/             # type-id constants (EventType, StatisticsType, LineupDetailType, ...)
+├── odds/model/                # Gson POJOs for the odds endpoints
+└── odds/util/                 # MarketIds: ids of the most used odds markets
+
+src/test/java/es/com/kete1987/sportmonks/library/
+├── BaseApiTest.java           # MockWebServer base class
+├── JsonCoverage.java          # integration helper: reports JSON keys a model class does not declare
+├── *IntegrationTest.java      # real API, only under -Pintegration (see above)
+└── ...                        # mock-server tests (e.g. ClientOptionsTest, RetryApiTest)
 ```
 
 ## API entry points
