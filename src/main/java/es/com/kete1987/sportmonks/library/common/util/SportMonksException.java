@@ -36,6 +36,17 @@ public class SportMonksException extends Exception {
         this(statusCode + " - " + body, statusCode, errorCode, rateLimit, null);
     }
 
+    /**
+     * Error for a response whose body could not be parsed.
+     *
+     * @param statusCode HTTP status of the response
+     * @param detail     what failed; the message reads {@code "statusCode - detail"}
+     * @param cause      the parsing error
+     */
+    public SportMonksException(int statusCode, String detail, Throwable cause) {
+        this(statusCode + " - " + detail, statusCode, null, null, cause);
+    }
+
     private SportMonksException(String message, int statusCode, Integer errorCode, RateLimit rateLimit, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;

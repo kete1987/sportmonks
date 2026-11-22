@@ -2,6 +2,8 @@ package es.com.kete1987.sportmonks.library;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import es.com.kete1987.sportmonks.library.common.model.pagination.Pagination;
 import es.com.kete1987.sportmonks.library.common.model.ratelimit.RateLimit;
@@ -36,6 +38,9 @@ abstract class SportMonksApiBase {
      */
     static final int MAX_OFFSET_ROWS = 20000;
 
+    /** Status reported when a body read from a successful response cannot be mapped later on. */
+    private static final int HTTP_OK = 200;
+
     final OkHttpClient httpClient;
     final String locale;
     final String timezone;
@@ -67,7 +72,39 @@ abstract class SportMonksApiBase {
                 .create();
     }
 
-    String execute(HttpUrl url) throws IOException, SportMonksException {
+    /**
+     * Requests {@code url} and parses its body as {@code type}. Every failure is a
+     * {@link SportMonksException}: a non-2xx status, and also a 2xx body that cannot be parsed
+     * (malformed JSON or a value of the wrong type), which carries the status code, the URL
+     * (it never holds the API token, which travels in a header) and the Gson error as cause.
+     * An empty body yields {@code null}.
+     */
+    <R> R get(HttpUrl url, Class<R> type) throws IOException, SportMonksException {
+        HttpBody body = execute(url);
+        try {
+            return gson().fromJson(body.text, type);
+        } catch (JsonParseException e) {
+            throw unparseable(body.status, url, e);
+        }
+    }
+
+    /**
+     * Maps part of a body already fetched from {@code url} (e.g. a nested object picked by hand)
+     * to {@code type}, with the same error handling as {@link #get}.
+     */
+    <R> R convert(HttpUrl url, JsonElement json, Class<R> type) throws SportMonksException {
+        try {
+            return gson().fromJson(json, type);
+        } catch (JsonParseException e) {
+            throw unparseable(HTTP_OK, url, e);
+        }
+    }
+
+    private static SportMonksException unparseable(int status, HttpUrl url, JsonParseException e) {
+        return new SportMonksException(status, "unparseable response from " + url + ": " + e.getMessage(), e);
+    }
+
+    private HttpBody execute(HttpUrl url) throws IOException, SportMonksException {
         Request request = new Request.Builder().url(url).build();
         try (Response response = httpClient.newCall(request).execute()) {
             rateLimitTracker.total = response.header("X-RateLimit-Limit");
@@ -77,7 +114,17 @@ abstract class SportMonksApiBase {
                 throw httpError(response.code(), body);
             }
             recordRateLimit(body);
-            return body;
+            return new HttpBody(response.code(), body);
+        }
+    }
+
+    private static final class HttpBody {
+        final int status;
+        final String text;
+
+        HttpBody(int status, String text) {
+            this.status = status;
+            this.text = text;
         }
     }
 
@@ -132,25 +179,26 @@ abstract class SportMonksApiBase {
      * {@code limit} means "no limit". The {@code dataFn}/{@code pagFn} extract the {@code data}
      * and {@code pagination} of each response so the same loop serves every {@code *Response} type.
      *
-     * <p>A response that cannot be parsed, or one carrying no {@code data} at all, ends the walk
-     * and returns whatever was gathered so far.
+     * <p>An empty body, or one carrying no {@code data} at all, ends the walk and returns whatever
+     * was gathered so far. A body that cannot be parsed is not swallowed: like any other request
+     * it throws a {@link SportMonksException} (see {@link #get}), discarding the pages already read,
+     * because returning them would pass a silently truncated list off as complete.
      */
     <T, R> List<T> fetchPaged(HttpUrl base, Class<R> type,
                               Function<R, List<T>> dataFn, Function<R, Pagination> pagFn,
                               int limit) throws IOException, SportMonksException {
-        Gson g = gson();
         HttpUrl first = limit > 0
                 ? base.newBuilder().setQueryParameter("per_page", String.valueOf(Math.min(limit, MAX_PER_PAGE))).build()
                 : base;
         PageWalk walk = new PageWalk();
         List<T> all = new ArrayList<>();
-        R resp = g.fromJson(execute(first), type);
+        R resp = get(first, type);
         while (resp != null) {
             List<T> data = dataFn.apply(resp);
             if (data == null) break;
             all.addAll(data);
             HttpUrl next = walk.next(first, pagFn.apply(resp), limitReached(all, limit));
-            resp = next != null ? g.fromJson(execute(next), type) : null;
+            resp = next != null ? get(next, type) : null;
         }
         return limit > 0 && all.size() > limit ? new ArrayList<>(all.subList(0, limit)) : all;
     }

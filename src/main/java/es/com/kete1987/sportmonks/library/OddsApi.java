@@ -67,17 +67,17 @@ public class OddsApi extends SportMonksApiBase {
 
     public List<Odd> getMatchOdds(String matchId, String... includes) throws IOException, SportMonksException {
         HttpUrl url = withIncludes(oddsUrl("pre-match/fixtures", matchId), includes).build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("pre-match/fixtures", matchId, "bookmakers", bookmakerId).build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getMatchOddsByMarket(String matchId, String marketId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("pre-match/fixtures", matchId, "markets", marketId).build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     // -------------------------------------------------------------------------
@@ -91,13 +91,13 @@ public class OddsApi extends SportMonksApiBase {
 
     public Market getMarketById(long marketId) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl("markets", marketId).build();
-        MarketResponse resp = gson().fromJson(execute(url), MarketResponse.class);
+        MarketResponse resp = get(url, MarketResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
     public List<Market> searchMarkets(String query) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl("markets/search", query).build();
-        MarketsResponse resp = gson().fromJson(execute(url), MarketsResponse.class);
+        MarketsResponse resp = get(url, MarketsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
@@ -112,19 +112,19 @@ public class OddsApi extends SportMonksApiBase {
 
     public Bookmaker getBookmakerById(long bookmakerId) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl("bookmakers", bookmakerId).build();
-        BookmakerResponse resp = gson().fromJson(execute(url), BookmakerResponse.class);
+        BookmakerResponse resp = get(url, BookmakerResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
     public List<Bookmaker> searchBookmakers(String query) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl("bookmakers/search", query).build();
-        BookmakersResponse resp = gson().fromJson(execute(url), BookmakersResponse.class);
+        BookmakersResponse resp = get(url, BookmakersResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
     public List<BookmakerMapping> getBookmakerMappingsByFixture(long fixtureId) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl("bookmakers/fixtures", fixtureId, "mapping").build();
-        BookmakerMappingsResponse resp = gson().fromJson(execute(url), BookmakerMappingsResponse.class);
+        BookmakerMappingsResponse resp = get(url, BookmakerMappingsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
     }
 
@@ -134,22 +134,22 @@ public class OddsApi extends SportMonksApiBase {
 
     public List<Odd> getInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/fixtures", fixtureId).build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/fixtures", fixtureId, "bookmakers", bookmakerId).build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getInplayOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/fixtures", fixtureId, "markets", marketId).build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getLastUpdatedInplayOdds() throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/lastupdated").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     // -------------------------------------------------------------------------
@@ -158,22 +158,22 @@ public class OddsApi extends SportMonksApiBase {
 
     public List<Odd> getPremiumPreMatchOddsByFixture(long fixtureId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("pre-match/fixtures", fixtureId, "premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getPremiumPreMatchOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("pre-match/fixtures", fixtureId, "bookmakers", bookmakerId, "premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getPremiumPreMatchOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("pre-match/fixtures", fixtureId, "markets", marketId, "premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getLastUpdatedPremiumPreMatchOdds() throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("pre-match/lastupdated/premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     // -------------------------------------------------------------------------
@@ -182,21 +182,21 @@ public class OddsApi extends SportMonksApiBase {
 
     public List<Odd> getPremiumInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/fixtures", fixtureId, "premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getPremiumInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/fixtures", fixtureId, "bookmakers", bookmakerId, "premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getPremiumInplayOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/fixtures", fixtureId, "markets", marketId, "premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 
     public List<Odd> getLastUpdatedPremiumInplayOdds() throws IOException, SportMonksException {
         HttpUrl url = oddsUrl("inplay/lastupdated/premium").build();
-        return oddsData(gson().fromJson(execute(url), OddsResponse.class));
+        return oddsData(get(url, OddsResponse.class));
     }
 }
