@@ -3,8 +3,16 @@ package es.com.kete1987.sportmonks.library.football.model.match;
 import com.google.gson.annotations.SerializedName;
 import es.com.kete1987.sportmonks.library.football.model.coach.Coach;
 import es.com.kete1987.sportmonks.library.football.model.comments.Comment;
+import es.com.kete1987.sportmonks.library.football.model.league.League;
+import es.com.kete1987.sportmonks.library.football.model.rounds.Round;
+import es.com.kete1987.sportmonks.library.football.model.season.SeasonData;
+import es.com.kete1987.sportmonks.library.football.model.sport.Sport;
+import es.com.kete1987.sportmonks.library.football.model.stage.Stage;
+import es.com.kete1987.sportmonks.library.football.model.stage.StageAggregate;
+import es.com.kete1987.sportmonks.library.football.model.standings.StandingsGroup;
 import es.com.kete1987.sportmonks.library.football.model.team.Team;
 import es.com.kete1987.sportmonks.library.football.model.venue.Venue;
+import es.com.kete1987.sportmonks.library.odds.model.Odd;
 import es.com.kete1987.sportmonks.library.football.util.LineUpType;
 import es.com.kete1987.sportmonks.library.football.util.MatchStatus;
 
@@ -41,6 +49,25 @@ public class MatchDetail extends Match {
     @Nullable
     @SerializedName(value = "weatherreport", alternate = {"weatherReport", "weather_report"})
     private WeatherReport weatherReport;
+    @Nullable
+    private Sport sport;
+    @Nullable
+    private League league;
+    @Nullable
+    private SeasonData season;
+    @Nullable
+    private Stage stage;
+    @Nullable
+    private Round round;
+    @Nullable
+    private StandingsGroup group;
+    @Nullable
+    private StageAggregate aggregate;
+    @Nullable
+    @SerializedName(value = "tvstations", alternate = {"tvStations", "tv_stations"})
+    private List<FixtureTvStation> tvStations;
+    @Nullable
+    private List<Odd> odds;
 
     public MatchDetail() {
     }
@@ -282,6 +309,69 @@ public class MatchDetail extends Match {
     @Nullable
     public WeatherReport getWeatherReport() {
         return weatherReport;
+    }
+
+    /** @return the sport (include {@code sport}), or null when the include was not requested. */
+    @Nullable
+    public Sport getSport() {
+        return sport;
+    }
+
+    /** @return the league (include {@code league}), or null when the include was not requested. */
+    @Nullable
+    public League getLeague() {
+        return league;
+    }
+
+    /** @return the season (include {@code season}), or null when the include was not requested. */
+    @Nullable
+    public SeasonData getSeason() {
+        return season;
+    }
+
+    /** @return the stage (include {@code stage}), or null when the include was not requested. */
+    @Nullable
+    public Stage getStage() {
+        return stage;
+    }
+
+    /** @return the round (include {@code round}), or null when absent or the fixture has no round. */
+    @Nullable
+    public Round getRound() {
+        return round;
+    }
+
+    /** @return the cup group (include {@code group}), or null when the fixture belongs to no group. */
+    @Nullable
+    public StandingsGroup getGroup() {
+        return group;
+    }
+
+    /** @return the two-leg aggregate (include {@code aggregate}), or null when the fixture has none. */
+    @Nullable
+    public StageAggregate getAggregate() {
+        return aggregate;
+    }
+
+    /**
+     * @return unmodifiable TV broadcasts (include {@code tvStations}), null when the include was not
+     *         requested or is null, or an empty list when the API returns an empty relation. Each
+     *         row is a pivot with the station id and the country id; the API names the JSON key
+     *         {@code tvstations}.
+     */
+    @Nullable
+    public List<FixtureTvStation> getTvStations() {
+        return ModelCollections.unmodifiable(tvStations);
+    }
+
+    /**
+     * @return unmodifiable pre-match odds (include {@code odds}), null when the include was not
+     *         requested or is null, or an empty list when the API returns an empty relation. A
+     *         top-flight fixture carries thousands of rows, so request it only when needed.
+     */
+    @Nullable
+    public List<Odd> getOdds() {
+        return ModelCollections.unmodifiable(odds);
     }
 
     public int getCurrentLocalTeamGoals() {

@@ -1,0 +1,53 @@
+{
+    "data":  {
+                 "id":  19662553,
+                 "sport_id":  1,
+                 "league_id":  2,
+                 "season_id":  25580,
+                 "stage_id":  77480367,
+                 "group_id":  null,
+                 "aggregate_id":  60238,
+                 "round_id":  null,
+                 "state_id":  5,
+                 "venue_id":  9667,
+                 "name":  "Galatasaray vs Juventus",
+                 "starting_at":  "2026-02-17 17:45:00",
+                 "result_info":  "Galatasaray won after full-time.",
+                 "leg":  "1/2",
+                 "details":  null,
+                 "length":  90,
+                 "placeholder":  false,
+                 "has_odds":  true,
+                 "has_premium_odds":  true,
+                 "starting_at_timestamp":  1771350300,
+                 "aggregate":  {
+                                   "id":  60238,
+                                   "league_id":  2,
+                                   "season_id":  25580,
+                                   "stage_id":  77480367,
+                                   "name":  "Galatasaray vs Juventus",
+                                   "fixture_ids":  [
+                                                       19662553,
+                                                       19662545
+                                                   ],
+                                   "result":  "7-5",
+                                   "detail":  "After Extra Time",
+                                   "winner_participant_id":  34
+                               },
+                 "stage":  {
+                               "id":  77480367,
+                               "sport_id":  1,
+                               "league_id":  2,
+                               "season_id":  25580,
+                               "type_id":  224,
+                               "name":  "Knockout Round Play-offs",
+                               "sort_order":  6,
+                               "finished":  true,
+                               "is_current":  false,
+                               "starting_at":  "2026-02-17",
+                               "ending_at":  "2026-02-25",
+                               "games_in_current_week":  false,
+                               "tie_breaker_rule_id":  null
+                           }
+             }
+}

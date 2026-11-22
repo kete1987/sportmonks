@@ -4,7 +4,7 @@ import es.com.kete1987.sportmonks.library.football.model.player.Player;
 import es.com.kete1987.sportmonks.library.football.util.EventType;
 import com.google.gson.annotations.SerializedName;
 
-public class EventData implements Comparable<Object> {
+public class EventData implements Comparable<EventData> {
     private Long id;
     @SerializedName("fixture_id")
     private Long fixtureId;
@@ -149,38 +149,48 @@ public class EventData implements Comparable<Object> {
                 || typeId.intValue() == EventType.PENALTY_SHOOTOUT_MISS);
     }
 
+    /** Events are equal when they have the same non-null id; an event without id is only equal to itself. */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof EventData)) return false;
-        EventData ed = (EventData) o;
-        return (ed.getId() != null ? ed.getId().intValue() : 0) == (getId() != null ? getId().intValue() : 0);
+        return id != null && id.equals(((EventData) o).id);
     }
 
     @Override
     public int hashCode() {
-        return getId() != null ? getId().intValue() : 0;
+        return id != null ? id.hashCode() : System.identityHashCode(this);
     }
 
+    /**
+     * Total order, with penalty shootout events (scored 23 / missed 22) last because their
+     * {@code minute} is the penalty number (1..N), not a match minute. Within each group:
+     * {@code minute} ascending (null last), {@code extra_minute} ascending (null counts as 0, so
+     * stoppage-time events follow the ones at the plain minute), then {@code id} ascending (null
+     * last). Two events with an id compare as 0 only when they are equal.
+     */
     @Override
-    public int compareTo(Object o) {
-        EventData ed = (EventData) o;
-        // Penalty shootout events (scored 23 / missed 22) belong to the post-match
-        // shootout phase: their `minute` is the penalty number (1..N), not a match
-        // minute, so they must always sort after the regular-time events.
+    public int compareTo(EventData other) {
         boolean thisShootout = isShootoutEvent();
-        boolean otherShootout = ed.isShootoutEvent();
+        boolean otherShootout = other.isShootoutEvent();
         if (thisShootout != otherShootout) {
             return thisShootout ? 1 : -1;
         }
-        if (getMinute() != null && ed.getMinute() != null) {
-            if (getMinute().intValue() == ed.getMinute().intValue()) {
-                if (getExtraMinute() != null && ed.getExtraMinute() != null) {
-                    return getExtraMinute().intValue() - ed.getExtraMinute().intValue();
-                }
-            } else
-                return getMinute().intValue() - ed.getMinute().intValue();
+        int byMinute = compareNullsLast(minute, other.minute);
+        if (byMinute != 0) {
+            return byMinute;
         }
-        return (getId() != null ? getId().intValue() : 0) - (ed.getId() != null ? ed.getId().intValue() : 0);
+        int byExtra = Long.compare(extraMinute == null ? 0L : extraMinute, other.extraMinute == null ? 0L : other.extraMinute);
+        if (byExtra != 0) {
+            return byExtra;
+        }
+        return compareNullsLast(id, other.id);
+    }
+
+    private static int compareNullsLast(Long a, Long b) {
+        if (a == null || b == null) {
+            return Boolean.compare(a == null, b == null);
+        }
+        return Long.compare(a, b);
     }
 }

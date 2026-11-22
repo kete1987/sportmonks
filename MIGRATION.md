@@ -76,6 +76,55 @@ and `getAllStates` return an empty list instead of `null` (or a `NullPointerExce
 empty body) when the response carries no `data`; `getStateById` and `getMatchDetail` return
 `null` instead of throwing.
 
+### Fixture model (#80)
+
+**Breaking: `TeamMeta.getWinner()` now returns `Boolean`** (it was `String`). The API sends a JSON
+boolean and Gson used to leave it as the text `"true"` or `"false"`. The value is nullable; the new
+`TeamMeta.isWinner()` returns a primitive `boolean` and treats null as false.
+
+```java
+Boolean winner = team.getMeta().getWinner();     // was: String winner = ...; "true".equals(winner)
+boolean won = team.getMeta().isWinner();         // null-safe shortcut
+```
+
+**Breaking: `EventData` implements `Comparable<EventData>`** (it was `Comparable<Object>`). Comparing
+an `EventData` with any other type always threw `ClassCastException`, so only code that named the
+raw type is affected.
+
+**Ordering and equality.** The old `compareTo` of `Match`, `Comment`, `Stage` and `EventData` was not
+total: it returned 0 for different elements and was not antisymmetric or transitive when keys were
+null, so `Collections.sort` could throw "Comparison method violates its general contract" and a
+`TreeSet`/`TreeMap` lost elements. Each order is now total, null-safe and consistent with `equals`,
+and `equals` of an element without id is identity (it used to be true for any two id-less elements).
+The orders that already worked keep their sequence; the ones that were arbitrary are now defined:
+
+- `Match`: state group (live, not started, finished, anything else; a null `state_id` counts as
+  anything else), then `starting_at_timestamp` ascending, then `id` ascending, nulls last. Before,
+  finished matches and matches with a null state kept the order the API returned them in; now
+  finished matches also go by kick-off time, oldest first.
+- `Comment`: `order` ascending (a null order first, as before), then `id`.
+- `Stage`: `sort_order`, `ending_at`, then `id`, nulls last (a null `ending_at` used to compare as
+  greater in both directions).
+- `EventData`: penalty shootout events last, then `minute` ascending (null last), `extra_minute`
+  (null counts as 0), then `id`. The comparison used `int` subtraction and overflowed with large ids.
+
+Two elements without id that agree on every other key still compare as 0, because nothing tells them
+apart.
+
+**New fields (compatible).**
+`Match`/`MatchDetail`: `getResultInfo()`, `getDetails()`, `getPlaceholder()`, `getHasOdds()`,
+`getHasPremiumOdds()`; `Period.getHasTimer()`; `Odd.getSortOrder()`. `MatchDetail` also exposes the
+includes `sport`, `league`, `season`, `stage`, `round`, `group`, `aggregate`, `tvStations` and `odds`
+through `getSport()`, `getLeague()`, `getSeason()`, `getStage()`, `getRound()`, `getGroup()`,
+`getAggregate()`, `getTvStations()` and `getOdds()`, all nullable (null when the include was not
+requested or the fixture has none). `getTvStations()` returns the pivot rows `FixtureTvStation`
+(`id`, `fixtureId`, `tvStationId`, `countryId`); the API names the JSON key `tvstations`. They are not
+part of the default includes of `getMatchDetail(id)`: `odds` alone adds thousands of rows to a
+top-flight fixture, so ask for it explicitly. The includes `premiumOdds`, `inplayOdds`,
+`prematchNews`, `postmatchNews`, `predictedLineups`, `matchfacts`, `AIOverviews`, `xGFixture`,
+`trends`, `pressure`, `ballCoordinates` and `expectedLineups` are still not modelled in
+`MatchDetail`: the test subscription answers 403 for them, so their shape could not be checked.
+
 ## 3.3.0 (unreleased): null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name
