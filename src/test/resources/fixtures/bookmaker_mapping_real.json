@@ -1,0 +1,8 @@
+{
+  "data": [
+    { "fixture_id": 18538184, "bookmaker_id": 2, "bookmaker_name": "bet365", "bookmaker_event_id": "130037617", "bookmaker_event_url": null },
+    { "fixture_id": 18538184, "bookmaker_id": 62, "bookmaker_name": "22Bet", "bookmaker_event_id": "424202506", "bookmaker_event_url": "https://22bet.com/en/live/Football/12821-France-Ligue-1/424202506-AC-Ajaccio-Stade-de-Reims" }
+  ],
+  "rate_limit": { "resets_in_seconds": 3580, "remaining": 2995, "requested_entity": "Bookmaker" },
+  "timezone": "UTC"
+}

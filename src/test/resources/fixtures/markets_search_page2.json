@@ -1,0 +1,6 @@
+{
+  "data": [
+    { "id": 7, "legacy_id": 7, "name": "Goal Line", "developer_name": "GOAL_LINE", "has_winning_calculations": true }
+  ],
+  "pagination": { "count": 1, "per_page": 2, "current_page": 2, "has_more": false, "next_page": null, "next_cursor": null }
+}
