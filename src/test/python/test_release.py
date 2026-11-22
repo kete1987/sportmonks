@@ -27,7 +27,7 @@ DEPLOYMENT_NAME = f"{GROUP}:{ARTIFACT}:{VERSION} @ {SHA}"
 
 
 def response(phase):
-    return {"deploymentName": DEPLOYMENT_NAME, "deploymentState": phase, "purls": [PURL]}
+    return {"deploymentName": DEPLOYMENT_NAME, "deploymentState": phase, "purls": [] if phase == "PUBLISHED" else [PURL]}
 
 
 class ReleaseTests(unittest.TestCase):
@@ -84,6 +84,18 @@ class ReleaseTests(unittest.TestCase):
             upload.assert_not_called()
             central.assert_not_called()
 
+    def test_published_deployment_waits_until_exact_version_is_available(self):
+        with (
+            patch.object(release, "deployment_state", return_value=response("PUBLISHED")),
+            patch.object(release, "published", side_effect=[False, True]) as published,
+            patch.object(release, "central") as central,
+            patch.object(release.time, "sleep"),
+        ):
+            release.wait_for_publication(DEPLOYMENT, DEPLOYMENT_NAME, GROUP, ARTIFACT, VERSION)
+        self.assertEqual(published.call_count, 2)
+        published.assert_called_with(GROUP, ARTIFACT, VERSION)
+        central.assert_not_called()
+
     def test_ambiguous_upload_and_existing_unrelated_version_stop(self):
         for state, existing in (({**EXPECTED, "upload_started": True}, False), (EXPECTED.copy(), True)):
             with patch.object(release, "published", return_value=existing), \
@@ -93,8 +105,8 @@ class ReleaseTests(unittest.TestCase):
                 upload.assert_not_called()
                 github.assert_not_called()
 
-    def test_published_deployment_must_have_the_expected_coordinates(self):
-        status = {**response("PUBLISHED"), "purls": ["pkg:maven/another/library@1.2.3"]}
+    def test_validated_deployment_must_have_the_expected_coordinates(self):
+        status = {**response("VALIDATED"), "purls": ["pkg:maven/another/library@1.2.3"]}
         with patch.object(release, "github"), patch.object(release, "deployment_state", return_value=status), \
              patch.object(release, "central") as central:
             with self.assertRaisesRegex(release.ReleaseError, "Unexpected coordinates"):
@@ -165,7 +177,7 @@ class ReleaseSimulation:
             return 200, json.dumps(self.deployment).encode()
         if (method, route) == ("POST", f"deployment/{DEPLOYMENT}"):
             assert DEPLOYMENT in self.pulls[1]["body"]
-            self.deployment["deploymentState"] = "PUBLISHED"
+            self.deployment.update(deploymentState="PUBLISHED", purls=[])
             self.events.append("publish")
             return 204, b""
         raise AssertionError((method, route))

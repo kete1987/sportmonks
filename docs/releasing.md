@@ -6,7 +6,7 @@ From **Actions → Maven release → Run workflow**, select `master` and enter t
 - **Release dry run** separately checks the GitHub App and Central credentials, builds the signed bundle, and verifies its signatures and checksums with uploading disabled.
 - **publish** runs the release. Use it only when you intend to publish the version.
 
-The workflow opens a release PR with the stable version in the POM and README and waits for GitHub to merge it after the required `build` check. It builds and signs that exact merge commit, uploads the bundle as a user-managed deployment, and records the deployment ID on the release PR before requesting publication. Once Central reports `PUBLISHED` and confirms the version is available, it tags the commit as `vX.Y.Z`, creates the GitHub Release with generated notes, and opens the auto-merge PR for the next SNAPSHOT.
+The workflow opens a release PR with the stable version in the POM and README and waits for GitHub to merge it after the required `build` check. It builds and signs that exact merge commit, uploads the bundle as a user-managed deployment, and records the deployment ID on the release PR before requesting publication. It verifies the bundle coordinates in `VALIDATED`. In `PUBLISHED`, Central can return an empty `purls` list, so the workflow checks availability for the exact Maven coordinates separately. Once Central confirms the version is available, it tags the commit as `vX.Y.Z`, creates the GitHub Release with generated notes, and opens the auto-merge PR for the next SNAPSHOT.
 
 ## Configuration
 
