@@ -92,6 +92,23 @@ class RetryApiTest {
     }
 
     @Test
+    void tooManyRequestsWithoutRateLimit_isRetriedWithBackoff() throws IOException, SportMonksException {
+        enqueue(429, "<html>slow down</html>");
+        enqueue(429, "{\"message\":\"Too Many Attempts.\"}");
+        enqueue(200, TEAM);
+
+        assertEquals(Long.valueOf(1), footballWith(retrying(2, Duration.ofSeconds(5))).getTeamById(1L).getId());
+        assertEquals(3, server.getRequestCount());
+    }
+
+    @Test
+    void negativeMaxRetries_isRejected() {
+        ClientOptions.Builder builder = ClientOptions.builder();
+
+        assertThrows(IllegalArgumentException.class, () -> builder.maxRetries(-1));
+    }
+
+    @Test
     void serverError_isRetriedWithBackoff() throws IOException, SportMonksException {
         enqueue(503, "");
         enqueue(502, "");
