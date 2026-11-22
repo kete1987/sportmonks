@@ -24,14 +24,31 @@ import java.util.List;
  *
  * <p>Can be used standalone ({@code new OddsApi("apiKey")}) or via the
  * {@link SportMonksAPI} facade ({@code api.getOdds()}).
+ *
+ * <p><b>Includes and filters.</b> Every odds method has an overload with {@code String[] includes}
+ * ({@code market}, {@code bookmaker}, {@code fixture}) and {@code String filters}. Filters are
+ * separated by semicolons and take comma separated ids: {@code markets:1,2},
+ * {@code bookmakers:2,13} and {@code WinningOdds} (only the winning selections), for example
+ * {@code "markets:1;bookmakers:2"}. The API applies them, so they also cut the download: the odds
+ * of one fixture are thousands of rows (around 3 MB) without a filter.
+ *
+ * <p><b>Subscription.</b> The premium and inplay routes answer 403
+ * ({@link SportMonksException#getStatusCode()}) when the plan does not include them. Their
+ * response shape follows the documentation and the pre-match odds; it could not be checked against
+ * real data.
  */
 public class OddsApi extends SportMonksApiBase {
 
+    private static final String PRE_MATCH = "pre-match";
     private static final String PRE_MATCH_FIXTURES = "pre-match/fixtures";
+    private static final String INPLAY = "inplay";
     private static final String INPLAY_FIXTURES = "inplay/fixtures";
+    private static final String PREMIUM = "premium";
+    private static final String PREMIUM_FIXTURES = "premium/fixtures";
     private static final String BOOKMAKERS = "bookmakers";
     private static final String MARKETS = "markets";
-    private static final String PREMIUM = "premium";
+    private static final String NO_FILTERS = null;
+    private static final String[] NO_INCLUDES = new String[0];
 
     private final String oddsBase;
     private final String catalogBase;
@@ -71,27 +88,96 @@ public class OddsApi extends SportMonksApiBase {
         return apiUrl(catalogBase, path, segments);
     }
 
-    private List<Odd> oddsData(OddsResponse resp) {
+    /** One request, no pagination: the per fixture routes and the {@code latest} / {@code between} feeds. */
+    private List<Odd> oddsOf(HttpUrl.Builder url, String[] includes, String filters) throws IOException, SportMonksException {
+        OddsResponse resp = get(withFilters(withIncludes(url, includes), filters).build(), OddsResponse.class);
         return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+    }
+
+    /** Every page of a feed; a {@code limit} above zero stops as soon as it is reached. */
+    private List<Odd> pagedOddsOf(HttpUrl.Builder url, int limit, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        HttpUrl base = withFilters(withIncludes(url, includes), filters).build();
+        return fetchPaged(base, OddsResponse.class, OddsResponse::getData, OddsResponse::getPagination, limit);
     }
 
     // -------------------------------------------------------------------------
     // Pre-match odds
     // -------------------------------------------------------------------------
 
+    /**
+     * All pre-match odds of every fixture, paged. <b>Huge:</b> it holds millions of rows, so pass a
+     * {@code limit} ({@link #getAllPreMatchOdds(int, String[], String)}) or filter by market and
+     * bookmaker. Without a limit this walks the whole table.
+     */
+    public List<Odd> getAllPreMatchOdds() throws IOException, SportMonksException {
+        return getAllPreMatchOdds(0);
+    }
+
+    /** Like {@link #getAllPreMatchOdds()} but returns at most {@code limit} rows (0 or less means all). */
+    public List<Odd> getAllPreMatchOdds(int limit) throws IOException, SportMonksException {
+        return getAllPreMatchOdds(limit, NO_INCLUDES, NO_FILTERS);
+    }
+
+    /**
+     * Like {@link #getAllPreMatchOdds(int)} with includes and filters.
+     *
+     * @param filters unencoded filter expression (e.g. {@code markets:1;bookmakers:2}); null or blank omits filters
+     */
+    public List<Odd> getAllPreMatchOdds(int limit, String[] includes, String filters) throws IOException, SportMonksException {
+        return pagedOddsOf(oddsUrl(PRE_MATCH), limit, includes, filters);
+    }
+
+    /**
+     * The pre-match odds that changed most recently, across all fixtures. The API does not paginate
+     * this feed and ignores {@code per_page}, and it is heavy (from tens of kilobytes to about 3 MB
+     * depending on how much changed), so filter it with {@code markets:} or {@code bookmakers:}.
+     */
+    public List<Odd> getLatestPreMatchOdds() throws IOException, SportMonksException {
+        return getLatestPreMatchOdds(NO_INCLUDES, NO_FILTERS);
+    }
+
+    /** Like {@link #getLatestPreMatchOdds()} with includes and filters (e.g. {@code markets:1}). */
+    public List<Odd> getLatestPreMatchOdds(String[] includes, String filters) throws IOException, SportMonksException {
+        return oddsOf(oddsUrl("pre-match/latest"), includes, filters);
+    }
+
+    /** Pre-match odds of one fixture. Without a filter this is thousands of rows; see the class notes. */
     public List<Odd> getMatchOdds(String matchId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(oddsUrl(PRE_MATCH_FIXTURES, matchId), includes).build();
-        return oddsData(get(url, OddsResponse.class));
+        return getMatchOdds(matchId, includes, NO_FILTERS);
+    }
+
+    /** Like {@link #getMatchOdds(String, String...)} with filters (e.g. {@code markets:1;bookmakers:2}). */
+    public List<Odd> getMatchOdds(String matchId, String[] includes, String filters) throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(PRE_MATCH_FIXTURES, matchId), includes, filters);
     }
 
     public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(PRE_MATCH_FIXTURES, matchId, BOOKMAKERS, bookmakerId).build();
-        return oddsData(get(url, OddsResponse.class));
+        return getMatchOddsByBookmaker(matchId, bookmakerId, NO_INCLUDES, NO_FILTERS);
+    }
+
+    public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId, String... includes)
+            throws IOException, SportMonksException {
+        return getMatchOddsByBookmaker(matchId, bookmakerId, includes, NO_FILTERS);
+    }
+
+    public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(PRE_MATCH_FIXTURES, matchId, BOOKMAKERS, bookmakerId), includes, filters);
     }
 
     public List<Odd> getMatchOddsByMarket(String matchId, String marketId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(PRE_MATCH_FIXTURES, matchId, MARKETS, marketId).build();
-        return oddsData(get(url, OddsResponse.class));
+        return getMatchOddsByMarket(matchId, marketId, NO_INCLUDES, NO_FILTERS);
+    }
+
+    public List<Odd> getMatchOddsByMarket(String matchId, String marketId, String... includes)
+            throws IOException, SportMonksException {
+        return getMatchOddsByMarket(matchId, marketId, includes, NO_FILTERS);
+    }
+
+    public List<Odd> getMatchOddsByMarket(String matchId, String marketId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(PRE_MATCH_FIXTURES, matchId, MARKETS, marketId), includes, filters);
     }
 
     // -------------------------------------------------------------------------
@@ -103,16 +189,27 @@ public class OddsApi extends SportMonksApiBase {
         return fetchPaged(base, MarketsResponse.class, MarketsResponse::getData, MarketsResponse::getPagination, 0);
     }
 
+    /** The markets available in the premium odds feed. */
+    public List<Market> getPremiumMarkets() throws IOException, SportMonksException {
+        HttpUrl base = catalogUrl("markets/premium").build();
+        return fetchPaged(base, MarketsResponse.class, MarketsResponse::getData, MarketsResponse::getPagination, 0);
+    }
+
     public Market getMarketById(long marketId) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl(MARKETS, marketId).build();
         MarketResponse resp = get(url, MarketResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
+    /** Searches the markets by name, walking every page of results. */
     public List<Market> searchMarkets(String query) throws IOException, SportMonksException {
-        HttpUrl url = catalogUrl("markets/search", query).build();
-        MarketsResponse resp = get(url, MarketsResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return searchMarkets(query, 0);
+    }
+
+    /** Like {@link #searchMarkets(String)} but returns at most {@code limit} markets (0 or less means all). */
+    public List<Market> searchMarkets(String query, int limit) throws IOException, SportMonksException {
+        HttpUrl base = catalogUrl("markets/search", query).build();
+        return fetchPaged(base, MarketsResponse.class, MarketsResponse::getData, MarketsResponse::getPagination, limit);
     }
 
     // -------------------------------------------------------------------------
@@ -124,16 +221,33 @@ public class OddsApi extends SportMonksApiBase {
         return fetchPaged(base, BookmakersResponse.class, BookmakersResponse::getData, BookmakersResponse::getPagination, 0);
     }
 
+    /** The bookmakers available in the premium odds feed. */
+    public List<Bookmaker> getPremiumBookmakers() throws IOException, SportMonksException {
+        HttpUrl base = catalogUrl("bookmakers/premium").build();
+        return fetchPaged(base, BookmakersResponse.class, BookmakersResponse::getData, BookmakersResponse::getPagination, 0);
+    }
+
+    /** The bookmakers that have pre-match odds for the fixture. */
+    public List<Bookmaker> getBookmakersByFixture(long fixtureId) throws IOException, SportMonksException {
+        HttpUrl base = catalogUrl("bookmakers/fixtures", fixtureId).build();
+        return fetchPaged(base, BookmakersResponse.class, BookmakersResponse::getData, BookmakersResponse::getPagination, 0);
+    }
+
     public Bookmaker getBookmakerById(long bookmakerId) throws IOException, SportMonksException {
         HttpUrl url = catalogUrl(BOOKMAKERS, bookmakerId).build();
         BookmakerResponse resp = get(url, BookmakerResponse.class);
         return resp != null ? resp.getData() : null;
     }
 
+    /** Searches the bookmakers by name, walking every page of results. */
     public List<Bookmaker> searchBookmakers(String query) throws IOException, SportMonksException {
-        HttpUrl url = catalogUrl("bookmakers/search", query).build();
-        BookmakersResponse resp = get(url, BookmakersResponse.class);
-        return resp != null && resp.getData() != null ? resp.getData() : new ArrayList<>();
+        return searchBookmakers(query, 0);
+    }
+
+    /** Like {@link #searchBookmakers(String)} but returns at most {@code limit} bookmakers (0 or less means all). */
+    public List<Bookmaker> searchBookmakers(String query, int limit) throws IOException, SportMonksException {
+        HttpUrl base = catalogUrl("bookmakers/search", query).build();
+        return fetchPaged(base, BookmakersResponse.class, BookmakersResponse::getData, BookmakersResponse::getPagination, limit);
     }
 
     public List<BookmakerMapping> getBookmakerMappingsByFixture(long fixtureId) throws IOException, SportMonksException {
@@ -146,71 +260,126 @@ public class OddsApi extends SportMonksApiBase {
     // Inplay odds
     // -------------------------------------------------------------------------
 
-    public List<Odd> getInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(INPLAY_FIXTURES, fixtureId).build();
-        return oddsData(get(url, OddsResponse.class));
+    /** The odds of every fixture in play, paged. */
+    public List<Odd> getAllInplayOdds() throws IOException, SportMonksException {
+        return getAllInplayOdds(0, NO_INCLUDES, NO_FILTERS);
     }
 
-    public List<Odd> getInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(INPLAY_FIXTURES, fixtureId, BOOKMAKERS, bookmakerId).build();
-        return oddsData(get(url, OddsResponse.class));
+    /** Like {@link #getAllInplayOdds()} but returns at most {@code limit} rows (0 or less means all). */
+    public List<Odd> getAllInplayOdds(int limit, String[] includes, String filters) throws IOException, SportMonksException {
+        return pagedOddsOf(oddsUrl(INPLAY), limit, includes, filters);
+    }
+
+    public List<Odd> getInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException {
+        return getInplayOddsByFixture(fixtureId, NO_INCLUDES, NO_FILTERS);
+    }
+
+    public List<Odd> getInplayOddsByFixture(long fixtureId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(INPLAY_FIXTURES, fixtureId), includes, filters);
+    }
+
+    public List<Odd> getInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId)
+            throws IOException, SportMonksException {
+        return getInplayOddsByFixtureAndBookmaker(fixtureId, bookmakerId, NO_INCLUDES, NO_FILTERS);
+    }
+
+    public List<Odd> getInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(INPLAY_FIXTURES, fixtureId, BOOKMAKERS, bookmakerId), includes, filters);
     }
 
     public List<Odd> getInplayOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(INPLAY_FIXTURES, fixtureId, MARKETS, marketId).build();
-        return oddsData(get(url, OddsResponse.class));
+        return getInplayOddsByFixtureAndMarket(fixtureId, marketId, NO_INCLUDES, NO_FILTERS);
     }
 
+    public List<Odd> getInplayOddsByFixtureAndMarket(long fixtureId, long marketId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(INPLAY_FIXTURES, fixtureId, MARKETS, marketId), includes, filters);
+    }
+
+    /** The inplay odds that changed most recently ({@code inplay/latest}). */
     public List<Odd> getLastUpdatedInplayOdds() throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("inplay/lastupdated").build();
-        return oddsData(get(url, OddsResponse.class));
+        return getLastUpdatedInplayOdds(NO_INCLUDES, NO_FILTERS);
+    }
+
+    public List<Odd> getLastUpdatedInplayOdds(String[] includes, String filters) throws IOException, SportMonksException {
+        return oddsOf(oddsUrl("inplay/latest"), includes, filters);
     }
 
     // -------------------------------------------------------------------------
-    // Premium pre-match odds
+    // Premium odds
     // -------------------------------------------------------------------------
+
+    /** All premium odds, paged. Huge: pass a limit ({@link #getAllPremiumOdds(int, String[], String)}) or filters. */
+    public List<Odd> getAllPremiumOdds() throws IOException, SportMonksException {
+        return getAllPremiumOdds(0, NO_INCLUDES, NO_FILTERS);
+    }
+
+    /** Like {@link #getAllPremiumOdds()} but returns at most {@code limit} rows (0 or less means all). */
+    public List<Odd> getAllPremiumOdds(int limit, String[] includes, String filters) throws IOException, SportMonksException {
+        return pagedOddsOf(oddsUrl(PREMIUM), limit, includes, filters);
+    }
 
     public List<Odd> getPremiumPreMatchOddsByFixture(long fixtureId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(PRE_MATCH_FIXTURES, fixtureId, PREMIUM).build();
-        return oddsData(get(url, OddsResponse.class));
+        return getPremiumPreMatchOddsByFixture(fixtureId, NO_INCLUDES, NO_FILTERS);
     }
 
-    public List<Odd> getPremiumPreMatchOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(PRE_MATCH_FIXTURES, fixtureId, BOOKMAKERS, bookmakerId, PREMIUM).build();
-        return oddsData(get(url, OddsResponse.class));
+    public List<Odd> getPremiumPreMatchOddsByFixture(long fixtureId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(PREMIUM_FIXTURES, fixtureId), includes, filters);
     }
 
-    public List<Odd> getPremiumPreMatchOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(PRE_MATCH_FIXTURES, fixtureId, MARKETS, marketId, PREMIUM).build();
-        return oddsData(get(url, OddsResponse.class));
+    public List<Odd> getPremiumPreMatchOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId)
+            throws IOException, SportMonksException {
+        return getPremiumPreMatchOddsByFixtureAndBookmaker(fixtureId, bookmakerId, NO_INCLUDES, NO_FILTERS);
     }
 
-    public List<Odd> getLastUpdatedPremiumPreMatchOdds() throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("pre-match/lastupdated/premium").build();
-        return oddsData(get(url, OddsResponse.class));
+    public List<Odd> getPremiumPreMatchOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(PREMIUM_FIXTURES, fixtureId, BOOKMAKERS, bookmakerId), includes, filters);
     }
 
-    // -------------------------------------------------------------------------
-    // Premium inplay odds
-    // -------------------------------------------------------------------------
-
-    public List<Odd> getPremiumInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(INPLAY_FIXTURES, fixtureId, PREMIUM).build();
-        return oddsData(get(url, OddsResponse.class));
+    public List<Odd> getPremiumPreMatchOddsByFixtureAndMarket(long fixtureId, long marketId)
+            throws IOException, SportMonksException {
+        return getPremiumPreMatchOddsByFixtureAndMarket(fixtureId, marketId, NO_INCLUDES, NO_FILTERS);
     }
 
-    public List<Odd> getPremiumInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(INPLAY_FIXTURES, fixtureId, BOOKMAKERS, bookmakerId, PREMIUM).build();
-        return oddsData(get(url, OddsResponse.class));
+    public List<Odd> getPremiumPreMatchOddsByFixtureAndMarket(long fixtureId, long marketId, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl(PREMIUM_FIXTURES, fixtureId, MARKETS, marketId), includes, filters);
     }
 
-    public List<Odd> getPremiumInplayOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl(INPLAY_FIXTURES, fixtureId, MARKETS, marketId, PREMIUM).build();
-        return oddsData(get(url, OddsResponse.class));
+    /**
+     * Premium odds updated between two moments, given as Unix timestamps in seconds. The API rejects
+     * ranges longer than five minutes with a 422.
+     */
+    public List<Odd> getLastUpdatedPremiumPreMatchOdds(long from, long to) throws IOException, SportMonksException {
+        return getLastUpdatedPremiumPreMatchOdds(from, to, NO_INCLUDES, NO_FILTERS);
     }
 
-    public List<Odd> getLastUpdatedPremiumInplayOdds() throws IOException, SportMonksException {
-        HttpUrl url = oddsUrl("inplay/lastupdated/premium").build();
-        return oddsData(get(url, OddsResponse.class));
+    public List<Odd> getLastUpdatedPremiumPreMatchOdds(long from, long to, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl("premium/updated/between", from, to), includes, filters);
+    }
+
+    /** The premium odds history, paged. Huge: pass a limit ({@link #getPremiumOddsHistory(int, String[], String)}) or filters. */
+    public List<Odd> getPremiumOddsHistory() throws IOException, SportMonksException {
+        return getPremiumOddsHistory(0, NO_INCLUDES, NO_FILTERS);
+    }
+
+    /** Like {@link #getPremiumOddsHistory()} but returns at most {@code limit} rows (0 or less means all). */
+    public List<Odd> getPremiumOddsHistory(int limit, String[] includes, String filters) throws IOException, SportMonksException {
+        return pagedOddsOf(oddsUrl("premium/history"), limit, includes, filters);
+    }
+
+    /** Premium odds history updated between two Unix timestamps in seconds (at most five minutes apart). */
+    public List<Odd> getLastUpdatedPremiumOddsHistory(long from, long to) throws IOException, SportMonksException {
+        return getLastUpdatedPremiumOddsHistory(from, to, NO_INCLUDES, NO_FILTERS);
+    }
+
+    public List<Odd> getLastUpdatedPremiumOddsHistory(long from, long to, String[] includes, String filters)
+            throws IOException, SportMonksException {
+        return oddsOf(oddsUrl("premium/history/updated/between", from, to), includes, filters);
     }
 }

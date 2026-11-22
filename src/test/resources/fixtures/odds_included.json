@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 254835558627, "fixture_id": 19722082, "market_id": 1, "bookmaker_id": 2,
+      "label": "Away", "value": "3.40", "name": null, "sort_order": 2,
+      "market_description": "Full Time Result", "probability": "29.41%", "dp3": "3.400",
+      "fractional": "17/5", "american": "240", "winning": false, "stopped": false,
+      "total": null, "handicap": null, "participants": null,
+      "created_at": "2026-11-21T23:19:05.000000Z", "original_label": "2",
+      "latest_bookmaker_update": "2026-11-22 14:44:54",
+      "market": { "id": 1, "legacy_id": 1, "name": "Fulltime Result", "developer_name": "FULLTIME_RESULT", "has_winning_calculations": true },
+      "bookmaker": { "id": 2, "legacy_id": 2, "name": "bet365" },
+      "fixture": {
+        "id": 19722082, "sport_id": 1, "league_id": 8, "season_id": 28083, "stage_id": 77482558,
+        "group_id": null, "aggregate_id": null, "round_id": 407862, "state_id": 1, "venue_id": 5,
+        "name": "Aston Villa vs Everton", "starting_at": "2026-12-02 20:15:00", "result_info": null,
+        "leg": "1/1", "details": null, "length": 90, "placeholder": false, "has_odds": true,
+        "has_premium_odds": true, "starting_at_timestamp": 1796242500
+      }
+    }
+  ],
+  "timestamp": 1795358987,
+  "rate_limit": { "resets_in_seconds": 3580, "remaining": 2995, "requested_entity": "Odd" },
+  "timezone": "UTC"
+}

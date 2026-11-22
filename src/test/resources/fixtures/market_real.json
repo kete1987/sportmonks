@@ -1,0 +1,5 @@
+{
+  "data": { "id": 2, "legacy_id": 63, "name": "Double Chance", "developer_name": "DOUBLE_CHANCE", "has_winning_calculations": false },
+  "rate_limit": { "resets_in_seconds": 3580, "remaining": 2995, "requested_entity": "Market" },
+  "timezone": "UTC"
+}

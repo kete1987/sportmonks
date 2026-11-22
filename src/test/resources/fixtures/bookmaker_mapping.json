@@ -3,12 +3,12 @@
     {
       "fixture_id": 100,
       "bookmaker_id": 1,
-      "fixture_identifier": "BET365_FIXTURE_100"
+      "bookmaker_name": "bet365", "bookmaker_event_id": "130037617", "bookmaker_event_url": null
     },
     {
       "fixture_id": 100,
       "bookmaker_id": 2,
-      "fixture_identifier": "BETFAIR_FIXTURE_100"
+      "bookmaker_name": "Betfair", "bookmaker_event_id": "99", "bookmaker_event_url": null
     }
   ],
   "subscription": [],

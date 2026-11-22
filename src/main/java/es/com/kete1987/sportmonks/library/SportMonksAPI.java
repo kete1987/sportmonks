@@ -273,53 +273,75 @@ public class SportMonksAPI {
     // Odds
     // -------------------------------------------------------------------------
 
+    public List<Odd> getAllPreMatchOdds() throws IOException, SportMonksException { return odds.getAllPreMatchOdds(); }
+    public List<Odd> getAllPreMatchOdds(int limit) throws IOException, SportMonksException { return odds.getAllPreMatchOdds(limit); }
+    public List<Odd> getAllPreMatchOdds(int limit, String[] includes, String filters) throws IOException, SportMonksException { return odds.getAllPreMatchOdds(limit, includes, filters); }
+    public List<Odd> getLatestPreMatchOdds() throws IOException, SportMonksException { return odds.getLatestPreMatchOdds(); }
+    public List<Odd> getLatestPreMatchOdds(String[] includes, String filters) throws IOException, SportMonksException { return odds.getLatestPreMatchOdds(includes, filters); }
     public List<Odd> getMatchOdds(String matchId, String... includes) throws IOException, SportMonksException { return odds.getMatchOdds(matchId, includes); }
+    public List<Odd> getMatchOdds(String matchId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getMatchOdds(matchId, includes, filters); }
     public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId) throws IOException, SportMonksException { return odds.getMatchOddsByBookmaker(matchId, bookmakerId); }
+    public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId, String... includes) throws IOException, SportMonksException { return odds.getMatchOddsByBookmaker(matchId, bookmakerId, includes); }
+    public List<Odd> getMatchOddsByBookmaker(String matchId, String bookmakerId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getMatchOddsByBookmaker(matchId, bookmakerId, includes, filters); }
     public List<Odd> getMatchOddsByMarket(String matchId, String marketId) throws IOException, SportMonksException { return odds.getMatchOddsByMarket(matchId, marketId); }
+    public List<Odd> getMatchOddsByMarket(String matchId, String marketId, String... includes) throws IOException, SportMonksException { return odds.getMatchOddsByMarket(matchId, marketId, includes); }
+    public List<Odd> getMatchOddsByMarket(String matchId, String marketId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getMatchOddsByMarket(matchId, marketId, includes, filters); }
 
     // -------------------------------------------------------------------------
     // Odds: Markets
     // -------------------------------------------------------------------------
 
     public List<Market> getAllMarkets() throws IOException, SportMonksException { return odds.getAllMarkets(); }
+    public List<Market> getPremiumMarkets() throws IOException, SportMonksException { return odds.getPremiumMarkets(); }
     public Market getMarketById(long marketId) throws IOException, SportMonksException { return odds.getMarketById(marketId); }
     public List<Market> searchMarkets(String query) throws IOException, SportMonksException { return odds.searchMarkets(query); }
+    public List<Market> searchMarkets(String query, int limit) throws IOException, SportMonksException { return odds.searchMarkets(query, limit); }
 
     // -------------------------------------------------------------------------
     // Odds: Bookmakers
     // -------------------------------------------------------------------------
 
     public List<Bookmaker> getAllBookmakers() throws IOException, SportMonksException { return odds.getAllBookmakers(); }
+    public List<Bookmaker> getPremiumBookmakers() throws IOException, SportMonksException { return odds.getPremiumBookmakers(); }
+    public List<Bookmaker> getBookmakersByFixture(long fixtureId) throws IOException, SportMonksException { return odds.getBookmakersByFixture(fixtureId); }
     public Bookmaker getBookmakerById(long bookmakerId) throws IOException, SportMonksException { return odds.getBookmakerById(bookmakerId); }
     public List<Bookmaker> searchBookmakers(String query) throws IOException, SportMonksException { return odds.searchBookmakers(query); }
+    public List<Bookmaker> searchBookmakers(String query, int limit) throws IOException, SportMonksException { return odds.searchBookmakers(query, limit); }
     public List<BookmakerMapping> getBookmakerMappingsByFixture(long fixtureId) throws IOException, SportMonksException { return odds.getBookmakerMappingsByFixture(fixtureId); }
 
     // -------------------------------------------------------------------------
     // Odds: Inplay
     // -------------------------------------------------------------------------
 
+    public List<Odd> getAllInplayOdds() throws IOException, SportMonksException { return odds.getAllInplayOdds(); }
+    public List<Odd> getAllInplayOdds(int limit, String[] includes, String filters) throws IOException, SportMonksException { return odds.getAllInplayOdds(limit, includes, filters); }
     public List<Odd> getInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException { return odds.getInplayOddsByFixture(fixtureId); }
+    public List<Odd> getInplayOddsByFixture(long fixtureId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getInplayOddsByFixture(fixtureId, includes, filters); }
     public List<Odd> getInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException { return odds.getInplayOddsByFixtureAndBookmaker(fixtureId, bookmakerId); }
+    public List<Odd> getInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getInplayOddsByFixtureAndBookmaker(fixtureId, bookmakerId, includes, filters); }
     public List<Odd> getInplayOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException { return odds.getInplayOddsByFixtureAndMarket(fixtureId, marketId); }
+    public List<Odd> getInplayOddsByFixtureAndMarket(long fixtureId, long marketId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getInplayOddsByFixtureAndMarket(fixtureId, marketId, includes, filters); }
     public List<Odd> getLastUpdatedInplayOdds() throws IOException, SportMonksException { return odds.getLastUpdatedInplayOdds(); }
+    public List<Odd> getLastUpdatedInplayOdds(String[] includes, String filters) throws IOException, SportMonksException { return odds.getLastUpdatedInplayOdds(includes, filters); }
 
     // -------------------------------------------------------------------------
-    // Odds: Premium Pre-match
+    // Odds: Premium
     // -------------------------------------------------------------------------
 
+    public List<Odd> getAllPremiumOdds() throws IOException, SportMonksException { return odds.getAllPremiumOdds(); }
+    public List<Odd> getAllPremiumOdds(int limit, String[] includes, String filters) throws IOException, SportMonksException { return odds.getAllPremiumOdds(limit, includes, filters); }
     public List<Odd> getPremiumPreMatchOddsByFixture(long fixtureId) throws IOException, SportMonksException { return odds.getPremiumPreMatchOddsByFixture(fixtureId); }
+    public List<Odd> getPremiumPreMatchOddsByFixture(long fixtureId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getPremiumPreMatchOddsByFixture(fixtureId, includes, filters); }
     public List<Odd> getPremiumPreMatchOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException { return odds.getPremiumPreMatchOddsByFixtureAndBookmaker(fixtureId, bookmakerId); }
+    public List<Odd> getPremiumPreMatchOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getPremiumPreMatchOddsByFixtureAndBookmaker(fixtureId, bookmakerId, includes, filters); }
     public List<Odd> getPremiumPreMatchOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException { return odds.getPremiumPreMatchOddsByFixtureAndMarket(fixtureId, marketId); }
-    public List<Odd> getLastUpdatedPremiumPreMatchOdds() throws IOException, SportMonksException { return odds.getLastUpdatedPremiumPreMatchOdds(); }
-
-    // -------------------------------------------------------------------------
-    // Odds: Premium Inplay
-    // -------------------------------------------------------------------------
-
-    public List<Odd> getPremiumInplayOddsByFixture(long fixtureId) throws IOException, SportMonksException { return odds.getPremiumInplayOddsByFixture(fixtureId); }
-    public List<Odd> getPremiumInplayOddsByFixtureAndBookmaker(long fixtureId, long bookmakerId) throws IOException, SportMonksException { return odds.getPremiumInplayOddsByFixtureAndBookmaker(fixtureId, bookmakerId); }
-    public List<Odd> getPremiumInplayOddsByFixtureAndMarket(long fixtureId, long marketId) throws IOException, SportMonksException { return odds.getPremiumInplayOddsByFixtureAndMarket(fixtureId, marketId); }
-    public List<Odd> getLastUpdatedPremiumInplayOdds() throws IOException, SportMonksException { return odds.getLastUpdatedPremiumInplayOdds(); }
+    public List<Odd> getPremiumPreMatchOddsByFixtureAndMarket(long fixtureId, long marketId, String[] includes, String filters) throws IOException, SportMonksException { return odds.getPremiumPreMatchOddsByFixtureAndMarket(fixtureId, marketId, includes, filters); }
+    public List<Odd> getLastUpdatedPremiumPreMatchOdds(long from, long to) throws IOException, SportMonksException { return odds.getLastUpdatedPremiumPreMatchOdds(from, to); }
+    public List<Odd> getLastUpdatedPremiumPreMatchOdds(long from, long to, String[] includes, String filters) throws IOException, SportMonksException { return odds.getLastUpdatedPremiumPreMatchOdds(from, to, includes, filters); }
+    public List<Odd> getPremiumOddsHistory() throws IOException, SportMonksException { return odds.getPremiumOddsHistory(); }
+    public List<Odd> getPremiumOddsHistory(int limit, String[] includes, String filters) throws IOException, SportMonksException { return odds.getPremiumOddsHistory(limit, includes, filters); }
+    public List<Odd> getLastUpdatedPremiumOddsHistory(long from, long to) throws IOException, SportMonksException { return odds.getLastUpdatedPremiumOddsHistory(from, to); }
+    public List<Odd> getLastUpdatedPremiumOddsHistory(long from, long to, String[] includes, String filters) throws IOException, SportMonksException { return odds.getLastUpdatedPremiumOddsHistory(from, to, includes, filters); }
 
     // -------------------------------------------------------------------------
     // Predictions

@@ -229,8 +229,8 @@ List<TopScoresPlayer> goals   = api.getTopScoresFiltered("13133", 52); // typeId
 ### Odds
 
 ```java
-// Pre-match odds
-List<Odd> odds       = api.getMatchOdds("19439629");
+// Pre-match odds (filters cut the thousands of rows of a fixture: markets:, bookmakers:, WinningOdds)
+List<Odd> odds       = api.getMatchOdds("19439629", new String[]{"market"}, "markets:" + MarketIds.FULLTIME_RESULT);
 List<Odd> byMarket   = api.getMatchOddsByMarket("19439629", "57");
 List<Odd> byBookmaker = api.getMatchOddsByBookmaker("19439629", "2");
 
@@ -410,25 +410,26 @@ odds     = api.getOdds();
 `getExpectedLineupByTeam` · `getExpectedLineupsByPlayer`
 
 ### Odds: Pre-match
-`getMatchOdds` · `getMatchOddsByMarket` · `getMatchOddsByBookmaker`
+`getAllPreMatchOdds` · `getLatestPreMatchOdds` · `getMatchOdds` · `getMatchOddsByMarket` · `getMatchOddsByBookmaker`
 
 ### Odds: Markets
-`getAllMarkets` · `getMarketById` · `searchMarkets`
+`getAllMarkets` · `getPremiumMarkets` · `getMarketById` · `searchMarkets`
 
 ### Odds: Bookmakers
-`getAllBookmakers` · `getBookmakerById` · `searchBookmakers` · `getBookmakerMappingsByFixture`
+`getAllBookmakers` · `getPremiumBookmakers` · `getBookmakersByFixture` · `getBookmakerById` · `searchBookmakers` ·
+`getBookmakerMappingsByFixture`
 
 ### Odds: Inplay
-`getInplayOddsByFixture` · `getInplayOddsByFixtureAndBookmaker` · `getInplayOddsByFixtureAndMarket` ·
-`getLastUpdatedInplayOdds`
+`getAllInplayOdds` · `getInplayOddsByFixture` · `getInplayOddsByFixtureAndBookmaker` ·
+`getInplayOddsByFixtureAndMarket` · `getLastUpdatedInplayOdds`
 
-### Odds: Premium Pre-match
-`getPremiumPreMatchOddsByFixture` · `getPremiumPreMatchOddsByFixtureAndBookmaker` ·
-`getPremiumPreMatchOddsByFixtureAndMarket` · `getLastUpdatedPremiumPreMatchOdds`
+### Odds: Premium
+`getAllPremiumOdds` · `getPremiumPreMatchOddsByFixture` · `getPremiumPreMatchOddsByFixtureAndBookmaker` ·
+`getPremiumPreMatchOddsByFixtureAndMarket` · `getLastUpdatedPremiumPreMatchOdds` · `getPremiumOddsHistory` ·
+`getLastUpdatedPremiumOddsHistory`
 
-### Odds: Premium Inplay
-`getPremiumInplayOddsByFixture` · `getPremiumInplayOddsByFixtureAndBookmaker` ·
-`getPremiumInplayOddsByFixtureAndMarket` · `getLastUpdatedPremiumInplayOdds`
+Every odds method also takes `String[] includes` and `String filters`. Id constants: `MarketIds` (markets)
+and `LineupDetailType` (the `lineupdetailTypes` filter).
 
 ### Predictions
 `getAllProbabilities` · `getPredictabilityByLeague` · `getProbabilitiesByFixture` ·

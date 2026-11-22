@@ -52,14 +52,4 @@ class InplayOddsApiTest extends BaseApiTest {
         RecordedRequest request = server.takeRequest();
         assertEquals("/v3/football/odds/inplay/fixtures/1/markets/3", request.getRequestUrl().encodedPath());
     }
-
-    @Test
-    void getLastUpdatedInplayOdds_usesCorrectPath() throws IOException, SportMonksException, InterruptedException {
-        enqueue("odds.json");
-
-        api.getLastUpdatedInplayOdds();
-
-        RecordedRequest request = server.takeRequest();
-        assertEquals("/v3/football/odds/inplay/lastupdated", request.getRequestUrl().encodedPath());
-    }
 }

@@ -1,0 +1,11 @@
+{
+  "data": [
+    { "id": 4, "legacy_id": 4, "name": "Match Goals", "developer_name": "MATCH_GOALS", "has_winning_calculations": true },
+    { "id": 5, "legacy_id": 5, "name": "Alternative Match Goals", "developer_name": "ALTERNATIVE_MATCH_GOALS", "has_winning_calculations": true }
+  ],
+  "pagination": {
+    "count": 2, "per_page": 2, "current_page": 1, "has_more": true,
+    "next_page": "https://api.sportmonks.com/v3/odds/markets/search/goal?per_page=2&page=2",
+    "next_cursor": "https://api.sportmonks.com/v3/odds/markets/search/goal?cursor=WzEsMixbNF0sW1sib2Rkcy5tYXJrZXRzLmlkIiwwXV1d"
+  }
+}

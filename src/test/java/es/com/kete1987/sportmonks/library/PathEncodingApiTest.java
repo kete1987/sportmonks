@@ -107,8 +107,8 @@ class PathEncodingApiTest extends BaseApiTest {
     void fixedRoutesStillMatchWhenSegmentsArePlain() throws Exception {
         enqueueEmpty();
 
-        api.getPremiumInplayOddsByFixtureAndMarket(19L, 1L);
+        api.getPremiumPreMatchOddsByFixtureAndMarket(19L, 1L);
 
-        assertEquals("/v3/football/odds/inplay/fixtures/19/markets/1/premium", take().getRequestUrl().encodedPath());
+        assertEquals("/v3/football/odds/premium/fixtures/19/markets/1", take().getRequestUrl().encodedPath());
     }
 }
