@@ -1,0 +1,236 @@
+{
+    "data":  {
+                 "id":  19732648,
+                 "sport_id":  1,
+                 "league_id":  564,
+                 "season_id":  27965,
+                 "stage_id":  77482690,
+                 "group_id":  null,
+                 "aggregate_id":  null,
+                 "round_id":  408951,
+                 "state_id":  5,
+                 "venue_id":  9236,
+                 "name":  "FC Barcelona vs Real Madrid",
+                 "starting_at":  "2026-10-25 20:00:00",
+                 "result_info":  "Real Madrid won after full-time.",
+                 "leg":  "1/1",
+                 "details":  null,
+                 "length":  90,
+                 "placeholder":  false,
+                 "has_odds":  true,
+                 "has_premium_odds":  true,
+                 "starting_at_timestamp":  1792958400,
+                 "sport":  {
+                               "id":  1,
+                               "name":  "Football",
+                               "code":  "football"
+                           },
+                 "league":  {
+                                "id":  564,
+                                "sport_id":  1,
+                                "country_id":  32,
+                                "name":  "La Liga",
+                                "active":  true,
+                                "short_code":  "ESP PL",
+                                "image_path":  "https://cdn.sportmonks.com/images/soccer/leagues/20/564.png",
+                                "type":  "league",
+                                "sub_type":  "domestic",
+                                "last_played_at":  "2026-11-21 20:00:00",
+                                "category":  1,
+                                "has_jerseys":  false
+                            },
+                 "season":  {
+                                "id":  27965,
+                                "sport_id":  1,
+                                "league_id":  564,
+                                "tie_breaker_rule_id":  171,
+                                "name":  "2026/2027",
+                                "finished":  false,
+                                "pending":  false,
+                                "is_current":  true,
+                                "starting_at":  "2026-08-15",
+                                "ending_at":  "2027-05-30",
+                                "standings_recalculated_at":  "2026-11-22 13:57:08",
+                                "games_in_current_week":  true
+                            },
+                 "stage":  {
+                               "id":  77482690,
+                               "sport_id":  1,
+                               "league_id":  564,
+                               "season_id":  27965,
+                               "type_id":  223,
+                               "name":  "Regular Season",
+                               "sort_order":  1,
+                               "finished":  false,
+                               "is_current":  true,
+                               "starting_at":  "2026-08-15",
+                               "ending_at":  "2027-05-30",
+                               "games_in_current_week":  true,
+                               "tie_breaker_rule_id":  null
+                           },
+                 "round":  {
+                               "id":  408951,
+                               "sport_id":  1,
+                               "league_id":  564,
+                               "season_id":  27965,
+                               "stage_id":  77482690,
+                               "name":  "10",
+                               "finished":  true,
+                               "is_current":  false,
+                               "starting_at":  "2026-10-23",
+                               "ending_at":  "2026-10-26",
+                               "games_in_current_week":  false
+                           },
+                 "group":  null,
+                 "aggregate":  null,
+                 "tvstations":  [
+                                    {
+                                        "id":  118930215,
+                                        "fixture_id":  19732648,
+                                        "tvstation_id":  37,
+                                        "country_id":  3483
+                                    },
+                                    {
+                                        "id":  118912583,
+                                        "fixture_id":  19732648,
+                                        "tvstation_id":  40,
+                                        "country_id":  38
+                                    },
+                                    {
+                                        "id":  118836583,
+                                        "fixture_id":  19732648,
+                                        "tvstation_id":  41,
+                                        "country_id":  11
+                                    }
+                                ],
+                 "odds":  [
+                              {
+                                  "id":  249536958422,
+                                  "fixture_id":  19732648,
+                                  "market_id":  65,
+                                  "bookmaker_id":  2,
+                                  "label":  "1st Card",
+                                  "value":  "19.00",
+                                  "name":  "Brahim Diaz",
+                                  "sort_order":  38,
+                                  "market_description":  "1st Player Booked",
+                                  "probability":  "5.26%",
+                                  "dp3":  "19.000",
+                                  "fractional":  "19",
+                                  "american":  "1800",
+                                  "winning":  false,
+                                  "stopped":  true,
+                                  "total":  null,
+                                  "handicap":  null,
+                                  "participants":  null,
+                                  "created_at":  "2026-10-22T09:51:21.000000Z",
+                                  "original_label":  null,
+                                  "latest_bookmaker_update":  "2026-10-25 19:40:08"
+                              },
+                              {
+                                  "id":  249536958613,
+                                  "fixture_id":  19732648,
+                                  "market_id":  64,
+                                  "bookmaker_id":  2,
+                                  "label":  "Booked",
+                                  "value":  "2.20",
+                                  "name":  "Eder Militao",
+                                  "sort_order":  16,
+                                  "market_description":  "Player to be booked",
+                                  "probability":  "45.45%",
+                                  "dp3":  "2.200",
+                                  "fractional":  "11/5",
+                                  "american":  "120",
+                                  "winning":  false,
+                                  "stopped":  true,
+                                  "total":  null,
+                                  "handicap":  null,
+                                  "participants":  null,
+                                  "created_at":  "2026-10-22T09:51:21.000000Z",
+                                  "original_label":  null,
+                                  "latest_bookmaker_update":  "2026-10-25 19:40:08"
+                              }
+                          ],
+                 "participants":  [
+                                      {
+                                          "id":  3468,
+                                          "sport_id":  1,
+                                          "country_id":  32,
+                                          "venue_id":  2020,
+                                          "gender":  "male",
+                                          "name":  "Real Madrid",
+                                          "short_code":  "RMA",
+                                          "image_path":  "https://cdn.sportmonks.com/images/soccer/teams/12/3468.png",
+                                          "founded":  1902,
+                                          "type":  "domestic",
+                                          "placeholder":  false,
+                                          "last_played_at":  "2026-11-21 20:00:00",
+                                          "meta":  {
+                                                       "location":  "away",
+                                                       "winner":  true,
+                                                       "position":  3
+                                                   }
+                                      },
+                                      {
+                                          "id":  83,
+                                          "sport_id":  1,
+                                          "country_id":  32,
+                                          "venue_id":  9236,
+                                          "gender":  "male",
+                                          "name":  "FC Barcelona",
+                                          "short_code":  "BAR",
+                                          "image_path":  "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+                                          "founded":  1899,
+                                          "type":  "domestic",
+                                          "placeholder":  false,
+                                          "last_played_at":  "2026-11-08 20:00:00",
+                                          "meta":  {
+                                                       "location":  "home",
+                                                       "winner":  false,
+                                                       "position":  1
+                                                   }
+                                      }
+                                  ],
+                 "periods":  [
+                                 {
+                                     "id":  7194899,
+                                     "fixture_id":  19732648,
+                                     "type_id":  1,
+                                     "started":  1792958554,
+                                     "ended":  1792961389,
+                                     "counts_from":  0,
+                                     "ticking":  false,
+                                     "sort_order":  1,
+                                     "description":  "1st-half",
+                                     "time_added":  2,
+                                     "period_length":  45,
+                                     "minutes":  47,
+                                     "seconds":  15,
+                                     "has_timer":  false
+                                 },
+                                 {
+                                     "id":  7194994,
+                                     "fixture_id":  19732648,
+                                     "type_id":  2,
+                                     "started":  1792962497,
+                                     "ended":  1792965660,
+                                     "counts_from":  45,
+                                     "ticking":  false,
+                                     "sort_order":  2,
+                                     "description":  "2nd-half",
+                                     "time_added":  5,
+                                     "period_length":  45,
+                                     "minutes":  97,
+                                     "seconds":  43,
+                                     "has_timer":  false
+                                 }
+                             ],
+                 "state":  {
+                               "id":  5,
+                               "state":  "FT",
+                               "name":  "Full Time",
+                               "short_name":  "FT",
+                               "developer_name":  "FT"
+                           }
+             }
+}

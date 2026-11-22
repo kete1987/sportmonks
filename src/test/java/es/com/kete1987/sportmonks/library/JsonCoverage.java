@@ -31,7 +31,6 @@ import java.util.Set;
 final class JsonCoverage {
     private static final String BASE = "https://api.sportmonks.com/v3/";
     private static final String[] SKIPPED_PACKAGES = {
-            "es.com.kete1987.sportmonks.library.football.model.match",
             "es.com.kete1987.sportmonks.library.football.model.statistic",
             "es.com.kete1987.sportmonks.library.football.model.schedule"
     };
