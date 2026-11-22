@@ -201,6 +201,25 @@ abstract class SportMonksApiBase {
         }
     }
 
+    /**
+     * Builds {@code base + path + segments}. {@code path} is a fixed route written by the library
+     * (its slashes separate segments, e.g. {@code "teams/search"}); every value in
+     * {@code segments} — user text or an id — becomes exactly one percent-encoded segment, so a
+     * {@code /}, {@code ?} or {@code #} in it can neither change the route nor turn into the query
+     * or the fragment. Locale and timezone are added as query parameters.
+     */
+    HttpUrl.Builder apiUrl(String base, String path, Object... segments) {
+        return timezoneUrl(localeUrl(path(base, path, segments)));
+    }
+
+    static HttpUrl.Builder path(String base, String path, Object... segments) {
+        HttpUrl.Builder builder = HttpUrl.get(base).newBuilder().addPathSegments(path);
+        for (Object segment : segments) {
+            builder.addPathSegment(String.valueOf(segment));
+        }
+        return builder;
+    }
+
     HttpUrl.Builder withIncludes(HttpUrl.Builder builder, String... includes) {
         if (includes != null && includes.length > 0) {
             builder.addQueryParameter("include", String.join(";", includes));

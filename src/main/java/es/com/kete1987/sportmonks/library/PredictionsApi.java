@@ -46,8 +46,8 @@ public class PredictionsApi extends SportMonksApiBase {
         this.footballBase = footballBase;
     }
 
-    private HttpUrl.Builder footballUrl(String path) {
-        return timezoneUrl(localeUrl(HttpUrl.parse(footballBase + path).newBuilder()));
+    private HttpUrl.Builder footballUrl(String path, Object... segments) {
+        return apiUrl(footballBase, path, segments);
     }
 
     // -------------------------------------------------------------------------
@@ -60,12 +60,12 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public List<Predictability> getPredictabilityByLeague(long leagueId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/leagues/" + leagueId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/leagues", leagueId), includes).build();
         return gson().fromJson(execute(url), PredictabilityResponse.class).getData();
     }
 
     public List<Probability> getProbabilitiesByFixture(long fixtureId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/fixtures/" + fixtureId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("predictions/probabilities/fixtures", fixtureId), includes).build();
         return gson().fromJson(execute(url), ProbabilitiesResponse.class).getData();
     }
 
@@ -75,7 +75,7 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public List<ValueBet> getValueBetsByFixture(long fixtureId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("predictions/value-bets/fixtures/" + fixtureId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("predictions/value-bets/fixtures", fixtureId), includes).build();
         return gson().fromJson(execute(url), ValueBetsResponse.class).getData();
     }
 
@@ -103,7 +103,7 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public List<NewsArticle> getPreMatchNewsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("news/pre-match/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("news/pre-match/seasons", seasonId), includes).build();
         return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
     }
 
@@ -118,7 +118,7 @@ public class PredictionsApi extends SportMonksApiBase {
     }
 
     public List<NewsArticle> getPostMatchNewsBySeason(long seasonId, String... includes) throws IOException, SportMonksException {
-        HttpUrl url = withIncludes(footballUrl("news/post-match/seasons/" + seasonId), includes).build();
+        HttpUrl url = withIncludes(footballUrl("news/post-match/seasons", seasonId), includes).build();
         return gson().fromJson(execute(url), NewsArticlesResponse.class).getData();
     }
 }
