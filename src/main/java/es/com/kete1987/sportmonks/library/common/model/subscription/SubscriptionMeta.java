@@ -7,6 +7,8 @@ public class SubscriptionMeta {
     private String trialEndsAt;
     @SerializedName("ends_at")
     private String endsAt;
+    @SerializedName("current_timestamp")
+    private Long currentTimestamp;
 
     public SubscriptionMeta() {
     }
@@ -25,5 +27,14 @@ public class SubscriptionMeta {
 
     public void setEndsAt(String endsAt) {
         this.endsAt = endsAt;
+    }
+
+    /** Server time of the response, in epoch seconds. */
+    public Long getCurrentTimestamp() {
+        return currentTimestamp;
+    }
+
+    public void setCurrentTimestamp(Long currentTimestamp) {
+        this.currentTimestamp = currentTimestamp;
     }
 }

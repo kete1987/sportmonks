@@ -215,7 +215,48 @@ are not wrapped: the documented entity (`period_id`, `minute`, `predictions`, cu
 is not the one `Probability` models. The lists are not paginated because the documented
 `pagination` object could not be confirmed.
 
-## 3.3.0 (unreleased): null safety
+### Core and MySportmonks (#77)
+
+**Breaking: `getMyApi()` is removed** from `CoreApi` and `SportMonksAPI`, together with the `MyApi`
+and `MyApiResponse` models. `my/api` answers 404 and is not in the MySportmonks documentation; it
+never worked. The subscription, rate limit and timezone it was meant to carry arrive in every
+response (see `getLastRateLimit()`).
+
+**`getTypesByEntity(entity)` works now.** It called
+`core/types/entities/{entity}`, which does not exist (404). The real route is
+`core/types/entities`, with no parameter, and it returns a map `{Entity: {updated_at, types[]}}`.
+`getTypesByEntity(String)` keeps its signature and returns the `List<Type>` of that entity (matched
+ignoring case, e.g. `"Event"`; an unknown entity gives an empty list). The whole map is available as
+`getAllTypeEntities()`, a `Map<String, TypeEntity>` (`getUpdatedAt()`, `getTypes()`). Entity names
+are the API's own (`Event`, `Lineup`, `CoachStatisticDetail`, ...), not the plural lowercase words
+the old method suggested.
+
+**Breaking: the `My*` models now mirror the real JSON.**
+
+| Model | Before | Now |
+|---|---|---|
+| `getMyEnrichments()` | `List<String>` (threw on every call: the API sends objects) | `List<MyEnrichment>` with `getId()`, `getName()` |
+| `MyLeague` | `getLeagueId()` (always `null`) | `getId()`; new `getCountryId()`, `getActive()`, `getShortCode()`, `getCategory()`, `getHasJerseys()`, `getSport()` (`MySport`) |
+| `MyResource` | `getName()`, `getEndpoint()`, `getSportId()` (always `null`) | `getId()`, `getDescription()` |
+| `MyUsage` | `getSportId()`, `getRequests()`, `getDate()` (always `null`) | `getId()`, `getEndpoint()`, `getCount()`, `getEntity()`, `getRemainingRequests()`, `getPeriodStart()`, `getPeriodEnd()` (epoch seconds) |
+
+**`getMyUsage()` reads every page.** `my/usage` is paginated and the method only returned the first
+one. It now walks all pages (with the usual `fetchPaged` rules), which on a busy account is many
+requests: use the new `getMyUsage(int limit)` to take only the newest rows.
+
+**New fields.** `Subscription` gains `getAddOns()` and `getWidgets()` (free-form objects: the
+test subscription has none, so their shape is not checked) and `SubscriptionMeta` gains
+`getCurrentTimestamp()`. `Country` gains `getBorders()` (ISO3 codes; not an include),
+`getContinent()` (`include=continent`) and `getRegions()` (`include=regions`); `City` gains
+`getRegion()` (`include=region`); `Region` gains `getCountry()` and `getCities()`; `Continent`
+gains `getCountries()`. The `borders` include that the documentation lists does not exist (404): it
+is a plain field.
+
+**Locale.** `getTypeById` and the other core methods already honour the locale given to the
+constructor (`new SportMonksAPI(key, ApiLocale.SPANISH)` returns `"1ª Mitad"`); core types have no
+includes, so none were added. `getAllStates()`/`getStateById()` belong to the football API and are
+not changed here.
+## 3.3.0: null safety
 
 `getStandingsCup()` now groups rows with a missing group or a null group name
 under the empty-string key (`""`), instead of throwing `NullPointerException`.
@@ -411,7 +452,7 @@ The following endpoint groups did not exist in the previous version:
 | **Core — Types** | `getAllTypes`, `getTypeById`, `getTypesByEntity` |
 | **Core — Timezones** | `getAllTimezones` |
 | **Core — Filters** | `getAllEntityFilters` |
-| **MySportmonks** | `getMyApi`, `getMyLeagues`, `getMyEnrichments`, `getMyResources`, `getMyUsage` |
+| **MySportmonks** | `getMyLeagues`, `getMyEnrichments`, `getMyResources`, `getMyUsage` |
 | **Squads** | `getSquadByTeam`, `getExtendedSquadByTeam`, `getSquadBySeasonAndTeam` |
 | **Players** | `getAllPlayers`, `getPlayerById`, `getPlayersByCountry`, `searchPlayers` |
 | **Coaches** | `getAllCoaches`, `getCoachById`, `getCoachesByCountry`, `searchCoaches` |

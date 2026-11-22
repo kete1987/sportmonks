@@ -1,7 +1,7 @@
 {
   "data": [
-    "myfixtures",
-    "myteams",
-    "myleagues"
-  ]
+    {"id": 90, "name": "Access odds"},
+    {"id": 91, "name": "Access fixtures"}
+  ],
+  "timezone": "UTC"
 }

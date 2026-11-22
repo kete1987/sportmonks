@@ -1,15 +1,15 @@
 package es.com.kete1987.sportmonks.library.core.model.my;
 
-import com.google.gson.annotations.SerializedName;
-
+/** A resource (endpoint) the subscription can call, as listed by {@code my/resources}. */
 public class MyResource {
-    private String name;
-    private String endpoint;
+    private Long id;
+    private String description;
 
-    @SerializedName("sport_id")
-    private Integer sportId;
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public String getEndpoint() { return endpoint; }
-    public Integer getSportId() { return sportId; }
+    public String getDescription() {
+        return description;
+    }
 }

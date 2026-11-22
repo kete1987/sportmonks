@@ -1,11 +1,13 @@
 package es.com.kete1987.sportmonks.library;
 
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
-import es.com.kete1987.sportmonks.library.core.model.my.MyApi;
+import es.com.kete1987.sportmonks.library.core.model.my.MyEnrichment;
 import es.com.kete1987.sportmonks.library.core.model.my.MyLeague;
 import es.com.kete1987.sportmonks.library.core.model.my.MyResource;
 import es.com.kete1987.sportmonks.library.core.model.my.MyUsage;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
+import es.com.kete1987.sportmonks.library.core.model.type.TypeEntity;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
@@ -59,24 +61,38 @@ class CoreTypesApiTest extends BaseApiTest {
     }
 
     @Test
-    void getTypesByEntity_usesEntitiesPath() throws IOException, SportMonksException, InterruptedException {
-        enqueue("types_by_entity.json");
+    void getTypesByEntity_matchesTheEntityIgnoringCase() throws IOException, SportMonksException {
+        enqueue("types_entities.json");
 
-        api.getTypesByEntity("fixtures");
+        List<Type> types = api.getTypesByEntity("event");
 
-        RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("types/entities/fixtures"),
-                "Expected types/entities path, got: " + request.getPath());
+        assertEquals(2, types.size());
+        assertEquals("1st Half", types.get(0).getName());
     }
 
     @Test
-    void getTypesByEntity_returnsParsedList() throws IOException, SportMonksException {
-        enqueue("types_by_entity.json");
+    void getTypesByEntity_unknownEntityGivesEmptyList() throws IOException, SportMonksException {
+        enqueue("types_entities.json");
 
-        List<Type> types = api.getTypesByEntity("fixtures");
+        assertTrue(api.getTypesByEntity("nothing").isEmpty());
+    }
 
-        assertEquals(2, types.size());
-        assertEquals("Goal", types.get(0).getName());
+    @Test
+    void getAllTypeEntities_returnsTheMapKeyedByEntity() throws IOException, SportMonksException {
+        enqueue("types_entities.json");
+
+        Map<String, TypeEntity> entities = api.getAllTypeEntities();
+
+        assertEquals(2, entities.size());
+        assertEquals("2026-11-20T20:01:25.000000Z", entities.get("Event").getUpdatedAt());
+        assertEquals("SUBSTITUTIONS", entities.get("CoachStatisticDetail").getTypes().get(0).getDeveloperName());
+    }
+
+    @Test
+    void getAllTypeEntities_emptyBody_returnsEmptyMap() throws IOException, SportMonksException {
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(""));
+
+        assertTrue(api.getAllTypeEntities().isEmpty());
     }
 
     // --- Timezones ---
@@ -131,41 +147,31 @@ class CoreTypesApiTest extends BaseApiTest {
     // --- MySportmonks ---
 
     @Test
-    void getMyApi_returnsParsed() throws IOException, SportMonksException {
-        enqueue("my_api.json");
-
-        MyApi myApi = api.getMyApi();
-
-        assertNotNull(myApi);
-        assertEquals(1, myApi.getSportId());
-        assertEquals("UTC", myApi.getTimezone());
-    }
-
-    @Test
-    void getMyApi_urlContainsMyApi() throws IOException, SportMonksException, InterruptedException {
-        enqueue("my_api.json");
-
-        api.getMyApi();
-
-        RecordedRequest request = server.takeRequest();
-        assertTrue(request.getPath().contains("api"),
-                "Expected api path, got: " + request.getPath());
-        assertFalse(request.getPath().startsWith("/core/"),
-                "Should not use core base, got: " + request.getPath());
-    }
-
-    @Test
     void getMyLeagues_returnsParsedList() throws IOException, SportMonksException {
         enqueue("my_leagues.json");
 
         List<MyLeague> leagues = api.getMyLeagues();
 
         assertEquals(2, leagues.size());
-        assertEquals(271L, leagues.get(0).getLeagueId());
-        assertEquals("Superliga", leagues.get(0).getName());
-        assertEquals("domestic", leagues.get(0).getType());
-        assertEquals(8L, leagues.get(1).getLeagueId());
+        assertEquals(2L, leagues.get(0).getId());
+        assertEquals("Champions League", leagues.get(0).getName());
+        assertEquals("cup_international", leagues.get(0).getSubType());
+        assertEquals(8L, leagues.get(1).getId());
         assertEquals("Premier League", leagues.get(1).getName());
+    }
+
+    @Test
+    void getMyLeagues_readsCountryActiveShortCodeCategoryJerseysAndSport() throws IOException, SportMonksException {
+        enqueue("my_leagues.json");
+
+        MyLeague league = api.getMyLeagues().get(1);
+
+        assertEquals(462L, league.getCountryId());
+        assertEquals(Boolean.TRUE, league.getActive());
+        assertEquals("UK PL", league.getShortCode());
+        assertEquals(1, league.getCategory());
+        assertEquals(Boolean.FALSE, league.getHasJerseys());
+        assertEquals("Football", league.getSport().getName());
     }
 
     @Test
@@ -194,10 +200,11 @@ class CoreTypesApiTest extends BaseApiTest {
     void getMyEnrichments_returnsParsedList() throws IOException, SportMonksException {
         enqueue("my_enrichments.json");
 
-        List<String> enrichments = api.getMyEnrichments();
+        List<MyEnrichment> enrichments = api.getMyEnrichments();
 
-        assertEquals(3, enrichments.size());
-        assertEquals("myfixtures", enrichments.get(0));
+        assertEquals(2, enrichments.size());
+        assertEquals(90L, enrichments.get(0).getId());
+        assertEquals("Access odds", enrichments.get(0).getName());
     }
 
     @Test
@@ -218,13 +225,13 @@ class CoreTypesApiTest extends BaseApiTest {
         List<MyResource> resources = api.getMyResources();
 
         assertEquals(2, resources.size());
-        assertEquals("fixtures", resources.get(0).getName());
-        assertEquals("/v3/football/fixtures", resources.get(0).getEndpoint());
+        assertEquals(244L, resources.get(0).getId());
+        assertEquals("Types by Entity", resources.get(0).getDescription());
     }
 
     @Test
     void getMyUsage_usesUsagePath() throws IOException, SportMonksException, InterruptedException {
-        enqueue("my_usage.json");
+        enqueue("my_usage_page2.json");
 
         api.getMyUsage();
 
@@ -234,14 +241,30 @@ class CoreTypesApiTest extends BaseApiTest {
     }
 
     @Test
-    void getMyUsage_returnsParsedList() throws IOException, SportMonksException {
-        enqueue("my_usage.json");
+    void getMyUsage_returnsParsedRows() throws IOException, SportMonksException {
+        enqueue("my_usage_page1.json");
+        enqueue("my_usage_page2.json");
 
         List<MyUsage> usages = api.getMyUsage();
 
+        assertEquals(3, usages.size());
+        assertEquals(2819442181L, usages.get(0).getId());
+        assertEquals("api.sports.standings.season", usages.get(0).getEndpoint());
+        assertEquals(5, usages.get(0).getCount());
+        assertEquals("standing", usages.get(0).getEntity());
+        assertEquals(2992, usages.get(0).getRemainingRequests());
+        assertEquals(1795358400L, usages.get(0).getPeriodStart());
+        assertEquals(1795358700L, usages.get(0).getPeriodEnd());
+    }
+
+    @Test
+    void getMyUsage_withLimit_stopsEarlyAndSetsPerPage() throws IOException, SportMonksException, InterruptedException {
+        // Only the first page is enqueued: if the limit didn't stop the walk the mock would block.
+        enqueue("my_usage_page1.json");
+
+        List<MyUsage> usages = api.getMyUsage(2);
+
         assertEquals(2, usages.size());
-        assertEquals(1, usages.get(0).getSportId().intValue());
-        assertEquals(145, usages.get(0).getRequests().intValue());
-        assertEquals("2024-10-26", usages.get(0).getDate());
+        assertEquals("2", server.takeRequest().getRequestUrl().queryParameter("per_page"));
     }
 }

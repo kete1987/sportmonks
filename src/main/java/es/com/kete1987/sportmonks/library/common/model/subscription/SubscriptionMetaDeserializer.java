@@ -48,6 +48,11 @@ public class SubscriptionMetaDeserializer implements JsonDeserializer<Subscripti
             meta.setEndsAt(endsAt.getAsString());
         }
 
+        JsonElement currentTimestamp = obj.get("current_timestamp");
+        if (currentTimestamp != null && !currentTimestamp.isJsonNull()) {
+            meta.setCurrentTimestamp(currentTimestamp.getAsLong());
+        }
+
         return meta;
     }
 }

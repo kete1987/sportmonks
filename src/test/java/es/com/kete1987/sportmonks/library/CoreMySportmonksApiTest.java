@@ -1,8 +1,12 @@
 package es.com.kete1987.sportmonks.library;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
+import es.com.kete1987.sportmonks.library.core.model.city.City;
+import es.com.kete1987.sportmonks.library.core.model.continent.Continent;
+import es.com.kete1987.sportmonks.library.core.model.country.Country;
 import es.com.kete1987.sportmonks.library.core.model.my.MyUsage;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
 import org.junit.jupiter.api.Test;
@@ -36,7 +40,7 @@ class CoreMySportmonksApiTest extends BaseApiTest {
 
     @Test
     void getMyEnrichments_readsIdAndNameObjects() throws IOException, SportMonksException {
-        enqueue("my_enrichments_objects.json");
+        enqueue("my_enrichments.json");
 
         var enrichments = api.getMyEnrichments();
 
@@ -64,6 +68,45 @@ class CoreMySportmonksApiTest extends BaseApiTest {
         List<String> missing = JsonCoverage.missing(JsonParser.parseString(SUBSCRIPTION), Subscription.class);
 
         assertTrue(missing.isEmpty(), "Subscription does not model: " + missing);
+    }
+
+    @Test
+    void subscription_readsCurrentTimestampAddOnsAndWidgets() {
+        String json = SUBSCRIPTION.replace("\"add_ons\":[]", "\"add_ons\":[{\"add_on\":\"xG\"}]");
+
+        Subscription subscription = gson().fromJson(json, Subscription.class);
+
+        assertEquals(1795358826L, subscription.getMeta().getCurrentTimestamp());
+        assertEquals("2026-04-03 10:29:01", subscription.getMeta().getEndsAt());
+        assertEquals("xG", subscription.getAddOns().get(0).get("add_on"));
+        assertTrue(subscription.getWidgets().isEmpty());
+    }
+
+    @Test
+    void country_readsBordersAndItsIncludes() {
+        String json = "{\"id\":462,\"borders\":[\"IRL\"],\"continent\":{\"id\":1,\"name\":\"Europe\"},"
+                + "\"regions\":[{\"id\":47,\"country_id\":462,\"name\":\"England\"}]}";
+
+        Country country = gson().fromJson(json, Country.class);
+
+        assertEquals("IRL", country.getBorders().get(0));
+        assertEquals("Europe", country.getContinent().getName());
+        assertEquals("England", country.getRegions().get(0).getName());
+    }
+
+    @Test
+    void cityRegionAndContinentCountriesAreRead() {
+        City city = gson()
+                .fromJson("{\"id\":1,\"region\":{\"id\":1,\"name\":\"Al Qadisiyah\"}}", City.class);
+        Continent continent = gson()
+                .fromJson("{\"id\":1,\"countries\":[{\"id\":462,\"name\":\"England\"}]}", Continent.class);
+
+        assertEquals("Al Qadisiyah", city.getRegion().getName());
+        assertEquals("England", continent.getCountries().get(0).getName());
+    }
+
+    private static Gson gson() {
+        return new FootballApi("test-token").gson();
     }
 
     private static boolean hasMethod(Class<?> type, String name) {

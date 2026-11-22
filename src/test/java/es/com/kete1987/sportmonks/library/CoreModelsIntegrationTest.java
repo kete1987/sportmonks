@@ -2,23 +2,30 @@ package es.com.kete1987.sportmonks.library;
 
 import com.google.gson.JsonElement;
 import es.com.kete1987.sportmonks.library.common.model.subscription.Subscription;
+import es.com.kete1987.sportmonks.library.common.util.ApiLocale;
 import es.com.kete1987.sportmonks.library.common.util.SportMonksException;
 import es.com.kete1987.sportmonks.library.core.model.city.City;
 import es.com.kete1987.sportmonks.library.core.model.continent.Continent;
 import es.com.kete1987.sportmonks.library.core.model.country.Country;
+import es.com.kete1987.sportmonks.library.core.model.my.MyEnrichment;
 import es.com.kete1987.sportmonks.library.core.model.my.MyLeague;
 import es.com.kete1987.sportmonks.library.core.model.my.MyResource;
 import es.com.kete1987.sportmonks.library.core.model.my.MyUsage;
 import es.com.kete1987.sportmonks.library.core.model.region.Region;
 import es.com.kete1987.sportmonks.library.core.model.type.Type;
+import es.com.kete1987.sportmonks.library.core.model.type.TypeEntity;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -56,6 +63,43 @@ class CoreModelsIntegrationTest {
         assertFalse(types.isEmpty(), "core/types/entities lists types for Event");
     }
 
+    @Test
+    void allTypeEntitiesComeAsAMapKeyedByEntity() throws IOException, SportMonksException {
+        Map<String, TypeEntity> entities = api.getAllTypeEntities();
+
+        assertFalse(entities.isEmpty());
+        assertTrue(entities.containsKey("Event"));
+        assertNotNull(entities.get("Event").getUpdatedAt());
+    }
+
+    @Test
+    void myApiRouteDoesNotExist() {
+        IOException e = assertThrows(IOException.class, () -> JsonCoverage.fetchData(key, "my/api"));
+
+        assertTrue(e.getMessage().contains("404"), e.getMessage());
+    }
+
+    @Test
+    void myEnrichmentModelsEveryField() throws IOException, InterruptedException {
+        assertCovered("my/enrichments", MyEnrichment.class);
+    }
+
+    @Test
+    void myUsageWithLimitReturnsThatManyRows() throws IOException, SportMonksException {
+        List<MyUsage> usage = api.getMyUsage(3);
+
+        assertEquals(3, usage.size());
+        assertNotNull(usage.get(0).getEndpoint());
+    }
+
+    @Test
+    void typeByIdHonoursTheInstanceLocale() throws IOException, SportMonksException {
+        Type spanish = new SportMonksAPI(key, ApiLocale.SPANISH).getTypeById(1);
+
+        assertEquals("1ST_HALF", spanish.getDeveloperName());
+        assertEquals("1ª Mitad", spanish.getName());
+    }
+
     // ---- public methods that threw or returned nulls ----
 
     @Test
@@ -70,7 +114,7 @@ class CoreModelsIntegrationTest {
         List<MyLeague> leagues = api.getMyLeagues();
 
         assertFalse(leagues.isEmpty());
-        assertTrue(leagues.stream().allMatch(l -> l.getLeagueId() != null), "every league has an id");
+        assertTrue(leagues.stream().allMatch(l -> l.getId() != null), "every league has an id");
     }
 
     @Test
@@ -78,7 +122,7 @@ class CoreModelsIntegrationTest {
         List<MyResource> resources = api.getMyResources();
 
         assertFalse(resources.isEmpty());
-        assertTrue(resources.stream().anyMatch(r -> r.getName() != null), "some resource has a description");
+        assertTrue(resources.stream().anyMatch(r -> r.getDescription() != null), "some resource has a description");
     }
 
     // ---- raw JSON vs POJO ----
