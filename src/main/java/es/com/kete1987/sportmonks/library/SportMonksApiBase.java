@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 abstract class SportMonksApiBase {
@@ -45,12 +46,23 @@ abstract class SportMonksApiBase {
     final String locale;
     final String timezone;
     final RateLimitTracker rateLimitTracker;
+    final RequestOptions requestOptions;
 
-    SportMonksApiBase(OkHttpClient httpClient, String locale, String timezone, RateLimitTracker rateLimitTracker) {
+    SportMonksApiBase(OkHttpClient httpClient, String locale, String timezone, RateLimitTracker rateLimitTracker,
+                      RequestOptions requestOptions) {
         this.httpClient = httpClient;
         this.locale = locale;
         this.timezone = timezone;
         this.rateLimitTracker = rateLimitTracker;
+        this.requestOptions = Objects.requireNonNull(requestOptions, "requestOptions");
+    }
+
+    /**
+     * The {@link RequestOptions} this instance adds to every request: {@link RequestOptions#none()}
+     * unless the instance was obtained through {@code withOptions(...)}.
+     */
+    public RequestOptions getRequestOptions() {
+        return requestOptions;
     }
 
     static OkHttpClient buildHttpClient(String apiToken) {
@@ -92,8 +104,14 @@ abstract class SportMonksApiBase {
      * <p>The body text is parsed once, into a tree: the {@code rate_limit} object is read from
      * that tree and the same tree is then mapped to {@code type}, so a multi-megabyte odds
      * response is not tokenised twice.
+     *
+     * <p>Every request goes through here, the first page and the following ones of
+     * {@link #fetchPaged} alike, so this is where the {@link RequestOptions} of the instance are
+     * added. The pages are rebuilt from the URL the method built, which never carries them, so
+     * the filters of the options are combined once per request and never pile up.
      */
-    <R> R get(HttpUrl url, Class<R> type) throws IOException, SportMonksException {
+    <R> R get(HttpUrl requested, Class<R> type) throws IOException, SportMonksException {
+        HttpUrl url = requestOptions.applyTo(requested);
         HttpBody body = execute(url);
         JsonElement tree;
         try {
@@ -315,7 +333,7 @@ abstract class SportMonksApiBase {
 
     HttpUrl.Builder withFilters(HttpUrl.Builder builder, String filters) {
         if (filters != null && !filters.isBlank()) {
-            builder.addQueryParameter("filters", filters);
+            builder.addQueryParameter(RequestOptions.PARAM_FILTERS, filters);
         }
         return builder;
     }

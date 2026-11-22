@@ -80,6 +80,30 @@ System.out.println(byEntity.get("team").getRemaining());   // 2999
 
 `getLastRateLimit()` returns `null` and `getRateLimitsByEntity()` is empty until the first request.
 
+## Request options: select, order, sortBy, filters (3.5.0+)
+
+`withOptions(RequestOptions)` returns a view of the client (the facade or any sub-API) that adds
+these parameters to every request, every page of a paginated list included. The view shares the
+HTTP client and the rate-limit state; the original instance is left unchanged.
+
+```java
+RequestOptions latestFirst = RequestOptions.builder()
+        .sortBy("starting_at")
+        .order(RequestOptions.Order.DESC)
+        .build();
+List<MatchDetail> fixtures = api.withOptions(latestFirst).getAllFixtures(10);
+
+// select: the other fields of the model come back null (id and relation keys are always sent)
+Team team = api.withOptions(RequestOptions.builder().select("name", "image_path").build()).getTeamById(53);
+
+// filters on an endpoint without a filters parameter; appended with ';' to a method's own filters
+Player player = api.withOptions(RequestOptions.builder().filters("playerstatisticSeasons:1586").build())
+        .getPlayerById(580, "statistics");
+```
+
+`sortBy` only accepts the fields each entity allows (`starting_at` on fixtures, `name` on leagues);
+others, and any `sortBy` on standings, answer 400. See the `RequestOptions` Javadoc for the details.
+
 ## Usage Examples
 
 ### Fixtures

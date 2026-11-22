@@ -149,6 +149,35 @@ public class SportMonksAPI {
         this.core = new CoreApi(client, bases.core, bases.my, locale, timezone, tracker);
     }
 
+    private SportMonksAPI(SportMonksAPI source, RequestOptions options) {
+        this.tracker = source.tracker;
+        this.football = source.football.withOptions(options);
+        this.odds = source.odds.withOptions(options);
+        this.predictions = source.predictions.withOptions(options);
+        this.core = source.core.withOptions(options);
+    }
+
+    /**
+     * A view of this client that adds {@code options} ({@code select}, {@code order},
+     * {@code sortBy}, {@code filters}) to every request of every sub-API, each page of a
+     * paginated walk included:
+     *
+     * <pre>{@code
+     * Team team = api.withOptions(RequestOptions.builder().select("name", "image_path").build())
+     *         .getTeamById(53);   // other fields of the model come back null
+     * }</pre>
+     *
+     * <p>The view shares the HTTP client, the rate-limit state, locale and timezone with this
+     * instance, which is left untouched, so creating views is cheap. The options replace those
+     * of this instance, if any. See {@link RequestOptions} for what the API accepts per parameter
+     * and how the {@code filters} combine with those of a method.
+     *
+     * @throws NullPointerException if {@code options} is {@code null}; use {@link RequestOptions#none()}
+     */
+    public SportMonksAPI withOptions(RequestOptions options) {
+        return new SportMonksAPI(this, options);
+    }
+
     static final class BaseUrls {
         private final String football;
         private final String odds;
