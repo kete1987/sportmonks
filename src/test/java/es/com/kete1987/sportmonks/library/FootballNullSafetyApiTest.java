@@ -86,4 +86,16 @@ class FootballNullSafetyApiTest extends BaseApiTest {
         enqueueBody(NO_RESULTS);
         assertNull(api.getMatchDetail("1", "state"));
     }
+
+    @Test
+    void getSeasonById_emptyBody_returnsNull() throws IOException, SportMonksException {
+        enqueueBody("");
+        assertNull(api.getSeasonById(1L));
+    }
+
+    @Test
+    void getBracketsBySeason_emptyBody_returnsNull() throws IOException, SportMonksException {
+        enqueueBody("");
+        assertNull(api.getBracketsBySeason(1L));
+    }
 }
